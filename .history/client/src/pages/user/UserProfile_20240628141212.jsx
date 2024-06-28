@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './UserProfile.module.css'; // Importa el archivo CSS
 import axios from 'axios';
+import ReactCrop from 'react-image-crop';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../../utils/firebase';
@@ -38,7 +40,7 @@ const UserProfile = () => {
 
     fetchCountries();
   }, []);
-
+  
   useEffect(() => {
     if (file) {
       handleFileUpload(file);

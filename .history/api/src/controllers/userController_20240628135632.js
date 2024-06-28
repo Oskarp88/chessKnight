@@ -135,7 +135,7 @@ exports.updateUser = async(req, res) => {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
       // Actualiza los campos del usuario con los nuevos valores proporcionados
-   const userUpdate =  await User.findByIdAndUpdate(userId,{
+     await User.findByIdAndUpdate(userId,{
         name: name || user.name,
         lastName: lastName || user.lastName,
         username: username || user.username,
@@ -150,7 +150,7 @@ exports.updateUser = async(req, res) => {
       res.send({
       success: true,
       message: 'Datos de usuario actualizados correctamente',
-      userUpdate
+      user
     });
   } catch (error) {
     console.log('error', error);

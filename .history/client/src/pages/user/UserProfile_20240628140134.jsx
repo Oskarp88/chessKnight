@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './UserProfile.module.css'; // Importa el archivo CSS
 import axios from 'axios';
+import ReactCrop from 'react-image-crop';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../../utils/firebase';
@@ -24,20 +26,6 @@ const UserProfile = () => {
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get('https://restcountries.com/v3.1/all');
-        setCountries(response.data);
-        setFilteredOptions(response.data.map((country) => country.name.common));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCountries();
-  }, []);
 
   useEffect(() => {
     if (file) {
@@ -128,11 +116,11 @@ const UserProfile = () => {
         toast.success(`${name} is updated`);
         setAuth({
           ...auth,
-          user: response.data.userUpdate,
+          user: response.data.user,
           token: response.data.token,
         });
 
-        const data = { user: response.data.userUpdate, token: auth?.token}
+        const data = { user: response.data.user, token: auth?.token}
         localStorage.setItem('auth', JSON.stringify(data));
         // navigate('/dashboard/user/profile');
       } else {
@@ -220,8 +208,8 @@ const UserProfile = () => {
                 ))}
               </datalist>
             </div>
-            <button onClick={handleUpdate}>Actualizar Perfil</button>
           </div>
+          <button onClick={handleUpdate}>Actualizar Perfil</button>
         </div>
       </div>
     </div>

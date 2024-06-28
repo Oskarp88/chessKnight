@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './UserProfile.module.css'; // Importa el archivo CSS
 import axios from 'axios';
+import ReactCrop from 'react-image-crop';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../../utils/firebase';
 
 
 const UserProfile = () => {
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
   const fileRef = useRef(null);
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -16,7 +18,6 @@ const UserProfile = () => {
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
   const [photo, setPhoto] = useState('');
-  const [bandera, setBandera] = useState('');
   const [user, setUser] = useState({});
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
@@ -24,20 +25,6 @@ const UserProfile = () => {
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get('https://restcountries.com/v3.1/all');
-        setCountries(response.data);
-        setFilteredOptions(response.data.map((country) => country.name.common));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCountries();
-  }, []);
 
   useEffect(() => {
     if (file) {
@@ -79,8 +66,11 @@ const UserProfile = () => {
     setSelectedCountry(value);
     const selectedCountryData = countries.find((country) => country.name.common === value);
     if (selectedCountryData) {
-      setCountry(value);
-      setBandera(selectedCountryData.flags.png)
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        country: value,
+        imagenBandera: selectedCountryData.flags.png,
+      }));
     }
   };
   
@@ -115,25 +105,18 @@ const UserProfile = () => {
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('lastName', lastName);
+      formData.append('username', username);
+      formData.append('country', country);
+      if (photo) {
+        formData.append('photo', photo, photo.name);
+      }
 
-      const response = await axios.put(`http://localhost:8080/api/user/update/${auth.user._id}`, {
-         name,
-         lastName,
-         username,
-         country,
-         photo,
-         imagenBandera: bandera
-      });
+      const response = await axios.put(`http://localhost:8080/api/user/update/${auth.user._id}`, formData);
       if (response.data.success) {
         toast.success(`${name} is updated`);
-        setAuth({
-          ...auth,
-          user: response.data.userUpdate,
-          token: response.data.token,
-        });
-
-        const data = { user: response.data.userUpdate, token: auth?.token}
-        localStorage.setItem('auth', JSON.stringify(data));
         // navigate('/dashboard/user/profile');
       } else {
         toast.error(response.data.message);
@@ -220,8 +203,8 @@ const UserProfile = () => {
                 ))}
               </datalist>
             </div>
-            <button onClick={handleUpdate}>Actualizar Perfil</button>
           </div>
+          <button onClick={handleUpdate}>Actualizar Perfil</button>
         </div>
       </div>
     </div>

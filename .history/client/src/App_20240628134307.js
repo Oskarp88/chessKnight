@@ -54,7 +54,7 @@ function App() {
                 </Route>                     
               </Routes>
               </Router>
-              <Toaster />  
+              <Toast />  
             </div>
          </ChessboardProvider>
       </CheckMateProvider>
