@@ -533,8 +533,7 @@ useEffect(()=>{
           idOpponent: data?.idUser,
           turn: data?.color,
           status: '0',
-          color: infUser?.color === 'white' ? 'black' : 'white',
-          photo: infUser?.photo
+          color: infUser?.color === 'white' ? 'black' : 'white'
         }));
         setFrase('por !!Jaque Mate!!');
         setGameOver(true);
@@ -765,8 +764,7 @@ useEffect(()=>{
             idOpponent: infUser?.idOpponent,
             turn: infUser?.color === 'white' ? 'black' : 'white',
             status: '1',
-            color: infUser?.color === 'white' ? 'black' : 'white',
-            photo: infUser?.photo
+            color: infUser?.color === 'white' ? 'black' : 'white'
           }));
         
          if(socket ===null) return; 

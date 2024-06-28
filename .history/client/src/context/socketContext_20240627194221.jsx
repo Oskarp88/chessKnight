@@ -56,8 +56,7 @@ export const SocketProvider = ({ children, user }) => {
     blitz: 0,
     fast: 0,
     bandera: '',
-    country: '',
-    photo: ''
+    country: ''
   });
   const [partidas, setPartidas] = useState([]);
 

@@ -10,17 +10,17 @@ import { useAuth } from '../../context/authContext';
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 725);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 690);
   const [showEmoji, setShowEmoji] = useState(false);
-  const [isView,setIsView] = useState(window.innerWidth <= 725);
+  const [isView,setIsView] = useState(window.innerWidth <= 690);
   const {setView} = useChessboardContext();
   const {auth} = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 725);
-      setIsView(window.innerWidth <= 725);
-      setView(window.innerWidth <= 725)
+      setIsMobileView(window.innerWidth <= 690);
+      setIsView(window.innerWidth <= 690);
+      setView(window.innerWidth <= 690)
     };
 
     window.addEventListener('resize', handleResize);
@@ -32,10 +32,10 @@ function Chat({ socket, username, room }) {
 
  
 
-  useEffect(() => {
-    console.log('isMobileView', isMobileView);
+  // useEffect(() => {
+  //   console.log('isMobileView', isMobileView);
   
-  }, [isMobileView]);
+  // }, [isMobileView]);
   
   const sendMessage = async () => {
     if(socket === null) return;
@@ -55,7 +55,7 @@ function Chat({ socket, username, room }) {
   };
 
   const mobileView = () => {
-    if(window.innerWidth <= 725){
+    if(window.innerWidth <= 690){
       setIsMobileView(prevState => !prevState);
       setView(prev => !prev);
     }
@@ -129,7 +129,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}>
+      <div className={style.chatfooter} style={window.innerWidth <= 690 && isMobileView ? { display: 'none' } : {}}>
       <button
           className={style.emojibutton}
           onClick={() => setShowEmoji(!showEmoji)}

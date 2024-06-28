@@ -4,23 +4,21 @@ import style from './Chat.module.css';
 import { useChessboardContext } from '../../context/boardContext';
 import Picker from 'emoji-picker-react';
 import { CursorSend } from '../../svg';
-import { useAuth } from '../../context/authContext';
 
 
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 725);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 690);
   const [showEmoji, setShowEmoji] = useState(false);
-  const [isView,setIsView] = useState(window.innerWidth <= 725);
+  const [isView,setIsView] = useState(window.innerWidth <= 690);
   const {setView} = useChessboardContext();
-  const {auth} = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 725);
-      setIsView(window.innerWidth <= 725);
-      setView(window.innerWidth <= 725)
+      setIsMobileView(window.innerWidth <= 690);
+      setIsView(window.innerWidth <= 690);
+      setView(window.innerWidth <= 690)
     };
 
     window.addEventListener('resize', handleResize);
@@ -32,10 +30,10 @@ function Chat({ socket, username, room }) {
 
  
 
-  useEffect(() => {
-    console.log('isMobileView', isMobileView);
+  // useEffect(() => {
+  //   console.log('isMobileView', isMobileView);
   
-  }, [isMobileView]);
+  // }, [isMobileView]);
   
   const sendMessage = async () => {
     if(socket === null) return;
@@ -44,7 +42,6 @@ function Chat({ socket, username, room }) {
         room,
         author: username,
         message: currentMessage,
-        photo: auth?.user?.photo,
         times: new Date().getTime(),
         time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
       };
@@ -55,7 +52,7 @@ function Chat({ socket, username, room }) {
   };
 
   const mobileView = () => {
-    if(window.innerWidth <= 725){
+    if(window.innerWidth <= 690){
       setIsMobileView(prevState => !prevState);
       setView(prev => !prev);
     }
@@ -100,7 +97,7 @@ function Chat({ socket, username, room }) {
       <div className={style.chatheader}  onClick={()=> mobileView()}>
         <p>Live Chat</p>
       </div>
-      <div className={style.chatbody}  style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}  
+      <div className={style.chatbody}  style={window.innerWidth <= 690 && isMobileView ? { display: 'none' } : {}}  
        >
         <ScrollToBottom className={style.messagecontainer}>
           {messageList.map((messageContent, index) => {
@@ -111,13 +108,8 @@ function Chat({ socket, username, room }) {
                 key={index} // Agregar una clave única
               >
                 <div className={style.containerContentMeta}>
-                  <div className={style.containerProfileMessage}>
-                    { username === messageContent.author && <img className={style.profile} src={messageContent?.photo} alt='' />}                  
-                    <div className={style.messagecontent}>
-                      <p>{messageContent.message}</p>
-                    </div>
-                    { username !== messageContent.author && <img className={style.profile} src={messageContent?.photo} alt='' />}                  
-
+                  <div className={style.messagecontent}>
+                    <p>{messageContent.message}</p>
                   </div>
                   <div className={style.messagemeta}>
                     <p id={style.time}>{messageContent.time}</p>
@@ -129,7 +121,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}>
+      <div className={style.chatfooter} style={window.innerWidth <= 690 && isMobileView ? { display: 'none' } : {}}>
       <button
           className={style.emojibutton}
           onClick={() => setShowEmoji(!showEmoji)}

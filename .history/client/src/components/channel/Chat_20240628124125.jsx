@@ -129,7 +129,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}>
+      <div className={style.chatfooter} style={window.innerWidth <= 690 && isMobileView ? { display: 'none' } : {}}>
       <button
           className={style.emojibutton}
           onClick={() => setShowEmoji(!showEmoji)}

@@ -39,7 +39,7 @@ const ModalRevancha = ({infUser, AceptarRevancha}) => {
         </div>        
         <div className={style.body}>
           <p>{infUser.username} te ha retado de nuevo</p> 
-          <img className={style.profileChekMate} src={infUser?.photo} alt='assets/avatar/user.png'  />   
+          <img className={style.profileChekMate} src={`http://localhost:8080/api/user-photo/${infUser?.idOpponent}`} alt='assets/avatar/user.png'  />   
           <p>¿Aceptas la revancha?</p>
           <div className={style.button}>
             <button onClick={AceptarRevancha}>Aceptar</button>

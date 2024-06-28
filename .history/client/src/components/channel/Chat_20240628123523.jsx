@@ -32,10 +32,10 @@ function Chat({ socket, username, room }) {
 
  
 
-  useEffect(() => {
-    console.log('isMobileView', isMobileView);
+  // useEffect(() => {
+  //   console.log('isMobileView', isMobileView);
   
-  }, [isMobileView]);
+  // }, [isMobileView]);
   
   const sendMessage = async () => {
     if(socket === null) return;
@@ -55,7 +55,7 @@ function Chat({ socket, username, room }) {
   };
 
   const mobileView = () => {
-    if(window.innerWidth <= 725){
+    if(window.innerWidth <= 690){
       setIsMobileView(prevState => !prevState);
       setView(prev => !prev);
     }
@@ -129,7 +129,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}>
+      <div className={style.chatfooter} style={window.innerWidth <= 690 && isMobileView ? { display: 'none' } : {}}>
       <button
           className={style.emojibutton}
           onClick={() => setShowEmoji(!showEmoji)}

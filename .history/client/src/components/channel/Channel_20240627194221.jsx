@@ -22,9 +22,9 @@ const Channel = () => {
     // console.log('room chanel', room);
     const { createChat, onlineUsers} = useContext(ChatContext);
     // console.log('onlineUser channel', onlineUsers);
-    const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 725);
+    const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 690);
     
-    const [View,setView] = useState(window.innerWidth <= 725);
+    const [View,setView] = useState(window.innerWidth <= 690);
 
     useEffect(()=>{
       const dataTime = localStorage.getItem('time');
@@ -45,8 +45,8 @@ const Channel = () => {
     useEffect(() => {
       localStorage.removeItem('chessboard');
       const handleResize = () => {
-        setIsMobileView(window.innerWidth <= 725);
-        setView(window.innerWidth <= 725);
+        setIsMobileView(window.innerWidth <= 690);
+        setView(window.innerWidth <= 690);
       };
   
       window.addEventListener('resize', handleResize);
@@ -68,7 +68,6 @@ const Channel = () => {
           _id: response?._id,
           username: response?.username,
           imagenBandera: response?.imagenBandera,
-          photo: response?.photo,
           games: response?.games,
           gamesWon: response?.gamesWon,
           gamesLost: response?.gamesLost,
@@ -98,7 +97,6 @@ const Channel = () => {
           _id: response?._id,
           username: response?.username,
           imagenBandera: response?.imagenBandera,
-          photo: response?.photo,
           games: response?.games,
           gamesWon: response?.gamesWon,
           gamesLost: response?.gamesLost,
@@ -164,7 +162,7 @@ const Channel = () => {
       <div className={style.flex}>
       <div 
         className={style.div2} 
-        style={window.innerWidth <= 725 ? {height: '3vh', marginBottom: '-5px'} : {}}       
+        style={window.innerWidth <= 690 && view? {height: '5vh', marginBottom: '-5px'} : {}}       
       >
         <Chat 
            room={room}
@@ -172,7 +170,7 @@ const Channel = () => {
            socket={socket}         
         />
       </div>
-      <div className={style.div3} style={window.innerWidth <= 725 && isMobileView? {height: '100%'} : {}}>
+      <div className={style.div3} style={window.innerWidth <= 690 && isMobileView? {height: '100%'} : {}}>
         <Friends friends={allUsers} onlineUsers={onlineUsers} room={room} mobile={isMobileView}/>
       </div>
       </div>

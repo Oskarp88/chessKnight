@@ -48,8 +48,8 @@ export default function ModalRendicion({
       <div className={style.gameOverModal}>
         <h2>{rendicion ? infUser.color === 'white' ? 'blancas' : 'negras' : infUser.color === 'white' ? 'negras' : 'blancas'} han Abandonado</h2>
         {rendicion ? 
-        <img className={style.profileChekMate} src={infUser?.photo} alt=''  />
-        : <img className={style.profileChekMate} src={user?.photo} alt=''/>}
+        <img className={style.profileChekMate} src={`http://localhost:8080/api/user-photo/${infUser?.idOpponent}`} alt='assets/avatar/user.png'  />
+        : <img className={style.profileChekMate} src={`http://localhost:8080/api/user-photo/${user?._id}`} alt='assets/avatar/user.png'/>}
         { 
                   sendRevancha  ? <p>esperando que acepte la revancha {infUser?.username}</p> : 
                   sendRevanchaRechada ? <p>{infUser?.username} no acepto la revancha</p> : 

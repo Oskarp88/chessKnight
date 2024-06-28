@@ -150,8 +150,7 @@ io.on("connection", (socket) => {
           blitz: game.ratingBlitz,
           fast: game.ratingFast,
           bandera: game.bandera,
-          country: game.country,
-          photo: game.photo
+          country: game.country
         });
         
       }

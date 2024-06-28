@@ -533,8 +533,7 @@ useEffect(()=>{
           idOpponent: data?.idUser,
           turn: data?.color,
           status: '0',
-          color: infUser?.color === 'white' ? 'black' : 'white',
-          photo: infUser?.photo
+          color: infUser?.color === 'white' ? 'black' : 'white'
         }));
         setFrase('por !!Jaque Mate!!');
         setGameOver(true);
@@ -765,8 +764,7 @@ useEffect(()=>{
             idOpponent: infUser?.idOpponent,
             turn: infUser?.color === 'white' ? 'black' : 'white',
             status: '1',
-            color: infUser?.color === 'white' ? 'black' : 'white',
-            photo: infUser?.photo
+            color: infUser?.color === 'white' ? 'black' : 'white'
           }));
         
          if(socket ===null) return; 
@@ -1366,7 +1364,7 @@ useEffect(()=>{
       <div className='space1'>
         <PlayerInf2
             playerName={infUser?.username} 
-            playerIcon={infUser?.photo}
+            playerIcon={infUser?.idOpponent && `http://localhost:8080/api/user-photo/${infUser.idOpponent}`}
             playerColor={infUser?.color}  
             infUser={infUser} 
             playerTime={infUser?.color === 'black' ? formatTime(whiteTime) : formatTime(blackTime)} 
@@ -1431,7 +1429,7 @@ useEffect(()=>{
       <div className='space'>
         <PlayerInfo        
           playerName={auth?.user?.username} 
-          playerIcon={auth?.user?.photo}  
+          playerIcon={`http://localhost:8080/api/user-photo/${auth?.user?._id}`}  
           playerColor={infUser?.color === 'white' ? 'black' : 'white'}
           infUser={userChess}
           time={infUser?.time} 

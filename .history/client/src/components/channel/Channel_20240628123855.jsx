@@ -164,7 +164,7 @@ const Channel = () => {
       <div className={style.flex}>
       <div 
         className={style.div2} 
-        style={window.innerWidth <= 725 ? {height: '3vh', marginBottom: '-5px'} : {}}       
+        style={window.innerWidth <= 725 && view? {height: '5vh', marginBottom: '-5px'} : {}}       
       >
         <Chat 
            room={room}

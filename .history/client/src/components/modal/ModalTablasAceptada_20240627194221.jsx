@@ -48,10 +48,10 @@ export default function ModalTablasAceptada({infUser, revanchaHandle, frase}) {
             <div className={style.image}>
               <img 
                 className={style.profileChekMate} 
-                src={
-                   infUser.color !== 'white' ? infUser?.photo :
-                   auth?.user?.photo
-                 } 
+                src={`http://localhost:8080/api/user-photo/${
+                   infUser.color !== 'white' ? infUser?.idOpponent :
+                   auth?.user?._id
+                 }`} 
                 alt='assets/avatar/user.png'  
               />
               <div className={style.time}>
@@ -59,10 +59,10 @@ export default function ModalTablasAceptada({infUser, revanchaHandle, frase}) {
               </div>
               <img 
                 className={style.profileChekMate} 
-                src={
-                  infUser.color === 'white' ? infUser?.photo :
-                  auth?.user?.photo
-                }
+                src={`http://localhost:8080/api/user-photo/${
+                  infUser.color === 'white' ? infUser?.idOpponent :
+                  auth?.user?._id
+                }`} 
                 alt='assets/avatar/user.png'  
               />
             </div>

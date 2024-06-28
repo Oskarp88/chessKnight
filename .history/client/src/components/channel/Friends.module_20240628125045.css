@@ -1,7 +1,7 @@
 
 .tercerdiv {
     background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
-    margin-top: 2rem;
+    margin-top: 1rem;
     color: #ffffff;
     text-align: center;
     padding: 20px;
@@ -296,7 +296,7 @@
   }
 }
 
-@media (max-width: 725px){
+@media (max-width: 690px){
   .tercerdiv {
     margin-top: 0;
     

@@ -39,10 +39,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const navigate = useNavigate();
 
   const allOponnentOnline = friends.filter((friend)=>
-      onlineUsers?.some((userOnline) => 
-         userOnline?.userId === friend?._id && 
-         userOnline.time === infUser.time && 
-         userOnline.busy === false)                
+      onlineUsers?.some((userOnline) => userOnline?.userId === friend?._id && userOnline.time === infUser.time && userOnline.busy === false)                
     ); 
 
  const sortedUsers = infUser?.time === 60 || infUser?.time ===120 ?
@@ -130,8 +127,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
        ratingBlitz: userChess?.eloBlitz,
        ratingFast: userChess?.eloFast,
        bandera: userChess?.imagenBandera,
-       country: userChess?.country,
-       photo: auth?.user?.photo
+       country: userChess?.country
      });   
   }
 
@@ -155,8 +151,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
           blitz: data?.blitz,
           fast: data?.fast,
           bandera: data?.bandera,
-          country: data?.country,
-          photo: data?.photo
+          country: data?.country
         }));
         setRoomGame(data?.gameId);
         localStorage.setItem('bandera', data?.bandera);
@@ -231,7 +226,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} style={window.innerWidth <= 725 && mobile ? { height: '100%' } : {}}>
+    <div className={style.tercerdiv} style={window.innerWidth <= 690 && mobile? { height: '100%' } : {}}>
       
       <ul>
         <div className={style.desafio}>
@@ -325,7 +320,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                 </div>                                    
                   <div className={style.modalButtons}>
                     {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin && <>
-                      <button className={style.button} onClick={()=>createGame(auth?.user?._id, userModal?._id, userModal?.username, userModal?.photo)}>
+                      <button className={style.button} onClick={()=>createGame(auth?.user?._id, userModal?._id, userModal?.username, auth?.user?.photo)}>
                         Desafiar
                       </button>
                       <button className={style.button}>

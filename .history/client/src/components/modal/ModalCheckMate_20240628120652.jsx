@@ -70,7 +70,8 @@ export default function ModalCheckMate({ infUser, time, revanchaHandle, frase })
           <img 
              className={style.profileChekMate}
              style={ infUser.color === 'white' ? infUser?.status === '1' ? {border: 'solid 7px #D32F2F'} : {border: 'solid 7px #388E3C '} :  infUser?.status === '1' ?  {border: 'solid 7px #388E3C '} : {border: 'solid 7px #D32F2F'} } 
-             src={infUser?.color === 'white' ?  infUser?.photo : auth?.user?.photo}
+             src={`http://localhost:8080/api/user-photo/${
+                infUser?.color === 'white' ?  infUser?.photo : auth?.user?.photo}`} 
              alt='' />
           <div className={style.time}>
             {time === 60 || time === 120 ? <BulletSvg/> : time === 180 || time === 300 ? <BlitzSvg/> : <FastSvg/>}
@@ -79,7 +80,8 @@ export default function ModalCheckMate({ infUser, time, revanchaHandle, frase })
              className={style.profileChekMate} 
              style={ infUser.color === 'black' ? infUser?.status === '1' ? {border: 'solid 7px #D32F2F'} : {border: 'solid 7px #388E3C '} :  infUser?.status === '1' ?  {border: 'solid 7px #388E3C '} : {border: 'solid 7px #D32F2F'} } 
 
-             src={ infUser?.color === 'black' ? infUser?.photo : auth?.user?.photo} 
+             src={`http://localhost:8080/api/user-photo/${
+               infUser?.color === 'black' ? infUser?.photo : auth?.user?.photo}`} 
             alt='' />
           </div>
           <div className={style.tittle}> 

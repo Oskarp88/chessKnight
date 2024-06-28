@@ -9,7 +9,7 @@ const ModalSendTablas = ({infUser, rechazarTablas, aceptarTablas}) => {
           <h2>Ofreciendo tablas</h2> 
         </div> 
         <div className={style.body}>
-          <img className={style.profileChekMate} src={infUser?.photo} alt='assets/avatar/user.png'  />
+          <img className={style.profileChekMate} src={`http://localhost:8080/api/user-photo/${infUser?.idOpponent}`} alt='assets/avatar/user.png'  />
           <p>{infUser?.username} te ofrece tablas</p>
           <button onClick={aceptarTablas}>Aceptar</button>
           <button onClick={rechazarTablas}>Rechazar</button>
