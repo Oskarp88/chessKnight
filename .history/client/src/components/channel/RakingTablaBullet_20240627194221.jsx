@@ -77,7 +77,7 @@ export const RankingTableBullet = () => {
                   }    
                 </span>
                 <div className={style.name} style={count === 2 || count === 3 || count === 4 ? {marginRight: '15px'} : {}}>
-                  <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
+                  <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${o?._id}`} alt='assets/avatar/user.png' />                  
                   <span className={style.friendName}>{o?.username}</span>
                 </div>
                 <span className={style.friendRank}>

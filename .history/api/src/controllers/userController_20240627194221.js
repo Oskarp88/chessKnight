@@ -10,7 +10,7 @@ require('dotenv').config();
 exports.getUser = async(req, res) => {
     try {
         const userId = req.params.id;
-        const user = await User.findById(userId, '-password -partida');
+        const user = await User.findById(userId, '-password -photo -partida');
     
         if (!user) {
           return res.status(404).json({ message: 'User not found' });
@@ -39,7 +39,7 @@ exports.getUserBandera = async(req, res) => {
 
 exports.getAllUser = async(req, res) => {
     try {
-        const users = await User.find({}, '-password -partida'); // Excluye el campo de contraseña en la respuesta
+        const users = await User.find({}, '-password -photo -partida'); // Excluye el campo de contraseña en la respuesta
         res.json(users);
       } catch (error) {
         console.error(error);
@@ -272,25 +272,25 @@ exports.roleUser = async(req, res) =>{
       });
 }
 
-// exports.photoUser = async(req, res) => {
-//     try {
-//         const user = await User.findById(req.params.pid).select('photo');
+exports.photoUser = async(req, res) => {
+    try {
+        const user = await User.findById(req.params.pid).select('photo');
         
-//         if(user.photo.data){
-//             res.set('Content-type', user.photo.contentType)
-//             return res.status(200).send(user.photo.data);
-//         }else{
-//           res.status(404).json({ error: 'Imagen no encontrada' });
-//         }
-//     } catch (error) {
-//         console.log('error en la imagen');
-//         res.status(500).send({
-//             success:false,
-//             message: 'Error while getting photo',
-//             error
-//         })
-//     }
-// }
+        if(user.photo.data){
+            res.set('Content-type', user.photo.contentType)
+            return res.status(200).send(user.photo.data);
+        }else{
+          res.status(404).json({ error: 'Imagen no encontrada' });
+        }
+    } catch (error) {
+        console.log('error en la imagen');
+        res.status(500).send({
+            success:false,
+            message: 'Error while getting photo',
+            error
+        })
+    }
+}
 
 // Obtener estadísticas de un jugador específico
 exports.statsUser = async(req, res) => {

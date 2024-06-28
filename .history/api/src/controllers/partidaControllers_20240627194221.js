@@ -36,7 +36,7 @@ exports.updatePartidas = async(req, res) => {
                           elo >= -350 && elo <= -201 ? 28 :
                           elo >= -500 && elo <= -351 ? 30 : 
                           elo >= -800 && elo <=-501 ? 35 :
-                          elo < -800 ? 45 : 13;
+                          elo < -800 ? 45 : null;
                         
          const eloLoser = elo === 0 ? -9 : 
                           elo >= 1 && elo <= 5 ? -10 : 
@@ -62,7 +62,7 @@ exports.updatePartidas = async(req, res) => {
                           elo >= -350 && elo <= -201 ? -5 :
                           elo >= -500 && elo <= -351 ? -4 : 
                           elo >= -800 && elo <=-501 ? -2 :
-                          elo < -800 ? -9 : null;
+                          elo < -800 ? -1 : null;
 
         const eloTie = elo === 0 ? 0 : 
                           elo >= 1 && elo <= 5 ? 0 : 
@@ -78,7 +78,7 @@ exports.updatePartidas = async(req, res) => {
                           elo >= -100 && elo <= -26 ? 3 : 
                           elo >= -350 && elo <= -101 ? 4: 
                           elo >= -800 && elo <=-351 ? 5 :
-                          elo < -800 ? 6 : 0;
+                          elo < -800 ? 6 : null;
 
                           
         

@@ -1,7 +1,6 @@
 const { generateToken } = require("../config/jwt");
 const { comparePassword } = require("../helpers/authHelpers");
 const User = require("../model/User");
-const axios = require('axios');
 
 exports.login = async(req, res) => {
     const { email , password } = req.body;
@@ -48,58 +47,4 @@ exports.login = async(req, res) => {
         success: false,
         message: 'Error en el servidor' });
     }
-}
-
-exports.googleAuth = async (req, res) => {
-  try {
-    const { username, email, photo, country, imagenBandera } = req.body;
-
-    // Lógica para buscar o crear un usuario en tu base de datos
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = new User({
-        username,
-        email,
-        photo,
-        country,
-        imagenBandera
-      });
-      await user.save();
-    }
-
-    const token = generateToken({id: user._id.toString()}, '120d');
-
-    res.json({
-      success: true,
-      message: 'User authenticated successfully',
-      user,
-      token
-    });
-  } catch (error) {
-    console.error('Error in Google auth:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error in Google authentication',
-      error: error.message
-    });
-  }
-};
-
-exports.getIp = async (req, res) => {
-  try {
-    const response = await axios.get('https://api.ipify.org?format=json');
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to get IP' });
-  }
-}
-
-exports.getGeo = async (req, res) => {
-  const { ip } = req.params;
-  try {
-    const response = await axios.get(`https://ipapi.co/${ip}/json/`);
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to get geolocation' });
-  }
 }

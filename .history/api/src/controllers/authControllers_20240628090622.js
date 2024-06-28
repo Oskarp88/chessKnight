@@ -1,7 +1,6 @@
 const { generateToken } = require("../config/jwt");
 const { comparePassword } = require("../helpers/authHelpers");
 const User = require("../model/User");
-const axios = require('axios');
 
 exports.login = async(req, res) => {
     const { email , password } = req.body;
@@ -72,7 +71,13 @@ exports.googleAuth = async (req, res) => {
     res.json({
       success: true,
       message: 'User authenticated successfully',
-      user,
+      user: {
+        username: user.username,
+        email: user.email,
+        photo: user.photo,
+        country: user.country,
+        imagenBandera: user.imagenBandera
+      },
       token
     });
   } catch (error) {

@@ -244,7 +244,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
               >                
                 <div>
                   <span style={{marginRight: '7px'}}>{count++}.</span>
-                  <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
+                  <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${o?._id}`} alt='assets/avatar/user.png' />                  
                   <span className={style.friendName}>{o?.username}</span>
                 </div>
                <div className={style.containerFlex}>

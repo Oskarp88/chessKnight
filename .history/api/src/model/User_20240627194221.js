@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
   photo:{
-    type: String,
-    default: 'https://firebasestorage.googleapis.com/v0/b/chessknight-bb7b2.appspot.com/o/user.png?alt=media&token=e058c425-65e9-46d0-97e5-cf2b42033cc0'
+    data:Buffer,
+    contentType:String
 },
   imagenBandera: String,
   role: String,

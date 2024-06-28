@@ -4,7 +4,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useChessboardContext } from '../context/boardContext';
-import GoogleOAuht from '../components/oauth/GoogleOAuth';
 
 const Registro = ({ onSubmit }) => {
   const { boardColor } = useChessboardContext();
@@ -262,9 +261,11 @@ const Registro = ({ onSubmit }) => {
 
           <div className={style.right}>
             <span className={style.loginwith}>Sign in with<br />social network</span>
-            <GoogleOAuht/>
+            <button className={`${style.socialsignin} ${style.facebook}`}>Log in with Facebook</button>
+            <button className={`${style.socialsignin} ${style.google}`}>Log in with Google+</button>
           </div>
 
+          <div className={style.or}>OR</div>
         </div>
       </div>
     </div>

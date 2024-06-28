@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUser, getAllUser, protectedUser, createUser, forgotPassword, resetPassword, roleUser, updateUser, statsUser, deleteUser, userElo, getUserBandera } = require('../controllers/userController');
+const { getUser, getAllUser, protectedUser, createUser, forgotPassword, resetPassword, roleUser, photoUser, updateUser, statsUser, deleteUser, userElo, getUserBandera } = require('../controllers/userController');
 const { requireSignIn, isAdmin } = require('../middleware/isAdmin');
 const formidable = require('express-formidable');
 const userRouter = express.Router();
@@ -11,7 +11,7 @@ userRouter.post('/user', createUser);
 userRouter.post('/user/forgot-password', forgotPassword);
 userRouter.post('/user/reset-password', resetPassword);
 userRouter.put('admin/dashboard/users/:id', isAdmin, roleUser);
-// userRouter.get('/user-photo/:pid',photoUser);
+userRouter.get('/user-photo/:pid',photoUser);
 userRouter.get('/user-bandera/:pid',getUserBandera);
 userRouter.put('/user/update/:userId', formidable(), updateUser);
 userRouter.delete('/users/:id', isAdmin, deleteUser);

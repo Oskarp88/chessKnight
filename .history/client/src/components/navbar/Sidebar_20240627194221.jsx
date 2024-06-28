@@ -91,7 +91,7 @@ const Sidebar = () => {
         {showNavBar ? <div className={style.close}><AiOutlineClose className={style.AiOutlineClose} /></div> :
           <div className={style.userprofile}>
             {auth?.user ?
-              <img className={style.profileSidebar} src={auth?.user?.photo} alt=''/>
+              <img className={style.profileSidebar} src={`http://localhost:8080/api/user-photo/${auth?.user?._id}` ? `http://localhost:8080/api/user-photo/${auth?.user?._id}` : 'assets/avatar/user.png'} alt=''/>
               : 
               <div className={style.burguer}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
@@ -106,8 +106,10 @@ const Sidebar = () => {
         <div className={`${style.navbar} ${showNavBar ? `${style.active}` : ''}`}>
           {auth.user &&
             <>
-              <div className={style.userprofile}>                  
-                  <img className={style.profile} src={auth?.user?.photo} alt='' />
+              <div className={style.userprofile}>
+                  {auth.user ?
+                  <img className={style.profile} src={`http://localhost:8080/api/user-photo/${auth?.user?._id}` ? `http://localhost:8080/api/user-photo/${auth?.user?._id}` : 'assets/avatar/user.png'} alt='' />
+                  : <img className={style.profile} src='assets/avatar/user.png' alt='' />}
                   <span className={style.username}>{auth.user?.name}</span>
               </div>
               <div className={style.lineWithShadow}>
