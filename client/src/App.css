@@ -1,0 +1,58 @@
+#app{
+  place-content: center;
+  height: 100vh; /* Ocupa el 100% del alto de la pantalla */
+  /* Ocupa el 100% del ancho de la pantalla */
+  background-color: #202020;
+}
+@media (max-width: 725px){
+  #app{
+    height: 100%;
+  }
+}
+@media (max-width: 768px) and (min-height: 1024px) {
+  #app{
+    height: 100%;
+  }
+}
+@media (max-width: 690px){
+  #app{
+  height: 100%;
+  }
+}
+.joinChatContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.joinChatContainer h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.joinChatContainer input {
+  width: 210px;
+  height: 40px;
+  margin: 7px;
+  border: 2px solid #43a047;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.joinChatContainer button {
+  width: 225px;
+  height: 50px;
+  margin: 7px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  background: #43a047;
+  color: #fff;
+  cursor: pointer;
+}
+
+.joinChatContainer button:hover {
+  background: #2e7d32;
+}
+

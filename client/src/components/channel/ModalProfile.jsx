@@ -1,0 +1,193 @@
+import React, { useState } from 'react';
+import style from './ModalProfile.module.css';
+import { baseUrl, getRequest } from '../../utils/services';
+import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../../svg';
+import TiedSvg from '../../svg/tiedSvg';
+import ScrollToBottom from "react-scroll-to-bottom";
+
+
+function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, gamesWon, gamesTied, gamesLost}) {
+    const [partida, setPartidas] = useState([]);
+    const [modal, setModal] = useState(false);
+
+    const allPartidas = async(userId) => {
+        const response = await getRequest(`${baseUrl}/partida/user/historial/${userId}`);
+        if(response.error){
+           return console.log('Error fetching users', response);
+        }
+
+        console.log('partidas',response.partida)
+        setPartidas(response.partida);
+        setModal(true);
+    }
+ 
+    return (
+    <div className={style.overlay}>
+        <div className={style.gameOverModal}>
+        <a  className={style.close} onClick={() => handleModalClose()}>
+          <svg style={{marginBottom :'10px'}} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-x-circle-fill" viewBox="0 0 16 16" >
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+          </svg>
+        </a>
+        {!modal ?
+          <>
+              <div className={style.userprofile}>
+            {photo ?
+                <img className={style.profileSidebar} src={`http://localhost:8080/api/user-photo/${photo}`} alt='hola' />
+                : <img className={style.profileSidebar} src={'assets/avatar/user.png'} alt='' /> 
+            }
+            
+            <div className={style.username}>
+                <span>{user.username}</span>
+            </div>
+        </div>
+
+        <img className={style.bandera} src={user.imagenBandera} alt={`${user?.country} flag`} />
+
+            <span style={{ color: 'white', fontWeight: 'bold' }}> 
+                {user.country}
+            </span>     
+            <div className={style.area}>
+                <span>Nivel</span>
+                {nivel === 'fast' ? 
+                    <svg style={{ color: '#80de83', marginLeft: '10px', marginTop: '5px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                    </svg>: nivel === 'blitz' ? 
+                    <svg style={{ color: '#FFEB3B', marginLeft: '10px', marginTop: '5px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                        <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+                    </svg> : 
+                     <svg style={{ color: '#F9A825', marginLeft: '10px',  marginTop: '5px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-rocket-takeoff-fill" viewBox="0 0 16 16">
+                     <path d="M12.17 9.53c2.307-2.592 3.278-4.684 3.641-6.218.21-.887.214-1.58.16-2.065a3.6 3.6 0 0 0-.108-.563 2 2 0 0 0-.078-.23V.453c-.073-.164-.168-.234-.352-.295a2 2 0 0 0-.16-.045 4 4 0 0 0-.57-.093c-.49-.044-1.19-.03-2.08.188-1.536.374-3.618 1.343-6.161 3.604l-2.4.238h-.006a2.55 2.55 0 0 0-1.524.734L.15 7.17a.512.512 0 0 0 .433.868l1.896-.271c.28-.04.592.013.955.132.232.076.437.16.655.248l.203.083c.196.816.66 1.58 1.275 2.195.613.614 1.376 1.08 2.191 1.277l.082.202c.089.218.173.424.249.657.118.363.172.676.132.956l-.271 1.9a.512.512 0 0 0 .867.433l2.382-2.386c.41-.41.668-.949.732-1.526zm.11-3.699c-.797.8-1.93.961-2.528.362-.598-.6-.436-1.733.361-2.532.798-.799 1.93-.96 2.528-.361s.437 1.732-.36 2.531Z"/>
+                         <path d="M5.205 10.787a7.6 7.6 0 0 0 1.804 1.352c-1.118 1.007-4.929 2.028-5.054 1.903-.126-.127.737-4.189 1.839-5.18.346.69.837 1.35 1.411 1.925"/>
+                     </svg>
+                }
+            </div>
+            <div className={style.subArea}>         
+                <span >{elo}</span>            
+            </div>
+            <div className={style.area}>
+                <span>Racha ganadora</span>
+            </div>
+            <div className={style.subArea}>         
+                <span >{racha}</span>            
+            </div>
+            <div className={style.area}>
+                <span>Total de partidas {nivel}</span>
+            </div>
+            <div className={style.subArea}>         
+                <span >{games}</span>            
+            </div>
+            <div className={style.area}>
+                <span>Partidas ganadas</span>
+            </div>
+            <div className={style.subArea}>         
+                <span >{gamesWon}</span>            
+            </div>
+            <div className={style.area}>
+                <span>Partidas empatadas</span>
+            </div>
+            <div className={style.subArea}>         
+                <span >{gamesTied}</span>            
+            </div>
+            <div className={style.area}>
+                <span>Partidas perdidas</span>
+            </div>
+            <div className={style.subArea}>         
+                <span >{gamesLost}</span>            
+            </div>
+            <div className={style.historial}>
+                <button onClick={() => allPartidas(user?._id)}>
+                    <svg style={{color: '#8D6E63 ', marginTop: '-5px'}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
+                    <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
+                    </svg>
+                    <p>Historial partidas</p>
+                </button>
+            </div>
+          </>  : 
+          <div className={style.scrollableContainer}>
+              <h3> Partidas totales ({user?.games})</h3>
+              <span>Ultimas partidas de {user?.username}</span>
+              <div className={style.scrollableContent}>
+              {partida?.slice(0, 15).reverse().map((p, index)=> (
+              <>
+                <div key={index}>
+                   <div className={style.containerpartida}>
+                      <div className={style.gameType}>
+                         <div>
+                         {p.gameType === 'bullet' ? 
+                            <BulletSvg /> :
+                          p.gameType === 'blitz' ? 
+                            <BlitzSvg /> :
+                            <FastSvg />
+                          }
+                         </div>
+                          <span>
+                            {p.gameType === 'bullet' ? 'Bullet' : 
+                             p.gameType === 'blitz' ? 'Blizt' : 'Fast'}
+                          </span>
+                      </div>
+                      <div>
+                         {
+                          p.player.color === 'white' ?
+                             <div className={style.datos}> 
+                               <p> {p.player.name}({p.player.elo})</p>
+                               <img  src={p.player.bandera} alt={`${p.player.country} flag`} />  
+                             </div>
+                                 :
+                            <div className={style.datos}>
+                                <p> {p.nameOpponent.name}({p.nameOpponent.elo})</p>
+                                <img  src={p.nameOpponent.bandera} alt={`${p.nameOpponent.country} flag`} />
+                            </div>                        
+                         }
+                         {
+                           p.player.color === 'black' ?
+                           <div className={style.datos}> 
+                             <p> {p.player.name}({p.player.elo})</p>
+                             <img  src={p.player.bandera} alt={`${p.player.country} flag`} />  
+                           </div>
+                               :
+                          <div className={style.datos}>
+                              <p> {p.nameOpponent.name}({p.nameOpponent.elo})</p>
+                              <img  src={p.nameOpponent.bandera} alt={`${p.nameOpponent.country} flag`} />
+                          </div>  
+                         }
+                      </div>
+                      <div className={style.result}>
+                        <div className={style.valors}>
+                            <p>{p.player.color === 'white' ? 
+                                  p.player.estado === 'won' ? '1' : 
+                                  p.player.estado === 'lost' ? '0' : '1/2' :
+                                  p.nameOpponent.estado === 'won' ? '1' :
+                                  p.nameOpponent.estado === 'lost' ? '0' : '1/2'
+                               }
+                            </p>
+                            <p>{p.player.color === 'black' ? 
+                                  p.player.estado === 'won' ? '1' : 
+                                  p.player.estado === 'lost' ? '0' : '1/2' :
+                                  p.nameOpponent.estado === 'won' ? '1' :
+                                  p.nameOpponent.estado === 'lost' ? '0' : '1/2'
+                               }
+                            </p>
+                        </div>
+                        <div className={style.estado}>
+                           {
+                            p.player.estado === 'won' ? <WonSvg/> :
+                            p.player.estado === 'lost' ? <LostSvg/> : <TiedSvg/>
+                            }
+                        </div>
+                      </div>
+                      
+                   </div>
+                </div>
+              </>))}
+              </div>
+          </div>
+        }
+       
+        </div>
+        </div>
+  )
+}
+
+export default ModalProfile

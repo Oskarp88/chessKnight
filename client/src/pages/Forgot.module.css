@@ -1,0 +1,68 @@
+.forgotPasswordContainer {
+    display: flex;
+    color: aliceblue;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    background-image: url('../../public/fondos/forgot.jpg');
+    background-size: cover; 
+    }
+  
+    .container{
+      margin-top: 10rem;
+      width: 50%;
+    }
+
+    .closeButton {
+      background-color: #e74c3c;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        border: none;
+        color: #333;
+        cursor: pointer;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+    
+    .container h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Agregar sombreado al texto */ 
+    }
+    
+    
+    .container input {
+      display: block;
+      width: 100%;
+      height: 50px;
+      margin: 7px;
+      border: 2px solid #2E86C1;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 16px;
+      margin-bottom: .5rem;
+    }
+    
+    .container button {
+      width: 100%;
+      height: 50px;
+      margin: 7px;
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 16px;
+      background: #2E86C1;
+      color: #fff;
+      box-shadow: 1px 5px 10px 6px #333;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background: #165d8d;
+      box-shadow: 1px 5px 10px .2px #ffffff;
+    }
+    
