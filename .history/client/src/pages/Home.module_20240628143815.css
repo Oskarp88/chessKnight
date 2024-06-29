@@ -1,0 +1,249 @@
+.notfound {
+    text-align: center;
+  }
+
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: cover; 
+  }
+  
+  .image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+    width: 80%;
+  }
+  .home {
+    display: flex;
+    height: 80%;
+    width: 100%;
+    
+  }
+  .homestyle{
+    margin-left: 4rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .table{
+    display: flex;
+    width: 50rem;
+    margin-left: 4rem;
+  }
+  .chevron{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 100%;
+    cursor: pointer;
+  }
+  .imageHome{
+    position: absolute;
+    width: 80rem;
+    margin-top: -20rem;
+  }
+  
+  .titulo {
+    font-size: 40px;
+    color: #3949AB;
+    margin: auto;
+  }
+  
+  .home p {
+    font-size: 18px;
+    color: black;
+  }
+  
+  .content {
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
+
+  .playButton {
+    margin-top: 20%;
+    background: radial-gradient(circle at 48.7% 44.3%, rgb(30, 144, 231) 0%, rgb(56, 113, 209) 22.9%, rgb(38, 76, 140) 76.7%, rgb(31, 63, 116) 100.2%);    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(4, 4, 228, 0.3), -5px 0 20px rgba(22, 68, 220, 0.3);
+    font-weight: bold;
+  }
+  
+  
+  
+  .playButton:hover {
+    background: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
+    color: #000000;
+    box-shadow: 0 5px 15px rgba(4, 4, 228, 0.3), -5px 0 20px rgba(22, 68, 220, 0.3);
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .profileChekMate{
+    margin-top: 15px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: grey;
+    border: solid 10px #4caf50;
+  }
+  .gameOverModal {
+    background-color: rgba(15, 10, 10, 0.4);
+    border: 2px solid #2196F3;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .gameOverModal h2 {
+    color: #90CAF9; 
+  }
+  .gameOverModal p {
+    margin-top: 10px;
+  }
+
+  .header{
+    border-radius: 1rem 1rem 0 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    height: 5.5rem;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
+  }
+
+  .header h2{
+    color: #fff;
+  }
+
+  .body{
+    padding: .5rem 1rem 3rem 1rem;
+  }
+  
+  .button{
+    display: flex;
+  }
+  
+  .gameOverModal button {
+    font-weight: bold;
+    width: 8rem;
+    background: linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%);    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    margin: 5px;
+  }
+  
+  .gameOverModal button:hover {
+    background: linear-gradient(67.6deg, rgb(225, 242, 254) -2.8%, rgb(193, 224, 250) 44.6%, rgb(19, 116, 197) 102.4%);
+     width: 8.1rem;
+  }
+  
+  /* Agrega esta clase para la superposición de fondo detrás del modal */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    z-index: 1; /* Asegura que la superposición esté sobre el contenido */
+  }
+
+  .close{
+    cursor: pointer;
+    margin-left: 90%;
+    color: #fff;
+  }
+  
+  .close:hover{
+    opacity: 10%;
+  }
+
+  .closeModal{
+    cursor: pointer;
+    color: #3498db;
+    align-items: end;
+    justify-content: end;
+    margin-left: 90%;
+  }
+
+  .closeModal:hover{
+    color: #fff;
+    height: 30px;
+    width: 30px;
+  }
+
+  @media (max-width: 1235px){
+    .container{
+      height: 100vh; 
+      width: 100%;
+    }
+    
+    .home {
+      display: flex;
+      flex-direction: column; /* Para que los elementos se muestren uno debajo del otro */
+      height: 100%;
+      width: 20rem;
+    }
+    .table{
+      display: flex;
+      width: 30rem;
+      margin-left: 0;
+    }
+    .image{
+      height: 100%;      
+    }
+  }
+
+  @media (max-width: 690px){
+    .table{
+      display: flex;
+      width: 30rem;
+      margin-left: -15px;
+    }
+  }
+
+  @media (max-width: 415px){
+    .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 125vh;
+    width: 100%;
+    background-image: url('../../public/fondos/chessHome.jpg');
+    background-size: cover; 
+    }
+
+     
+    .image{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+      width: 98%;
+    }
+
+    .titulo{
+      margin-top: 7rem;
+    }
+
+    .home .homestyle p {
+      margin-top: 1rem;
+      font-size: 18px;
+      color: #fff;
+    }
+  }
