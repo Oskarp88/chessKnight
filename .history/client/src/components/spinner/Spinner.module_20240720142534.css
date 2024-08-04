@@ -1,0 +1,28 @@
+.redirecting{
+    padding-top: 3rem;
+    width: 100%;
+    background-color: aqua;
+    align-self: center;
+    justify-content: center;
+    display: flex;
+}
+
+.spinner {
+    color: #330867;
+    border-left-color: #1690b9;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  
+  .dirigiendo{
+    color: #330867;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
