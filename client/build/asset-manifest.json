@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ec4bec4a.css",
+    "main.js": "/static/js/main.4d84d2aa.js",
+    "static/js/787.71df535f.chunk.js": "/static/js/787.71df535f.chunk.js",
+    "static/media/forgot.jpg": "/static/media/forgot.f8c64f08ce3f2302ccd4.jpg",
+    "static/media/register.jpg": "/static/media/register.a05f8830642e72040631.jpg",
+    "static/media/login.jpg": "/static/media/login.160bd0bf3594c5607606.jpg",
+    "static/media/VICTORIA.mp3": "/static/media/VICTORIA.a51974a30afd71a7d98a.mp3",
+    "static/media/derrota.mp3": "/static/media/derrota.3de71d1d435636c22832.mp3",
+    "static/media/soltar.mp3": "/static/media/soltar.1a8a0e73586b92909035.mp3",
+    "static/media/tocar.mp3": "/static/media/tocar.d362082c820fff16b005.mp3",
+    "index.html": "/index.html",
+    "main.ec4bec4a.css.map": "/static/css/main.ec4bec4a.css.map",
+    "main.4d84d2aa.js.map": "/static/js/main.4d84d2aa.js.map",
+    "787.71df535f.chunk.js.map": "/static/js/787.71df535f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec4bec4a.css",
+    "static/js/main.4d84d2aa.js"
+  ]
+}
