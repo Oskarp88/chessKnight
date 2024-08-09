@@ -6,7 +6,6 @@ import axios from 'axios';
 
 import { useAuth } from '../context/authContext';
 import { toast } from 'react-toastify';
-import GoogleOAuht from '../components/oauth/GoogleOAuth';
 
 
 const Login = () => {
@@ -29,7 +28,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://git.heroku.com/chessknigth.git/api/auth/login', {
+      const response = await axios.post('http://localhost:8080/api/auth/login', {
         email: formData.email,
         password: formData.password,
       });
@@ -97,9 +96,7 @@ const Login = () => {
           <button className={style.register} onClick={() => navigate('/register')}>
             <span>register</span>
           </button>
-          <button>
-          <GoogleOAuht />
-          </button>
+          
         </form>
       </div>
     </div>

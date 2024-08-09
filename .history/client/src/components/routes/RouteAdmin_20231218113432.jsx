@@ -12,7 +12,7 @@ const AdminRoute = () => {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const res = await axios.get('https://git.heroku.com/chessknigth.git/api/admin/dashboard');
+        const res = await axios.get('http://localhost:8080/api/admin/dashboard');
         if (res.data.ok) {
           setOk(true);
         } else {

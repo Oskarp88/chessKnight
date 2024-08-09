@@ -16,7 +16,7 @@ export default function PrivateRoute() {
         console.log('authCheck');
         try {
           console.log('llegue al trycatch');
-          const res = await axios.get('https://git.heroku.com/chessknigth.git/api/user-auth');
+          const res = await axios.get('http://localhost:8080/api/user-auth');
           
            if (res.data.ok) {
              console.log('llegue a data: ', res.data.ok)

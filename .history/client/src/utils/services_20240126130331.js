@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseUrl = 'https://git.heroku.com/chessknigth.git/api';
+export const baseUrl = 'http://localHost:8080/api';
 
 export const postRequest = async(url, body) => {
    const response = await fetch(url, {

@@ -116,7 +116,7 @@ const UserProfile = () => {
     event.preventDefault();
     try {
 
-      const response = await axios.put(`https://git.heroku.com/chessknigth.git/api/user/update/${auth.user._id}`, {
+      const response = await axios.put(`http://localhost:8080/api/user/update/${auth.user._id}`, {
          name,
          lastName,
          username,

@@ -97,9 +97,7 @@ const Login = () => {
           <button className={style.register} onClick={() => navigate('/register')}>
             <span>register</span>
           </button>
-          <button>
           <GoogleOAuht />
-          </button>
         </form>
       </div>
     </div>

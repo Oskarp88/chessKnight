@@ -39,7 +39,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post('https://git.heroku.com/chessknigth.git/api/user/reset-password', {
+      const response = await axios.post('http://localhost:8080/api/user/reset-password', {
         token: token,
         newPassword: password,
       });

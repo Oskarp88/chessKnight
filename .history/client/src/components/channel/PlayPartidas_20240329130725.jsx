@@ -20,10 +20,10 @@ export const PlayPartidas = () => {
                         className={`${style.frienditem}`}              
                     > 
                         <div className={style.name}>
-                            {/* <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${p?.idOpponent}`} alt='assets/avatar/user.png' />                   */}
+                            <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${p?.idOpponent}`} alt='assets/avatar/user.png' />                  
                             <span className={style.friendName}>{p?.username}</span>
                             <span> vs </span>
-                            {/* <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${p?.idUser}`} alt='assets/avatar/user.png' />                   */}
+                            <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${p?.idUser}`} alt='assets/avatar/user.png' />                  
                             <span className={style.friendName}>{p?.username2}</span>
                         </div>                
                     </li>

@@ -6,7 +6,6 @@ import axios from 'axios';
 
 import { useAuth } from '../context/authContext';
 import { toast } from 'react-toastify';
-import GoogleOAuht from '../components/oauth/GoogleOAuth';
 
 
 const Login = () => {
@@ -97,9 +96,7 @@ const Login = () => {
           <button className={style.register} onClick={() => navigate('/register')}>
             <span>register</span>
           </button>
-          <button>
-          <GoogleOAuht />
-          </button>
+          
         </form>
       </div>
     </div>

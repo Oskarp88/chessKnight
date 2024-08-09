@@ -15,7 +15,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-       await axios.post('https://git.heroku.com/chessknigth.git/api/user/forgot-password', { email });
+       await axios.post('http://localhost:8080/api/user/forgot-password', { email });
 
       // Realiza cualquier otra acción necesaria después de enviar el correo electrónico
       setTimeout(()=>{
