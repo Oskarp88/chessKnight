@@ -135,7 +135,7 @@ exports.updateUser = async(req, res) => {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
       // Actualiza los campos del usuario con los nuevos valores proporcionados
-     await User.findByIdAndUpdate(userId,{
+   const userUpdate =  await User.findByIdAndUpdate(userId,{
         name: name || user.name,
         lastName: lastName || user.lastName,
         username: username || user.username,
@@ -150,7 +150,7 @@ exports.updateUser = async(req, res) => {
       res.send({
       success: true,
       message: 'Datos de usuario actualizados correctamente',
-      user
+      userUpdate
     });
   } catch (error) {
     console.log('error', error);
@@ -215,7 +215,7 @@ exports.forgotPassword = async(req, res) => {
       from: process.env.MY_EMAIL,
       to: email,
       subject: 'Restablecer contraseña',
-      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: http://localhost:3000/reset-password/${token}`, 
+      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: https://chess-knight-ecru.vercel.app/reset-password/${token}`, 
     };
 
     await transporter.sendMail(mailOptions);

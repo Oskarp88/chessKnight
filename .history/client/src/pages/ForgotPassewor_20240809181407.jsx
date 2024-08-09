@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import style from './Forgot.module.css';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../utils/services';
 
@@ -19,11 +19,37 @@ const ForgotPassword = () => {
        await axios.post(`${baseUrl}/user/forgot-password`, { email });
 
       // Realiza cualquier otra acción necesaria después de enviar el correo electrónico
-        toast.success(`Se ha enviado un correo electrónico a ${email} para recuperar la contraseña.`);
-        navigate('/login');
+      setTimeout(()=>{
+        toast.success(`Se ha enviado un correo electrónico a ${email} para recuperar la contraseña.`,{
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          closeButton: (
+            <button className={style.closeButton}>X</button>
+          ),
+        });
+      },3000);
 
+        navigate('/login');
     } catch (error) {
-        toast.error('send failed');
+        toast.error(String(error), {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            closeButton: (
+              <button className={style.closeButton}>X</button>
+            ),
+            });
       // Maneja el error de acuerdo a tus necesidades
     }
   };

@@ -215,7 +215,7 @@ exports.forgotPassword = async(req, res) => {
       from: process.env.MY_EMAIL,
       to: email,
       subject: 'Restablecer contraseña',
-      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: http://localhost:3000/reset-password/${token}`, 
+      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: https://chess-knight-ecru.vercel.app/reset-password/${token}`, 
     };
 
     await transporter.sendMail(mailOptions);

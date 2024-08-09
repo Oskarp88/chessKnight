@@ -23,7 +23,7 @@ const ForgotPassword = () => {
         navigate('/login');
 
     } catch (error) {
-        toast.error('send failed');
+        toast.error(error);
       // Maneja el error de acuerdo a tus necesidades
     }
   };
