@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { useAuth } from '../context/authContext';
-import  toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
 
@@ -36,7 +36,10 @@ const Login = () => {
       });
 
       if (response && response.data.success) {
-        toast.success(response.data && response.data.message);
+        toast.success(response.data && response.data.message, {
+          autoClose: 3000,
+          closeButton: <button className={style.closeButton}>X</button>,
+        });
         setAuth({
           ...auth,
           user: response.data.user,
@@ -44,12 +47,18 @@ const Login = () => {
         });
         localStorage.setItem('auth', JSON.stringify(response.data));
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.message, {
+          autoClose: 3000,
+          closeButton: <button className={style.closeButton}>X</button>,
+        });
       }
       navigate('/');
     } catch (error) {
       console.error(error);
-      toast.error('Login failed');
+      toast.error('Login failed', {
+        autoClose: 3000,
+        closeButton: <button className={style.closeButton}>X</button>,
+      });
     }
   };
 
