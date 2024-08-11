@@ -125,17 +125,10 @@
     }
   }
 
-  .oauth{
-    width: 93%;
-    margin: auto;
-    align-items: center;
-    justify-content: center;
-  }
-
   .loginwith {
     display: block;
     margin-bottom: 40px;
-    font-size:14px;
+    font-size: 28px;
     color: #FFF;
     text-align: center;
     }

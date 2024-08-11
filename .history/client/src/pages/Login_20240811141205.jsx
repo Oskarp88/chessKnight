@@ -89,7 +89,7 @@ const Login = () => {
           <button className={style.register} onClick={() => navigate('/register')}>
             <span>register</span>
           </button>
-          <div className={style.oauth}>
+          <div className={style.right}>
             <span className={style.loginwith}>Sign in with<br />social network</span>
             <GoogleOAuht/>
           </div>

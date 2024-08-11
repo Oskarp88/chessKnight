@@ -126,10 +126,8 @@
   }
 
   .oauth{
-    width: 93%;
-    margin: auto;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    background-color: #333;
   }
 
   .loginwith {
