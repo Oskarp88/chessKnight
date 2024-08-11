@@ -266,7 +266,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                 <div>
                   <span style={{marginRight: '7px', color: chessColor.titulo}}>{count++}.</span>
                   <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
-                  <span className={style.friendName} style={{color: chessColor.titulo}}>{o?.username}</span>
+                  <span className={style.friendName}>{o?.username}</span>
                 </div>
                <div className={style.containerFlex}>
                 { infUser?.time === 60 || infUser?.time === 120 ? 
