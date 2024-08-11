@@ -144,15 +144,16 @@
   
 
     @media (max-width: 725px){
-      .Registro{       
+      .Registro{
+        
         flex-direction: column;
         width: 100%;
-   
+        height: 100vh;
         background-image: url('../../public/fondos/registro.jpg');
-      }
-      .container{
-        width: 100%;
-        padding: 6rem 1rem 0 1rem;
+        background-size: cover; /* Ajustar la imagen de fondo para cubrir completamente el contenedor */
+        background-position: center;
+        color: #FFF;
+        justify-content: center;
       }
       #loginbox {
         position: relative;
@@ -169,22 +170,17 @@
         left: 0;
         box-sizing: border-box;
         padding: 40px;
+        width: 300px;
         height: 400px;
         margin-left: 20px;
       }
-      .letf input[type="text"],
-    .letf input[type="password"] {
-      width: 100%;
-    }
-    .letf input[type="submit"] {
-      width: 100%;
-    }
       .right {
         position: relative;
         top: 0;
         right: 0;
         box-sizing: border-box;
-        padding: 0;
+        padding: 40px;
+        width: 300px;
         height: 400px;
         background: url('https://goo.gl/YbktSj');
         background-size: cover;

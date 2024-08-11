@@ -139,67 +139,49 @@
     text-align: center;
     }
     
+    .right button.socialsignin {
+    margin-bottom: 20px;
+    width: 220px;
+    height: 36px;
+    border: none;
+    border-radius: 2px;
+    color: #FFF;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    transition: 0.2s ease;
+    cursor: pointer;
+    }
+    
+    .right button.socialsignin:hover,
+    .right button.socialsignin:focus {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+    }
+    
+    .right button.socialsignin:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+    }
+    
+    .right button.socialsignin.facebook {
+    background: #32508E;
+    }
     
     
-  
+    .right button.socialsignin.google {
+    background: #DD4B39;
+    }
 
     @media (max-width: 725px){
-      .Registro{       
-        flex-direction: column;
+      .Registro{
+        display: flex;
         width: 100%;
-   
+        height: 150vh;
         background-image: url('../../public/fondos/registro.jpg');
-      }
-      .container{
-        width: 100%;
-        padding: 6rem 1rem 0 1rem;
-      }
-      #loginbox {
-        position: relative;
-        margin: 5% auto;
-        width: 100%;
-        height: auto;
-        background-color: rgba(0,0,0,0.7);
-        border-radius: 2px;
-        box-shadow: 0 2px 4px rgba(245, 243, 243, 0.4);
-      }
-      .left {
-        position: relative;
-        top: 0;
-        left: 0;
-        box-sizing: border-box;
-        padding: 40px;
-        height: 400px;
-        margin-left: 20px;
-      }
-      .letf input[type="text"],
-    .letf input[type="password"] {
-      width: 100%;
-    }
-    .letf input[type="submit"] {
-      width: 100%;
-    }
-      .right {
-        position: relative;
-        top: 0;
-        right: 0;
-        box-sizing: border-box;
-        padding: 0;
-        height: 400px;
-        background: url('https://goo.gl/YbktSj');
-        background-size: cover;
+        background-size: cover; /* Ajustar la imagen de fondo para cubrir completamente el contenedor */
         background-position: center;
-        background: url('https://goo.gl/YbktSj');
-      background-size: cover;
-      background-position: center;
-      border-radius: 0 2px 2px 0;
-      }
-      .left, .right {
-        width: 100%;
-      }
-    
-      .right {
-        margin-top: 20px;
+        color: #FFF;
+        justify-content: center;
       }
     }
     
