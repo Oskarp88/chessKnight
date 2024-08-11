@@ -6,7 +6,6 @@ import { useAuth } from '../../context/authContext';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../../utils/firebase';
 import { baseUrl } from '../../utils/services';
-import { useChessboardContext } from '../../context/boardContext';
 
 
 const UserProfile = () => {
@@ -26,7 +25,6 @@ const UserProfile = () => {
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
-  const {chessColor} = useChessboardContext();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -152,7 +150,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className={style.userprofile} style={{background: chessColor?.fondo}}>
+    <div className={style.userprofile}>
       <div className={style.column}>
         <div className={style.photo}>
           <div className={style.profileimage}>
@@ -187,7 +185,7 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
-      <div className={style.column1}>
+      <div className={style.column}>
         <div className={style.inputs}>
           <div className={style.profiledetails}>
             <div className={style.detailrow}>

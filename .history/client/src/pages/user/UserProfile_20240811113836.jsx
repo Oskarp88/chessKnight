@@ -26,7 +26,7 @@ const UserProfile = () => {
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
-  const {chessColor} = useChessboardContext();
+  const {colorChess} = useChessboardContext();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -152,7 +152,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className={style.userprofile} style={{background: chessColor?.fondo}}>
+    <div className={style.userprofile} style={{background: colorChess?.fondo}}>
       <div className={style.column}>
         <div className={style.photo}>
           <div className={style.profileimage}>
@@ -187,7 +187,7 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
-      <div className={style.column1}>
+      <div className={style.column}>
         <div className={style.inputs}>
           <div className={style.profiledetails}>
             <div className={style.detailrow}>

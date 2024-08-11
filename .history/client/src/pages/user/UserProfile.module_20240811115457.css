@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    
+    margin-bottom: 20px;
     height: 100vh;
   }
   .photo{
@@ -211,50 +211,19 @@
   }
 
   .column {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex: none;
     margin-right: 0;
     margin-top: 5rem;
+    background-color: aqua;
     width: 100%;
   }
   .column1{
-    display: flex;
     justify-content: center;
     align-items: center;
     flex: none;
     margin-right: 0;
     margin-top: 0;
+    background-color: aqua;
     width: 100%;
-  }
-  .photo{
-    width: 40%;
-    height: 15rem;
-    margin: auto;
-  }
-  .profileimage {
-    margin: auto;
-  }
-  .upload label img{
-    transform: translate(80px, -65px);
-  }
-}
-
-@media (max-width: 400px){
-  .upload label img{
-    transform: translate(90px, -70px);
-  }
-}
-
-@media (max-width: 350px){
-  .upload label img{
-    transform: translate(100px, -70px);
-  }
-}
-
-@media (max-width: 300px){
-  .upload label img{
-    transform: translate(110px, -70px);
   }
 }

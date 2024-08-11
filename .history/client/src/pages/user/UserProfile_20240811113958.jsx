@@ -187,7 +187,7 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
-      <div className={style.column1}>
+      <div className={style.column}>
         <div className={style.inputs}>
           <div className={style.profiledetails}>
             <div className={style.detailrow}>
