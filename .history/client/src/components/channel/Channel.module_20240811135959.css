@@ -46,7 +46,7 @@
 
 
 @media (max-width: 450px) {
-  .div2{
-    height: 23rem;
+  .div{
+    height: auto;
   }
 }

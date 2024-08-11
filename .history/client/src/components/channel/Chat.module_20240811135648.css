@@ -225,16 +225,3 @@
       max-width: 350px;
     }
   }
-
-  
-  /* @media (max-width: 450px) {
-    .chatwindow .chatbody {
-      height: calc(300px - (45px + 70px));
-      border: 1px solid #263238;
-      background: linear-gradient(to top, #09203f 0%, #537895 100%);
-      position: relative;
-    }
-    .chatwindow .chatbody .message .messagecontent{
-      max-width: 350px;
-    }
-  } */
