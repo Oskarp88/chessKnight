@@ -10,8 +10,8 @@
   }
   .chatwindow .chatheader {
     height: 50px;
-    border-radius: 6px;
-    background: radial-gradient(circle at 74.2% 50.9%, rgb(55, 89, 174) 5.2%, rgb(3, 22, 65) 75.3%);    display: flex;
+    background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);    
+    display: flex;
     position: relative;
     cursor: pointer;
   }
@@ -199,7 +199,7 @@
 
   @media (max-width: 1291px){
     .chatwindow .chatbody {
-      height: calc(695px - (45px + 70px));
+      height: calc(160% - (45px + 70px));
       border: 1px solid #263238;
       background: linear-gradient(to top, #09203f 0%, #537895 100%);
       position: relative;
@@ -209,12 +209,12 @@
 
   @media (max-width: 1114px){
     .chatwindow .chatbody {
-      height: calc(605px - (45px + 70px));
+      height: calc(160% - (45px + 70px));
     }
     
   }
 
-  @media (max-width: 690px) {
+  @media (max-width: 725px) {
     .chatwindow .chatbody {
       height: calc(430px - (45px + 70px));
       border: 1px solid #263238;

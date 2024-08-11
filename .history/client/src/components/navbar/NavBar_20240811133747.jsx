@@ -15,7 +15,7 @@ const colorChess = [
     border2: 'solid 1px #1565C0',
     fondo: 'linear-gradient(to top, #dfe9f3 0%, white 100%)',
     fondo2: 'linear-gradient(109.6deg, rgb(204, 228, 247) 11.2%, rgb(237, 246, 250) 100.2%)',
-    fondo_3: 'linear-gradient(178deg, rgba(201, 234, 252, 0.51) 14.9%, rgba(139, 192, 216, 0.73) 80%',
+    fondo_3: 'linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%)'
     titulo: '#3949AB',
     color: '#273746',
     spinner: '4px solid rgba(23, 21, 21, 0.5)',
@@ -70,7 +70,6 @@ function NavBar() {
       border2: colorChess[theme].border2,
       fondo: colorChess[theme].fondo,
       fondo2: colorChess[theme].fondo2,
-      fondo_3: colorChess[theme].fondo_3,
       titulo: colorChess[theme].titulo,
       color: colorChess[theme].color,
       spinner: colorChess[theme].spinner,

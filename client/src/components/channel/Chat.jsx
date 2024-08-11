@@ -13,7 +13,7 @@ function Chat({ socket, username, room }) {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 725);
   const [showEmoji, setShowEmoji] = useState(false);
   const [isView,setIsView] = useState(window.innerWidth <= 725);
-  const {setView} = useChessboardContext();
+  const {setView, chessColor} = useChessboardContext();
   const {auth} = useAuth();
 
   useEffect(() => {
@@ -100,8 +100,10 @@ function Chat({ socket, username, room }) {
       <div className={style.chatheader}  onClick={()=> mobileView()}>
         <p>Live Chat</p>
       </div>
-      <div className={style.chatbody}  style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}  
-       >
+      <div 
+        className={style.chatbody} 
+        style={{background: chessColor.fondo_3}}  
+      >
         <ScrollToBottom className={style.messagecontainer}>
           {messageList.map((messageContent, index) => {
             return (
@@ -119,9 +121,9 @@ function Chat({ socket, username, room }) {
                     { username !== messageContent.author && <img className={style.profile} src={messageContent?.photo} alt='' />}                  
 
                   </div>
-                  <div className={style.messagemeta}>
-                    <p id={style.time}>{messageContent.time}</p>
-                    <p id={style.author}>{messageContent.author}</p>
+                  <div className={style.messagemeta} >
+                    <p id={style.time} style={{color: chessColor.color}}>{messageContent.time}</p>
+                    <p id={style.author} style={{color: chessColor.color}}>{messageContent.author}</p>
                   </div>
                 </div>
               </div>
@@ -129,7 +131,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}>
+      <div className={style.chatfooter} >
       <button
           className={style.emojibutton}
           onClick={() => setShowEmoji(!showEmoji)}

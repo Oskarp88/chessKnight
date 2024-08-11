@@ -11,7 +11,8 @@
   .chatwindow .chatheader {
     height: 50px;
     border-radius: 6px;
-    background: radial-gradient(circle at 74.2% 50.9%, rgb(55, 89, 174) 5.2%, rgb(3, 22, 65) 75.3%);    display: flex;
+    background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);    
+    display: flex;
     position: relative;
     cursor: pointer;
   }
@@ -62,10 +63,18 @@
     width: auto;
   }
 
+  .containerProfileMessage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+ 
   .profile{
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    margin: 5px;
   }
   
   #you {
@@ -206,7 +215,7 @@
     
   }
 
-  @media (max-width: 690px) {
+  @media (max-width: 725px) {
     .chatwindow .chatbody {
       height: calc(430px - (45px + 70px));
       border: 1px solid #263238;

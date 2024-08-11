@@ -16,7 +16,6 @@
   display: inline-block;
   color: #ffffff;
   margin-top: 3rem;
-  background-color: #ffffff;
 }
 
 .div3{
@@ -38,6 +37,7 @@
   }
   .div2{
     width: 100%;
+    height: 5rem;
   }
   .div3{
     width: 100%;

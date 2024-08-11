@@ -100,7 +100,7 @@ function Chat({ socket, username, room }) {
       <div className={style.chatheader}  onClick={()=> mobileView()}>
         <p>Live Chat</p>
       </div>
-      <div className={style.chatbody}  style={window.innerWidth <= 725 && isMobileView ? { display: 'none' } : {}}  
+      <div className={style.chatbody}   
        >
         <ScrollToBottom className={style.messagecontainer}>
           {messageList.map((messageContent, index) => {
@@ -129,7 +129,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} style={window.innerWidth <= 690 && isMobileView ? { display: 'none' } : {}}>
+      <div className={style.chatfooter} >
       <button
           className={style.emojibutton}
           onClick={() => setShowEmoji(!showEmoji)}

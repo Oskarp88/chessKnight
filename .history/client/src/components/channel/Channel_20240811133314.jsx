@@ -163,8 +163,7 @@ const Channel = () => {
      
       <div className={style.flex}>
       <div 
-        className={style.div2} 
-        style={window.innerWidth <= 725 ? {height: '5vh', marginBottom: '-5px'} : {}}       
+        className={style.div2}       
       >
         <Chat 
            room={room}
@@ -172,7 +171,7 @@ const Channel = () => {
            socket={socket}         
         />
       </div>
-      <div className={style.div3} style={window.innerWidth <= 725 && isMobileView? {height: '100%'} : {}}>
+      <div className={style.div3} >
         <Friends friends={allUsers} onlineUsers={onlineUsers} room={room} mobile={isMobileView}/>
       </div>
       </div>
