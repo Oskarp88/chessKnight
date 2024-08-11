@@ -239,11 +239,11 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
       <ul>
         <div className={style.desafio}>
             <div className={style.titleWithIcon}>
-              <h5>
+              <h3>
                 Desafia una partida a {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
                                       infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :
                                       infUser?.time === 600 ? '10' : '20'} mn
-              </h5>
+              </h3>
               {infUser?.time === 60  || infUser?.time === 120 ? <BulletSvg/> : 
                                             infUser?.time === 180 || infUser.time === 300 ? <BlitzSvg/> :
                                             <FastSvg/>}
