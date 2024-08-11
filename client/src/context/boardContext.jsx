@@ -23,6 +23,7 @@ export const ChessboardProvider = ({ children }) => {
     boxShadow: '',
     border: '',
     fondo: '',
+    fondo2: "",
     titulo: '',
     color: '',
     spinner: '',

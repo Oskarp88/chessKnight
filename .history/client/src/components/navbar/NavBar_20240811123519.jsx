@@ -13,7 +13,7 @@ const colorChess = [
     boxShadow: '0 5px 15px rgba(7, 7, 235, 0.2), -5px 0 20px rgba(1, 36, 141, 0.2)',
     border: 'solid 2px #fff',
     fondo: 'linear-gradient(to top, #dfe9f3 0%, white 100%)',
-    fondo2: 'linear-gradient(109.6deg, rgb(204, 228, 247) 11.2%, rgb(237, 246, 250) 100.2%)',
+    fondo2: 'radial-gradient(401px at 50.6% -0.3%, rgba(255, 255, 255, 0.31) 1.2%, rgb(36, 212, 219) 100.2%)',
     titulo: '#3949AB',
     color: '#273746',
     spinner: '4px solid rgba(23, 21, 21, 0.5)',

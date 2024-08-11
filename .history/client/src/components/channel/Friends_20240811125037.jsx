@@ -16,6 +16,8 @@ import {
   NovatoInsignia, 
   PrincipianteInsignia 
 } from '../../img';
+import SpinnerDowloand from '../spinner/SpinnerDowloand';
+import { useChessboardContext } from '../../context/boardContext';
 
 
 const Friends = ({ friends, onlineUsers, room, mobile }) => {
@@ -34,12 +36,16 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const [idUser, setIdUser] = useState(null);
   const [photo, setPhoto] = useState('');
   const {socket, setRoom, setInfUser, infUser, userChess} = useSocketContext();
+  const {chessColor} = useChessboardContext();
   const [userInf, setUserInf] = useState({});
   const {auth} = useAuth();
   const navigate = useNavigate();
 
   const allOponnentOnline = friends.filter((friend)=>
-      onlineUsers?.some((userOnline) => userOnline?.userId === friend?._id && userOnline.time === infUser.time && userOnline.busy === false)                
+      onlineUsers?.some((userOnline) => 
+         userOnline?.userId === friend?._id && 
+         userOnline.time === infUser.time && 
+         userOnline.busy === false)                
     ); 
 
  const sortedUsers = infUser?.time === 60 || infUser?.time ===120 ?
@@ -99,7 +105,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
      socket.emit('offGame', {off: true, roomGame});  
   };
 
-  const createGame = (firstId, secondId, username) =>{
+  const createGame = (firstId, secondId, username, photo) =>{
     let colorRamdon = Math.random() < 0.5 ? 'white' : 'black';
     if(socket === null) return;
      setAceptarDesafio(true);
@@ -113,6 +119,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
       color: colorRamdon,
       idOpponent: secondId,
       username: userModal.username,
+      photo
     }));
      socket.emit('sendGame', {
        color: colorRamdon,
@@ -126,7 +133,8 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
        ratingBlitz: userChess?.eloBlitz,
        ratingFast: userChess?.eloFast,
        bandera: userChess?.imagenBandera,
-       country: userChess?.country
+       country: userChess?.country,
+       photo: auth?.user?.photo
      });   
   }
 
@@ -150,7 +158,8 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
           blitz: data?.blitz,
           fast: data?.fast,
           bandera: data?.bandera,
-          country: data?.country
+          country: data?.country,
+          photo: data?.photo
         }));
         setRoomGame(data?.gameId);
         localStorage.setItem('bandera', data?.bandera);
@@ -225,15 +234,26 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} style={window.innerWidth <= 690 && mobile? { height: '100%' } : {}}>
+    <div className={style.tercerdiv} style={window.innerWidth <= 725 && mobile ? { height: '100%', background: chessColor.fondo2 } : {background: chessColor.fondo2}}>
       
       <ul>
         <div className={style.desafio}>
-          <h2>Desafia una partida a {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
-                                     infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :
-                                     infUser?.time === 600 ? '10' : '20'} mn</h2>
+            <div className={style.titleWithIcon}>
+              <h2>
+                Desafia una partida a {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
+                                      infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :
+                                      infUser?.time === 600 ? '10' : '20'} mn
+              </h2>
+              {infUser?.time === 60  || infUser?.time === 120 ? <BulletSvg/> : 
+                                            infUser?.time === 180 || infUser.time === 300 ? <BlitzSvg/> :
+                                            <FastSvg/>}
+            </div>
         </div>
-        {sortedUsers?.map((o, index) => (
+        {sortedUsers.length === 0 ? 
+          
+             <SpinnerDowloand text={'Cargando Jugadores'}/>
+          
+        : sortedUsers.map((o, index) => (
           <>
                <li 
                 key={index} 
@@ -244,7 +264,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
               >                
                 <div>
                   <span style={{marginRight: '7px'}}>{count++}.</span>
-                  <img className={style.userIcon} src={`http://localhost:8080/api/user-photo/${o?._id}`} alt='assets/avatar/user.png' />                  
+                  <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
                   <span className={style.friendName}>{o?.username}</span>
                 </div>
                <div className={style.containerFlex}>
@@ -307,7 +327,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                 <div className={style.modalContent}>
                   
                 <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                    <img className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} src={`http://localhost:8080/api/user-photo/${userModal?._id}`} alt='assets/avatar/user.png' />                  
+                    <img className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} src={userModal?.photo} alt='assets/avatar/user.png' />                  
                     
                     {aceptarDesafio && !isOffGame &&
                       <>
@@ -319,7 +339,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                 </div>                                    
                   <div className={style.modalButtons}>
                     {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin && <>
-                      <button className={style.button} onClick={()=>createGame(auth?.user?._id, userModal?._id, userModal?.username)}>
+                      <button className={style.button} onClick={()=>createGame(auth?.user?._id, userModal?._id, userModal?.username, userModal?.photo)}>
                         Desafiar
                       </button>
                       <button className={style.button}>
@@ -356,7 +376,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                 <div className={style.modalContent}>
                   
                   <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                      <img className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} src={`http://localhost:8080/api/user-photo/${userOpponentModal?.idOpponent}`} alt='assets/avatar/user.png' />                  
+                      <img className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} src={userOpponentModal?.photo} alt='assets/avatar/user.png' />                  
                       <h3>{userOpponentModal?.username && `${userOpponentModal.username.charAt(0).toUpperCase()}${userOpponentModal.username.slice(1)} te ha desafiado `} </h3>
                   </div>                                    
                   <div className={style.modalButtons}>

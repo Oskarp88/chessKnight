@@ -22,6 +22,12 @@ export const ChessboardProvider = ({ children }) => {
     navbar: '',
     boxShadow: '',
     border: '',
+    fondo: '',
+    fondo2: "",
+    titulo: '',
+    color: '',
+    spinner: '',
+    colorBorder: ''
   })
   const [view, setView] = useState(window.innerWidth <= 690);
   

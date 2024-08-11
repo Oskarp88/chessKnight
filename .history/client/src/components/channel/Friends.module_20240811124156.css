@@ -39,17 +39,6 @@
     margin-top: 1rem;
     border-radius: 1rem 4rem 1rem 4rem;
   }
-
-  .titleWithIcon {
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-  }
-  
-  .titleWithIcon h3 {
-    margin-right: 20px; /* Ajusta el margen para dar espacio entre el título y el SVG */
-  }
-  
   
   .userIcon {
     width: 25px;

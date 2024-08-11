@@ -16,6 +16,7 @@ import {
   NovatoInsignia, 
   PrincipianteInsignia 
 } from '../../img';
+import SpinnerDowloand from '../spinner/SpinnerDowloand';
 
 
 const Friends = ({ friends, onlineUsers, room, mobile }) => {
@@ -39,7 +40,10 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const navigate = useNavigate();
 
   const allOponnentOnline = friends.filter((friend)=>
-      onlineUsers?.some((userOnline) => userOnline?.userId === friend?._id && userOnline.time === infUser.time && userOnline.busy === false)                
+      onlineUsers?.some((userOnline) => 
+         userOnline?.userId === friend?._id && 
+         userOnline.time === infUser.time && 
+         userOnline.busy === false)                
     ); 
 
  const sortedUsers = infUser?.time === 60 || infUser?.time ===120 ?
@@ -228,7 +232,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} style={window.innerWidth <= 690 && mobile? { height: '100%' } : {}}>
+    <div className={style.tercerdiv} style={window.innerWidth <= 725 && mobile ? { height: '100%' } : {}}>
       
       <ul>
         <div className={style.desafio}>
@@ -236,7 +240,11 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                                      infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :
                                      infUser?.time === 600 ? '10' : '20'} mn</h2>
         </div>
-        {sortedUsers?.map((o, index) => (
+        {sortedUsers.length === 0 ? 
+          
+             <SpinnerDowloand text={'Cargando Jugadores'}/>
+          
+        : sortedUsers.map((o, index) => (
           <>
                <li 
                 key={index} 
