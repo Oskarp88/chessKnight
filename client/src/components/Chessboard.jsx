@@ -45,6 +45,7 @@ function Chessboard() {
   const [currentTurn, setCurrentTurn] = useState('white');
   const [pieces, setPieces] = useState(initPieces);
   const [selectedPiece, setSelectedPiece] = useState(null);
+  const [pieceAux, setPieceAux] = useState(null);
   const [startCell, setStartCell] = useState(null);
   const [destinationCell, setDestinationCell] = useState(null);
   const [kingCheckCell, setKingCheckCell] = useState(null);
@@ -58,6 +59,7 @@ function Chessboard() {
   const [whiteMoveLog, setWhiteMoveLog] = useState([]);
   const [blackMoveLog, setBlackMoveLog] = useState([]);
   const [moveLog, setMoveLog] = useState([]);
+  console.log(moveLog)
   const [countNoCapture, setCountNoCapture] = useState(0);
   const [whiteTime, setWhiteTime] = useState(infUser?.time || 1);
   const [blackTime, setBlackTime] = useState(infUser?.time || 1);
@@ -81,7 +83,7 @@ function Chessboard() {
   const soltarAudio = new Audio(soltarSound);
   const victoryAudio = new Audio(victorySound);
   const derrotaAudio = new Audio(derrotaSound);
-
+ console.log('pieza seleccionada',selectedPiece)
   const ref = useRef();
   const moveLogContainerRef = useRef(null);
 
@@ -647,11 +649,14 @@ useEffect(()=>{
         localStorage.setItem('pieces', JSON.stringify(updatedPieces));
         return updatedPieces;
       });
-    const move = `${
+    const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 ? 
+    '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+    piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+    piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :`${
       piece?.type?.charAt(0) === 'p'
         ? ''
-        : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-    }${HORIZONTAL_AXIS[piece?.x]}${VERTICAL_AXIS[piece?.y]}->${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+        : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
+    }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
        if (piece && piece.color === "white") {
          setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
          setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
@@ -710,6 +715,7 @@ useEffect(()=>{
       } else {
         toqueAudio.play(); 
         setSelectedPiece(piece);
+        setPieceAux(piece);
         setStartCell({ x, y }); // Establece la casilla de inicio     
         localStorage.setItem('startCell', JSON.stringify({x,y}));
       }
@@ -836,11 +842,15 @@ useEffect(()=>{
           currentTurn: currentTurn === 'white' ? 'black' : 'white'
       }));
       if(selectedPiece){
-        const move = `${
+        const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
+        '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+        selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+        selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+        `${
           selectedPiece?.type?.charAt(0) === 'p'
             ? ''
-            : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
-        }${HORIZONTAL_AXIS[selectedPiece?.x]}${VERTICAL_AXIS[selectedPiece?.y]}->${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+            : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
+        }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
           if (selectedPiece && selectedPiece.color === "white") {
             setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
@@ -1450,14 +1460,35 @@ useEffect(()=>{
            <div className="move-log">
             <ul>
               {whiteMoveLog.map((move, index) => (
-                <li className='move-li-white' key={index}> {index+1}.   {move && move === 'Ke1->c1' ? '0-0-0' : move === 'Ke1->g1' ? '0-0' : move}</li>
+                <li 
+                 style={index % 2 === 0 ? {backgroundColor: 'rgba(0, 0, 0, 0.15)'}: {}} 
+                 className='move-li-white' key={index}
+                 >  <span>{index + 1}.</span> 
+                 { 
+                    move?.charAt(0) === 'R' || move?.charAt(0) === 'N' || move?.charAt(0) === 'B' || move?.charAt(0) === 'K' || move?.charAt(0) === 'Q' ?
+                  <>
+                    <img className='piezaMove' src={`assets/images/w${move?.charAt(0).toLowerCase()}.png`} alt="" />
+                    <p>{move?.slice(1)}</p>
+                  </>    : <p style={{marginLeft:'1.3rem'}}>{move}</p>
+                 }                
+                 
+                </li>
               ))}
             </ul>
           </div>
           <div className="move-log">
             <ul>
               {blackMoveLog.map((move, index) => (
-                <li className='move-li-black' key={index}>{move && move === 'Ke8->c8' ? '0-0-0' : move === 'Ke8->g8' ? '0-0' : move }</li>
+                <li 
+                  style={index % 2 === 0 ? {backgroundColor: 'rgba(0, 0, 0, 0.15)'}:{}} 
+                  className='move-li-black' key={index}
+                >{ 
+                  move?.charAt(0) === 'R' || move?.charAt(0) === 'N' || move?.charAt(0) === 'B' || move?.charAt(0) === 'K' || move?.charAt(0) === 'Q' ?
+                <>
+                  <img className='piezaMove' src={`assets/images/b${move?.charAt(0).toLowerCase()}.png`} alt="" />
+                  <p>{move?.slice(1)}</p>
+                </>    : <p style={{marginLeft:'1.3rem'}}>{move}</p>
+               }</li>
               ))}
             </ul>
           </div>

@@ -23,8 +23,8 @@ app.use('/api', router);
 
 const io = new Server(server, {
   cors: {
-    // origin: "https://chess-knight-ecru.vercel.app",
-    origin: 'http://localhost:3000',
+    origin: "https://chess-knight-ecru.vercel.app",
+    // origin: 'http://localhost:3000',
     method: ["GET", "POST"],
   }
 });
