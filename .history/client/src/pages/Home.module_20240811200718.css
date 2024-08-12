@@ -440,6 +440,7 @@
     .containerDatos {
       display: flex;
       flex-direction: column;
+      margin-left: 10px;
     }
   
     .buttonStats{
@@ -502,7 +503,6 @@
     .containerDatos{
       margin-top: 5px;
      height: 90%;
-     margin-left: -20px;
      border-left: solid 2px #3498db;
      width: 30%;
      display: flex;
@@ -515,7 +515,6 @@
       flex-direction: column;
       margin: auto;
       font-size: 10px;
-      margin-left: 10px;
     }
   
     .chartContainer {

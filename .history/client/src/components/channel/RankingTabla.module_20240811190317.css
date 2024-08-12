@@ -1,5 +1,6 @@
 
 .tercerdiv {
+    flex: 1;
     background-color: rgba(0, 0, 0, 0.3);
     border: 1px solid #3498db;
     border-radius: 5px;
@@ -360,16 +361,42 @@
       margin: 0;
       margin-top: 2rem;
       padding: 0;
-      width: 20rem;
+      width: 17rem;
       height: 30rem;
     }
     .title{
-      width: 19.85rem;
+      width: 17rem;
+      display: flex;
+      justify-content: center;
+      background: linear-gradient(68.8deg, rgba(0, 0, 0, 0.95) 1.8%, rgb(0, 55, 79) 31.8%, rgb(9, 93, 134) 56.2%, rgb(15, 155, 217) 89%);
     }
     .item {
-      width: 17rem;
+      background: radial-gradient(circle at 74.2% 50.9%, rgb(55, 89, 174) 5.2%, rgb(3, 22, 65) 75.3%);    display: flex;
+      align-items: center; /* Alinea los elementos verticalmente */
+      justify-content: space-between;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease-in-out;
+      cursor: pointer;
+      height: 12px;
+      width: 15rem;
     }
     .frienditem {
-      width: 17rem;
+      height: 12px;
+      width: 15rem;
+      background: linear-gradient(to top, #48c6ef 0%, #30407a 100%);
+      display: flex;
+      align-items: center; /* Alinea los elementos verticalmente */
+      justify-content: space-between;
+      margin: 10px;
+      padding: 5px;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease-in-out;
+      cursor: pointer;
     }
   }

@@ -502,12 +502,12 @@
     .containerDatos{
       margin-top: 5px;
      height: 90%;
-     margin-left: -20px;
      border-left: solid 2px #3498db;
-     width: 30%;
+     width: 40% !important;
      display: flex;
      justify-content: space-between;
      font-weight: bold;
+     background-color: #4caf50;
     }
   
     .span{

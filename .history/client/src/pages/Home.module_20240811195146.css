@@ -339,40 +339,7 @@
     width: 30px;
   }
 
-  @media (max-width: 1235px){
-    .container{
-      height: 200vh;
-    }
-    
-    .home {
-      display: flex;
-      flex-direction: column; /* Para que los elementos se muestren uno debajo del otro */
-    }
-    .playButton{
-      margin-top: 2rem;
-    }
-    .table{
-      display: flex;
-      margin-left: 0;
-      height: 32rem;
-    }
-    .image{
-      display: flex;
-      height: auto;  
-      justify-content: center; 
-      align-items: center;   
-    }
-    .chevron{      
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 5rem;
-      height: 30rem;
-      cursor: pointer;
-    }
-  }
 
- 
   @media (max-width: 450px){
    
     .container{
@@ -427,14 +394,6 @@
       justify-content: center;
       height: 14rem;
       width: 100%;
-    }
-
-    .svg{
-      width: 60px !important;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .containerDatos {
@@ -502,7 +461,6 @@
     .containerDatos{
       margin-top: 5px;
      height: 90%;
-     margin-left: -20px;
      border-left: solid 2px #3498db;
      width: 30%;
      display: flex;
@@ -514,13 +472,11 @@
       display: flex;
       flex-direction: column;
       margin: auto;
-      font-size: 10px;
-      margin-left: 10px;
     }
   
     .chartContainer {
       display: flex;
-      width: 140px;
+      width: 200px;
       margin: 0 auto;
       height: 100%;
       justify-content: end;

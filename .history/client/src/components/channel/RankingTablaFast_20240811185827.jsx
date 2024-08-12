@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './RankingTabla.module.css';
 import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
+import SpinnerDowloand from '../spinner/SpinnerDowloand';
 
 
 export const RankingTable = () => {
@@ -39,6 +40,7 @@ export const RankingTable = () => {
   }
 
   const sortedUsers = users.slice().sort((a, b) => b.eloFast - a.eloFast);
+  console.log('sorted',sortedUsers)
 
    let count = 1; 
   return (
@@ -52,15 +54,15 @@ export const RankingTable = () => {
        </div>
       <ul>
           <li 
-                className={style.item} 
-              >
-                <span>{"#"}</span>
-                <div>
-                  <span className={style.friendName}>{'Nombre'}</span>
-                </div>
-                <span className={style.friendRank}>{'ranking'}</span>
-              </li>
-        {sortedUsers?.map((o, index) => (
+            className={style.item} 
+          >
+            <span>{"#"}</span>
+            <div>
+              <span className={style.friendName}>{'Nombre'}</span>
+            </div>
+            <span className={style.friendRank}>{'ranking'}</span>
+          </li>
+        {sortedUsers.length !== 0 ?  sortedUsers.map((o, index) => (
           <>
                <li 
                 key={index} 
@@ -89,7 +91,11 @@ export const RankingTable = () => {
                     {o?.eloFast}</span>
               </li>
           </>
-        ))}
+        )) : 
+          <div style={{marginTop: '30%'}}>
+            <SpinnerDowloand text={'Cargando rating....'}/>
+          </div>
+        }
       </ul>
       { 
         showModal && 

@@ -1,5 +1,6 @@
 
 .tercerdiv {
+    flex: 1;
     background-color: rgba(0, 0, 0, 0.3);
     border: 1px solid #3498db;
     border-radius: 5px;
@@ -360,16 +361,22 @@
       margin: 0;
       margin-top: 2rem;
       padding: 0;
-      width: 20rem;
+      width: 25rem;
       height: 30rem;
     }
-    .title{
-      width: 19.85rem;
-    }
-    .item {
-      width: 17rem;
-    }
     .frienditem {
-      width: 17rem;
+      height: 12px;
+      width: 20rem;
+      background: linear-gradient(to top, #48c6ef 0%, #30407a 100%);
+      display: flex;
+      align-items: center; /* Alinea los elementos verticalmente */
+      justify-content: space-between;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease-in-out;
+      cursor: pointer;
     }
   }

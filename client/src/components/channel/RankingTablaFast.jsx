@@ -52,16 +52,16 @@ export const RankingTable = () => {
             </svg>
             <h4>Ranking Fast</h4>
        </div>
-      <ul>
+      <ul className={style.itemContainer}>
           <li 
-                className={style.item} 
-              >
-                <span>{"#"}</span>
-                <div>
-                  <span className={style.friendName}>{'Nombre'}</span>
-                </div>
-                <span className={style.friendRank}>{'ranking'}</span>
-              </li>
+            className={style.item} 
+          >
+            <span>{"#"}</span>
+            <div>
+              <span className={style.friendName}>{'Nombre'}</span>
+            </div>
+            <span className={style.friendRank}>{'ranking'}</span>
+          </li>
         {sortedUsers.length !== 0 ?  sortedUsers.map((o, index) => (
           <>
                <li 

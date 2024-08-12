@@ -109,6 +109,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #4caf50;
   }
 
   .rating{
@@ -429,14 +430,6 @@
       width: 100%;
     }
 
-    .svg{
-      width: 60px !important;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .containerDatos {
       display: flex;
       flex-direction: column;
@@ -502,7 +495,6 @@
     .containerDatos{
       margin-top: 5px;
      height: 90%;
-     margin-left: -20px;
      border-left: solid 2px #3498db;
      width: 30%;
      display: flex;
@@ -515,7 +507,6 @@
       flex-direction: column;
       margin: auto;
       font-size: 10px;
-      margin-left: 10px;
     }
   
     .chartContainer {

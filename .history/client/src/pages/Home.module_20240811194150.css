@@ -372,7 +372,41 @@
     }
   }
 
- 
+  @media (max-width: 900px){
+    .container{
+      width: 70rem;
+    }
+    .home p{
+      font-size: 30px;
+    }
+    .titulo {
+      font-size: 4rem;
+    }
+  }
+
+  @media (max-width: 550px){
+    .container{
+      height: 300vh;
+    } 
+  
+    .chartContainer {
+      display: flex;
+      width: 200px;
+      margin: 0 auto;
+      height: 100%;
+      justify-content: end;
+    }
+  }
+  @media (max-width: 376px){
+  
+    .chartContainer {
+      display: flex;
+      width: 100px;
+      margin: 0 auto;
+      height: 100%;
+      justify-content: end;
+    }
+  }
   @media (max-width: 450px){
    
     .container{
@@ -408,18 +442,29 @@
       padding-left: 5%;
       padding-right: 5%;
       padding-top: 5%;
-      width: 100%;
+      background-color: #4caf50;
     }
     .containerStats{
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
+      background-color: aqua;
     }
     .buttonStats{
+      border: none;
       font-size: 12px;
+      width: 30%;
+      margin: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: .3rem;
+      padding-bottom: .3rem;
+      cursor: pointer;
+      color: hsl(0, 0%, 100%);
     }
     .containerStatsRating{
+      background-color: #3498db;
       margin-top: 2rem;
       margin-bottom: 2rem;
       display: flex;
@@ -427,14 +472,6 @@
       justify-content: center;
       height: 14rem;
       width: 100%;
-    }
-
-    .svg{
-      width: 60px !important;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .containerDatos {
@@ -466,7 +503,8 @@
       display: flex;
       margin: 5px;
       background-color: rgba(0, 0, 0, 0.12);
-      width: 100%;
+      border: solid 1px #3949AB;
+      width: 50rem;
       height: 100%;
       border-radius: 1rem 1rem 1rem 1rem;
     }
@@ -475,7 +513,6 @@
       width: 150px;
       height: 100%;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
@@ -502,7 +539,6 @@
     .containerDatos{
       margin-top: 5px;
      height: 90%;
-     margin-left: -20px;
      border-left: solid 2px #3498db;
      width: 30%;
      display: flex;
@@ -514,18 +550,22 @@
       display: flex;
       flex-direction: column;
       margin: auto;
-      font-size: 10px;
-      margin-left: 10px;
     }
   
     .chartContainer {
       display: flex;
-      width: 140px;
+      width: 200px;
       margin: 0 auto;
       height: 100%;
       justify-content: end;
     }
   }
-
+  @media (max-width: 690px){
+    .table{
+      display: flex;
+      width: 40rem;
+      margin-left: -15px;
+    }
+  }
 
  
