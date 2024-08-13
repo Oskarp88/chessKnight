@@ -65,13 +65,6 @@ exports.googleAuth = async (req, res) => {
         imagenBandera
       });
       await user.save();
-      const token = generateToken({id: user._id.toString()}, '120d');
-     return res.json({
-        success: true,
-        message: 'Continue with the registration',
-        user,
-        token
-      });
     }
 
     const token = generateToken({id: user._id.toString()}, '120d');

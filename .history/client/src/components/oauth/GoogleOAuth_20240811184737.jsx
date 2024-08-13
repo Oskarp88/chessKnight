@@ -49,16 +49,6 @@ function GoogleOAuht() {
       });
 
       console.log('google', response);
-      if(response.data && response.data.message === 'Continue with the registration'){
-        toast.success(response.data.message);
-        setAuth({
-          ...auth,
-          user: response.data.user,
-          token: response.data.token,
-        });
-        localStorage.setItem('auth', JSON.stringify(response.data));
-       return navigate('/dashboard/next');
-      }
       if (response.data && response.data.success) {
         toast.success(response.data.message);
         setAuth({

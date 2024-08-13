@@ -24,8 +24,7 @@ import Channel from "./components/channel/Channel";
 import { SocketProvider } from "./context/socketContext";
 import toast, { Toaster } from 'react-hot-toast';
 import ChatBox from "./components/chat/ChatBox";
-
-import Register from "./pages/user/Register";
+import Next from "./pages/user/Next";
 
 function App() {
   const {auth} = useAuth();
@@ -49,7 +48,7 @@ function App() {
                 <Route path="chess" element={<Chessboard/>} />
                 <Route path='/dashboard' element={<PrivateRoute/>}>
                     <Route path='user' element={<UserProfile/>}/> 
-                    <Route path='next' element={<Register/>}/>                    
+                    <Route path='next' element={<Next/>}/>                    
                 </Route> 
                 <Route path='/auth' element={<PrivateRoute/>}>
                     <Route path="chat" element={<Chats/>}/>

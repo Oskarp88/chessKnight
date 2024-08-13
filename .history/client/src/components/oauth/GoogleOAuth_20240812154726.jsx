@@ -57,7 +57,7 @@ function GoogleOAuht() {
           token: response.data.token,
         });
         localStorage.setItem('auth', JSON.stringify(response.data));
-       return navigate('/dashboard/next');
+        navigate('/auth/next');
       }
       if (response.data && response.data.success) {
         toast.success(response.data.message);

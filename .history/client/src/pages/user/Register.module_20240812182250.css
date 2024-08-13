@@ -1,0 +1,12 @@
+.container{
+    width: 100%;
+    height: 100vh;
+}
+
+.row{
+    margin-top: 5%;
+}
+
+.row h3{
+    color: aliceblue;
+}

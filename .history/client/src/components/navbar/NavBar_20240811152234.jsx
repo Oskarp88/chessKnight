@@ -80,7 +80,7 @@ function NavBar() {
    },[theme, setChessColor])
 
    // Verificar si la ruta actual es /chess
-   if (location.pathname === "/chess" || location.pathname === "/dashboard/next") {
+   if (location.pathname === "/chess") {
      return null; // No renderiza nada si la ruta es /chess
    }
 

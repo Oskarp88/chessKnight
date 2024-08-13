@@ -66,7 +66,7 @@ exports.googleAuth = async (req, res) => {
       });
       await user.save();
       const token = generateToken({id: user._id.toString()}, '120d');
-     return res.json({
+      res.json({
         success: true,
         message: 'Continue with the registration',
         user,
