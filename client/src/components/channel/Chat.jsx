@@ -5,7 +5,7 @@ import { useChessboardContext } from '../../context/boardContext';
 import Picker from 'emoji-picker-react';
 import { CursorSend } from '../../svg';
 import { useAuth } from '../../context/authContext';
-
+import soundChat from '../../path/to/sonicChat.mp3'
 
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState('');
@@ -15,6 +15,7 @@ function Chat({ socket, username, room }) {
   const [isView,setIsView] = useState(window.innerWidth <= 725);
   const {setView, chessColor} = useChessboardContext();
   const {auth} = useAuth();
+  const chatAudio = new Audio(soundChat);
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,7 +83,7 @@ function Chat({ socket, username, room }) {
   
         return list;
       });
-  
+      chatAudio.play();
       console.log("receive_message", response);
     });
   

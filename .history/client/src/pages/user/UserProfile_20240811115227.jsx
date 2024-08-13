@@ -132,7 +132,7 @@ const UserProfile = () => {
         setAuth({
           ...auth,
           user: response.data.userUpdate,
-          token: auth?.token,
+          token: response.data.token,
         });
 
         const data = { user: response.data.userUpdate, token: auth?.token}
