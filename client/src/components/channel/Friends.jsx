@@ -18,6 +18,10 @@ import {
 } from '../../img';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import { useChessboardContext } from '../../context/boardContext';
+import desafiadoSound from '../../path/to/Awkward Anime Moment.mp3';
+import rechazadoSound from '../../path/to/Splat.mp3';
+
+
 
 
 const Friends = ({ friends, onlineUsers, room, mobile }) => {
@@ -40,6 +44,10 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const [userInf, setUserInf] = useState({});
   const {auth} = useAuth();
   const navigate = useNavigate();
+
+  const desafiadoAudio = new Audio(desafiadoSound);
+  const rechazadoAudio = new Audio(rechazadoSound);
+
 
   const allOponnentOnline = friends.filter((friend)=>
       onlineUsers?.some((userOnline) => 
@@ -148,6 +156,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
       
       if(data?.senderId === auth?.user?._id){
          handleModalOpponentOpen(data);
+         desafiadoAudio.play();
          setInfUser((prevInfUser) => ({
           ...prevInfUser,
           idOpponent: data?.idOpponent,
@@ -196,6 +205,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
 
     socket.on('receiveOffGame',(data) => {
       if(data?.off){
+         rechazadoAudio.play();
          setOffGame(data?.off);
          setAceptarDesafio(false);
       }    
@@ -336,11 +346,19 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                         <div className={style.ldsring}><div></div><div></div><div></div><div></div></div>
                       </> 
                     }
-                    {!aceptarDesafio && isOffGame && <h3>Desafio rechazado</h3>}
+                    {!aceptarDesafio && isOffGame && <h3>{'Desafio rechazado'}</h3>}
                 </div>                                    
                   <div className={style.modalButtons}>
                     {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin && <>
-                      <button className={style.button} onClick={()=>createGame(auth?.user?._id, userModal?._id, userModal?.username, userModal?.photo)}>
+                      <button 
+                        className={style.button} 
+                        onClick={()=>createGame(
+                           auth?.user?._id, 
+                           userModal?._id, 
+                           userModal?.username, 
+                           userModal?.photo
+                          )}
+                      >
                         Desafiar
                       </button>
                       <button className={style.button}>
@@ -370,15 +388,25 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                     </div>
                     <div className={style.username}>
                        <span>
-                        { `Partida de ${infUser?.time === 60 ? '1 mn' : infUser?.time === 120 ?  '2 mn' : infUser?.time === 180 ? '3 mn' : infUser?.time === 300 ? '5 mn' : infUser.time === 600 ? '10 mn' : '20 mn'}`}
+                        { `Partida de ${infUser?.time === 60 ? '1 mn' : 
+                            infUser?.time === 120 ?  '2 mn' : 
+                            infUser?.time === 180 ? '3 mn' : 
+                            infUser?.time === 300 ? '5 mn' : 
+                            infUser.time === 600 ? '10 mn' : '20 mn'}`
+                        }
                        </span>
                     </div>
                 </div>
                 <div className={style.modalContent}>
                   
                   <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                      <img className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} src={userOpponentModal?.photo} alt='assets/avatar/user.png' />                  
-                      <h3>{userOpponentModal?.username && `${userOpponentModal.username.charAt(0).toUpperCase()}${userOpponentModal.username.slice(1)} te ha desafiado `} </h3>
+                      <img 
+                        className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} 
+                        src={userOpponentModal?.photo} alt='assets/avatar/user.png' 
+                      />                  
+                      <h3>{userOpponentModal?.username && 
+                            `${userOpponentModal.username.charAt(0)
+                               .toUpperCase()}${userOpponentModal.username.slice(1)} te ha desafiado `} </h3>
                   </div>                                    
                   <div className={style.modalButtons}>
                     <button className={style.button} onClick={playGame}>

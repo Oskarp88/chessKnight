@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { useAuth } from '../../context/authContext';
 import Spinner from '../Spinner';
+import { baseUrl } from '../../utils/services';
 
 const AdminRoute = () => {
   const [ok, setOk] = useState(false);
@@ -12,7 +13,7 @@ const AdminRoute = () => {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const res = await axios.get('https://chessknigth-22fe0ebf751e.herokuapp.com/api/admin/dashboard');
+        const res = await axios.get(`${baseUrl}/admin/dashboard`);
         if (res.data.ok) {
           setOk(true);
         } else {

@@ -4,11 +4,13 @@ import { baseUrl, getRequest } from '../../utils/services';
 import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../../svg';
 import TiedSvg from '../../svg/tiedSvg';
 import ScrollToBottom from "react-scroll-to-bottom";
+import { useAuth } from '../../context/authContext';
 
 
 function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, gamesWon, gamesTied, gamesLost}) {
     const [partida, setPartidas] = useState([]);
     const [modal, setModal] = useState(false);
+    const {auth} = useAuth();
 
     const allPartidas = async(userId) => {
         const response = await getRequest(`${baseUrl}/partida/user/historial/${userId}`);
@@ -33,7 +35,7 @@ function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, g
           <>
               <div className={style.userprofile}>
             {photo ?
-                <img className={style.profileSidebar} src={`http://localhost:8080/api/user-photo/${photo}`} alt='hola' />
+                <img className={style.profileSidebar} src={auth?.user?.photo} alt='hola' />
                 : <img className={style.profileSidebar} src={'assets/avatar/user.png'} alt='' /> 
             }
             

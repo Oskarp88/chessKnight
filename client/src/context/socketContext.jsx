@@ -61,7 +61,8 @@ export const SocketProvider = ({ children, user }) => {
   const [partidas, setPartidas] = useState([]);
 
   useEffect(() => {
-    const newSocket = io.connect('https://chessknigth-22fe0ebf751e.herokuapp.com');
+     const newSocket = io.connect('https://chessknigth-22fe0ebf751e.herokuapp.com');
+    
     setSocket(newSocket);
 
     return () =>{

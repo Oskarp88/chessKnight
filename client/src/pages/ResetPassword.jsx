@@ -3,6 +3,7 @@ import axios from 'axios';
 import style from './ResetPassword.module.css';
 import { useParams } from 'react-router-dom';
 import  toast from 'react-hot-toast';
+import { baseUrl } from '../utils/services';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -30,7 +31,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post('https://chessknigth-22fe0ebf751e.herokuapp.com/api/user/reset-password', {
+      const response = await axios.post(`${baseUrl}/user/reset-password`, {
         token: token,
         newPassword: password,
       });

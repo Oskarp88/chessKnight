@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/authContext';
 import Spinner from '../Spinner';
+import { baseUrl } from '../../utils/services';
 
 export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
@@ -16,7 +17,7 @@ export default function PrivateRoute() {
         console.log('authCheck');
         try {
           console.log('llegue al trycatch');
-          const res = await axios.get('https://chessknigth-22fe0ebf751e.herokuapp.com/api/user-auth');
+          const res = await axios.get(`${baseUrl}/user-auth`);
           
            if (res.data.ok) {
              console.log('llegue a data: ', res.data.ok)

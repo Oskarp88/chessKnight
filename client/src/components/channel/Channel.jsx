@@ -18,7 +18,7 @@ const Channel = () => {
     const {view} = useChessboardContext();
     const navigate = useNavigate();
     let room = infUser.time ? parseInt(infUser.time) : isRoom;
-    console.log(room, 'room')
+    // console.log(room, 'room')
     // console.log('room chanel', room);
     const { createChat, onlineUsers} = useContext(ChatContext);
     // console.log('onlineUser channel', onlineUsers);

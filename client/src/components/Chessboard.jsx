@@ -7,7 +7,9 @@ import { HORIZONTAL_AXIS, VERTICAL_AXIS, initPieces } from '../Constants';
 import toqueSound from '../path/to/tocar.mp3';
 import soltarSound from '../path/to/soltar.mp3';
 import victorySound from '../path/to/VICTORIA.mp3';
-import derrotaSound from '../path/to/derrota.mp3'
+import derrotaSound from '../path/to/derrota.mp3';
+import jakeMateSound from '../path/to/jakemate.mp3';
+import jakeSound from '../path/to/jake.mp3';
 import {isCheckmateAfterMove, isDrownedKingMove, isSimulatedMoveCausingCheck, isSimulatedMoveCheckOpponent, simulateKingCheckMate, simulateMove } from './pieces/King';
 import { useSocketContext } from '../context/socketContext';
 import { useAuth } from '../context/authContext';
@@ -83,7 +85,9 @@ function Chessboard() {
   const soltarAudio = new Audio(soltarSound);
   const victoryAudio = new Audio(victorySound);
   const derrotaAudio = new Audio(derrotaSound);
- console.log('pieza seleccionada',selectedPiece)
+  const jakeAudio = new Audio(jakeSound);
+  const jakeMateAudio = new Audio(jakeMateSound);
+ 
   const ref = useRef();
   const moveLogContainerRef = useRef(null);
 
@@ -619,6 +623,22 @@ useEffect(()=>{
       setDestinationCell({ x, y }); // Establece la casilla de destino
       localStorage.setItem('startCell', JSON.stringify({x: piece.x, y: piece.y}));
       localStorage.setItem('destinationCell', JSON.stringify({x,y}));
+
+      const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, turn)
+      const king = pieces.find((p) => p.type === PieceType.KING && p.color === turn);
+      const checkMate =  isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
+
+
+     if(isCheck){
+       
+       setKingCheckCell({x: king.x, y: king.y});
+       !checkMate && jakeAudio.play(); 
+       if(checkMate){
+          jakeMateAudio.play();
+       }
+      }  else{
+        setKingCheckCell(null);
+      }
      
       setPieces((prevPieces) => {
         let captureOccurred = false;
@@ -758,10 +778,12 @@ useEffect(()=>{
             const king = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
      
       if( isCheck){
+        
         setKingCheckCell({x: king.x, y: king.y});       
         const checkMate =  isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-        
+        !checkMate && jakeAudio.play();
         if(checkMate){
+          jakeMateAudio.play();
           victoryAudio.play();
           setUserWon(prev => ({
             ...prev, 
@@ -993,6 +1015,75 @@ useEffect(()=>{
             pieces.splice(pieces.indexOf(pieceAtDestination), 1);             
           }  
 
+          const check =  isSimulatedMoveCausingCheck(droppedPiece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
+     
+          if (check) {
+            // Implementar la lógica para manejar el jaque mate
+            console.log('¡estas en jake');       
+            return
+          } 
+
+          const isCheck = isSimulatedMoveCheckOpponent(droppedPiece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white')
+          const king = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
+
+          if( isCheck){
+            jakeAudio.play();
+            setKingCheckCell({x: king.x, y: king.y});       
+            const checkMate =  isCheckmateAfterMove(droppedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
+           !checkMate && jakeAudio.play();
+            if(checkMate){
+              jakeMateAudio.play();
+              victoryAudio.play();
+              setUserWon(prev => ({
+                ...prev, 
+                username: auth?.user?.username,
+                nameOpponent: infUser?.username, 
+                idUser: auth?.user?._id,
+                idOpponent: infUser?.idOpponent,
+                turn: infUser?.color === 'white' ? 'black' : 'white',
+                status: '1',
+                color: infUser?.color === 'white' ? 'black' : 'white',
+                photo: infUser?.photo
+              }));
+            
+             if(socket ===null) return; 
+              setCheckMate(prevCheckMate => ({
+                ...prevCheckMate,
+                userId: auth?.user?._id,
+                name: auth?.user?.username,
+                nameOpponent: infUser?.username,
+                bandera: auth?.user?.imagenBandera,
+                banderaOpponent: infUser?.bandera,
+                country: auth?.user?.country,
+                countryOpponent: infUser?.country,
+                time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                          infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                          'fast' }`,
+                game: 'victoria',
+                eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+                  infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+                  parseInt(userChess?.eloFast)}`,
+                eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+                  infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+                  parseInt(infUser?.fast)}`,
+                elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+                  infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+                  parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+                color: infUser?.color
+              }));
+              setFrase('por !!Jaque Mate!!');
+              setGameOver(prevIsGameOver => {
+                console.log("isGameOver:", !prevIsGameOver);
+                return true;
+              });
+              if(socket ===null) return; 
+              socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
+            }
+            
+          }else{
+            setKingCheckCell(null);
+          }
+
           const pieceData = {
             pieces,
             piece: droppedPiece,
@@ -1002,23 +1093,84 @@ useEffect(()=>{
             author: auth?.user?.username,
             room
           };
-
-          // Intentar manejar el jaque y el jaque mate después de cada movimiento
-        const check = await isSimulatedMoveCausingCheck(droppedPiece, x, y, pieces);
-
-        if (check) {
-          // Implementar la lógica para manejar el jaque mate
-          console.log('¡Jaque mate!');
-          return
-        } 
       
           movePiece(droppedPiece, x, y);
           setSelectedPiece(null);
           setCurrentTurn(currentTurn === 'white' ? 'black' : 'white');
           setDestinationCell({ x, y });
           
+          localStorage.setItem('destinationCell', JSON.stringify({x,y}));
+          localStorage.removeItem('userChess');
+          localStorage.removeItem('infUser');
+    
+           localStorage.setItem('chessboard',
+            JSON.stringify({ 
+              room,  
+              checkMate,
+              userChess,
+              infUser,
+              currentTurn: currentTurn === 'white' ? 'black' : 'white'
+          }));
+          if(droppedPiece){
+            const move = droppedPiece?.color === 'white' && droppedPiece?.x === 4 && droppedPiece?.y === 0 && x === 6 && y === 0 ? 
+            '0-0' : droppedPiece?.color === 'black' && droppedPiece?.x === 4 && droppedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+            droppedPiece?.color === 'white' && droppedPiece?.x === 4 && droppedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+            droppedPiece?.color === 'black' && droppedPiece?.x === 4 && droppedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+            `${
+              droppedPiece?.type?.charAt(0) === 'p'
+                ? ''
+                : (droppedPiece?.type === 'knight') ? 'N' : (droppedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
+            }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+              if (droppedPiece && droppedPiece.color === "white") {
+                setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+              } else if (droppedPiece && droppedPiece.color === 'black') {
+                setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+              }
+          }
+          
+          if (droppedPiece.type === PieceType.PAWN && (y === 0 || y === 7)) {
+            // Abrir el modal de promoción
+            setPromotionModalOpen(true);
+            return;
+          }
+          
           await socket.emit("send_move", pieceData);
           soltarAudio.play();
+          const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
+          
+        if (!isCheck && isStalemate(king1, pieces, droppedPiece, x, y)) {
+          socket.emit('stalemate', {room, state : true});
+          setModalTablasAceptada(true);
+          setTied(true);
+          setFrase('por Rey ahogado');
+          setCheckMate(prevCheckMate => ({
+            ...prevCheckMate,
+            userId: auth?.user?._id,
+            name: auth?.user?.username,
+            nameOpponent: infUser?.username,
+            bandera: auth?.user?.imagenBandera,
+            banderaOpponent: infUser?.bandera,
+            country: auth?.user?.country,
+            countryOpponent: infUser?.country,
+            time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                     infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                     'fast' }`,
+            game: 'empate',
+            eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+              infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+              parseInt(userChess?.eloFast)}`,
+            eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+              infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+              parseInt(infUser?.fast)}`,
+            elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+              infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+              parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+            color: infUser?.color
+          }));
+          return;
+        }
         };
     }else{
       console.error('no hay datos JSON para parsear')
