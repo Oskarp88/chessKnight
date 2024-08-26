@@ -39,7 +39,6 @@ function App() {
                 <NavBar/>                
               <Routes>                          
                 <Route path="/" element={<Home/>}/>
-                <Route path="/chat" element={<Chats/>}/>
                 <Route path="/login" element={<Login/>} />
                 <Route path="/register" element={<Registro/>} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -52,6 +51,7 @@ function App() {
                 <Route path='/auth' element={<PrivateRoute/>}>
                     <Route path="chat" element={<Chats/>}/>
                     <Route path="channel" element={<Channel/>} />
+                    <Route path="chat" element={<Chats/>}/>
                 </Route>                     
               </Routes>
               </Router>

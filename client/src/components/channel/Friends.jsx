@@ -234,7 +234,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
       socket.off('getGame', handleGetGame);
     };
     
-  }, [socket, roomGame, isOffGame, aceptarDesafio, setIdUser]);
+  }, [socket, roomGame, isOffGame, aceptarDesafio, setIdUser, auth.user]);
 
   const handleModalInf = async(userId) => {
     const response = await getRequest(`${baseUrl}/user/${userId}`);
@@ -370,7 +370,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                       >
                         Desafiar
                       </button>
-                      <button className={style.button}>
+                      <button className={style.button} onClick={() => navigate('/auth/chat')}>
                         Mensaje
                       </button>
                       </>}                  

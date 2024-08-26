@@ -122,7 +122,7 @@ export function Home() {
           setPaginate(p => p - 1);
         }
       }
-    }, 30000);
+    }, 15000);
  
   
   const joinRoom = () =>{
