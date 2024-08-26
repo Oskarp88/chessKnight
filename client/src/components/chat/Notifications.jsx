@@ -10,24 +10,6 @@ function Notifications() {
     const {auth} = useAuth();
     const {user} = auth;
     const {notifications, userChats, allUsers, markAllNotificationsAsRead, markNotificationAsRead} = useContext(ChatContext);
-    const [isMobileView, setIsMobileView] = useState(0);
-
-    useEffect(() => {
-        const handleResize = () => {
-          setIsMobileView(window.innerWidth);
-        };
-    
-        window.addEventListener('resize', handleResize);
-    
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-      }, []);
-    
-      useEffect(() => {
-        console.log('isMobileView', isMobileView);
-      
-      }, [isMobileView]);
 
     const unReadNotification = unReadNotifications(notifications);
     const modifiedNotifications = notifications?.map((n) => {

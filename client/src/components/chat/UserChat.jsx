@@ -28,6 +28,7 @@ function UserChat({chat, user}) {
     }
   return (
     <Stack 
+      style={{background: '#fff'}}
       direction='horizontal'
       gat={3}
       className={`${style.userCard} aling-items-center p-2 justify-content-betewen`}
