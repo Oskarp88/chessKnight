@@ -17,7 +17,7 @@ exports.login = async(req, res) => {
         });
     }
       // Buscar al usuario en la base de datos por su nombre de usuario
-      const user = await User.findOne({ email },' -photo -partida');
+      const user = await User.findOne({ email },' -partida');
   
       if (!user) {
         return res.status(401).json({ 
