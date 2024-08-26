@@ -45,7 +45,6 @@ export function Home() {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 400);
   const [partida, setPartidas] = useState([]);
   const [user, setUser] = useState(null);
-  console.log('user',user)
   const [stast, setStats] = useState('fast');
 
    useEffect(() => {
@@ -54,8 +53,6 @@ export function Home() {
         if(response.error){
           return console.log('Error fetching historial partidas', response);
         }
-
-        console.log('partidas', response.partida)
         setPartidas(response.partida);
       }
       allPartidas()

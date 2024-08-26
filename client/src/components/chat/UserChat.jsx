@@ -28,7 +28,6 @@ function UserChat({chat, user}) {
     }
   return (
     <Stack 
-      style={{background: '#fff'}}
       direction='horizontal'
       gat={3}
       className={`${style.userCard} aling-items-center p-2 justify-content-betewen`}
@@ -42,7 +41,7 @@ function UserChat({chat, user}) {
        <div className='d-flex'>
           <div className='me-2'>
             {recipientUser?.photo ?
-                  <img className={style.profile} src={`http://localhost:8080/api/user-photo/${recipientUser?._id}`} alt='' />
+                  <img className={style.profile} src={recipientUser?.photo} alt='' />
                   : <img className={style.profile} src={'assets/avatar/user.png'} alt='' />}
           </div>
           <div className={style.textContent}>
