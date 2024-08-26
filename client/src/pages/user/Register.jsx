@@ -7,21 +7,20 @@ import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../utils/services';
 import { useAuth } from '../../context/authContext';
 
+
 function Register() {
     const {auth, setAuth} = useAuth()
     const [countries, setCountries] = useState([]);
     const [filteredOptions, setFilteredOptions] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
-  
+    console.log('registerGoogle',auth?.user)
     const navigate = useNavigate();
   
     const [formData, setFormData] = useState({
       name: '',
       lastName: '',
-      userName: '',
+      userName: auth?.user?.username || '',
       email: '',
-      password: '',
-      confirmPassword: '',
       country: '',
       imagenBandera: ''
     });
@@ -69,10 +68,10 @@ function Register() {
           errors.userName = 'Username is required';
         }
     
-        if (!selectedCountry) {
+        if (!auth?.user?.country || !auth?.user?.imagenBandera && !selectedCountry) {
           isValid = false;
           errors.country = 'Country is required';
-        } else if (!countries.find((country) => country.name.common === selectedCountry)) {
+        } else if (!auth?.user?.country || !auth?.user?.imagenBandera && !countries.find((country) => country.name.common === selectedCountry)) {
           isValid = false;
           errors.country = 'Invalid country';
         }
@@ -147,7 +146,7 @@ function Register() {
         <div className={style.row}>
             <h3 >Continue con el registro</h3>
             <form className={style.letf} onSubmit={handleSubmit}>
-           
+            <span style={{color: '#277bab', fontWeight:'bold'}}>Nombre</span>
             <input
               type="text"
               name="name"
@@ -156,6 +155,7 @@ function Register() {
               onChange={handleChange}
             />
             {formErrors.name && <div className={style.error}>{formErrors.name}</div>}
+            <span style={{color: '#277bab', fontWeight:'bold'}}>Apellido</span>
             <input
               type="text"
               name="lastName"
@@ -164,6 +164,7 @@ function Register() {
               onChange={handleChange}
             />
             {formErrors.lastName && <div className={style.error}>{formErrors.lastName}</div>}
+            <span style={{color: '#277bab', fontWeight:'bold'}}>Usuario</span>
             <input
               type="text"
               name="userName"
@@ -173,7 +174,9 @@ function Register() {
             />
             {formErrors.userName && <div className={style.error}>{formErrors.userName}</div>}
 
-            <div className={style['country-select']}>
+            { !auth?.user?.country || !auth?.user?.imagenBandera && <div className={style['country-select']}>
+               <span style={{color: '#277bab', fontWeight:'bold'}}>Pais</span>
+
               <input
                 type="text"
                 name="country"
@@ -188,7 +191,7 @@ function Register() {
                   <option value={option} key={option} />
                 ))}
               </datalist>
-            </div>
+            </div>}
             {formErrors.country && <div className={style.error}>{formErrors.country}</div>}
 
             <input type="submit" name="signup_submit" value="next" />

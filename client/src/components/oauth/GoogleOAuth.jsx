@@ -41,7 +41,7 @@ function GoogleOAuht() {
         email: result.user.email,
         photo: result.user.photoURL,
         country: userCountry,
-        flag: countryFlag,
+        imagenBandera: countryFlag,
       }, {
         headers: {
           'Content-Type': 'application/json'
