@@ -30,6 +30,7 @@ const Sidebar = () => {
     // const [selectedPieceId, setSelectedPieceId] = useState(pieceBoard[0].id)
     const [showNavBar, setShowNavBar] = useState(false);
     const { auth, setAuth } = useAuth();
+    console.log('sidebar auth', auth?.user);
     const [user, setUser] = useState({});
 
     useEffect(() => {
