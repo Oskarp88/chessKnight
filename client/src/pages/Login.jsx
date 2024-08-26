@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import style from './Login.module.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -18,6 +18,16 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+
+  const {search} = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get('redirect') || '/'
+
+    useEffect(() => {
+        if(auth?.user){
+            navigate(redirect)
+        }
+    },[navigate, redirect, auth?.user]);
  
   const handleChange = (event) => {
     const { name, value } = event.target;
