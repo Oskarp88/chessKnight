@@ -174,6 +174,15 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
         localStorage.setItem('bandera', data?.bandera);
       }
     };
+    socket.on("connect", () => {
+      console.log("Conexión al servidor establecida.");
+      const dataTime = localStorage.getItem('time');
+    
+    if(!isNaN(dataTime) && dataTime) {
+      socket.emit('userTime', {userId: auth?.user?._id, time: parseInt(dataTime)});
+      socket.emit('join-room', parseInt(dataTime));
+    } 
+    });;
     socket.on('getGame', handleGetGame);
     socket.on('receivePlayGame',(data) => {
       localStorage.setItem('bandera', data?.bandera);
