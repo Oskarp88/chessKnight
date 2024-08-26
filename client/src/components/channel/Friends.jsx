@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import style from'./Friends.module.css';
 import { useAuth } from '../../context/authContext';
 import { useSocketContext } from '../../context/socketContext';
@@ -20,11 +20,10 @@ import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import { useChessboardContext } from '../../context/boardContext';
 import desafiadoSound from '../../path/to/Awkward Anime Moment.mp3';
 import rechazadoSound from '../../path/to/Splat.mp3';
-
-
-
+import { ChatContext } from '../../context/ChatContext';
 
 const Friends = ({ friends, onlineUsers, room, mobile }) => {
+  const { createChat} = useContext(ChatContext);
 
   const [hoveredFriend, setHoveredFriend] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -250,6 +249,11 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const handleModalCloseInf = () => {
     setShowModalInf(false)
   }
+
+  const mensajeChat = async(idFirst, idSecond) => {
+     await createChat(idFirst, idSecond);
+     navigate('/auth/chat');
+  }
   
   let count = 1;
   return (
@@ -370,7 +374,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                       >
                         Desafiar
                       </button>
-                      <button className={style.button} onClick={() => navigate('/auth/chat')}>
+                      <button className={style.button} onClick={() => mensajeChat(auth?.user?._id, userModal?._id, )}>
                         Mensaje
                       </button>
                       </>}                  
