@@ -163,6 +163,8 @@ export const ChatContextProvider = ({children, user}) => {
           secondId
         })
       );
+
+      console.log('createChat', response);
     
       if (response.error) {
         return console.log('Error creating chat', response);
