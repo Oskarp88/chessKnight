@@ -4,8 +4,10 @@ import { ChatContext } from '../../context/ChatContext';
 import { useAuth } from '../../context/authContext';
 import { unReadNotifications } from '../../utils/unReadNotifications';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 function Notifications() {
+  const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const {auth} = useAuth();
     const {user} = auth;
@@ -53,7 +55,7 @@ function Notifications() {
                                 <div 
                                   key={index} 
                                   className={`${n.isRead ? `${style.notification}` : `${style.notification} ${style.notRead}`}`}
-                                  onClick={()=>{markNotificationAsRead(n, userChats, user, notifications); setIsOpen(false)}}
+                                  onClick={()=>{markNotificationAsRead(n, userChats, user, notifications); setIsOpen(false); navigate('/auth/chat')}}
                                   
                                 >
                                    <span>{`${n.senderName} sent you a new message`}</span>
