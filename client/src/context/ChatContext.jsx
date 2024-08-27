@@ -164,13 +164,26 @@ export const ChatContextProvider = ({children, user}) => {
         })
       );
 
-      console.log('createChat', response);
+      console.log('createChat', response)
     
       if (response.error) {
         return console.log('Error creating chat', response);
       }
     
-      setUserchats(response);
+      setUserchats((prev) => {
+         // Verificar si el chat ya existe
+      
+         const chatExists = prev.some(chat => chat.id === response.id); 
+         
+         if (chatExists) {
+           // Eliminar el chat existente y agregar el nuevo
+           const updatedChats = prev.filter(chat => chat.id !== response.id);
+           return [...updatedChats, response];
+         } else {
+           // Si no existe, simplemente agregar el nuevo
+           return [...prev, response];
+         }
+       });
        
     }, []);
 
