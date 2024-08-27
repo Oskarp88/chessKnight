@@ -171,7 +171,16 @@ export const ChatContextProvider = ({children, user}) => {
       }
     
       setUserchats((prev) => {
-           return [...prev, response];     
+         // Verificar si el chat ya existe
+      
+         const chatExists = prev.some(chat => chat.id === response.id); 
+         
+         if (chatExists) {
+           return;
+         } else {
+           // Si no existe, simplemente agregar el nuevo
+           return [...prev, response];
+         }
        });
        
     }, []);
