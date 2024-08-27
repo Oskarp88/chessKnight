@@ -32,7 +32,7 @@ function Chats() {
                   gap={3}
                 >
                    {isUserChatsLoading && <p>Loading chats...</p>}
-                   {userChats?.map((chat,index)=>{
+                   {userChats?.reverse().map((chat,index)=>{
                       return(
                         <div key={index} onClick={() => updateCurrentChat(chat)}>
                           <UserChat

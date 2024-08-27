@@ -35,7 +35,7 @@ function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, g
           <>
               <div className={style.userprofile}>
             {photo ?
-                <img className={style.profileSidebar} src={auth?.user?.photo} alt='hola' />
+                <img className={style.profileSidebar} src={user.photo} alt='hola' />
                 : <img className={style.profileSidebar} src={'assets/avatar/user.png'} alt='' /> 
             }
             
