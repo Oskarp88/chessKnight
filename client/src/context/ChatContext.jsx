@@ -6,6 +6,7 @@ export const ChatContext = createContext();
 
 export const ChatContextProvider = ({children, user}) => {
     const [userChats, setUserchats] = useState(null);
+    console.log('chatcontex', userChats);
     const [allUsers, setAllUsers] = useState([]);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
     const [userChatsError, setUserChatsError] = useState(null);
@@ -173,7 +174,7 @@ export const ChatContextProvider = ({children, user}) => {
          
          if (chatExists) {
            // Eliminar el chat existente y agregar el nuevo
-           const updatedChats = prev.filter(chat => chat.id === response.id);
+           const updatedChats = prev.filter(chat => chat.id !== response.id);
            return [...updatedChats, response];
          } else {
            // Si no existe, simplemente agregar el nuevo
