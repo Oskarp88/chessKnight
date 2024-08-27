@@ -23,7 +23,7 @@ import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
 
 const Friends = ({ friends, onlineUsers, room, mobile }) => {
-  const { createChat, userChats} = useContext(ChatContext);
+  const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
 
   const [hoveredFriend, setHoveredFriend] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -252,7 +252,12 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
 
   const mensajeChat = async(idFirst, idSecond) => {
      await createChat(idFirst, idSecond);
-     console.log('userChats');
+     const chat = userChats.find(chat => 
+      (chat.members.includes(idFirst) && chat.members.includes(idSecond))
+    );
+         console.log('chat friends', chat);
+         await updateCurrentChat(chat);
+
      navigate('/auth/chat');
   }
   
