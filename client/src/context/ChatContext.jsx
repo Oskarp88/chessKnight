@@ -1,12 +1,10 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { getRequest, baseUrl, postRequest } from "../utils/services";
 import  io  from 'socket.io-client';
-import { useNavigate } from "react-router-dom";
 
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({children, user}) => {
-    const navigate = useNavigate();
     const [userChats, setUserchats] = useState(null);
     const [allUsers, setAllUsers] = useState([]);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
@@ -192,7 +190,6 @@ export const ChatContextProvider = ({children, user}) => {
        //mark notification as read
        const mNotifications = notifications.map(el =>{
          if(n.senderId === el.senderId){
-            navigate('/auth/chat')
             return {...n, isRead: true}
          }else{
             return el
