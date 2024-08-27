@@ -16,7 +16,7 @@
   }
 
   .messages {
-    min-height: calc(100vh - 50rem);;
+    min-height: calc(100vh - 30rem);;
     max-height: calc(100vh - 15rem);
     overflow-y: auto;
     padding: 0 2rem;
