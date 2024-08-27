@@ -18,6 +18,9 @@ function Chats() {
     const {auth} = useAuth();
     const {user} = auth;
 
+    const uniqueChats = Array.from(new Set(userChats.map(chat => chat.id)))
+  .map(id => userChats.find(chat => chat.id === id));
+
   return (
     <Container className={style.container}>
         <PotentialChats />
@@ -32,7 +35,7 @@ function Chats() {
                   gap={3}
                 >
                    {isUserChatsLoading && <p>Loading chats...</p>}
-                   {userChats?.map((chat,index)=>{
+                   {uniqueChats?.map((chat,index)=>{
                       return(
                         <div key={index} onClick={() => updateCurrentChat(chat)}>
                           <UserChat
