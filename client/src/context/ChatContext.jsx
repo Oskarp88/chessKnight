@@ -5,7 +5,7 @@ import  io  from 'socket.io-client';
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({children, user}) => {
-    const [userChats, setUserchats] = useState(null);
+    const [userChats, setUserchats] = useState([]);
     console.log('chatcontex', userChats);
     const [allUsers, setAllUsers] = useState([]);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
@@ -172,14 +172,17 @@ export const ChatContextProvider = ({children, user}) => {
     
       setUserchats((prev) => {
          // Verificar si el chat ya existe
-      
-         const chatExists = prev.some(chat => chat.id === response.id); 
+         const chatUser = prev.find(chat => 
+            (chat.members.includes(firstId) && chat.members.includes(secondId))
+          );
          
-         if (chatExists) {
-           return;
+         if (chatUser) {
+           // Eliminar el chat existente y agregar el nuevo
+           const updatedChats = prev.filter(chat => chat.id !== chatUser.id);
+           return [...updatedChats, chatUser];
          } else {
            // Si no existe, simplemente agregar el nuevo
-           return [...prev, response];
+           return [...prev, chatUser];
          }
        });
        
