@@ -36,7 +36,7 @@ function ChatBox() {
       <div className={style.chatHeader}>
         <strong>{recipientUser?.name}</strong>
       </div>
-      <Stack gap={3} className={style.messages}>
+      <Stack style={{background: '#ffffff'}} gap={3} className={style.messages}>
          {messages && messages.map((m, index)=>(
             <Stack 
                key={index} 

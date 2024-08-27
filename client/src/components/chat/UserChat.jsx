@@ -30,6 +30,7 @@ function UserChat({chat, user}) {
     <Stack 
       direction='horizontal'
       gat={3}
+      style={{background: '#8b3131'}}
       className={`${style.userCard} aling-items-center p-2 justify-content-betewen`}
       role='button'
       onClick={() => {
