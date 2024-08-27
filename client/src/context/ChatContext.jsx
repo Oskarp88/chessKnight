@@ -168,15 +168,19 @@ export const ChatContextProvider = ({children, user}) => {
       }
     
       setUserchats((prev) => {
-        // Verificar si el chat ya existe
-        const chatExists = prev.some(chat => chat.id === response.id); // O cualquier propiedad única del chat
-        
-        // Si no existe, añadirlo, si existe, retornar el array anterior sin cambios
-        if (!chatExists) {
-          return [...prev, response];
-        }
-        return prev; // No se guarda si ya existe
-      });
+         // Verificar si el chat ya existe
+         const chatExists = prev.some(chat => chat.id === response.id); 
+         
+         if (chatExists) {
+           // Eliminar el chat existente y agregar el nuevo
+           const updatedChats = prev.filter(chat => chat.id !== response.id);
+           return [...updatedChats, response];
+         } else {
+           // Si no existe, simplemente agregar el nuevo
+           return [...prev, response];
+         }
+       });
+       
     }, []);
 
     const markAllNotificationsAsRead = useCallback((notifications) => {
