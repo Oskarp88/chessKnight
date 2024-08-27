@@ -155,20 +155,29 @@ export const ChatContextProvider = ({children, user}) => {
         setCurrentChat(chat)
     },[]);
 
-    const createChat = useCallback(async(firstId, secondId) => {
-       const response = await postRequest(`${baseUrl}/chat`, 
-          JSON.stringify({
-            firstId,
-            secondId
-          })
-       );
-
-       if(response.error){
-         return console.log('Error creating chat', response);
-       }
-       
-       setUserchats((prev) => [...prev, response]);
-    },[]);
+    const createChat = useCallback(async (firstId, secondId) => {
+      const response = await postRequest(`${baseUrl}/chat`, 
+        JSON.stringify({
+          firstId,
+          secondId
+        })
+      );
+    
+      if (response.error) {
+        return console.log('Error creating chat', response);
+      }
+    
+      setUserchats((prev) => {
+        // Verificar si el chat ya existe
+        const chatExists = prev.some(chat => chat.id === response.id); // O cualquier propiedad única del chat
+        
+        // Si no existe, añadirlo, si existe, retornar el array anterior sin cambios
+        if (!chatExists) {
+          return [...prev, response];
+        }
+        return prev; // No se guarda si ya existe
+      });
+    }, []);
 
     const markAllNotificationsAsRead = useCallback((notifications) => {
        const mNotifications = notifications.map(n => {
