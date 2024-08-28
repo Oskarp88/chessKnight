@@ -173,17 +173,9 @@ export const ChatContextProvider = ({children, user}) => {
       
       setUserchats((prev) => {
          // Verificar si el chat ya existe
-         const chatUser = prev.find(chat => 
-            (chat.members.includes(firstId) && chat.members.includes(secondId))
-          );
+         const chatUser = prev.find(chat => chat.id === response.id);
          
-         if (chatUser) {
-           // Eliminar el chat existente y agregar el nuevo
-           const updatedChats = prev.filter(chat => chat.id !== chatUser.id);
-           return [...updatedChats, chatUser];
-         } else {
-           // Si no existe, simplemente agregar el nuevo
-       
+         if (!chatUser) {      
            return [...prev, response];
          }
        });
