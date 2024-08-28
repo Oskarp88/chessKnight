@@ -24,7 +24,18 @@ export const languages = [
       game_history: 'Historial de partidas',
       Last_games_of: 'Ultimas partidas de',
       Language: 'Idioma',
-      profile: 'Editar perfil'
+      profile: 'Editar perfil',
+      Challenge_a_match: 'Desafia una partida a',
+      Loading_Players: 'Cargando jugadores',
+      information: 'Información',
+      You_have_sent_a_challenge: 'Has enviado un desafio',
+      Challenge_rejected: 'Desafio rechazado',
+      Challenge: 'Desafiar',
+      message: 'Mensaje',
+      Cancel: 'Cancelar',
+      game_of: 'Partida de',
+      has_challenged_you: 'te ha desafiado',
+      Accept: 'Aceptar',
    },
    {
     spanish: 'Spanish',
@@ -51,6 +62,17 @@ export const languages = [
     game_history: 'Games history',
     Last_games_of: 'Last games of',
     Language: 'Languaje',
-    profile: 'Edit profile'
+    profile: 'Edit profile',
+    Challenge_a_match: 'Challenge a match',
+    Loading_Players: 'Loading Players',
+    information: 'Information',
+    You_have_sent_a_challenge: 'You have sent a challenge',
+    Challenge_rejected: 'Challenge rejected',
+    Challenge: 'Challenge',
+    message: 'Message',
+    Cancel: 'Cancel',
+    game_of: 'Game of',
+    has_challenged_you: 'has challenged you',
+    Accept: 'Accept'
    }
 ];

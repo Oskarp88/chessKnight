@@ -21,6 +21,7 @@ import { useChessboardContext } from '../../context/boardContext';
 import desafiadoSound from '../../path/to/Awkward Anime Moment.mp3';
 import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
@@ -38,11 +39,13 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   const [isOffGame, setOffGame] = useState(false);
   const [idUser, setIdUser] = useState(null);
   const [photo, setPhoto] = useState('');
-  const {socket, setRoom, setInfUser, infUser, userChess} = useSocketContext();
-  const {chessColor} = useChessboardContext();
   const [userInf, setUserInf] = useState({});
   const {auth} = useAuth();
   const navigate = useNavigate();
+
+  const {socket, setRoom, setInfUser, infUser, userChess} = useSocketContext();
+  const {chessColor} = useChessboardContext();
+  const {language} = useLanguagesContext();
 
   const desafiadoAudio = new Audio(desafiadoSound);
   const rechazadoAudio = new Audio(rechazadoSound);
@@ -282,7 +285,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
         <div className={style.desafio}>
             <div className={style.titleWithIcon}>
               <h5>
-                Desafia una partida a {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
+                {language.Challenge_a_match} {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
                                       infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :
                                       infUser?.time === 600 ? '10' : '20'} mn
               </h5>
@@ -293,7 +296,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
         </div>
         {sortedUsers.length === 0 ? 
           
-             <SpinnerDowloand text={'Cargando Jugadores . . .'}/>
+             <SpinnerDowloand text={`${language.Loading_Players} . . .`}/>
           
         : sortedUsers.map((o, index) => (
           <>
@@ -355,30 +358,41 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
               <div className={`${style.modal} ${showModal ? style.show : ''}`}>
                 <div className={style.header}>
                    <div className={style.circle}>
-                    <a className={style.inf} title='Información' onClick={() => handleModalInf(userModal?._id)}>
+                      <a 
+                        className={style.inf}
+                        title={language?.information} 
+                        onClick={() => handleModalInf(userModal?._id)}
+                      >
                         <CircleInf />
                       </a>
-                      <a  className={style.close} onClick={() => handleModalClose()}>
+                      <a  
+                        className={style.close} 
+                        onClick={() => handleModalClose()}
+                      >
                         <CircleClose />
                       </a>
                    </div>
                     <div className={style.username}>
-                       <span>{userModal.username.charAt(0).toUpperCase()}{userModal.username.slice(1)}</span>
+                       <span>
+                         {userModal.username.charAt(0).toUpperCase()}{userModal.username.slice(1)}
+                       </span>
                     </div>
                  
                   </div>
                 <div className={style.modalContent}>
                   
                 <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                    <img className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} src={userModal?.photo} alt='assets/avatar/user.png' />                  
+                    <img 
+                      className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} 
+                      src={userModal?.photo} alt='not found' />                  
                     
                     {aceptarDesafio && !isOffGame &&
                       <>
-                        <h3>{userModal?.username && `Has enviado un desafio`}</h3>
+                        <h3>{userModal?.username && `${language?.You_have_sent_a_challenge}`}</h3>
                         <div className={style.ldsring}><div></div><div></div><div></div><div></div></div>
                       </> 
                     }
-                    {!aceptarDesafio && isOffGame && <h3>{'Desafio rechazado'}</h3>}
+                    {!aceptarDesafio && isOffGame && <h3>{language.Challenge_rejected}</h3>}
                 </div>                                    
                   <div className={style.modalButtons}>
                     {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin && <>
@@ -391,16 +405,16 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                            userModal?.photo
                           )}
                       >
-                        Desafiar
+                        {language.Challenge} 
                       </button>
                       <button className={style.button} onClick={() => mensajeChat(auth?.user?._id, userModal?._id, )}>
-                        Mensaje
+                        {language.message}
                       </button>
                       </>}                  
                     {
                       aceptarDesafio && 
                       <button className={style.button} onClick={() => handleModalClose()}>
-                        Cancelar 
+                        {language.Cancel}
                       </button>
                     }
                   </div>
@@ -411,7 +425,11 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
               <div className={`${style.modal} ${showModalOpponent ? style.show : ''}`}>
                 <div className={style.header}>
                     <div className={style.circle}>
-                      <a className={style.inf} title='Información' onClick={() => handleModalInf(userModal?._id)}>
+                      <a 
+                        className={style.inf} 
+                        title={language.information}
+                        onClick={() => handleModalInf(userModal?._id)}
+                      >
                         <CircleInf />
                       </a>
                       <a  className={style.close} onClick={handleModalOpponentClose}>
@@ -420,7 +438,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                     </div>
                     <div className={style.username}>
                        <span>
-                        { `Partida de ${infUser?.time === 60 ? '1 mn' : 
+                        { `${language.game_of} ${infUser?.time === 60 ? '1 mn' : 
                             infUser?.time === 120 ?  '2 mn' : 
                             infUser?.time === 180 ? '3 mn' : 
                             infUser?.time === 300 ? '5 mn' : 
@@ -438,14 +456,14 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                       />                  
                       <h3>{userOpponentModal?.username && 
                             `${userOpponentModal.username.charAt(0)
-                               .toUpperCase()}${userOpponentModal.username.slice(1)} te ha desafiado `} </h3>
+                               .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} </h3>
                   </div>                                    
                   <div className={style.modalButtons}>
                     <button className={style.button} onClick={playGame}>
-                      Aceptar
+                      {language.Accept}
                     </button>
                     <button className={style.button} onClick={offGame}>
-                      Cancelar
+                      {language.Cancel}
                     </button>
                   </div>
                 </div>
