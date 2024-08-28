@@ -129,6 +129,8 @@ function Register() {
                     user: response.data.userUpdate,
                     token: auth?.token,
                   });
+              const data = { user: response.data.userUpdate, token: auth?.token}
+              localStorage.setItem('auth', JSON.stringify(data));
               toast.success('registro completado');
               navigate('/');
             } else {
