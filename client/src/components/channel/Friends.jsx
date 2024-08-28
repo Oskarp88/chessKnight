@@ -256,6 +256,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
       (chat.members.includes(idFirst) && chat.members.includes(idSecond))
     );
          console.log('chat friends', chat);
+         console.log('userChats', userChats);
           updateCurrentChat(chat);
 
      navigate('/auth/chat');
