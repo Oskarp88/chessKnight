@@ -170,10 +170,7 @@ export const ChatContextProvider = ({children, user}) => {
         return console.log('Error creating chat', response);
       }
 
-      const chatResponse = await response.find(chat => 
-         (chat.members.includes(firstId) && chat.members.includes(secondId))
-       );
-    
+      
       setUserchats((prev) => {
          // Verificar si el chat ya existe
          const chatUser = prev.find(chat => 
@@ -186,6 +183,10 @@ export const ChatContextProvider = ({children, user}) => {
            return [...updatedChats, chatUser];
          } else {
            // Si no existe, simplemente agregar el nuevo
+           const chatResponse = response?.find(chat => 
+            (chat.members.includes(firstId) && chat.members.includes(secondId))
+          );
+       
            return [...prev, chatResponse];
          }
        });
