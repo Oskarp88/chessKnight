@@ -45,7 +45,7 @@ function UserChat({chat, user}) {
                   : <img className={style.profile} src={'assets/avatar/user.png'} alt='' />}
           </div>
           <div className={style.textContent}>
-            <div className={style.name}>{recipientUser?.name}</div>
+            <div className={style.name}>{recipientUser?.username}</div>
             <div className={style.text}>{latestMessage?.text && (
               <span>{truncateText(latestMessage?.text)}</span>
             )}</div>

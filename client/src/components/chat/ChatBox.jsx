@@ -34,7 +34,7 @@ function ChatBox() {
   return (
     <Stack gap={4} className={style.chatBox}>
       <div className={style.chatHeader}>
-        <strong>{recipientUser?.name}</strong>
+        <strong>{recipientUser?.username}</strong>
       </div>
       <Stack gap={3} className={style.messages}>
          {messages && messages.map((m, index)=>(
