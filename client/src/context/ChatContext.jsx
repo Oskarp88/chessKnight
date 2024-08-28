@@ -170,7 +170,7 @@ export const ChatContextProvider = ({children, user}) => {
         return console.log('Error creating chat', response);
       }
 
-      const chatResponse = response.find(chat => 
+      const chatResponse = await response.find(chat => 
          (chat.members.includes(firstId) && chat.members.includes(secondId))
        );
     
