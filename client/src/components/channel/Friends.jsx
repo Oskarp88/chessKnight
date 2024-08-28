@@ -255,6 +255,8 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
      const chat = userChats.find(chat => 
       (chat.members.includes(idFirst) && chat.members.includes(idSecond))
     );
+       console.log('chat friens id1', idFirst,'id2',idSecond);
+
          console.log('chat friends', chat);
          console.log('userChats', userChats);
           updateCurrentChat(chat);
