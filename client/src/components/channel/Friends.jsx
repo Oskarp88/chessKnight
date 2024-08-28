@@ -251,10 +251,18 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   }
 
   const mensajeChat = async(idFirst, idSecond) => {
-     await createChat(idFirst, idSecond);
+
      const chat = userChats.find(chat => 
       (chat.members.includes(idFirst) && chat.members.includes(idSecond))
     );
+     
+    if(!chat){
+      await createChat(idFirst, idSecond);
+      updateCurrentChat(chat);
+    }else{
+     updateCurrentChat(chat);
+    }
+
        console.log('chat friens id1', idFirst,'id2',idSecond);
 
          console.log('chat friends', chat);
