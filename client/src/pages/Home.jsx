@@ -14,6 +14,7 @@ import { AvanzadoInsignia, ExpertoInsignia, GranMaestroInsignia, IntermedioInsig
 import PieChart from '../components/piechart/PieChart';
 import SpinnerDowloand from '../components/spinner/SpinnerDowloand';
 import TiedSvg from '../svg/tiedSvg';
+import { useLanguagesContext } from '../context/languagesContext';
 
 const useInterval = (callback, delay) => {
   const savedCallback = useRef();
@@ -37,15 +38,17 @@ export function Home() {
   const {chessColor} = useChessboardContext();
   const [showModalMin, setShowModalMin] = useState(false);
   const navigate = useNavigate();
-  const {auth} = useAuth();
-  const {socket, setInfUser} = useSocketContext();
-  const {setCheckMate} = useCheckMateContext();
   const [paginate, setPaginate] = useState(1);
   const [autoPaginate, setAutoPaginate] = useState(true);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 400);
   const [partida, setPartidas] = useState([]);
   const [user, setUser] = useState(null);
   const [stast, setStats] = useState('fast');
+
+  const {auth} = useAuth();
+  const {socket, setInfUser} = useSocketContext();
+  const {setCheckMate} = useCheckMateContext();
+  const {language} = useLanguagesContext();
 
    useEffect(() => {
       const allPartidas = async() => {
@@ -176,13 +179,13 @@ export function Home() {
               ChessKNIGTH
             </h1>
             <p style={{color: chessColor.color}}>
-              Juega ajedrez online y mejora tus habilidades!
+              {language?.play_chess_online_and_improve_your_skills}
             </p>
             <button 
               className={style.playButton} 
               style={{background: chessColor.navbar, boxShadow: chessColor.boxShadow}} 
               onClick={joinRoom}>
-               Unirse a una sala
+               {language?.join_a_room}
             </button>
           </div> 
           <div className={style.table}>
@@ -211,7 +214,7 @@ export function Home() {
       auth?.user  && 
       <div className={style.fondoDatos}>
         <div className={style.containerStats}>
-          <h5 style={{color: chessColor.titulo}}>Estadisticas de {auth?.user?.name ? 
+          <h5 style={{color: chessColor.titulo}}>{language.statistics_of} {auth?.user?.name ? 
                                     `${auth.user.name} ${auth.user.lastName}`: 
                                     `${auth?.user?.username}`}
           </h5>
@@ -223,7 +226,7 @@ export function Home() {
                 style={stast === 'fast' ?{background: chessColor.navbar, opacity: '80%', border: `2px solid #239B56`} : {background: chessColor.navbar}}
                 onClick={()=> handleClick('fast')}
               >
-                  Fast <FastSvg/>
+                  {language.fast} <FastSvg/>
               </button>
               <button 
                   className={style.buttonStats} 
@@ -237,7 +240,7 @@ export function Home() {
                 style={stast === 'bullet' ?{background: chessColor.navbar, opacity: '80%', border: `2px solid #F39C12 `} : {background: chessColor.navbar}}
                 onClick={()=> handleClick('bullet')}
               >
-                Bullet <BulletSvg/>
+               {language.bullet} <BulletSvg/>
               </button>
         </div>
         <div className={style.containerStatsRating}>
@@ -245,7 +248,7 @@ export function Home() {
             <div className={style.containerNivel} style={stast === 'fast' ? {border: '2px solid #229954'} : stast === 'blitz' ? {border: '2px solid #F4D03F'} : {border: '2px solid #F39C12 '}}>
             {!user?
           
-            <SpinnerDowloand text={`Cargando estadisticas del usuario ${auth?.user?.name}. . .`} />
+            <SpinnerDowloand text={`${language.loading_user_statistics} ${auth?.user?.name}. . .`} />
             :
             <>
             <div className={style.svg}>
@@ -292,24 +295,24 @@ export function Home() {
                   <p style={{color: chessColor.titulo}}>{ stast === 'fast' ? user.eloFast :
                                                           stast === 'blitz' ? user.eloBlitz : user.eloBullet}</p>
                 </div>
-                <span style={{color: chessColor.color}}>Rating</span>
+                <span style={{color: chessColor.color}}>{language?.rating}</span>
             </div>
             <div className={style.containerDatos}>
               <div className={style.span}>
                   <div>
-                    <span style={{color: chessColor.color}}>Total juegos: </span> 
+                    <span style={{color: chessColor.color}}>{language.total_games}: </span> 
                     <span style={{color: chessColor.titulo}}>
                       {stast === 'fast' ? user?.gamesFast : stast === 'blitz' ? user.gamesBlitz : user.gamesBullet}
                     </span>
                   </div> 
                   <div>
-                      <span style={{color: chessColor.color}}>Ganadas: </span>
+                      <span style={{color: chessColor.color}}>{language.win}: </span>
                       <span style={{color: chessColor.titulo}}>
                         {stast === 'fast' ? user?.gamesWonFast : stast === 'blitz' ? user.gamesWonBlitz : user.gamesWonBullet}
                       </span>
                   </div>
                   <div>
-                    <span style={{color: chessColor.color}}>Perdidas: </span>
+                    <span style={{color: chessColor.color}}>{language.lost}: </span>
                     <span style={{color: chessColor.titulo}}>
                       {stast === 'fast' ? user?.gamesLostFast : stast === 'blitz' ? user?.gamesLostBlitz : user?.gamesLostBullet}
                     </span>
@@ -318,13 +321,13 @@ export function Home() {
               </div>
               <div className={style.span}>
                   <div>
-                    <span style={{color: chessColor.color}}>Empate: </span>
+                    <span style={{color: chessColor.color}}>{language.draw}: </span>
                     <span style={{color: chessColor.titulo}}>
                       {stast === 'fast' ? user?.gamesTiedFast : stast === 'blitz' ? user.gamesTiedBlitz : user.gamesTiedBullet}
                     </span>
                   </div>
                   <div>
-                    <span style={{color: chessColor.color}}>Racha Actual: </span>
+                    <span style={{color: chessColor.color}}>{language.win_streak}: </span>
                     <span style={{color: chessColor.titulo}}>
                       {stast === 'fast' ?  user?.rachaFast : stast === 'blitz' ? user?.rachaBlitz : user?.rachaBullet}
                     </span>
@@ -342,10 +345,10 @@ export function Home() {
          </div>
         </div>
         <div>
-          <h5 style={{color: chessColor.titulo}}>Historial de partida</h5>
+          <h5 style={{color: chessColor.titulo}}>{language?.game_history}</h5>
           <div className={style.scrollableContainer}>
-              <h6 style={{color: chessColor.color}}> Partidas totales ({user?.games})</h6>
-              <span style={{color: chessColor.color}}>Ultimas partidas de {user?.username}</span>
+              <h6 style={{color: chessColor.color}}> {language?.total_games} ({user?.games})</h6>
+              <span style={{color: chessColor.color}}>{language?.Last_games_of} {user?.username}</span>
               <div className={style.scrollableContent}>
               {partida?.slice().reverse().slice(0,15).map((p, index)=> (
               <>

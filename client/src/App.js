@@ -24,6 +24,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ChatBox from "./components/chat/ChatBox";
 
 import Register from "./pages/user/Register";
+import { LanguagesProvider } from "./context/languagesContext";
 
 function App() {
   const {auth} = useAuth();
@@ -32,6 +33,7 @@ function App() {
   <SocketProvider user={auth.user}>
    <ChatContextProvider user={auth.user}>
      <PieceProvider>
+       <LanguagesProvider>
        <CheckMateProvider >
          <ChessboardProvider >
             <div id="app">
@@ -58,7 +60,8 @@ function App() {
               <Toaster />  
             </div>
          </ChessboardProvider>
-      </CheckMateProvider>
+       </CheckMateProvider>
+       </LanguagesProvider>
     </PieceProvider>
    </ChatContextProvider>
    </SocketProvider>

@@ -2,12 +2,14 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
 const PieChart = ({ data , user}) => {
+  const {language} = useLanguagesContext();
   const chartData = {
-    labels: ['Ganadas', 'Perdidas', 'Empates'],
+    labels: [language.win, language.lost, language.draw],
     datasets: [
       {
         data: [

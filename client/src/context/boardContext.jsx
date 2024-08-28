@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { colorChess } from '../utils/Colors';
 
 const ChessboardContext = createContext();
 
@@ -18,19 +19,7 @@ export const ChessboardProvider = ({ children }) => {
     whiteRow: '',
     blackRow: ''
   });
-  const [chessColor, setChessColor] = useState({
-    navbar: '',
-    boxShadow: '',
-    border: '',
-    border2: '',
-    fondo: '',
-    fondo2: "",
-    fondo_3: '',
-    titulo: '',
-    color: '',
-    spinner: '',
-    colorBorder: ''
-  })
+  const [chessColor, setChessColor] = useState(colorChess[0]);
   const [view, setView] = useState(window.innerWidth <= 690);
   
   return (

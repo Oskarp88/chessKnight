@@ -251,15 +251,17 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   }
 
   const mensajeChat = async(idFirst, idSecond) => {
-
+     //buscamos en userChats el chat
      const chat = userChats.find(chat => 
       (chat.members.includes(idFirst) && chat.members.includes(idSecond))
     );
      
     if(!chat){
+      //si no existe el chat ps se crea
       await createChat(idFirst, idSecond);
-      updateCurrentChat(chat);
+      updateCurrentChat(chat); //accder al chat
     }else{
+      //si ya existe ps accedemos al chat
      updateCurrentChat(chat);
     }
 

@@ -7,6 +7,7 @@ import { useAuth } from '../../context/authContext';
 import { useChessboardContext } from '../../context/boardContext';
 import { Prev } from 'react-bootstrap/esm/PageItem';
 import { baseUrl, getRequest } from '../../utils/services';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 
 const colorBoard = [
@@ -23,6 +24,7 @@ const colorBoard = [
 
 const Sidebar = () => {
     const { setBoardColor } = useChessboardContext();
+    const {language} = useLanguagesContext();
     // const {setPieceFile} = usePieceContext();
     const [showColorOptions, setShowColorOptions] = useState(false);
     // const [showPieceOptions, setShowPieceOptions] = useState(false);
@@ -123,7 +125,7 @@ const Sidebar = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-house" viewBox="0 0 16 16">
                   <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                 </svg>
-                <Link className={style.linkli} to="/">Inicio</Link>
+                <Link className={style.linkli} to="/">{language?.home}</Link>
               </div>
 
             </li>
@@ -135,7 +137,7 @@ const Sidebar = () => {
                       <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
                       <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
                     </svg>
-                    <Link className={style.linkli} to="/login">Iniciar Sesión</Link>
+                    <Link className={style.linkli} to="/login">{language?.login}</Link>
                   </div>              
                 </li>
                 <li>
@@ -144,7 +146,7 @@ const Sidebar = () => {
                       <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                       <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                     </svg>
-                    <Link className={style.linkli} to="/register">Register</Link>
+                    <Link className={style.linkli} to="/register">{language?.register}</Link>
                   </div>
                 </li>
               </>
@@ -159,7 +161,7 @@ const Sidebar = () => {
                       <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z"/>
                     </svg>
                     <Link className={style.linkli} to={`dashboard/${auth.user.role === 'admin' ? 'admin' : 'user'}`}>                    
-                        Dashboard
+                        {language?.dashboard}
                     </Link>
                   </div>
                     
@@ -197,7 +199,7 @@ const Sidebar = () => {
                         <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
                       </svg>
                       <Link className={style.linkli} to='/login' onClick={handleLogout}>
-                        Cerrar Sesión
+                        {language.logout}
                       </Link>
                     </div>
                   
