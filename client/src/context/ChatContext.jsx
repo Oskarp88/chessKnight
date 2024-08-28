@@ -169,6 +169,10 @@ export const ChatContextProvider = ({children, user}) => {
       if (response.error) {
         return console.log('Error creating chat', response);
       }
+
+      const chatResponse = response.find(chat => 
+         (chat.members.includes(firstId) && chat.members.includes(secondId))
+       );
     
       setUserchats((prev) => {
          // Verificar si el chat ya existe
@@ -182,7 +186,7 @@ export const ChatContextProvider = ({children, user}) => {
            return [...updatedChats, chatUser];
          } else {
            // Si no existe, simplemente agregar el nuevo
-           return [...prev, chatUser];
+           return [...prev, chatResponse];
          }
        });
        
