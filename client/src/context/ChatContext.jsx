@@ -183,11 +183,8 @@ export const ChatContextProvider = ({children, user}) => {
            return [...updatedChats, chatUser];
          } else {
            // Si no existe, simplemente agregar el nuevo
-           const chatResponse = response?.find(chat => 
-            (chat.members.includes(firstId) && chat.members.includes(secondId))
-          );
        
-           return [...prev, chatResponse];
+           return [...prev, response];
          }
        });
        
