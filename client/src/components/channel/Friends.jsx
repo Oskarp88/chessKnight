@@ -184,7 +184,17 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
       socket.emit('userTime', {userId: auth?.user?._id, time: parseInt(dataTime)});
       socket.emit('join-room', parseInt(dataTime));
     } 
-    });;
+    });
+     // Manejar el evento "disconnect" para detectar desconexiones
+     socket.on("disconnect", (reason) => {
+      console.log("Desconectado. Razón:", reason);
+      //medidas específicas en caso de desconexión aquí, volver a conectar automáticamente o mostrar un mensaje de error al usuario.
+    });
+    socket.on("reconnect", (attemptNumber) => {
+      console.log(`Reconectado en el intento ${attemptNumber}`);
+      // Realiza cualquier lógica adicional que necesites después de la reconexión
+    });
+
     socket.on('getGame', handleGetGame);
     socket.on('receivePlayGame',(data) => {
       localStorage.setItem('bandera', data?.bandera);
