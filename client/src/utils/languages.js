@@ -55,7 +55,8 @@ export const languages = [
       Email_address: 'Correo electronico',
       Enter_email: 'Introducir el correo electronico',
       We_will_send_you_an_email_to_change_your_password: 'Te enviaremos un correo para cambiar tu contraseña',
-      send: 'Enviar'
+      send: 'Enviar',
+      reset_password: 'Restablecer la contraseña',
    },
    {
     spanish: 'Spanish',
@@ -114,5 +115,6 @@ export const languages = [
     Enter_email: 'Enter email',
     We_will_send_you_an_email_to_change_your_password: 'We will send you an email to change your password',
     send: 'Send',
+    reset_password: 'Reset password',
    }
 ];

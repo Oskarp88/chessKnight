@@ -56,7 +56,6 @@ const ResetPassword = () => {
       <h2>{language.reset_password}</h2>
       <Form onSubmit={handleResetPassword}>
       <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>{language.password}</Form.Label>
         <Form.Control 
           type="password" 
           placeholder={language.password}
@@ -65,7 +64,6 @@ const ResetPassword = () => {
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>{`${language.confirm} ${language.password}`}</Form.Label>
         <Form.Control 
           type="password" 
           placeholder={`${language.confirm} ${language.password}`}
