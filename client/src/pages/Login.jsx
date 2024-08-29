@@ -93,12 +93,23 @@ const Login = () => {
             <a >Forgot your password ?</a>
           </Link>
           <br />
+          <div className="mt-4">
+                <p className="text-black">
+                   New Customer ? {" "}
+                   <Link 
+                     to={redirect ? `/register?redirect=${redirect}` : '/register'}
+                    className='text-pink-500 hover:underline'
+                   >
+                     Register
+                   </Link>
+                </p>
+            </div>
           <button className={style.signin} type="submit">
             <span>sign in</span>
           </button>
-          <button className={style.register} onClick={() => navigate('/register')}>
+          {/* <button className={style.register} onClick={() => navigate('/register')}>
             <span>register</span>
-          </button>
+          </button> */}
           <div className={style.oauth}>
             <span className={style.loginwith}>Sign in with<br />social network</span>
             <GoogleOAuht/>
