@@ -50,7 +50,7 @@ const ResetPassword = () => {
   return (
     <div className={style.resetPasswordContainer}>
       <h2>Restablecer contraseña</h2>
-      <form className="resetPasswordForm" onSubmit={handleResetPassword}>
+      {/* <form className="resetPasswordForm" onSubmit={handleResetPassword}>
         <label>
           Nueva contraseña:
           <input type="password" value={password} onChange={handlePasswordChange} />
@@ -60,7 +60,37 @@ const ResetPassword = () => {
           <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
         </label>
         <button type="submit">Restablecer contraseña</button>
-      </form>
+      </form> */}
+      <Form>
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control 
+          type="password" 
+          placeholder="Password" 
+          value={password} 
+          onChange={handlePasswordChange}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Check type="checkbox" label="Check me out" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Confirm Password</Form.Label>
+        <Form.Control 
+          type="password" 
+          placeholder="Confirm Password" 
+          value={confirmPassword} 
+          onChange={handleConfirmPasswordChange} 
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Check type="checkbox" label="Check me out" />
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
     </div>
   );
 };
