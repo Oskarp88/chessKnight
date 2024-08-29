@@ -4,6 +4,8 @@ import style from './ResetPassword.module.css';
 import { useParams } from 'react-router-dom';
 import  toast from 'react-hot-toast';
 import { baseUrl } from '../utils/services';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
