@@ -6,10 +6,12 @@ import  toast from 'react-hot-toast';
 import { baseUrl } from '../utils/services';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useLanguagesContext } from '../context/languagesContext';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const {language} = useLanguagesContext();
   const { token } = useParams();
 
   useEffect(() => {
@@ -51,39 +53,28 @@ const ResetPassword = () => {
 
   return (
     <div className={style.resetPasswordContainer}>
-      <h2>Restablecer contraseña</h2>
-      {/* <form className="resetPasswordForm" onSubmit={handleResetPassword}>
-        <label>
-          Nueva contraseña:
-          <input type="password" value={password} onChange={handlePasswordChange} />
-        </label>
-        <label>
-          Confirmar contraseña:
-          <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-        </label>
-        <button type="submit">Restablecer contraseña</button>
-      </form> */}
-      <Form>
+      <h2>{language.reset_password}</h2>
+      <Form onSubmit={handleResetPassword}>
       <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
+        <Form.Label>{language.password}</Form.Label>
         <Form.Control 
           type="password" 
-          placeholder="Password" 
+          placeholder={language.password}
           value={password} 
           onChange={handlePasswordChange}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Confirm Password</Form.Label>
+        <Form.Label>{`${language.confirm} ${language.password}`}</Form.Label>
         <Form.Control 
           type="password" 
-          placeholder="Confirm Password" 
+          placeholder={`${language.confirm} ${language.password}`}
           value={confirmPassword} 
           onChange={handleConfirmPasswordChange} 
         />
       </Form.Group>
       <Button variant="primary" type="submit">
-        Submit
+        {language.Accept}
       </Button>
     </Form>
     </div>
