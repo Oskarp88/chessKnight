@@ -200,6 +200,7 @@ const Registro = ({ onSubmit }) => {
               value={formData.email}
               onChange={handleChange}
             />
+             {formErrors.email && <div className={style.error}>{formErrors.email}</div>}
             <input
               type="password"
               name="password"

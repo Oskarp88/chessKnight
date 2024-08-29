@@ -52,6 +52,10 @@ export const languages = [
       Sign_in_with : 'Iniciar sesión con',
       social_network: 'red social',
       welcome_to: 'Bienvenido a',
+      Email_address: 'Correo electronico',
+      Enter_email: 'Introducir el correo electronico',
+      We_will_send_you_an_email_to_change_your_password: 'Te enviaremos un correo para cambiar tu contraseña',
+      send: 'Enviar'
    },
    {
     spanish: 'Spanish',
@@ -106,5 +110,9 @@ export const languages = [
     Sign_in_with: 'Sign in with',
     social_network: 'social network',
     welcome_to: 'Welcome to',
+    Email_address: 'Email address',
+    Enter_email: 'Enter email',
+    We_will_send_you_an_email_to_change_your_password: 'We will send you an email to change your password',
+    send: 'Send',
    }
 ];

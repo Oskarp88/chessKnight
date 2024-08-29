@@ -39,7 +39,7 @@ function NavBar() {
 
   useEffect(()=>{
     const themeLocal = localStorage.getItem('theme');
-    console.log('theme',themeLocal)
+  
     if(!isNaN(themeLocal) && themeLocal) {
       setChessColor(colorChess[parseInt(themeLocal)]);
     }

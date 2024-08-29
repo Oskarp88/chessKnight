@@ -190,7 +190,7 @@ exports.forgotPassword = async(req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ error: 'No se encontró un usuario con ese correo electrónico', token });
+      return res.status(404).json({ error: 'No se encontró un usuario con ese correo electrónico'});
     }
 
        // Generar un token único y establecer la fecha de expiración (10 minutos)
@@ -215,7 +215,7 @@ exports.forgotPassword = async(req, res) => {
       from: process.env.MY_EMAIL,
       to: email,
       subject: 'Restablecer contraseña',
-      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: https://chess-knight-ecru.vercel.app/reset-password/${token}`, 
+      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: https://chessknight.vercel.app/reset-password/${token}`, 
     };
 
     await transporter.sendMail(mailOptions);
