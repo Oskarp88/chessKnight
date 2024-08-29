@@ -6,9 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { useChessboardContext } from '../context/boardContext';
 import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
+import { useLanguagesContext } from '../context/languagesContext';
 
 const Registro = ({ onSubmit }) => {
   const { boardColor } = useChessboardContext();
+  const {language} = useLanguagesContext();
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -166,11 +168,11 @@ const Registro = ({ onSubmit }) => {
       <div id={style.loginbox}>
         <div className={style.container}>
           <form className={style.letf} onSubmit={handleSubmit}>
-            <h1>Sign up</h1>
+            <h1>{language.Sign_up}</h1>
             <input
               type="text"
               name="name"
-              placeholder="Nombre"
+              placeholder={language.name}
               value={formData.name}
               onChange={handleChange}
             />
@@ -178,7 +180,7 @@ const Registro = ({ onSubmit }) => {
             <input
               type="text"
               name="lastName"
-              placeholder="Apellido"
+              placeholder={language.lastName}
               value={formData.lastName}
               onChange={handleChange}
             />
@@ -186,7 +188,7 @@ const Registro = ({ onSubmit }) => {
             <input
               type="text"
               name="userName"
-              placeholder="Usuario"
+              placeholder={language.username}
               value={formData.userName}
               onChange={handleChange}
             />
@@ -194,14 +196,14 @@ const Registro = ({ onSubmit }) => {
             <input
               type="text"
               name="email"
-              placeholder="E-mail"
+              placeholder={language.email}
               value={formData.email}
               onChange={handleChange}
             />
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder={language.password}
               value={formData.password}
               onChange={handleChange}
             />
@@ -209,7 +211,7 @@ const Registro = ({ onSubmit }) => {
             <input
               type="password"
               name="confirmPassword"
-              placeholder="Confirmar password"
+              placeholder={`${language.confirm} ${language.password}`}
               value={formData.confirmPassword}
               onChange={handleChange}
             />
@@ -221,7 +223,7 @@ const Registro = ({ onSubmit }) => {
                 value={selectedCountry}
                 onChange={handleCountryChange}
                 onInput={handleFilterOptions}
-                placeholder="Seleccione o escriba un país"
+                placeholder={language.Select_or_enter_a_country}
                 list="country-options"
               />
               <datalist id="country-options">
@@ -230,11 +232,11 @@ const Registro = ({ onSubmit }) => {
                 ))}
               </datalist>
             </div>
-            <input type="submit" name="signup_submit" value="Sign me up" />
+            <input type="submit" name="signup_submit" value={language.sign_me_up} />
           </form>
 
           <div className={style.right}>
-            <span className={style.loginwith}>Sign in with<br />social network</span>
+            <span className={style.loginwith}>{language.Sign_in_with}<br />{language.social_network}</span>
             <GoogleOAuht/>
           </div>
 

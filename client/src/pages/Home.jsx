@@ -175,7 +175,7 @@ export function Home() {
         <div className={style.home}>
           <div className={style.homestyle}>
             <h1 className={style.titulo} style={{color: chessColor.titulo}}>
-              Bienvenido a <br/>
+              {language.welcome_to} <br/>
               ChessKNIGTH
             </h1>
             <p style={{color: chessColor.color}}>

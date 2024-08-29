@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import toast from 'react-hot-toast';
 import { baseUrl } from '../../utils/services';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 function GoogleOAuht() {
+  const {language} = useLanguagesContext();
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
 
@@ -83,7 +85,7 @@ function GoogleOAuht() {
       onClick={handleGoogleClick}
       type='button'
     >
-      Log in with Google+
+      {language.Log_in_with_Google}
     </button>
   );
 }

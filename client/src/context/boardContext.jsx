@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { colorChess } from '../utils/Colors';
 
 const ChessboardContext = createContext();
@@ -21,6 +21,14 @@ export const ChessboardProvider = ({ children }) => {
   });
   const [chessColor, setChessColor] = useState(colorChess[0]);
   const [view, setView] = useState(window.innerWidth <= 690);
+
+  useEffect(()=>{
+    const themeLocal = localStorage.getItem('theme');
+    
+    if(!isNaN(themeLocal) && themeLocal) {
+      setChessColor(colorChess[parseInt(themeLocal)]);
+    }
+  },[chessColor])
   
   return (
     <ChessboardContext.Provider value={{ boardColor, setBoardColor ,

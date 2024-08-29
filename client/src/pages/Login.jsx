@@ -8,9 +8,11 @@ import { useAuth } from '../context/authContext';
 import  toast from 'react-hot-toast';
 import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
+import { useLanguagesContext } from '../context/languagesContext';
 
 
 const Login = () => {
+  const {language} = useLanguagesContext();
   const { auth, setAuth } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
@@ -68,50 +70,47 @@ const Login = () => {
       <div className={style.container} > 
         <form className={style.form} onSubmit={handleSubmit}>
           <div className={style.h2}>
-            <h2>LOGIN</h2>
+            <h2 style={{ textTransform: 'uppercase' }}>{language?.login}</h2>
           </div>
-          <label>EMAIL</label>
+          <label style={{ textTransform: 'uppercase' }}>{language.email}</label>
           <input
             type="email"
             name="email"
             className={style.email}
-            placeholder="email"
+            placeholder={language.email}
             value={formData.email}
             onChange={handleChange}
           />
           <br />
-          <label>PASSWORD</label>
+          <label style={{ textTransform: 'uppercase' }}>{language.password}</label>
           <input
             type="password"
             name="password"
             className={style.pwd}
-            placeholder="password"
+            placeholder={language.password}
             value={formData.password}
             onChange={handleChange}
           />
           <Link className={style.link} to="/forgot-password">
-            <a >Forgot your password ?</a>
+            <a >{language.Forgot_your_password}</a>
           </Link>
           <br />
-          <div className="mt-4">
-                <p className="text-black">
-                   New Customer ? {" "}
+         
+          <button className={style.signin} type="submit">
+            <span>{language.sign_in}</span>
+          </button>
+           <div className={style.customer}>
+                <p className="text-white">
+                   {language.New_user} {" "}
                    <Link 
                      to={redirect ? `/register?redirect=${redirect}` : '/register'}
-                    className='text-pink-500 hover:underline'
+                     className={style.registerLink}
                    >
-                     Register
+                     {language.register}
                    </Link>
                 </p>
             </div>
-          <button className={style.signin} type="submit">
-            <span>sign in</span>
-          </button>
-          {/* <button className={style.register} onClick={() => navigate('/register')}>
-            <span>register</span>
-          </button> */}
           <div className={style.oauth}>
-            <span className={style.loginwith}>Sign in with<br />social network</span>
             <GoogleOAuht/>
           </div>
           

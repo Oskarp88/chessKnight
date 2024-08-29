@@ -70,9 +70,29 @@
     transition: all 0.3s;
     text-decoration: none;
   }
+
+  .link a{
+    text-decoration: none;
+    color: #ccc;
+  }
   
   .link:hover { 
     color: #ebecd0;
+  }
+
+  .customer{
+    width: 93%;
+    margin: auto;
+  }
+
+  .registerLink {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .registerLink:hover {
+    color: #ebecd0; /* Color más oscuro en hover */
   }
   
   .register,
