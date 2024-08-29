@@ -73,10 +73,6 @@ const ResetPassword = () => {
           onChange={handlePasswordChange}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
-      </Form.Group>
-
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Confirm Password</Form.Label>
         <Form.Control 
@@ -85,9 +81,6 @@ const ResetPassword = () => {
           value={confirmPassword} 
           onChange={handleConfirmPasswordChange} 
         />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
       </Form.Group>
       <Button variant="primary" type="submit">
         Submit
