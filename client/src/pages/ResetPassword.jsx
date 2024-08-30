@@ -42,14 +42,16 @@ const ResetPassword = () => {
       console.log('response', response)
 
       if (response.data.success) {
-        toast.success(`${response.data.message, } success`);
+        toast.success(`${response.data.message}`);
       } else {      
-        setText(`${response.data.message } error`);
+        setText(`${response.data.message }`);
         setShow(true);
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.message || error.message);    }
+      setText(error.response?.data?.message || error.message); 
+      setShow(true);   
+    }
   };
 
   return (
