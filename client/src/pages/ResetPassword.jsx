@@ -17,10 +17,6 @@ const ResetPassword = () => {
   const {language} = useLanguagesContext();
   const { token } = useParams();
 
-  useEffect(() => {
-    console.log(token);
-  }, [token]);
-
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
