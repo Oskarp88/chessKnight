@@ -8,13 +8,13 @@ function AlertDismissible({title,text, show, setShow, variant}) {
     <div className={style.modalOverlay}>
       <div className={style.modalAlert}>
         <Alert show={show} variant={variant}>
-            <Alert.Heading style={{color: '#07572e'}}>{title}</Alert.Heading>
-            <p style={{color: '#07572e'}}>
+            <Alert.Heading style={{color: '#550505'}}>{title}</Alert.Heading>
+            <p style={{color: '#550505'}}>
             {text}
             </p>
             <hr />
             <div className="d-flex justify-content-end">
-            <Button onClick={() => setShow(false)} variant="outline-success">
+            <Button onClick={() => setShow(false)} variant={`outline-${variant}`} style={{color: '#550505'}}>
                 Close me
             </Button>
             </div>
