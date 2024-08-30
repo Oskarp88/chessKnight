@@ -13,21 +13,37 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [text, setText] = useState('');
+  const [error, setError] = useState({
+     password: '',
+     passwordConfirm: '',
+  });
   const [show, setShow] = useState(false);
   const {language} = useLanguagesContext();
   const { token } = useParams();
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    error.password = '';
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
+    error.passwordConfirm = '';
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
+    if(!password){
+       error.password = 'Password is require';
+    }
+
+    if(!passwordConfirm){
+     error.passwordConfirm = 'Confirm Password is require';
+    }
+
+    if(!password || !passwordConfirm) return;
+     
     if (password !== confirmPassword) {
       toast.error('La Contraseña no coinciden');
       return;
@@ -38,8 +54,6 @@ const ResetPassword = () => {
         token: token,
         newPassword: password,
       });
-
-      console.log('response', response)
 
       if (response.data.success) {
         toast.success(`${response.data.message}`);
@@ -68,6 +82,7 @@ const ResetPassword = () => {
             onChange={handlePasswordChange}
           />
         </Form.Group>
+        {error.password && <p className='text-red'>{error.password}</p>}
         <Form.Group className="mb-3" controlId="formConfirmPassword">
           <Form.Control 
             type="password" 
@@ -76,6 +91,7 @@ const ResetPassword = () => {
             onChange={handleConfirmPasswordChange} 
           />
         </Form.Group>
+        {error.passwordConfirm && <p className='text-red'>{error.passwordConfirm}</p>}
         <Button variant="primary" type="submit">
           {language.Accept}
         </Button>
