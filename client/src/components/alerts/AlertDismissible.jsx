@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
-import style from './AlerDismissible.modulo.css'
+import style from './AlerDismissible.module.css'
 function AlertDismissible({title,text, show, setShow}) {
 
   return (
