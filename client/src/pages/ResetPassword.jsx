@@ -6,7 +6,6 @@ import  toast from 'react-hot-toast';
 import { baseUrl } from '../utils/services';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {Container} from 'react-bootstrap';
 import { useLanguagesContext } from '../context/languagesContext';
 import AlertDismissible from '../components/alerts/AlertDismissible';
 
@@ -56,7 +55,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <Container> 
+    <div className={style.container}> 
       {show && <AlertDismissible title = {'Token'} text={text} show={show} setShow={setShow}/>}
        <div className={style.resetPasswordContainer}>
         <h2>{language.reset_password}</h2>
@@ -82,7 +81,7 @@ const ResetPassword = () => {
         </Button>
         </Form>
       </div>    
-    </Container>
+    </div>
   );
 };
 
