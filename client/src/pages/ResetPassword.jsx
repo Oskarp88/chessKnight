@@ -42,7 +42,7 @@ const ResetPassword = () => {
       console.log('response', response)
 
       if (response.data.success) {
-        toast.success(response.data.message);
+        toast.success(response.data.message, 'hola');
       } else {      
         setText(response.data.message);
         setShow(true);
