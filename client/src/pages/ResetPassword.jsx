@@ -23,23 +23,31 @@ const ResetPassword = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    error.password = '';
+    setError(prev => ({
+      ...prev, password: ''
+    }))
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-    error.passwordConfirm = '';
+    setError(prev => ({
+      ...prev, password: ''
+    }))
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
     if(!password){
-       error.password = 'Password is require';
+      setError(prev => ({
+        ...prev, password: 'Password is require'
+      }))
     }
 
     if(!confirmPassword){
-     error.passwordConfirm = 'Confirm Password is require';
+      setError(prev => ({
+        ...prev, password: 'Confirm Password is require'
+      }))
     }
 
     if(!password || !confirmPassword) return;
