@@ -2,14 +2,14 @@ import { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import style from './AlerDismissible.module.css'
-function AlertDismissible({title,text, show, setShow}) {
+function AlertDismissible({title,text, show, setShow, variant}) {
 
   return (
     <div className={style.modalOverlay}>
       <div className={style.modalAlert}>
-        <Alert show={show} variant="success">
-            <Alert.Heading>{title}</Alert.Heading>
-            <p>
+        <Alert show={show} variant={variant}>
+            <Alert.Heading style={{color: '#07572e'}}>{title}</Alert.Heading>
+            <p style={{color: '#07572e'}}>
             {text}
             </p>
             <hr />
