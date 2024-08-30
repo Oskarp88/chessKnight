@@ -49,15 +49,14 @@ const ResetPassword = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.message);
-    }
+      toast.error(error.response?.data?.message || error.message);    }
   };
 
   return (
     <div className={style.resetPasswordContainer}>
       <h2>{language.reset_password}</h2>
       <Form onSubmit={handleResetPassword}>
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3" controlId="formNewPassword">
         <Form.Control 
           type="password" 
           placeholder={language.password}
@@ -65,7 +64,7 @@ const ResetPassword = () => {
           onChange={handlePasswordChange}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3" controlId="formConfirmPassword">
         <Form.Control 
           type="password" 
           placeholder={`${language.confirm} ${language.password}`}
