@@ -90,7 +90,7 @@ const ResetPassword = () => {
             onChange={handlePasswordChange}
           />
         </Form.Group>
-        {error.password && <p className='text-red'>{error.password}</p>}
+        {error.password && <p className={style.error}>{error.password}</p>}
         <Form.Group className="mb-3" controlId="formConfirmPassword">
           <Form.Control 
             type="password" 
@@ -99,7 +99,7 @@ const ResetPassword = () => {
             onChange={handleConfirmPasswordChange} 
           />
         </Form.Group>
-        {error.passwordConfirm && <p className='text-red'>{error.passwordConfirm}</p>}
+        {error.passwordConfirm && <p className={style.error}>{error.passwordConfirm}</p>}
         <Button variant="primary" type="submit">
           {language.Accept}
         </Button>
