@@ -7,10 +7,13 @@ import { baseUrl } from '../utils/services';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useLanguagesContext } from '../context/languagesContext';
+import AlertDismissible from '../components/alerts/AlertDismissible';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [text, setText] = useState('');
+  const [show, setShow] = useState(false);
   const {language} = useLanguagesContext();
   const { token } = useParams();
 
@@ -44,8 +47,9 @@ const ResetPassword = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
+      } else {      
+        setText(response.data.message);
+        setShow(true);
       }
     } catch (error) {
       console.error(error);
@@ -53,7 +57,9 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className={style.resetPasswordContainer}>
+    <> 
+      <AlertDismissible title = {'Token'} text={text} show={show} setShow={setShow}/>
+       <div className={style.resetPasswordContainer}>
       <h2>{language.reset_password}</h2>
       <Form onSubmit={handleResetPassword}>
       <Form.Group className="mb-3" controlId="formNewPassword">
@@ -77,6 +83,8 @@ const ResetPassword = () => {
       </Button>
     </Form>
     </div>
+    
+    </>
   );
 };
 
