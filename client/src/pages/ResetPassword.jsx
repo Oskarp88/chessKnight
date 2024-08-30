@@ -31,7 +31,7 @@ const ResetPassword = () => {
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
     setError(prev => ({
-      ...prev, password: ''
+      ...prev, passwordConfirm: ''
     }))
   };
 
@@ -78,7 +78,7 @@ const ResetPassword = () => {
 
   return (
     <div className={style.container}> 
-      {show && <AlertDismissible title = {'Token'} text={text} show={show} setShow={setShow}/>}
+      {show && <AlertDismissible title = {'Token'} text={text} show={show} setShow={setShow} variant={'error'}/>}
        <div className={style.resetPasswordContainer}>
         <h2>{language.reset_password}</h2>
         <Form onSubmit={handleResetPassword}>
