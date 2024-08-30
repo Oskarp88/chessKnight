@@ -40,6 +40,8 @@ const ResetPassword = () => {
         newPassword: password,
       });
 
+      console.log('response', response)
+
       if (response.data.success) {
         toast.success(response.data.message);
       } else {
