@@ -237,7 +237,7 @@ exports.resetPassword = async(req, res) =>{
       });
   
       if (!user) {
-        return res.status(400).json({ error: 'Token inválido o expirado' });
+        return res.status(400).json({success: false, message: 'Token inválido o expirado' });
       }
        
       const hashedPassword = await hashPassword(newPassword);
@@ -246,10 +246,10 @@ exports.resetPassword = async(req, res) =>{
       user.resetTokenExpiration = null;
       await user.save();
   
-      res.status(200).json({ message: 'Contraseña restablecida con éxito' });
+      res.status(200).json({success: true, message: 'Contraseña restablecida con éxito' });
     } catch (error) {
       console.error('Error al restablecer la contraseña:', error);
-      res.status(500).json({ error: 'Error al restablecer la contraseña' });
+      res.status(500).json({ success: false, message: 'Error al restablecer la contraseña' });
     }
 }
 

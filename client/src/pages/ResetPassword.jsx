@@ -40,14 +40,14 @@ const ResetPassword = () => {
         newPassword: password,
       });
 
-      if (response.data) {
+      if (response.data.success) {
         toast.success(response.data.message);
       } else {
-        toast.error(response.data.error);
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
