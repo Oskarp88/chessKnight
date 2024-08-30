@@ -38,11 +38,11 @@ const ResetPassword = () => {
        error.password = 'Password is require';
     }
 
-    if(!passwordConfirm){
+    if(!confirmPassword){
      error.passwordConfirm = 'Confirm Password is require';
     }
 
-    if(!password || !passwordConfirm) return;
+    if(!password || !confirmPassword) return;
      
     if (password !== confirmPassword) {
       toast.error('La Contraseña no coinciden');
