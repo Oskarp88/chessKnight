@@ -56,7 +56,7 @@ const ResetPassword = () => {
 
   return (
     <> 
-      <AlertDismissible title = {'Token'} text={text} show={show} setShow={setShow}/>
+      {show && <AlertDismissible title = {'Token'} text={text} show={show} setShow={setShow}/>}
        <div className={style.resetPasswordContainer}>
       <h2>{language.reset_password}</h2>
       <Form onSubmit={handleResetPassword}>
