@@ -46,7 +46,7 @@ const ResetPassword = () => {
 
     if(!confirmPassword){
       setError(prev => ({
-        ...prev, password: 'Confirm Password is require'
+        ...prev, passwordConfirm: 'Confirm Password is require'
       }))
     }
 
