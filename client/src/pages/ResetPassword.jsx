@@ -27,12 +27,12 @@ const ResetPassword = () => {
 
     if (error.bandera === 'caracteres' && password.length > 6 || /[A-Z]/.test(password) || /\d/.test(password)){
       setError(prev => ({
-        ...prev, password: ''
+        ...prev, password: '', bandera: '',
       }));
     }
     if(error.bandera === 'vacio'){
       setError(prev => ({
-        ...prev, password: ''
+        ...prev, password: '', bandera: '',
       }));
     }
    
