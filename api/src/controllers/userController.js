@@ -237,7 +237,7 @@ exports.resetPassword = async(req, res) =>{
       });
   
       if (!user) {
-        return res.status(400).json({success: false, message: 'Token inválido o expirado. Por favor vuelve a enviar nueva mente tu correo. Tienes solo 10 minutos para cambiar tu contrasaña antes que expire el token de seguridad.' });
+        return res.status(400).json({success: false, message: 'Token inválido o expirado. Por favor vuelve a enviar nueva mente tu correo. Tienes solo 10 minutos para cambiar tu contraseña antes que expire el token de seguridad.' });
       }
        
       const hashedPassword = await hashPassword(newPassword);

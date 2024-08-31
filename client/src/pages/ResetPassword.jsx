@@ -16,6 +16,7 @@ const ResetPassword = () => {
   const [error, setError] = useState({
      password: '',
      passwordConfirm: '',
+     bandera: '',
   });
   const [show, setShow] = useState(false);
   const {language} = useLanguagesContext();
@@ -23,9 +24,18 @@ const ResetPassword = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setError(prev => ({
-      ...prev, password: ''
-    }))
+
+    if (error.bandera === 'caracteres' && password.length > 6 || /[A-Z]/.test(password) || /\d/.test(password)){
+      setError(prev => ({
+        ...prev, password: ''
+      }));
+    }
+    if(error.bandera === 'vacio'){
+      setError(prev => ({
+        ...prev, password: ''
+      }));
+    }
+   
   };
 
   const handleConfirmPasswordChange = (e) => {
@@ -40,8 +50,15 @@ const ResetPassword = () => {
 
     if(!password){
       setError(prev => ({
-        ...prev, password: 'Password is require'
-      }))
+        ...prev, password: 'Password is require',
+        bandera: 'vacio'
+      }));
+    }else if (password.length < 6 || !/[A-Z]/.test(password) || !/\d/.test(password)) {
+       setError(prev => ({
+         ...prev, 
+         password: 'Password must be at least 6 characters long and contain at least one uppercase letter and one number',
+         bandera: 'caracteres'
+       }));
     }
 
     if(!confirmPassword){
@@ -50,7 +67,7 @@ const ResetPassword = () => {
       }))
     }
 
-    if(!password || !confirmPassword) return;
+    if(!password || !confirmPassword || error.bandera) return;
      
     if (password !== confirmPassword) {
       toast.error('La Contraseña no coinciden');
