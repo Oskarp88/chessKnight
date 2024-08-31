@@ -67,12 +67,14 @@ const ResetPassword = () => {
       }))
     }
 
-    if(!password || !confirmPassword || error.bandera) return;
+    if(!password || !confirmPassword) return;
      
     if (password !== confirmPassword) {
       toast.error('La Contraseña no coinciden');
       return;
     }
+
+    if(error.bandera) return;
 
     try {
       const response = await axios.post(`${baseUrl}/user/reset-password`, {
