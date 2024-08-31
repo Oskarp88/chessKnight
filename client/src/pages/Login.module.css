@@ -26,10 +26,10 @@
     justify-content: center;
     align-items: center;
   }
-  h2 {
+  .h2 {
     font-size: 25px;
     font-weight: 600;
-    color: #ccc;
+    color: #f4f4f4;
     margin: 10px;
     font-family: "Roboto",sans-serif;
   }
@@ -146,7 +146,7 @@
   }
 
   .oauth{
-    width: 93%;
+    width: 100%;
     margin: auto;
     align-items: center;
     justify-content: center;

@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import style from './Login.module.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { useAuth } from '../context/authContext';
 import  toast from 'react-hot-toast';
 import GoogleOAuht from '../components/oauth/GoogleOAuth';
@@ -68,37 +69,42 @@ const Login = () => {
   return (
     <div className={style.backgroundImage}>
       <div className={style.container} > 
-        <form className={style.form} onSubmit={handleSubmit}>
+        <Form className={style.form} onSubmit={handleSubmit}>
           <div className={style.h2}>
             <h2 style={{ textTransform: 'uppercase' }}>{language?.login}</h2>
           </div>
           <label style={{ textTransform: 'uppercase' }}>{language.email}</label>
-          <input
-            type="email"
+          <Form.Control 
+            type="email" 
             name="email"
-            className={style.email}
             placeholder={language.email}
             value={formData.email}
             onChange={handleChange}
           />
           <br />
           <label style={{ textTransform: 'uppercase' }}>{language.password}</label>
-          <input
-            type="password"
-            name="password"
-            className={style.pwd}
-            placeholder={language.password}
-            value={formData.password}
-            onChange={handleChange}
+          <Form.Control 
+             type="email"
+             name="password" 
+             placeholder={language.password} 
+             value={formData.password}
+             onChange={handleChange}
           />
+
           <Link className={style.link} to="/forgot-password">
             <a >{language.Forgot_your_password}</a>
           </Link>
           <br />
-         
-          <button className={style.signin} type="submit">
+          <Button 
+            
+            type="submit"
+            className='text-uppercase'
+          >
+            {language.sign_in}
+          </Button>
+          {/* <button className={style.signin} type="submit">
             <span>{language.sign_in}</span>
-          </button>
+          </button> */}
            <div className={style.customer}>
                 <p className="text-white">
                    {language.New_user} {" "}
@@ -112,9 +118,8 @@ const Login = () => {
             </div>
           <div className={style.oauth}>
             <GoogleOAuht/>
-          </div>
-          
-        </form>
+          </div>        
+        </Form>
       </div>
     </div>
   );
