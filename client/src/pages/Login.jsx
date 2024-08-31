@@ -10,11 +10,13 @@ import  toast from 'react-hot-toast';
 import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
 import { useLanguagesContext } from '../context/languagesContext';
+import { useChessboardContext } from '../context/boardContext';
 
 
 const Login = () => {
   const {language} = useLanguagesContext();
   const { auth, setAuth } = useAuth();
+  const {chessColor} = useChessboardContext();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -68,7 +70,7 @@ const Login = () => {
 
   return (
     <div className={style.backgroundImage}>
-      <div className={style.container} > 
+      <div className={style.container} style={{background: chessColor.background_login}}> 
         <Form className={style.form} onSubmit={handleSubmit}>
           <div className={style.h2}>
             <h2 style={{ textTransform: 'uppercase' }}>{language?.login}</h2>
@@ -102,9 +104,6 @@ const Login = () => {
           >
             {language.sign_in}
           </Button>
-          {/* <button className={style.signin} type="submit">
-            <span>{language.sign_in}</span>
-          </button> */}
            <div className={style.customer}>
                 <p className="text-white">
                    {language.New_user} {" "}
