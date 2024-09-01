@@ -28,20 +28,6 @@ const Spinner = ({ path = 'login'}) => {
 
   useEffect(()=>{
     if(count > 0 ) return;
-     console.log('vuelve a iniciar sesion');
-     setAuth({
-      ...auth,
-      user: null,
-      token: ''
-    });
-   
-    localStorage.removeItem('auth');
-    toast.success('vuelve a iniciar sesion', {
-      autoClose: 3000,
-      closeButton: (
-        <button className={style.closeButton}>X</button>
-      ),
-    });
   },[count]);
 
   return (

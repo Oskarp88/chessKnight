@@ -181,12 +181,24 @@ export function Home() {
             <p style={{color: chessColor.color}}>
               {language?.play_chess_online_and_improve_your_skills}
             </p>
-            <button 
+            {/* <button 
               className={style.playButton} 
               style={{background: chessColor.navbar, boxShadow: chessColor.boxShadow}} 
               onClick={joinRoom}>
                {language?.join_a_room}
-            </button>
+            </button> */}
+                        
+              <button 
+                className={style.wrapper}
+                onClick={joinRoom}
+              >
+              {language?.join_a_room} 
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+            
           </div> 
           <div className={style.table}>
              <div className={style.chevron} onClick={() => handleFormer()}>

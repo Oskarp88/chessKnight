@@ -8,6 +8,6 @@ import { baseUrl } from '../../utils/services';
 export default function PrivateRoute() {
   const { auth } = useAuth();
    console.log('orivate route',auth);
-  return  auth?.user ? <Outlet /> : <Spinner path='/' replace/>;
+  return  auth?.user ? <Outlet /> : <Spinner path='' />;
  
 }

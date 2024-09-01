@@ -46,14 +46,13 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword/>} />
                 <Route path="chess" element={<Chessboard/>} />
-                <Route path='/dashboard' element={<PrivateRoute/>}>
-                    <Route path='user' element={<UserProfile/>}/> 
+                <Route path='/dashbord' element={<PrivateRoute/>}>
+                    <Route path='profile' element={<UserProfile/>}/> 
                     <Route path='next' element={<Register/>}/>                    
                 </Route> 
                 <Route path='/auth' element={<PrivateRoute/>}>
                     <Route path="chat" element={<Chats/>}/>
                     <Route path="channel" element={<Channel/>} />
-                    <Route path="chat" element={<Chats/>}/>
                 </Route>                     
               </Routes>
               </Router>

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import style from './Registro.module.css';
 import axios from 'axios';
 import  toast  from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useChessboardContext } from '../context/boardContext';
 import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
 import { useLanguagesContext } from '../context/languagesContext';
+import { useAuth } from '../context/authContext';
 
 const Registro = ({ onSubmit }) => {
+  const {auth} = useAuth();
   const { boardColor } = useChessboardContext();
   const {language} = useLanguagesContext();
   const [countries, setCountries] = useState([]);
@@ -37,6 +39,16 @@ const Registro = ({ onSubmit }) => {
     confirmPassword: '',
     country: '',
   });
+
+  const {search} = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get('redirect') || '/'
+
+    useEffect(() => {
+        if(auth?.user){
+            navigate(redirect)
+        }
+    },[navigate, redirect, auth?.user]);
 
   useEffect(() => {
     const fetchCountries = async () => {

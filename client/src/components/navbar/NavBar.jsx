@@ -51,15 +51,15 @@ function NavBar() {
    }
 
    const firstName = (auth?.user?.name || "").charAt(0).toUpperCase() + (auth?.user?.name || "").slice(1);
-const trimmedFirstName = firstName.substring(0, 8);
+    const trimmedFirstName = firstName.substring(0, 8);
 
-const lastName = (auth?.user?.lastName || "").charAt(0).toUpperCase() + (auth?.user?.lastName || "").slice(1);
-const trimmedLastName = lastName.substring(0, 8);
+    const lastName = (auth?.user?.lastName || "").charAt(0).toUpperCase() + (auth?.user?.lastName || "").slice(1);
+    const trimmedLastName = lastName.substring(0, 8);
 
-const handleThemeToggle = () => {
-  setTheme((prevTheme) => (prevTheme === 0 ? 1 : 0));
-  localStorage.setItem('theme', theme === 0 ? 1 : 0);
-};
+    const handleThemeToggle = () => {
+      setTheme((prevTheme) => (prevTheme === 0 ? 1 : 0));
+      localStorage.setItem('theme', theme === 0 ? 1 : 0);
+    };
 
 const handleLogout = () => {
   setAuth({
@@ -90,25 +90,25 @@ return (
       {auth?.user ? 
          <>
            
-           <Navbar.Brand href="/dashboard/user" className='d-flex justify-content-center align-items-center' style={{color: chessColor.color1}}>
+           <Navbar.Brand href="/dashboard/profile" className='d-flex justify-content-center align-items-center text-white' >
               <div className={styles.userprofile}>           
                 <img className={styles.profileSidebar} src={auth?.user?.photo} alt=''/>
               </div>
               {`${trimmedFirstName} ${trimmedLastName}`}
            </Navbar.Brand>
          </> :
-        <Navbar.Brand href="/dashboard/user" style={{color: chessColor.color1}}>ChessKnight</Navbar.Brand>
+        <Navbar.Brand href="/" className='text-white'>ChessKnight</Navbar.Brand>
       }
       <Navbar.Toggle aria-controls="basic-navbar-nav" style={{border: `solid 1px ${chessColor.color1}`, backgroundColor: chessColor.color1, color: chessColor.color1}}/>
-      <Navbar.Collapse id="basic-navbar-nav" style={{color: chessColor.color1}}>
+      <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-        <Nav.Link href="/" style={{color: chessColor.color1}}>{language?.home}</Nav.Link>
+        <Nav.Link href="/" style={{color: '#fdfefe'}}>{language?.home}</Nav.Link>
           {!auth?.user ? (
             <>             
-              <Nav.Link href="/login" style={{color: chessColor.color1}}>{language?.login}</Nav.Link>
-              <Nav.Link href="/register" style={{color: chessColor.color1}}>{language?.register}</Nav.Link>
+              <Nav.Link href="/login" style={{color: '#fdfefe'}}>{language?.login}</Nav.Link>
+              <Nav.Link href="/register" style={{color:'#fdfefe'}}>{language?.register}</Nav.Link>
               <CustomNavDropdown 
-                  title={<span style={{ color: chessColor.color1 }}>{language?.dashboard}</span>}
+                  title={<span style={{ color: '#fdfefe' }}>{language?.dashboard}</span>}
                   style={{ "--bs-dropdown-caret-color": chessColor.color1 }}
                 >                                  
                   <NavDropdown.Item 
@@ -145,10 +145,10 @@ return (
               
              <>
                 <CustomNavDropdown 
-                  title={<span style={{ color: chessColor.color1 }}>{language?.dashboard}</span>}
+                  title={<span style={{ color:'#fdfefe' }}>{language?.dashboard}</span>}
                   style={{ "--bs-dropdown-caret-color": chessColor.color1 }}
                 >                
-                  <NavDropdown.Item href="/dashboard/user" style={{color: chessColor.color}}>{language?.profile}</NavDropdown.Item>                   
+                  <NavDropdown.Item href="/dashboard/profile" style={{color: chessColor.color}}>{language?.profile}</NavDropdown.Item>                   
                   
                   <NavDropdown.Item 
                     className='d-flex' 
