@@ -20,8 +20,7 @@ import PrivateRoute from "./components/routes/PrivateRoute";
 import UserProfile from "./pages/user/UserProfile";
 import Channel from "./components/channel/Channel";
 import { SocketProvider } from "./context/socketContext";
-import toast, { Toaster } from 'react-hot-toast';
-import ChatBox from "./components/chat/ChatBox";
+import { Toaster } from 'react-hot-toast';
 
 import Register from "./pages/user/Register";
 import { LanguagesProvider } from "./context/languagesContext";

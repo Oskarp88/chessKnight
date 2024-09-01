@@ -90,6 +90,7 @@
     border-bottom-left-radius: 1px;
     animation: span3 2s linear infinite;
     animation-delay: 3s;
+    
 }
 @keyframes span3{
     0%{

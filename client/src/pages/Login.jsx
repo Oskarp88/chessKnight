@@ -11,6 +11,9 @@ import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
 import { useLanguagesContext } from '../context/languagesContext';
 import { useChessboardContext } from '../context/boardContext';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 const Login = () => {
@@ -69,57 +72,65 @@ const Login = () => {
   };
 
   return (
-    <div className={style.backgroundImage}>
-      <div className={style.container} style={{background: chessColor.background_login}}> 
-        <Form className={style.form} onSubmit={handleSubmit}>
-          <div className={style.h2}>
-            <h2 style={{ textTransform: 'uppercase' }}>{language?.login}</h2>
-          </div>
-          <label style={{ textTransform: 'uppercase' }}>{language.email}</label>
-          <Form.Control 
-            type="email" 
-            name="email"
-            placeholder={language.email}
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <br />
-          <label style={{ textTransform: 'uppercase' }}>{language.password}</label>
-          <Form.Control 
-             type="email"
-             name="password" 
-             placeholder={language.password} 
-             value={formData.password}
-             onChange={handleChange}
-          />
-
-          <Link className={style.link} to="/forgot-password">
-            <a >{language.Forgot_your_password}</a>
-          </Link>
-          <br />
-          <Button 
-            
-            type="submit"
-            className='text-uppercase'
-          >
-            {language.sign_in}
-          </Button>
-           <div className={style.customer}>
-                <p className="text-white">
-                   {language.New_user} {" "}
-                   <Link 
-                     to={redirect ? `/register?redirect=${redirect}` : '/register'}
-                     className={style.registerLink}
-                   >
-                     {language.register}
-                   </Link>
+    <div className={style.backgroundImage} style={{background: chessColor.fondo}}>
+      <Container className='d-flex justify-content-center align-items-center'>
+        <Row>
+           <Col className='d-flex flex-column justify-content-center align-items-start'>
+             <img src={'logo/chessnight.png'} className={style.logo} alt="" />
+             <div className={style.text}>
+                <p className='text-start ' style={{color: chessColor.color}}>
+                  ¡Bienvenido a ChessNight! Prepárate para desafiar a jugadores de todo el mundo en emocionantes partidas de ajedrez online. Mejora tus habilidades, escala en la clasificación y demuestra que eres el mejor. ¡Inicia sesión y comienza la partida!
                 </p>
-            </div>
-          <div className={style.oauth}>
-            <GoogleOAuht/>
-          </div>        
-        </Form>
-      </div>
+             </div>
+           </Col>
+           <Col>
+              <div className={style.container} style={{background: chessColor.background_login}}> 
+                <Form className={style.form} onSubmit={handleSubmit}>
+                  <label style={{ textTransform: 'uppercase' }}>{language.email}</label>
+                  <Form.Control 
+                    type="email" 
+                    name="email"
+                    placeholder={language.email}
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  <label style={{ textTransform: 'uppercase' }}>{language.password}</label>
+                  <Form.Control 
+                    type="email"
+                    name="password" 
+                    placeholder={language.password} 
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+
+                  <Link className={style.link} to="/forgot-password">
+                    <a >{language.Forgot_your_password}</a>
+                  </Link>
+                  <Button              
+                    type="submit"
+                    className='text-uppercase'
+                  >
+                    {language.sign_in}
+                  </Button>                
+                  <div className={style.oauth}>
+                    <GoogleOAuht/>
+                  </div> 
+                  <div className={style.customer}>
+                        <p className="text-white">
+                          {language.New_user} {" "}
+                          <Link 
+                            to={redirect ? `/register?redirect=${redirect}` : '/register'}
+                            className={style.registerLink}
+                          >
+                            {language.register}
+                          </Link>
+                        </p>
+                    </div>       
+                </Form>
+              </div>
+           </Col>
+        </Row>
+      </Container>
     </div>
   );
 };
