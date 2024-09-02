@@ -50,7 +50,7 @@ export const RankingTableBullet = () => {
             </svg>
             <h4>Ranking Bullet</h4>
        </div>
-      <ul>
+      <div className={style.itemContainer}>
           <li 
                 className={style.item} 
               >
@@ -84,7 +84,10 @@ export const RankingTableBullet = () => {
                 </span>
                 <div className={style.name} style={count === 2 || count === 3 || count === 4 ? {marginRight: '15px'} : {}}>
                   <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
-                  <span className={style.friendName}>{o?.username}</span>
+                  <div>
+                     <span className={style.friendName}>{o?.username}</span>
+                     <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                  </div>
                 </div>
                 <span className={style.friendRank}>
                 <svg style={{ color: '#F9A825', marginRight: '10px', marginTop: '-4px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-rocket-takeoff-fill" viewBox="0 0 16 16">
@@ -96,7 +99,7 @@ export const RankingTableBullet = () => {
           </>
         ))
         }
-      </ul>
+      </div>
       { 
         showModal && 
           <ModalProfile 

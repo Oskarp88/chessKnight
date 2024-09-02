@@ -40,7 +40,6 @@ export const RankingTable = () => {
   }
 
   const sortedUsers = users.slice().sort((a, b) => b.eloFast - a.eloFast);
-  console.log('sorted',sortedUsers)
 
    let count = 1; 
   return (
@@ -52,15 +51,15 @@ export const RankingTable = () => {
             </svg>
             <h4>Ranking Fast</h4>
        </div>
-      <ul className={style.itemContainer}>
+      <div className={style.itemContainer}>
           <li 
             className={style.item} 
           >
-            <span>{"#"}</span>
+            <span>{"RANGO"}</span>
             <div>
-              <span className={style.friendName}>{'Nombre'}</span>
+              <span className={style.friendName}>{'NOMBRE'}</span>
             </div>
-            <span className={style.friendRank}>{'ranking'}</span>
+            <span className={style.friendRank}>{'PUNTUACIÓN'}</span>
           </li>
         {sortedUsers.length !== 0 ?  sortedUsers.map((o, index) => (
           <>
@@ -81,7 +80,10 @@ export const RankingTable = () => {
                 </span>
                 <div className={style.name} style={count === 2 || count === 3 || count === 4 ? {marginRight: '15px'} : {}}>
                   <img className={style.userIcon} src={o?.photo} alt='' />                  
-                  <span className={style.friendName}>{o?.username}</span>
+                  <div>
+                     <span className={style.friendName}>{o?.username}</span>
+                     <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                  </div>
                 </div>
                 <span className={style.friendRank}>
                 <svg style={{ color: '#1cec23', marginRight: '10px', marginTop: '-5px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
@@ -96,7 +98,7 @@ export const RankingTable = () => {
             <SpinnerDowloand text={'Cargando rating....'}/>
           </div>
         }
-      </ul>
+      </div>
       { 
         showModal && 
           <ModalProfile 

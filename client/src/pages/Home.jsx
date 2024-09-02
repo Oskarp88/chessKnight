@@ -174,9 +174,9 @@ export function Home() {
       <div className={style.image}>
         <div className={style.home}>
           <div className={style.homestyle}>
-            <h1 className={style.titulo} style={{color: chessColor.titulo}}>
-              {language.welcome_to} <br/>
-              ChessKNIGTH
+            <img src={'logo/chessnight.png'} className={style.logo} alt="" />
+            <h1 className={style.titulo} style={{color: chessColor.titulo}}>           
+              {language.welcome_to} 
             </h1>
             <p style={{color: chessColor.color}}>
               {language?.play_chess_online_and_improve_your_skills}
