@@ -111,9 +111,8 @@
   }
   
   .name{
+    width: 15rem;
     margin-left: 5px; 
-    min-width: 9rem;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -411,26 +410,56 @@
       margin: 0;
       margin-top: 2rem;
       padding: 2px;
-      width: 30rem;
+      width: 28rem;
       height: 90%;
+    }
+    .name{
+      width: 12rem;
     }
   }
 
-  @media (max-width: 450px){
+  @media (max-width: 580px){
     .tercerdiv {
-      margin: 0;
-      margin-top: 2rem;
       padding: 0;
-      width: 20rem;
+      width: 25rem;
       height: 30rem;
     }
-    .title{
-      width: 19.85rem;
+    .name{
+      width: 10rem;
     }
-    .item {
-      width: 17rem;
+    .rango{
+      width: 4rem;
+      display: flex;
     }
-    .frienditem {
-      width: 17rem;
+  }
+
+  @media (max-width: 520px){
+    .tercerdiv {
+      width: 20rem;
+    }
+    .puntuacion{
+      width: 1.8rem;
+    }
+    .name{
+      width: 8rem;
+    }
+   
+  }
+
+  @media (max-width: 405px){
+    .tercerdiv {
+      padding: 0;
+      width: 18rem;
+      height: 30rem;
+    }
+    .name{
+      margin-left: -1rem;
+    }
+    .rango{
+      width: 3rem;
+      display: flex;
+    }
+    .friendName span{
+      margin-left: 2rem;
     }
   }

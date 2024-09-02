@@ -84,7 +84,7 @@ export const RankingTable = () => {
                     <div className={style.name}>
                       <img className={style.userIcon} src={o?.photo} alt='' />                  
                       <div className={style.column}>
-                        <span>{o?.username}</span>
+                        <span>{o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }</span>
                         <img src={o?.imagenBandera} className={style.bandera} alt="" />
                       </div>
                     </div>
