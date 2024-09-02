@@ -431,6 +431,9 @@
       width: 4rem;
       display: flex;
     }
+    .friendName span{
+      margin-left: 3rem;
+    }
   }
 
   @media (max-width: 520px){
@@ -442,8 +445,11 @@
     }
     .name{
       width: 8rem;
+      margin-left: -1rem;
     }
-   
+    .friendName span{
+      margin-left: 2rem;
+    }
   }
 
   @media (max-width: 405px){
@@ -460,6 +466,6 @@
       display: flex;
     }
     .friendName span{
-      margin-left: 2rem;
+      margin-left: 1rem;
     }
   }
