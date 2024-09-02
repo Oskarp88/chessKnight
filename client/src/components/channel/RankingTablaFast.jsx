@@ -3,6 +3,8 @@ import style from './RankingTabla.module.css';
 import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 
 export const RankingTable = () => {
@@ -43,7 +45,7 @@ export const RankingTable = () => {
 
    let count = 1; 
   return (
-    <div className={style.tercerdiv} style={{border: '1px solid #229954'}}>
+    <div className={style.tercerdiv} style={{border: '2px solid #229954'}}>
        <div className={style.title}>            
             <svg style={{ color: '#50c256', marginRight: '10px', marginTop: '7px' }} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
                 <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
@@ -51,46 +53,54 @@ export const RankingTable = () => {
             </svg>
             <h4>Ranking Fast</h4>
        </div>
-      <div className={style.itemContainer}>
-          <li 
-            className={style.item} 
-          >
+          <li className={style.item}>
             <span>{"RANGO"}</span>
-            <div>
-              <span className={style.friendName}>{'NOMBRE'}</span>
+            <div className={style.friendName}>
+              <span >{'NOMBRE'}</span>
             </div>
-            <span className={style.friendRank}>{'PUNTUACIÓN'}</span>
+            <span>{'PUNTUACIÓN'}</span>
           </li>
+      <div className={style.itemContainer}>
+          
         {sortedUsers.length !== 0 ?  sortedUsers.map((o, index) => (
           <>
                <li 
                 key={index} 
                 className={`${style.frienditem}`}              
-                // onMouseEnter={() => setHoveredFriend(o._id)}
-                // onMouseLeave={() => setHoveredFriend(null)}
                 onClick={() => handleModalOpen(o?._id)}
               > 
-                <span>
-                   {count++}.                 
-                  {
-                    count === 2 ?  <img className={style.medallaIcon} src='fondos/firts.png' alt='assets/avatar/user.png' /> :
-                    count === 3 ? <img className={style.medallaIcon} src='fondos/second.png' alt='assets/avatar/user.png' /> : 
-                    count === 4 ? <img className={style.medallaIcon} src='fondos/three.png' alt='assets/avatar/user.png' /> : ''
-                  }              
-                </span>
-                <div className={style.name} style={count === 2 || count === 3 || count === 4 ? {marginRight: '15px'} : {}}>
-                  <img className={style.userIcon} src={o?.photo} alt='' />                  
+                <Row>
+                  <Col>
+                    <span className={style.rango}>
+                      {count++}.                 
+                      {
+                        count === 2 ?  <img className={style.medallaIcon} src='fondos/firts.png' alt='assets/avatar/user.png' /> :
+                        count === 3 ? <img className={style.medallaIcon} src='fondos/second.png' alt='assets/avatar/user.png' /> : 
+                        count === 4 ? <img className={style.medallaIcon} src='fondos/three.png' alt='assets/avatar/user.png' /> : ''
+                      }              
+                    </span>
+                  </Col>
+                   <Col>
+                    <div className={style.name}>
+                      <img className={style.userIcon} src={o?.photo} alt='' />                  
+                      <div className={style.column}>
+                        <span>{o?.username}</span>
+                        <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                      </div>
+                    </div>
+                   </Col>
+                </Row>
+                <div className={style.friendRank}>
                   <div>
-                     <span className={style.friendName}>{o?.username}</span>
-                     <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                    <svg style={{ color: '#1cec23', marginRight: '10px', marginTop: '-5px' }} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                      <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                    </svg> 
                   </div>
+                  <span className={style.puntuacion}>
+                    {o?.eloFast}
+                  </span>
                 </div>
-                <span className={style.friendRank}>
-                <svg style={{ color: '#1cec23', marginRight: '10px', marginTop: '-5px' }} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
-            </svg> 
-                    {o?.eloFast}</span>
               </li>
           </>
         )) : 

@@ -1,6 +1,6 @@
 
 .tercerdiv {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid #3498db;
     border-radius: 5px;
     color: #ffffff;
@@ -9,10 +9,37 @@
     width: 30rem;
     height: 30rem;
   }
+  
+  .title{
+    border-radius: 5px 0 0 5px;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(68.8deg, rgba(0, 0, 0, 0.95) 1.8%, rgb(0, 55, 79) 31.8%, rgb(9, 93, 134) 56.2%, rgb(15, 155, 217) 89%);
+  }
 
   .itemContainer{
-    width: 100%;   
+    width: 100%;  
+    max-height: 25rem;
+    overflow-y: auto;
   }
+
+  /* Estilos personalizados para el scrollbar */
+.itemContainer::-webkit-scrollbar {
+  width: 6px; /* Ajusta el grosor del scrollbar */
+}
+
+.itemContainer::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color de fondo del track del scrollbar */
+}
+
+.itemContainer::-webkit-scrollbar-thumb {
+  background-color: #3498db; /* Color del thumb (barra de desplazamiento) */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.itemContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color del thumb al hacer hover */
+}
   .item {
     background: radial-gradient(circle at 74.2% 50.9%, rgb(55, 89, 174) 5.2%, rgb(3, 22, 65) 75.3%);    display: flex;
     align-items: center; /* Alinea los elementos verticalmente */
@@ -22,6 +49,16 @@
     padding: 10px;
     cursor: pointer;
     height: 12px;
+  }
+
+  .friendName{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .friendName span{
+    margin-left: 4rem;
   }
 
   .bandera{
@@ -34,7 +71,7 @@
     display: flex;
     align-items: center; /* Alinea los elementos verticalmente */
     justify-content: space-between;
-    margin: 10px;
+    margin: 5px;
     margin-top: 2px;
     margin-bottom: 2px;
     padding: 2px 10px 2px 10px;
@@ -62,6 +99,11 @@
     margin-right: 5px; /* Espaciado entre el icono y el nombre */
   }
 
+  .rango{
+    width: 5rem;
+    display: flex;
+  }
+
   .medallaIcon{
     width: 40px;
     height: 40px;
@@ -69,18 +111,32 @@
   }
   
   .name{
-    margin-left: 10px; 
-    width: 6rem;
+    margin-left: 5px; 
+    min-width: 9rem;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
   }
 
-  .title{
-    display: flex;
-    justify-content: center;
-    background: linear-gradient(68.8deg, rgba(0, 0, 0, 0.95) 1.8%, rgb(0, 55, 79) 31.8%, rgb(9, 93, 134) 56.2%, rgb(15, 155, 217) 89%);
+  .column{
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: flex-start;
   }
+
+  .friendRank{
+    display: flex;
+  }
+
+  .puntuacion{
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   .profile{
     margin-top: 5px;
     width: 9rem;
