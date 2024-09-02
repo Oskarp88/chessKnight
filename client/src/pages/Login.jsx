@@ -73,18 +73,20 @@ const Login = () => {
 
   return (
     <div className={style.backgroundImage} style={{background: chessColor.fondo}}>
-      <Container className='d-flex justify-content-center align-items-center'>
-        <Row>
-           <Col className='d-flex flex-column justify-content-center align-items-start'>
+      <Container className={style.container}>
+        <Row className="d-flex flex-column flex-lg-row">
+           <Col className={style.columUno}>
              <img src={'logo/chessnight.png'} className={style.logo} alt="" />
              <div className={style.text}>
-                <p className='text-start ' style={{color: chessColor.color}}>
-                  ¡Bienvenido a ChessNight! Prepárate para desafiar a jugadores de todo el mundo en emocionantes partidas de ajedrez online. Mejora tus habilidades, escala en la clasificación y demuestra que eres el mejor. ¡Inicia sesión y comienza la partida!
+                <p className='text-center ' style={{color: chessColor.color}}>
+                  Desafia a jugadores de todo el mundo. Mejora tus habilidades, 
+                  escala en la clasificación y 
+                  demuestra que eres el mejor.
                 </p>
              </div>
            </Col>
            <Col>
-              <div className={style.container} style={{background: chessColor.background_login}}> 
+              <div className={style.login} style={{background: chessColor.background_login}}> 
                 <Form className={style.form} onSubmit={handleSubmit}>
                   <label style={{ textTransform: 'uppercase' }}>{language.email}</label>
                   <Form.Control 

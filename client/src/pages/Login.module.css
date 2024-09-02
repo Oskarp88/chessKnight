@@ -1,3 +1,5 @@
+
+
 /* Login.module.css */
 .backgroundImage {
     color: #ccc;
@@ -5,20 +7,29 @@
     width: 100%;
     height: 100vh;
   }
-  .container {
+
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .login {
     display: block;
     border: 1px solid #115785;
     margin-top: 1rem;
-    /* background: linear-gradient(to top, rgba(35, 33, 33, 0.2) 0%, rgba(7, 43, 72, 0.7) 100%); */
     width: 530px;
     height: auto;
     margin: auto;
-    box-shadow: 1px 5px 10px 6px #aaa2a2;
+    box-shadow: 1px 2px 6px 4px #3d3939;
     overflow:hidden;
-    /* Cambiada la opacidad aquí */
-
   }
 
+  .columUno{
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    justify-content: center;
+  }
   .logo{
     width: 80%;
   }
@@ -88,24 +99,33 @@
     color: #ebecd0; /* Color más oscuro en hover */
     font-weight: bold;
   }
-  
-  .container {
-    /* Otros estilos */
-   
-    background-size: cover;
-    background-position: center;
-    @media screen and (min-width: 768px){ 
-      
-      border-radius: 10px;
-      overflow-y: visible;
-    }
-  }
 
   .oauth{
     width: 100%;
     margin-top: 5px;
     align-items: center;
     justify-content: center;
+  }
+
+  @media (max-width: 650px){
+    .backgroundImage{
+      height: 120vh;
+    }
+    .container{
+      margin-top: 4rem;
+      justify-content: flex-start;
+      align-items: flex-start;
+      
+    }
+    .login {
+      width: 95%;
+    }
+    .columUno{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
 

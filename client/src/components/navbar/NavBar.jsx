@@ -97,7 +97,7 @@ return (
               {`${trimmedFirstName} ${trimmedLastName}`}
            </Navbar.Brand>
          </> :
-        <Navbar.Brand href="/" className='text-white'>ChessKnight</Navbar.Brand>
+        <Navbar.Brand href="/" ><img src="/logo/chessnavar.png" alt="" className={styles.logo}/></Navbar.Brand>
       }
       <Navbar.Toggle aria-controls="basic-navbar-nav" style={{border: `solid 1px ${chessColor.color1}`, backgroundColor: chessColor.color1, color: chessColor.color1}}/>
       <Navbar.Collapse id="basic-navbar-nav">

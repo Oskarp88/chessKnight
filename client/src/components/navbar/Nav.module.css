@@ -51,28 +51,15 @@
   color: #fff;
   margin: 5px 10px;
 }
-.img{
-  cursor: pointer;
-  display: flex;
-  width: 13.5rem;
-  height: 2.5rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  align-items: center;
-  justify-content: flex-end;
-}
 
-.img p{
-  margin-top: 10px;
-  padding-right: 5px;
-}
 
 .logo{
-  height: 50px;
-  width: auto;
-  transition: all 0.3s;
+  width: 10rem;
+  cursor: pointer;
 }
 
 .logo:hover{
+  transition: 0.5s;
   transform: scale(1.2);
  }
 
