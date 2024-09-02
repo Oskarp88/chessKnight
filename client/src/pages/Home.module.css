@@ -470,6 +470,12 @@
     }
   }
 
+  @media (max-width: 900px){
+    .table{
+      width: 40rem;
+    }
+  }
+
   @media (max-width: 750px){
    
     .container{

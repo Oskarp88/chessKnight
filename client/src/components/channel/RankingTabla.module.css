@@ -11,7 +11,7 @@
   }
   
   .title{
-    border-radius: 5px 0 0 5px;
+    border-radius: 4px 4px 0 0;
     display: flex;
     justify-content: center;
     background: linear-gradient(68.8deg, rgba(0, 0, 0, 0.95) 1.8%, rgb(0, 55, 79) 31.8%, rgb(9, 93, 134) 56.2%, rgb(15, 155, 217) 89%);
@@ -404,7 +404,11 @@
     width: 100%;
     margin-top: -5px;
   }
-
+  /* @media (max-width: 800px){
+     .title h4{
+        margin-top: -1rem;
+     }
+  } */
   @media (max-width: 690px){
     .tercerdiv {
       margin: 0;
@@ -413,6 +417,9 @@
       width: 28rem;
       height: 90%;
     }
+    .title h4{
+      margin-top: 2px;
+   }
     .name{
       width: 12rem;
     }
