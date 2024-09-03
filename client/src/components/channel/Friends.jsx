@@ -23,7 +23,8 @@ import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
 import { useLanguagesContext } from '../../context/languagesContext';
 
-const Friends = ({ friends, onlineUsers, room, mobile }) => {
+
+const Friends = ({ friends, onlineUsers, room }) => {
   const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
 
   const [hoveredFriend, setHoveredFriend] = useState(null);
@@ -289,7 +290,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} style={ {background: chessColor.fondo2}}>
+    <div className={style.tercerdiv} style={ {background: chessColor.fondo2}}>   
       
       <ul>
         <div className={style.desafio}>
@@ -322,6 +323,7 @@ const Friends = ({ friends, onlineUsers, room, mobile }) => {
                   <span style={{marginRight: '7px', color: chessColor.titulo}}>{count++}.</span>
                   <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
                   <span className={style.friendName} style={{color: chessColor.titulo}}>{o?.username}</span>
+                  <img src={o?.imagenBandera} className={style.bandera} alt="" />
                 </div>
                <div className={style.containerFlex}>
                 { infUser?.time === 60 || infUser?.time === 120 ? 

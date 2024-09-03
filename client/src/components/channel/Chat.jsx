@@ -3,9 +3,9 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import style from './Chat.module.css';
 import { useChessboardContext } from '../../context/boardContext';
 import Picker from 'emoji-picker-react';
-import { CursorSend } from '../../svg';
 import { useAuth } from '../../context/authContext';
 import soundChat from '../../path/to/sonicChat.mp3'
+import {Container, Stack} from 'react-bootstrap';
 
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState('');
@@ -16,6 +16,11 @@ function Chat({ socket, username, room }) {
   const {setView, chessColor} = useChessboardContext();
   const {auth} = useAuth();
   const chatAudio = new Audio(soundChat);
+  const scroll = useRef();
+
+  useEffect(()=>{
+    scroll?.current?.scrollIntoView({behavior: 'smooth'})
+  },[currentMessage]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,21 +102,21 @@ function Chat({ socket, username, room }) {
   
 
   return (
-    <div className={style.chatwindow}>
-      <div className={style.chatheader}  onClick={()=> mobileView()}>
-        <p>Live Chat</p>
+    <div gap={4} className={style.chatBox}>
+      <div className={style.chatHeader}>
+        <strong>Live Chat</strong>
       </div>
-      <div 
-        className={style.chatbody} 
+      <div
+        className={style.messages} 
         style={{background: chessColor.fondo_3}}  
       >
-        <ScrollToBottom className={style.messagecontainer}>
           {messageList.map((messageContent, index) => {
             return (
               <div
                 className={style.message}
                 id={username === messageContent.author ? style.you: style.other}
                 key={index} // Agregar una clave única
+                ref={scroll}
               >
                 <div className={style.containerContentMeta}>
                   <div className={style.containerProfileMessage}>
@@ -130,30 +135,34 @@ function Chat({ socket, username, room }) {
               </div>
             );
           })}
-        </ScrollToBottom>
       </div>
-      <div className={style.chatfooter} >
-      <button
-          className={style.emojibutton}
-          onClick={() => setShowEmoji(!showEmoji)}
-        >😀</button>
-      <input
-        type="text"
-        value={currentMessage}
-        placeholder="Message..."
-        onChange={(event) => {
-          setCurrentMessage(event.target.value);
-          
-        }}
-        onKeyPress={(event) => {
-          event.key === "Enter" && sendMessage();
-        }}
-      />
-
-        <button onClick={sendMessage} className={style.send}>
-          <CursorSend />
+      <Stack direction='horizontal' gap={3} className={`${style.chatInput}  flex-grow-0`} >
+        <button
+            className={style.emojibutton}
+            onClick={() => setShowEmoji(!showEmoji)}
+        >
+          😀
         </button>
-      </div>
+        <input
+          className={style.inputMessage} 
+          type="text"
+          value={currentMessage}
+          placeholder="Message..."
+          onChange={(event) => {
+            setCurrentMessage(event.target.value);
+            
+          }}
+          onKeyPress={(event) => {
+            event.key === "Enter" && sendMessage();
+          }}
+        />
+
+        <button onClick={sendMessage} className={style.sendBtn}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send-fill" viewBox="0 0 16 16">
+            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+          </svg>
+        </button>
+      </Stack>
       <div>
       <div>
      { showEmoji && 

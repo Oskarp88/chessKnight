@@ -5,29 +5,24 @@ import { useSocketContext } from '../../context/socketContext';
 import Friends from './Friends';
 import { ChatContext } from '../../context/ChatContext';
 import { useAuth } from '../../context/authContext';
-import { useNavigate } from 'react-router-dom';
-import { useChessboardContext } from '../../context/boardContext';
 import { baseUrl, getRequest } from '../../utils/services';
-
+import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 const Channel = () => {
-    const {auth, setOk} = useAuth();
-    const {socket, infUser, setAllUsers, setUser, userChess, allUsers, setInfUser} = useSocketContext(); 
-    const [usersCache, setUsersCache] = useState([]);
+    const {auth} = useAuth();
+    const {socket, infUser, setAllUsers, setUser, allUsers, setInfUser} = useSocketContext(); 
     const [isRoom, setIsRoom] = useState(0);
-    const {view} = useChessboardContext();
-    const navigate = useNavigate();
+
     let room = infUser.time ? parseInt(infUser.time) : isRoom;
     // console.log(room, 'room')
     // console.log('room chanel', room);
-    const { createChat, onlineUsers} = useContext(ChatContext);
-    // console.log('onlineUser channel', onlineUsers);
-    const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 725);
-    
-    const [View,setView] = useState(window.innerWidth <= 725);
+    const { onlineUsers} = useContext(ChatContext);
 
     useEffect(()=>{
       const dataTime = localStorage.getItem('time');
+      localStorage.removeItem('chessboard');
     
     if(!isNaN(dataTime) && dataTime) {
       setIsRoom(parseInt(dataTime));
@@ -38,23 +33,7 @@ const Channel = () => {
       socket.emit('userTime', {userId: auth?.user?._id, time: parseInt(dataTime)});
       socket.emit('join-room', isRoom);
     }
-   
-
-    },[]);
-
-    useEffect(() => {
-      localStorage.removeItem('chessboard');
-      const handleResize = () => {
-        setIsMobileView(window.innerWidth <= 725);
-        setView(window.innerWidth <= 725);
-      };
-  
-      window.addEventListener('resize', handleResize);
-  
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
+  },[]);
   
     useEffect(()=>{
       const User = async() => {
@@ -124,18 +103,9 @@ const Channel = () => {
           country: response?.country,
         }
        ));
-      }
-
-      
-      
+      }   
       User();
     },[]);
-
-    // useEffect(() => {
-    //   if (usersCache.length > 0) {
-    //     setAllUsers(usersCache);
-    //   }
-    // }, [usersCache]);
 
     useEffect(() => {
       const getUsers = async() =>{
@@ -152,28 +122,42 @@ const Channel = () => {
     
     }, []);
 
-    useEffect(() => {
-      console.log('isMobileView', isMobileView);
-    
-    }, [isMobileView]);
-
-
   return (
-    <div className={style.contenedor}>
-     
+    <div className={style.contenedor}>     
       <div className={style.flex}>
-      <div 
-        className={style.div2}       
-      >
-        <Chat 
-           room={room}
-           username={auth?.user?.username}
-           socket={socket}         
-        />
+        <Row 
+          className={style.div2}       
+        >
+          <Chat 
+            room={room}
+            username={auth?.user?.username}
+            socket={socket}         
+          />
+        </Row>
+        <Row className={style.div3} >
+          <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
+        </Row>
       </div>
-      <div className={style.div3} >
-        <Friends friends={allUsers} onlineUsers={onlineUsers} room={room} mobile={isMobileView}/>
-      </div>
+      <div className={style.tabs}>
+          <Tabs
+            defaultActiveKey="sala"
+            id="uncontrolled-tab-example"        
+          >
+            <Tab className={style.tab} eventKey="chat" title="chat">
+              <div
+                  className={style.div2}       
+                >
+                  <Chat 
+                    room={room}
+                    username={auth?.user?.username}
+                    socket={socket}         
+                  />
+                </div>
+            </Tab>
+            <Tab eventKey="sala" title="sala">
+              <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
+            </Tab>
+         </Tabs>
       </div>
     </div>
   );
