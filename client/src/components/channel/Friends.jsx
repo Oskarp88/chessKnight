@@ -290,10 +290,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} style={ {background: chessColor.fondo2}}>   
-      
-      <ul>
-        <div className={style.desafio}>
+    <div className={style.tercerdiv} style={ {background: chessColor.fondo2}}> 
+    <div className={style.desafio}>
             <div className={style.titleWithIcon}>
               <h5>
                 {language.Challenge_a_match} {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
@@ -304,7 +302,10 @@ const Friends = ({ friends, onlineUsers, room }) => {
                                             infUser?.time === 180 || infUser.time === 300 ? <BlitzSvg/> :
                                             <FastSvg/>}
             </div>
-        </div>
+        </div>  
+      
+      <div>
+        
         {sortedUsers.length === 0 ? 
           
              <SpinnerDowloand text={`${language.Loading_Players} . . .`}/>
@@ -322,7 +323,9 @@ const Friends = ({ friends, onlineUsers, room }) => {
                 <div>
                   <span style={{marginRight: '7px', color: chessColor.titulo}}>{count++}.</span>
                   <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
-                  <span className={style.friendName} style={{color: chessColor.titulo}}>{o?.username}</span>
+                  <span className={style.friendName} style={{color: chessColor.titulo}}>
+                    {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
+                  </span>
                   <img src={o?.imagenBandera} className={style.bandera} alt="" />
                 </div>
                <div className={style.containerFlex}>
@@ -512,7 +515,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
       } 
           </>
         ))}
-      </ul>
+      </div>
       
     </div>
   );
