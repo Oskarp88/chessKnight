@@ -209,7 +209,7 @@
 
   @media (max-width: 725px){
    .messages {
-    height: 94%;
+    height: 92%;
     overflow-y: auto;
   }
    .chatHeader {
