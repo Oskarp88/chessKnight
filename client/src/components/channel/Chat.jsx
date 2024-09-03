@@ -107,7 +107,8 @@ function Chat({ socket, username, room }) {
         <strong>Live Chat</strong>
       </div>
       <div
-        className={style.messages}   
+        className={style.messages} 
+        style={{backgroundImage: `url(${chessColor.fondoChat})`}}  
       >
           {messageList.map((messageContent, index) => {
             return (

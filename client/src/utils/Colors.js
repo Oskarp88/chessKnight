@@ -14,6 +14,7 @@ export const colorChess = [
       spinner: '4px solid rgba(23, 21, 21, 0.5)',
       colorBorder: '#fff',
       background_login: 'linear-gradient(to top, rgb(35, 33, 33) 0%, rgb(39, 135, 213) 100%)',
+      fondoChat: '/fondos/fondo_chat1.jpg',
     },
     { 
       id: 2, 
@@ -30,5 +31,6 @@ export const colorChess = [
       spinner: '4px solid rgba(255, 255, 255, 0.9)',
       colorBorder: '#85C1E9',
       background_login: 'linear-gradient(to top, rgba(35, 33, 33, 0.2) 0%, rgba(7, 43, 72, 0.7) 100%)',
+      fondoChat: '/fondos/fondo_chat.jpg',
     }
   ]
