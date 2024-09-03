@@ -102,13 +102,16 @@ function Chat({ socket, username, room }) {
   
 
   return (
-    <div gap={4} className={style.chatBox}>
-      <div className={style.chatHeader}>
+    <div gap={4} className={style.chatBox} style={{backgroundImage: `url(${chessColor.fondoChat})`}} >
+      <div 
+        className={style.chatHeader}
+        style={{borderBottom: `1px solid ${chessColor.color}`, color: chessColor.color}}
+
+      >
         <strong>Live Chat</strong>
       </div>
       <div
         className={style.messages} 
-        style={{backgroundImage: `url(${chessColor.fondoChat})`}}  
       >
           {messageList.map((messageContent, index) => {
             return (
