@@ -98,7 +98,7 @@ const Login = () => {
                   />
                   <label style={{ textTransform: 'uppercase' }}>{language.password}</label>
                   <Form.Control 
-                    type="email"
+                    type="password"
                     name="password" 
                     placeholder={language.password} 
                     value={formData.password}
