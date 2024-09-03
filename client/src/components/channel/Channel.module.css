@@ -34,6 +34,10 @@
 
 
 @media (max-width: 725px) {
+  .contenedor {
+    height: 100dvh;
+    
+  }
   .flex{
     display: none;   
   }
