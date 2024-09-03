@@ -15,6 +15,8 @@
 .messages {
   height: 85%;
   overflow-y: auto;
+  background-image: url('../../../public/fondos/fondo_chat.jpg');
+  background-size: cover;
 }
 
 .chatInput {
@@ -43,18 +45,6 @@
   font-family: 'nunito';
 }
  
-  .messagecontainer {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background-color: aqua;
-  }
-  
-  .chatwindow .chatbody .messagecontainer::-webkit-scrollbar {
-    display: none;
-   
-  }
   .message {
     height: auto;
     padding: 10px;
@@ -104,6 +94,10 @@
   #you .messagecontent p{
     margin-left: 15px;
     margin-right: 15px;
+  }
+
+  .messagemeta{
+    display: flex;
   }
   
   #you .messagemeta {
@@ -211,15 +205,12 @@
 }
 
   @media (max-width: 725px){
-   .chatbox{
-      height: 100%;
-   }
    .messages {
-    height: 80%;
+    height: 94%;
     overflow-y: auto;
   }
    .chatHeader {
-    margin-top: 0rem;
+    display: none;
   }
   }
 

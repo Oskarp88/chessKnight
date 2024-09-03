@@ -1,5 +1,5 @@
 .fixed{
-  position: fixed;
+  position: relative;
 }
 .navbar {
   position: fixed; 

@@ -9,11 +9,15 @@ import { baseUrl, getRequest } from '../../utils/services';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { useChessboardContext } from '../../context/boardContext';
 
 const Channel = () => {
+
     const {auth} = useAuth();
     const {socket, infUser, setAllUsers, setUser, allUsers, setInfUser} = useSocketContext(); 
     const [isRoom, setIsRoom] = useState(0);
+    const [toggle, setToggle] = useState('Jugadores');
+    const {chessColor} = useChessboardContext();
 
     let room = infUser.time ? parseInt(infUser.time) : isRoom;
     // console.log(room, 'room')
@@ -122,6 +126,9 @@ const Channel = () => {
     
     }, []);
 
+    const toggleTab = (text) => {
+       setToggle(text)
+    }
   return (
     <div className={style.contenedor}>     
       <div className={style.flex}>
@@ -138,24 +145,33 @@ const Channel = () => {
           <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
         </Row>
       </div>
-      <div className={style.tabs}>
-          <Tabs
-            defaultActiveKey="sala"
-            id="uncontrolled-tab-example"        
+      <div className={style.tabsContainer}>
+          <div className={style.blocTabs}
+             style={{ background: chessColor.fondo4}}
           >
-            <Tab className={style.tab} eventKey="chat" title="chat">
-              <div className={style.div2}>
-                  <Chat 
-                    room={room}
-                    username={auth?.user?.username}
-                    socket={socket}         
-                  />
-                </div>
-            </Tab>
-            <Tab eventKey="sala" title="sala">
-              <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
-            </Tab>
-         </Tabs>
+             <div 
+               className={toggle === 'Chat' ? `${style.tabs} ${style.activeTabs} ` : `${style.tabs}`}
+               style={toggle === 'Chat' ? {background: chessColor.fondo2, color: chessColor.color,} : {}}
+               onClick={()=>toggleTab('Chat')}
+             >Chat Live</div>
+             <div 
+               className={toggle === 'Jugadores' ? `${style.tabs} ${style.activeTabs} ` : `${style.tabs}`}
+               style={toggle === 'Jugadores' ? {background: chessColor.fondo2, color: chessColor.color,} : {}}
+               onClick={()=>toggleTab('Jugadores')}
+             >Jugadores</div>
+          </div>
+          <div className={style.contentTabs}>
+             <div className={toggle === 'Chat' ? `${style.activeContent}` : `${style.content}`}>
+                <Chat 
+                  room={room}
+                  username={auth?.user?.username}
+                  socket={socket}         
+                />
+             </div>
+             <div className={toggle === 'Jugadores' ? `${style.activeContent}` : `${style.content}`}>
+               <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
+             </div>
+          </div>
       </div>
     </div>
   );

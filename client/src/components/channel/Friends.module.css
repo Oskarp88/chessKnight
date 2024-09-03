@@ -319,7 +319,10 @@
 @media (max-width: 725px){
   .tercerdiv {
     margin-top: 0;
-    height: 100vh;
+    height: 100%;
+  }
+  .desafio{
+    margin-top: 0;
   }
   
 }

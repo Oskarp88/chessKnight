@@ -107,8 +107,7 @@ function Chat({ socket, username, room }) {
         <strong>Live Chat</strong>
       </div>
       <div
-        className={style.messages} 
-        style={{background: chessColor.fondo_3}}  
+        className={style.messages}   
       >
           {messageList.map((messageContent, index) => {
             return (
