@@ -139,7 +139,12 @@ function Chat({ socket, username, room }) {
             );
           })}
       </div>
-      <Stack direction='horizontal' gap={3} className={`${style.chatInput}  flex-grow-0`} >
+      <Stack 
+         direction='horizontal' 
+         gap={3} 
+         className={`${style.chatInput} `} 
+         style={{borderTop: `1px solid ${chessColor.color}`, color: chessColor.color}}
+      >
         <button
             className={style.emojibutton}
             onClick={() => setShowEmoji(!showEmoji)}
