@@ -144,9 +144,7 @@ const Channel = () => {
             id="uncontrolled-tab-example"        
           >
             <Tab className={style.tab} eventKey="chat" title="chat">
-              <div
-                  className={style.div2}       
-                >
+              <div className={style.div2}>
                   <Chat 
                     room={room}
                     username={auth?.user?.username}
