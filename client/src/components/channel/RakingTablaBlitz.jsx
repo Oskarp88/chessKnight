@@ -47,19 +47,22 @@ export const RankingTableBlitz = () => {
   return (
     <div className={style.tercerdiv} >
        <div className={style.title}>            
-            <svg style={{ color: '#FFEB3B',marginRight: '10px', marginTop: '7px' }} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
-                <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
-            </svg>
+            <div className={style.icon}>
+              <svg style={{ color: '#FFEB3B'}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                  <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+              </svg>
+            </div>
             <h4>Ranking Blitz</h4>
        </div>
-       <li className={style.item}>
-          <span>{"RANGO"}</span>
-          <div className={style.friendName}>
-            <span >{'NOMBRE'}</span>
-          </div>
-          <span >{'PUNTUACION'}</span>
-        </li>
+      
       <div className={style.itemContainer}>
+         <li className={style.item}>
+            <span>{"RANGO"}</span>
+            <div className={style.friendName}>
+              <span >{'NOMBRE'}</span>
+            </div>
+            <span >{'PUNTUACION'}</span>
+          </li>
         {sortedUsers.length === 0 ? 
           <div style={{marginTop: '30%'}}>
             <SpinnerDowloand text={'Cargando rating....'}/>
@@ -96,8 +99,8 @@ export const RankingTableBlitz = () => {
                     </Col>
                 </Row>
                 <div className={style.friendRank}>
-                    <div>
-                      <svg style={{ color: '#FFEB3B',marginRight: '10px', marginTop: '-4px' }} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                    <div className={style.icon}>
+                      <svg style={{ color: '#FFEB3B' }} xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
                         <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
                       </svg>
                     </div>
