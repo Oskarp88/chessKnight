@@ -37,8 +37,14 @@
     cursor: pointer;
     position: relative;
     padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
     overflow: hidden;
     transition: all .5s;
+    -webkit-box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
 }
 .wrapper span{
     position: absolute;

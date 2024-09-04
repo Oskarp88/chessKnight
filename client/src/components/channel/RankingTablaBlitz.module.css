@@ -1,6 +1,6 @@
 
 .tercerdiv {
-    background-color:  #f9e79f;
+    background-color:  #b7950b;
 	-webkit-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
 	-moz-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
 	-ie-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
@@ -46,6 +46,10 @@
     display: flex;
     justify-content: center;
     background: linear-gradient(68.8deg, rgba(0, 0, 0, 0.95) 1.8%, rgb(75, 79, 0) 31.8%, rgb(132, 134, 9) 56.2%, rgb(217, 204, 15) 89%);
+    -webkit-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
   }
 
   .itemContainer{
@@ -103,7 +107,7 @@
   
   .frienditem {
     height: auto;
-    background: linear-gradient(to top, #dbef48 0%, #7a7930 100%);
+    background: linear-gradient(to top, #fbf83a 0%, #7a7930 100%);
     display: flex;
     align-items: center; /* Alinea los elementos verticalmente */
     justify-content: space-between;
