@@ -22,16 +22,25 @@
   
   .frienditem {
     display: flex;
+    width: 95%;
     align-items: center; /* Alinea los elementos verticalmente */
     justify-content: space-between;
-    margin: 3px 10px 3px 10px;
-    padding: 2px;
-    border: 1px solid #ffffff;
+    margin: 2px 10px 2px 10px;
+    padding: 5px;
     border-radius: 5px;
     cursor: pointer;
-    transition: box-shadow 0.3s ease-in-out;
     padding-left: 10px;
     padding-right: 10px;
+    -webkit-border-radius: 13px;
+    -moz-border-radius: 13px;
+    -ie-border-radius: 13px;
+    border-radius: 13px;
+    background:  linear-gradient(to top, #330867 0%, #64c6f3 100%);
+    float: right;
+    -webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    -moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    -ie-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
   }
   
   .frienditem:hover {
@@ -47,7 +56,19 @@
     background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
     padding: 5px;
     margin-top: 4rem;
-    border-radius: 1rem 4rem 1rem 4rem;
+    margin-bottom: 10px;
+    border-radius: 1rem;
+    -webkit-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+    -moz-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+    -ie-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+    box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+  }
+
+  .desafio h5{
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #dafffe;
   }
 
   .titleWithIcon {
@@ -111,14 +132,25 @@
     align-items: center;
   }
 
-  .containerRanking{
-    padding-left: 3px;
+ 
+
+  .containerRanking {
     display: flex;
-    margin-top: 1px;
+    justify-content: space-between;
+    height: 2.2rem;
+    align-items: center;
     width: 5rem;
-    height: 2rem;
-    border-radius: 0 5px 10px 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 5px;
+    -webkit-border-radius: 13px;
+    -moz-border-radius: 13px;
+    -ie-border-radius: 13px;
+    border-radius: 13px;
+    background: rgba(0,0,0,.3);
+    float: right;
+    -webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    -moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    -ie-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
   }
 
   .containerFlex{
@@ -126,8 +158,10 @@
   }
 
   .friendRank{
-     align-items: flex-end;
+    display: flex;
+     justify-content: flex-end;
      width: 80%;
+     padding-right: 5px;
   }
 
   /* Estilos para el modal */

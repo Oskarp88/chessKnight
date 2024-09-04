@@ -105,7 +105,9 @@ function Chat({ socket, username, room }) {
     <div gap={4} className={style.chatBox}  >
       <div 
         className={style.chatHeader}
-        style={{borderBottom: `1px solid ${chessColor.color}`, color: chessColor.color}}
+        style={{
+            boxShadow: '0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15)',
+        }}
 
       >
         <strong>Live Chat</strong>
@@ -149,7 +151,9 @@ function Chat({ socket, username, room }) {
             className={style.emojibutton}
             onClick={() => setShowEmoji(!showEmoji)}
         >
-          😀
+          <div className={style.icon}>
+           😀
+          </div>
         </button>
         <input
           className={style.inputMessage} 

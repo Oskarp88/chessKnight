@@ -314,16 +314,15 @@ const Friends = ({ friends, onlineUsers, room }) => {
           <>
                <li 
                 key={index} 
-                className={`${style.frienditem} ${hoveredFriend === o._id ? style.frienditemHovered : ''}`}              
+                className={`${style.frienditem} ${hoveredFriend === o._id ? `${style.frienditem} ${style.frienditemHovered}` : ''}`}              
                 onMouseEnter={() => setHoveredFriend(o._id)}
                 onMouseLeave={() => setHoveredFriend(null)}
                 onClick={() => handleModalOpen(o)}
-                style={{border: chessColor.border2}}
               >                
                 <div>
-                  <span style={{marginRight: '7px', color: chessColor.titulo}}>{count++}.</span>
+                  <span style={{marginRight: '7px', color: '#fff'}}>{count++}.</span>
                   <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
-                  <span className={style.friendName} style={{color: chessColor.titulo}}>
+                  <span className={style.friendName} >
                     {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
                   </span>
                   <img src={o?.imagenBandera} className={style.bandera} alt="" />
@@ -353,13 +352,14 @@ const Friends = ({ friends, onlineUsers, room }) => {
                     o?.eloFast  >= 391 && o?.eloFast  <= 549 ? <MaestroIngsinia/> :
                     <GranMaestroInsignia/>
                   } 
+                  
                   <div className={style.containerRanking}>
                    <div >
-                   {infUser?.time === 60 || infUser?.time === 120 ? 
-                      <BulletSvg/> :
-                      infUser?.time === 180 || infUser?.time === 300 ?
-                      <BlitzSvg /> : <FastSvg/>
-                   }
+                    {infUser?.time === 60 || infUser?.time === 120 ? 
+                        <BulletSvg/> :
+                        infUser?.time === 180 || infUser?.time === 300 ?
+                        <BlitzSvg /> : <FastSvg/>
+                    }
                    </div>
                    <div className={style.friendRank}>
                       <span >{infUser?.time === 60 || infUser?.time === 120 ? o?.eloBullet : 
@@ -367,7 +367,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
                       </span>
                    </div>
                   </div>
-               </div>
+                  </div>
+              
               </li>
               {showModal && (
               <div className={`${style.modal} ${showModal ? style.show : ''}`}>
