@@ -102,7 +102,7 @@ function Chat({ socket, username, room }) {
   
 
   return (
-    <div gap={4} className={style.chatBox} style={{backgroundImage: `url(${chessColor.fondoChat})`}} >
+    <div gap={4} className={style.chatBox}  >
       <div 
         className={style.chatHeader}
         style={{borderBottom: `1px solid ${chessColor.color}`, color: chessColor.color}}

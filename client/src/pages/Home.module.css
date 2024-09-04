@@ -31,16 +31,14 @@
     border-style: none;
     color:#fff;
     font-size: 23px;
-    letter-spacing: 3px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: 600;
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-weight: 700;
     outline: none;
     cursor: pointer;
     position: relative;
     padding: 0px;
     overflow: hidden;
     transition: all .5s;
-    box-shadow: 0px 1px 2px rgba(0,0,0,.2);
 }
 .wrapper span{
     position: absolute;
@@ -181,6 +179,12 @@
     align-items: center;
     justify-content: center;
   }
+
+  .containerStats h5{
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-size: 22px;
+    font-weight: 800;
+  }
   .containerStatsRating{
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -209,6 +213,119 @@
     padding-bottom: .35rem;
     box-shadow: none;
   }
+
+  .button {
+    width: 30%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ie-border-radius: 6px;
+    border-radius: 6px;
+    padding: .48em .8em;
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-size: 18px;
+    font-weight: 700;
+    -webkit-transition-property: background-color;
+    -webkit-transition-duration: .15s;
+    -webkit-transition-timing-function: ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 20px;
+  }
+
+ 
+
+  /*Blue*/
+.lightbgblue {
+	background-color: #64a8a6;
+	color: #dafffe;
+	-webkit-box-shadow: 0px 0px 0px 1px #4e8381 inset, 0px 0px 0px 2px #74b6b4 inset, 0px 4px 0px 0px #4a7c7b, 0px 5px 0px 0px #355655, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #4e8381 inset, 0px 0px 0px 2px #74b6b4 inset, 0px 4px 0px 0px #4a7c7b, 0px 5px 0px 0px #355655, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #4e8381 inset, 0px 0px 0px 2px #74b6b4 inset, 0px 4px 0px 0px #4a7c7b, 0px 5px 0px 0px #355655, 0px 8px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #4e8381 inset, 0px 0px 0px 2px #74b6b4 inset, 0px 4px 0px 0px #4a7c7b, 0px 5px 0px 0px #355655, 0px 8px 0px 0px rgba(0,0,0,.15);
+}
+.lightbgblue:hover {
+	background-color: #73c2c0;
+}
+.lightbgblue:active {
+	background-color: #5a9896;
+	-webkit-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.15);
+}
+.lightbgblue .arrow {
+	border-color: transparent transparent transparent #74b6b4;
+}
+
+ /*yellow*/
+ .lightbgyellow {
+	background-color:  #f4d03f;
+	color: #dafffe;
+	-webkit-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #82834e inset, 0px 0px 0px 2px #b6b474 inset, 0px 4px 0px 0px #7c7a4a, 0px 5px 0px 0px #565535, 0px 8px 0px 0px rgba(0,0,0,.15);
+}
+.lightbgyellow:hover {
+	background-color: #f7dc6f;
+}
+.lightbgyellow:active {
+	background-color: #98945a;
+	-webkit-box-shadow: 0px 0px 0px 1px #938f58 inset, 0px 0px 0px 2px #a8a965 inset, 0px 1px 0px 0px #565535, 0px 3px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #938f58 inset, 0px 0px 0px 2px #a8a965 inset, 0px 1px 0px 0px #565535, 0px 3px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #938f58 inset, 0px 0px 0px 2px #a8a965 inset, 0px 1px 0px 0px #565535, 0px 3px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #938f58 inset, 0px 0px 0px 2px #a8a965 inset, 0px 1px 0px 0px #565535, 0px 3px 0px 0px rgba(0,0,0,.15);
+}
+
+/*orange*/
+.lightbgorange {
+	background-color:  #F9A825;
+	color: #dafffe;
+	-webkit-box-shadow: 0px 0px 0px 1px #83714e inset, 0px 0px 0px 2px #b6a074 inset, 0px 4px 0px 0px #7c6c4a, 0px 5px 0px 0px #564b35, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #83714e inset, 0px 0px 0px 2px #b6a074 inset, 0px 4px 0px 0px #7c6c4a, 0px 5px 0px 0px #564b35, 0px 8px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #83714e inset, 0px 0px 0px 2px #b6a074 inset, 0px 4px 0px 0px #7c6c4a, 0px 5px 0px 0px #564b35, 0px 8px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #83714e inset, 0px 0px 0px 2px #b6a074 inset, 0px 4px 0px 0px #7c6c4a, 0px 5px 0px 0px #564b35, 0px 8px 0px 0px rgba(0,0,0,.15);
+}
+.lightbgorange:hover {
+	background-color:#f8c471;
+}
+.lightbgorange:active {
+	background-color: #98945a;
+	-webkit-box-shadow: 0px 0px 0px 1px #938058 inset, 0px 0px 0px 2px #a99865 inset, 0px 1px 0px 0px #564d35, 0px 3px 0px 0px rgba(0,0,0,.15);
+	-moz-box-shadow: 0px 0px 0px 1px #938058 inset, 0px 0px 0px 2px #a99865 inset, 0px 1px 0px 0px #564d35, 0px 3px 0px 0px rgba(0,0,0,.15);
+	-ie-box-shadow: 0px 0px 0px 1px #938058 inset, 0px 0px 0px 2px #a99865 inset, 0px 1px 0px 0px #564d35, 0px 3px 0px 0px rgba(0,0,0,.15);
+	box-shadow: 0px 0px 0px 1px #938058 inset, 0px 0px 0px 2px #a99865 inset, 0px 1px 0px 0px #564d35, 0px 3px 0px 0px rgba(0,0,0,.15);
+}
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	width: 26px;
+	height: 26px;
+	-webkit-border-radius: 13px;
+	-moz-border-radius: 13px;
+	-ie-border-radius: 13px;
+	border-radius: 13px;
+	background: rgba(0,0,0,.3);
+	float: right;
+	-webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+	-moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+	-ie-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+	box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+}
+.arrow {
+	margin: 7px 0px 0 8px;
+	-webkit-border-style: solid;
+	-moz-border-style: solid;
+	-ie-border-style: solid;
+	border-style: solid;
+	border-width:6px 6px 6px 12px;
+	width: 0;
+	height: 0;
+}
 
   .containerNivel{
     display: flex;

@@ -6,7 +6,7 @@ export const colorChess = [
       border: 'solid 2px #fff',
       border2: 'solid 1px #1565C0',
       fondo: 'linear-gradient(to top, #dfe9f3 0%, white 100%)',
-      fondo2: 'linear-gradient(109.6deg, rgb(204, 228, 247) 11.2%, rgb(237, 246, 250) 100.2%)',
+      fondo2: '#d6eaf8 ',
       fondo_3: 'linear-gradient(178deg, rgba(201, 234, 252, 0.51) 14.9%, rgba(139, 192, 216, 0.73) 80%',
       titulo: '#3949AB',
       color: '#273746',

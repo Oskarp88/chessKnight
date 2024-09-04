@@ -145,13 +145,14 @@ const Channel = () => {
           <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
         </Row>
       </div>
-      <div className={style.tabsContainer}>
-          <div className={style.blocTabs}
-             
-          >
+      <div 
+        className={style.tabsContainer}
+        style={toggle === 'Jugadores' ? {backgroundColor: chessColor.fondo2} : {backgroundImage: `url(${chessColor.fondoChat})`}}
+      >
+          <div className={style.blocTabs}>
              <div 
                className={toggle === 'Chat' ? `${style.tabs} ${style.activeTabs} ` : `${style.tabs}`}
-               style={toggle === 'Chat' ? {background: chessColor.fondo2, color: chessColor.color,} : {}}
+               style={toggle === 'Chat' ? {} : {background: 'radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%)'}}
                onClick={()=>toggleTab('Chat')}
              >
                 <svg xmlns="http://www.w3.org/2000/svg" style={{marginRight: '5px'}} width="20" height="20" fill="currentColor" class="bi bi-wechat" viewBox="0 0 16 16">
@@ -162,7 +163,7 @@ const Channel = () => {
              </div>
              <div 
                className={toggle === 'Jugadores' ? `${style.tabs} ${style.activeTabs} ` : `${style.tabs}`}
-               style={toggle === 'Jugadores' ? {background: chessColor.fondo2, color: chessColor.color,} : {}}
+               style={toggle === 'Jugadores' ? {color: chessColor.titulo} : {background: 'radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%)'}}
                onClick={()=>toggleTab('Jugadores')}
              >
               <svg xmlns="http://www.w3.org/2000/svg" style={{marginRight: '5px'}} width="20" height="20" fill="currentColor" className="bi bi-people-fill" viewBox="0 0 16 16">
@@ -171,6 +172,8 @@ const Channel = () => {
               Jugadores
               
               </div>
+              <div style={{width: '36.3%', background: 'radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%)'}}>
+             </div>
           </div>
           <div className={style.contentTabs}>
              <div className={toggle === 'Chat' ? `${style.activeContent}` : `${style.content}`}>
