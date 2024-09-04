@@ -5,6 +5,7 @@ import ModalProfile from './ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 
 export const RankingTable = () => {
@@ -12,6 +13,8 @@ export const RankingTable = () => {
   const [user, setUser] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [photo, setPhoto] = useState('');
+
+  const {language} = useLanguagesContext();
   
   useEffect(() => {
     const allUsers = async() => {
@@ -53,17 +56,17 @@ export const RankingTable = () => {
                   <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
               </svg>
             </div>
-            <h4>Ranking Fast</h4>
+            <h4>{`${language.rating} ${language.fast}`}</h4>
        </div>
           
       <div className={style.itemContainer}>
-      <li className={style.item}>
-            <span>{"RANGO"}</span>
-            <div className={style.friendName}>
-              <span >{'NOMBRE'}</span>
-            </div>
-            <span>{'PUNTUACIÓN'}</span>
-          </li>
+        <li className={style.item}>
+          <span>{language.Range?.toUpperCase()}</span>
+          <div className={style.friendName}>
+            <span >{language.name?.toUpperCase()}</span>
+          </div>
+          <span >{language.Score?.toUpperCase()}</span>
+        </li>
           
         {sortedUsers.length !== 0 ?  sortedUsers.map((o, index) => (
           <>

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ScrollToBottom from "react-scroll-to-bottom";
 import style from './Chat.module.css';
 import { useChessboardContext } from '../../context/boardContext';
 import Picker from 'emoji-picker-react';

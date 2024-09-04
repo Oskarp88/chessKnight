@@ -57,6 +57,8 @@ export const languages = [
       We_will_send_you_an_email_to_change_your_password: 'Te enviaremos un correo para cambiar tu contraseña',
       send: 'Enviar',
       reset_password: 'Restablecer la contraseña',
+      Range: 'Rango',
+      Score: 'Puntaje'
    },
    {
     spanish: 'Spanish',
@@ -116,5 +118,7 @@ export const languages = [
     We_will_send_you_an_email_to_change_your_password: 'We will send you an email to change your password',
     send: 'Send',
     reset_password: 'Reset password',
-   }
+    Range: 'Range',
+    Score: 'Score'
+  }
 ];

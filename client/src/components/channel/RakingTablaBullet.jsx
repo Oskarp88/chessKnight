@@ -5,12 +5,15 @@ import ModalProfile from './ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 export const RankingTableBullet = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [photo, setPhoto] = useState('');
+
+  const {language} = useLanguagesContext();
 
   useEffect(() => {
     const allUsers = async() => {
@@ -52,16 +55,16 @@ export const RankingTableBullet = () => {
                   <path d="M5.205 10.787a7.6 7.6 0 0 0 1.804 1.352c-1.118 1.007-4.929 2.028-5.054 1.903-.126-.127.737-4.189 1.839-5.18.346.69.837 1.35 1.411 1.925"/>
               </svg>
             </div>
-            <h4>Ranking Bullet</h4>
+            <h4>{`${language.rating} ${language.bullet}`}</h4>
        </div>
        
       <div className={style.itemContainer}>
         <li className={style.item}>
-          <span>{"RANGO"}</span>
+          <span>{language.Range?.toUpperCase()}</span>
           <div className={style.friendName}>
-            <span >{'NOMBRE'}</span>
+            <span >{language.name?.toUpperCase()}</span>
           </div>
-          <span >{'PUNTUACION'}</span>
+          <span >{language.Score?.toUpperCase()}</span>
         </li>
         {sortedUsers.length === 0 ? 
             <div style={{marginTop: '30%'}}>

@@ -5,6 +5,7 @@ import ModalProfile from './ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 
 export const RankingTableBlitz = () => {
@@ -12,6 +13,8 @@ export const RankingTableBlitz = () => {
   const [user, setUser] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [photo, setPhoto] = useState('');
+
+  const {language} = useLanguagesContext();
 
   useEffect(() => {
     const allUsers = async() => {
@@ -52,17 +55,17 @@ export const RankingTableBlitz = () => {
                   <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
               </svg>
             </div>
-            <h4>Ranking Blitz</h4>
+            <h4>{`${language.rating} Blitz`}</h4>
        </div>
       
       <div className={style.itemContainer}>
-         <li className={style.item}>
-            <span>{"RANGO"}</span>
-            <div className={style.friendName}>
-              <span >{'NOMBRE'}</span>
-            </div>
-            <span >{'PUNTUACION'}</span>
-          </li>
+        <li className={style.item}>
+          <span>{language.Range?.toUpperCase()}</span>
+          <div className={style.friendName}>
+            <span >{language.name?.toUpperCase()}</span>
+          </div>
+          <span >{language.Score?.toUpperCase()}</span>
+        </li>
         {sortedUsers.length === 0 ? 
           <div style={{marginTop: '30%'}}>
             <SpinnerDowloand text={'Cargando rating....'}/>

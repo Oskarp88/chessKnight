@@ -29,7 +29,7 @@
     justify-content: center;
     text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 800;
     background: linear-gradient(68.8deg, rgba(0, 0, 0, 0.95) 1.8%, rgb(79, 50, 0) 31.8%, rgb(134, 94, 9) 56.2%, rgb(217, 160, 15) 89%);
     -webkit-box-shadow: 0px 0px 0px 1px #83714e inset, 0px 0px 0px 2px #b6a074 inset, 0px 4px 0px 0px #7c6c4a, 0px 5px 0px 0px #564b35, 0px 8px 0px 0px rgba(0,0,0,.15);
     -moz-box-shadow: 0px 0px 0px 1px #83714e inset, 0px 0px 0px 2px #b6a074 inset, 0px 4px 0px 0px #7c6c4a, 0px 5px 0px 0px #564b35, 0px 8px 0px 0px rgba(0,0,0,.15);
@@ -117,12 +117,15 @@
     margin: 5px;
     margin-top: 2px;
     margin-bottom: 2px;
-    padding: 2px 10px 2px 10px;
-    border: 1px solid #e67e22;
+    padding: 2px 10px 6px 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
     cursor: pointer;
+    -webkit-box-shadow: 0px -3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    -moz-box-shadow: 0px -3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    -ie-box-shadow: 0px -3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    box-shadow: 0px -3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
   }
   
   .frienditem:hover {
