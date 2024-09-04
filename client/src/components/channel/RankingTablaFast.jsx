@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import style from './RankingTabla.module.css';
+import style from './RankingTablaFast.module.css';
 import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
@@ -45,7 +45,7 @@ export const RankingTable = () => {
 
    let count = 1; 
   return (
-    <div className={style.tercerdiv} style={{border: '2px solid #229954'}}>
+    <div className={style.tercerdiv} /*style={{border: '2px solid #229954'}}*/>
        <div className={style.title}>            
             <svg style={{ color: '#50c256', marginRight: '10px', marginTop: '7px' }} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
                 <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
