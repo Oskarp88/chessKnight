@@ -86,7 +86,7 @@ const CustomNavDropdown = styled(NavDropdown)`
 return (
   <Navbar className={`${styles.navbar} fixed-top`} expand="lg" >
     <Container >
-      <Navbar.Brand href="/" ><img src="/logo/chessnavar.png" alt="" className={styles.logo}/></Navbar.Brand>
+      <Navbar.Brand href="/" ><img src="/logo/chessfive.png" alt="" className={styles.logo}/></Navbar.Brand>
       <Navbar.Toggle aria-controls="navbar scroll" /*style={{border: `solid 1px ${chessColor.color1}`, backgroundColor: chessColor.color1, color: chessColor.color1}}*//>
 
       <Navbar.Collapse id="navbarScroll">

@@ -290,7 +290,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} style={ {background: chessColor.fondo2}}> 
+    <div className={style.tercerdiv} > 
     <div className={style.desafio}>
             <div className={style.titleWithIcon}>
               <h5>

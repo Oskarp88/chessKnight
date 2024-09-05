@@ -7,7 +7,10 @@
   align-items: center;
   justify-content: center;
   height: 15%;
-  color: white;
+  color: #f9e79f;
+  text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+  font-size: 20px;
+  font-weight: 800;
 }
 
 .chatHeader strong{

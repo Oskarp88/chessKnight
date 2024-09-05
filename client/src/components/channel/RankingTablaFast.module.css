@@ -125,8 +125,6 @@
     padding: 2px 10px 6px 10px;
     border-radius: 5px;
     cursor: pointer;
-    
-    cursor: pointer;
     -webkit-box-shadow: 0px -3px 0px 0px rgba(0,0,0,.3) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
     -moz-box-shadow: 0px -3px 0px 0px rgba(0,0,0,.3) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
     -ie-box-shadow: 0px -3px 0px 0px rgba(0,0,0,.3) inset, 0px 0px 0px 1px rgba(255,255,255,.2);

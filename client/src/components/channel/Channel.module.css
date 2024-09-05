@@ -19,11 +19,8 @@
 
 .div2  {
   width: 51%;
-  height: 100%;
-  display: inline-block;
+  height: 100%;  
   color: #ffffff;
-  
-  background-color: #ffffff;
 }
 
 .div3{
@@ -63,6 +60,9 @@
     padding: 5px 10px 5px 10px;
     cursor: pointer;
     width: 35%;
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-size: 15px;
+    font-weight: 700;
   }
 
   .activeTabs{
