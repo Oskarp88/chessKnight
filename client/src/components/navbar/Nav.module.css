@@ -1,17 +1,14 @@
 .fixed{
   position: relative;
 }
+
 .navbar {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  padding: 5px;
-  box-shadow: 0 5px 15px rgba(7, 7, 235, 0.2), -5px 0 20px rgba(1, 36, 141, 0.2);
-  color: white;
+  background: linear-gradient(to left top,#2874a6  50%, #2e86c1 50%);
+  -webkit-box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+  -moz-box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+  -ie-box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+  box-shadow: 0px 0px 0px 1px #4e6383 inset, 0px 0px 0px 2px #7495b6 inset, 0px 4px 0px 0px #4a677c, 0px 5px 0px 0px #354156, 0px 8px 0px 0px rgba(0,0,0,.15);
+ 
 }
 .profileSidebar{
   margin: 0;
@@ -28,33 +25,9 @@
   flex-direction: column;
   align-items: center;
 }
-.color{
-  margin-left: auto;
-  width: 3rem;
-  height: 2rem;
-  border-left: solid 2px #0e0c0c;
-  justify-content: end;
-  align-items: center;
-  display: flex;
-}
-.div{
-  cursor: pointer;
-  padding: 5px;
-}
-
-.icon{
-  margin-left: 10px;
-  margin-top: -4px;
-}
-.linkli{
-  text-decoration: none;
-  color: #fff;
-  margin: 5px 10px;
-}
-
 
 .logo{
-  width: 10rem;
+  width: 12rem;
   cursor: pointer;
 }
 
@@ -63,43 +36,15 @@
   transform: scale(1.2);
  }
 
-.leftSection {
-  display: flex;
-  align-items: center;
-}
-
-.rightSection {
-  display: flex;
-  align-items: center;
-  margin-right: 30px;
-}
-
-.logo {
-  font-size: 1.5rem;
-  margin-right: 10px;
-}
-
-.navLink {
-  color: white;
+ .navlink{
+  color: #fff !important;
+  font-size: 18px !important;
   text-decoration: none;
-  margin-left: 15px;
-}
+ }
 
-.navLink:hover {
-  text-decoration: underline;
-}
-
-
- @media (max-width: 450px){
- 
-
-  .navLink {
-    margin-left: 0.5rem;
-  }
-
-  .img{
-   
-    width: 12rem;
-  }
-  
-} 
+ .navlink:hover{
+  transition: 0.2s;
+  transform: scale(1.1);
+  color: #dc7633;
+  font-weight: bold;
+ }

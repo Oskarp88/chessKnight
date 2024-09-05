@@ -13,10 +13,7 @@
     cursor: pointer;
     padding: 5px;
   }
-  .div:hover{
-     border-radius: 50%;
-     background-color: rgba(0, 0, 0, 0.3);
-  }
+  
   .notificationsBox {
     max-height: 50vh;
     width: 300px;
