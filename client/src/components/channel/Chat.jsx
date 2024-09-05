@@ -5,14 +5,12 @@ import Picker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
 import soundChat from '../../path/to/sonicChat.mp3'
 import {Container, Stack} from 'react-bootstrap';
+import { useSocketContext } from '../../context/socketContext';
 
 function Chat({ socket, username, room }) {
-  const [currentMessage, setCurrentMessage] = useState('');
-  const [messageList, setMessageList] = useState([]);
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 725);
+  const {currentMessage, setCurrentMessage, messageList, setMessageList} = useSocketContext();
   const [showEmoji, setShowEmoji] = useState(false);
-  const [isView,setIsView] = useState(window.innerWidth <= 725);
-  const {setView, chessColor} = useChessboardContext();
+  const {chessColor} = useChessboardContext();
   const {auth} = useAuth();
   const chatAudio = new Audio(soundChat);
   const scroll = useRef();
@@ -20,27 +18,6 @@ function Chat({ socket, username, room }) {
   useEffect(()=>{
     scroll?.current?.scrollIntoView({behavior: 'smooth'})
   },[currentMessage]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 725);
-      setIsView(window.innerWidth <= 725);
-      setView(window.innerWidth <= 725)
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
- 
-
-  useEffect(() => {
-    console.log('isMobileView', isMobileView);
-  
-  }, [isMobileView]);
   
   const sendMessage = async () => {
     if(socket === null) return;
@@ -59,13 +36,6 @@ function Chat({ socket, username, room }) {
     }
   };
 
-  const mobileView = () => {
-    if(window.innerWidth <= 725){
-      setIsMobileView(prevState => !prevState);
-      setView(prev => !prev);
-    }
-
-  }
 
   useEffect(() => {
     if (socket === null) return;

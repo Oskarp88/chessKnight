@@ -90,7 +90,7 @@
   
   #you .messagecontent {
     justify-content: flex-start; 
-    background: linear-gradient(114.3deg, rgb(19, 126, 57) 0.2%, rgb(8, 65, 91) 68.5%);   
+    background: linear-gradient(114.3deg, rgb( 247, 220, 111) 0.2%, rgb(156, 100, 12) 68.5%);   
     border-radius: 0px 20px 20px 20px;
   }
 
@@ -113,7 +113,7 @@
   
   #other .messagecontent {
     justify-content: flex-end;
-    background: radial-gradient(circle at 50.4% 50.5%, rgb(251, 32, 86) 0%, rgb(135, 2, 35) 90%);
+    background: radial-gradient(circle at 50.4% 50.5%, rgb(174, 214, 241) 0%, rgb(31, 97, 141) 90%);
     border-radius: 20px 0px 20px 20px;
   }
 

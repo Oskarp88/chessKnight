@@ -14,6 +14,8 @@ export const useSocketContext = () => {
 export const SocketProvider = ({ children, user }) => {
   const [socket, setSocket] = useState(null);
   const [room, setRoom] = useState('');
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [messageList, setMessageList] = useState([]);
   const [userChess, setUser] = useState({
     _id: null,
     username: '',
@@ -97,7 +99,11 @@ useEffect(() => {
       partidas,
       setPartidas,
       userChess,
-      setUser
+      setUser,
+      messageList,
+      setMessageList,
+      currentMessage,
+      setCurrentMessage
     }}>
       {children}
     </SocketContext.Provider>
