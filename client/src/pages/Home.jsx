@@ -277,7 +277,7 @@ export function Home() {
         </div>
         <div className={style.containerStatsRating} >
          
-            <div className={style.containerNivel} style={stast === 'fast' ? {border: '2px solid #229954'} : stast === 'blitz' ? {border: '2px solid #F4D03F'} : {border: '2px solid #F39C12 '}}>
+            <div className={style.containerNivel} style={stast === 'fast' ? {border: '2px solid #229954' , background: 'rgba(162, 217, 206 ,0.4)'} : stast === 'blitz' ? {border: '2px solid #F4D03F', background: 'rgba(249, 231, 159 ,0.4)'} : {border: '2px solid #F39C12 ', background: 'rgba(250, 215, 160,0.4)'}}>
             {!user?
           
             <SpinnerDowloand text={`${language.loading_user_statistics} ${auth?.user?.name}. . .`} />
@@ -376,9 +376,9 @@ export function Home() {
          }
          </div>
         </div>
-        <div>
-          <h5 style={{color: chessColor.titulo}}>{language?.game_history}</h5>
-          <div className={style.scrollableContainer}>
+        <div className={style.scrollableContainer}>
+          <h5 style={{color: chessColor.titulo}}>{language?.game_history.toUpperCase()}</h5>
+          <div>
               <h6 style={{color: chessColor.color}}> {language?.total_games} ({user?.games})</h6>
               <span style={{color: chessColor.color}}>{language?.Last_games_of} {user?.username}</span>
               <div className={style.scrollableContent}>
@@ -404,24 +404,24 @@ export function Home() {
                          {
                           p.player.color === 'white' ?
                              <div className={style.datos}> 
-                               <p> {p.player.name}({p.player.elo})</p>
+                               <span> {p.player.name}({p.player.elo})</span>
                                <img  src={p.player.bandera} alt={`${p.player.country} flag`} />  
                              </div>
                                  :
                             <div className={style.datos}>
-                                <p> {p.nameOpponent.name}({p.nameOpponent.elo})</p>
+                                <span> {p.nameOpponent.name}({p.nameOpponent.elo})</span>
                                 <img  src={p.nameOpponent.bandera} alt={`${p.nameOpponent.country} flag`} />
                             </div>                        
                          }
                          {
                            p.player.color === 'black' ?
                            <div className={style.datos}> 
-                             <p> {p.player.name}({p.player.elo})</p>
+                             <span> {p.player.name}({p.player.elo})</span>
                              <img  src={p.player.bandera} alt={`${p.player.country} flag`} />  
                            </div>
                                :
                           <div className={style.datos}>
-                              <p> {p.nameOpponent.name}({p.nameOpponent.elo})</p>
+                              <span> {p.nameOpponent.name}({p.nameOpponent.elo})</span>
                               <img  src={p.nameOpponent.bandera} alt={`${p.nameOpponent.country} flag`} />
                           </div>  
                          }

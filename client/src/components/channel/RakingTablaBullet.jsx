@@ -93,7 +93,10 @@ export const RankingTableBullet = () => {
                 </Col>
                 <Col>
                   <div className={style.name}>
-                    <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
+                    <div className={style.imageContainer}>
+                      <img className={style.photo} src={o?.photo} alt="User Photo" />
+                      <img className={style.marco} src={o?.marco} alt="Marco" />
+                    </div>                  
                     <div className={style.column}>
                       <span>{o?.username}</span>
                       <img src={o?.imagenBandera} className={style.bandera} alt="" />

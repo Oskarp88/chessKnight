@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     default: 'https://firebasestorage.googleapis.com/v0/b/chessknight-bb7b2.appspot.com/o/user.png?alt=media&token=e058c425-65e9-46d0-97e5-cf2b42033cc0'
 },
   imagenBandera: String,
+  marco:{
+    type: String,
+    default: '/marcos/marco_001.png'
+},
   role: String,
   score: { type: Number, default: 0 },
   deleted: { type: Boolean, default: false },

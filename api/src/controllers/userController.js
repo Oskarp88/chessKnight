@@ -124,7 +124,7 @@ exports.createUser = async(req, res) => {
 
 exports.updateUser = async(req, res) => {
     const { userId } = req.params; // Obtén el ID del usuario desde los parámetros de la ruta
-  const { name, lastName, username, country, photo, imagenBandera } = req.body;
+  const { name, lastName, username, country, photo, imagenBandera, marco } = req.body;
   // console.log(name, lastName, username, country);
  
 
@@ -141,7 +141,8 @@ exports.updateUser = async(req, res) => {
         username: username || user.username,
         country: country || user.country,
         photo: photo || user.photo,
-        imagenBandera: imagenBandera || user.imagenBandera
+        imagenBandera: imagenBandera || user.imagenBandera,
+        marco: marco || user.marco
      },{new: true});
 
       

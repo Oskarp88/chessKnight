@@ -155,8 +155,11 @@ return (
             </CustomNavDropdown>
            
            <Navbar.Brand style={{marginLeft:'10px'}} href="/dashboard/profile" className='d-flex justify-content-center align-items-center text-white ' >
-              <div className={styles.userprofile}>           
-                <img className={styles.profileSidebar} src={auth?.user?.photo} alt=''/>
+              <div className={styles.userprofile} >           
+                <div className={styles.imageContainer}>
+                  <img className={styles.photo} src={auth?.user?.photo} alt="User Photo" />
+                  <img className={styles.marco} src={auth?.user?.marco} alt="Marco" />
+                </div>
               </div>
               {`${trimmedFirstName} ${trimmedLastName}`}
            </Navbar.Brand>

@@ -12,6 +12,8 @@ import AvatarSelectorModal from './AvatarSelectorModal';
 import { avatars } from '../../utils/avatars';
 import Form from 'react-bootstrap/Form';
 import { useLanguagesContext } from '../../context/languagesContext';
+import MarcoSelectorModal from './MarcoSelectorModal';
+import { marcos } from '../../utils/marcos';
 
 
 const UserProfile = () => {
@@ -23,6 +25,7 @@ const UserProfile = () => {
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
   const [photo, setPhoto] = useState('');
+  const [marco, setMarco] = useState('');
   const [bandera, setBandera] = useState('');
   const [user, setUser] = useState({});
   const [file, setFile] = useState(undefined);
@@ -34,7 +37,8 @@ const UserProfile = () => {
   const {chessColor} = useChessboardContext();
   const {language} = useLanguagesContext();
 
-  const [showAvatarModal, setShowAvatarModal] = useState(false); // Estado para el modal
+  const [showAvatarModal, setShowAvatarModal] = useState(false); 
+  const [showMarcoModal, setShowMarcoModal] = useState(false);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -138,7 +142,8 @@ const UserProfile = () => {
          username,
          country,
          photo,
-         imagenBandera: bandera
+         imagenBandera: bandera,
+         marco,
       });
       if (response.data.success) {
         toast.success(`${name} is updated`);
@@ -169,13 +174,22 @@ const UserProfile = () => {
     setShowAvatarModal(false);
   };
 
+  const selectMarco = (marco) => {
+    setMarco(marco);
+    setShowMarcoModal(false);
+  }
+
   return (
     <div className={style.container} style={{background: chessColor?.fondo}}>
       <div className={style.userprofile} >
       <div className={style.column}>
-        <div className={style.photo} style={{border: `1px solid ${chessColor.color}`}}>
+        <div className={style.photo} >
           <div className={style.profileimage}>
-            <img src={photo || user.photo} alt="product-photo" height={'200px'} />
+            {/* <img src={photo || user.photo} alt="product-photo" height={'200px'} /> */}
+            <div className={style.imageContainer} >
+              <img className={style.photoImage} src={photo || user.photo} alt="User Photo" />
+              <img className={style.marco} src={marco || user.marco} alt="Marco" height={'200px'}/>
+            </div> 
           </div>
           <div className={style.upload}>
             <input 
@@ -209,10 +223,16 @@ const UserProfile = () => {
           </div>
           <div
             className={style.avatar}
-            onClick={() => setShowAvatarModal(true)} // Abre el modal al hacer clic
+            // Abre el modal al hacer clic
           >
-            <span style={{color: '#0066CC'}}>O elige un avatar</span>
-            <img src="/icon/avatar.png" alt="" className={style.imgAvatar}/>
+            <div className={style.avatars}  onClick={() => setShowAvatarModal(true)}>
+              <span style={{color: '#0066CC'}}>Avatars</span>
+              <img src="/icon/avatar.png" alt="" className={style.imgAvatar}/>
+            </div>
+            <div className={style.avatars} onClick={() => setShowMarcoModal(true)}>
+               <span>Marcos</span>
+               <img src="/marcos/marco_001.png" alt="" className={style.imgMarcos}/>
+            </div>
           </div>
           
         </div>
@@ -278,6 +298,12 @@ const UserProfile = () => {
         handleClose={() => setShowAvatarModal(false)}
         avatars={avatars}
         selectAvatar={selectAvatar}
+      />
+      <MarcoSelectorModal 
+        show={showMarcoModal}
+        handleClose={()=> setShowMarcoModal(false)}
+        marcos={marcos}
+        selectMarco={selectMarco}
       />
     </div>
     </div>

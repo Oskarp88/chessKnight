@@ -36,7 +36,7 @@ export const colorChess = [
       spinner: '4px solid rgba(255, 255, 255, 0.9)',
       colorBorder: '#85C1E9',
       background_login: 'linear-gradient(to top, rgba(35, 33, 33, 0.2) 0%, rgba(7, 43, 72, 0.7) 100%)',
-      fondoChat: '/fondos/fondo_chat.jpg',
+      fondoChat: '/fondos/fondo_chat.png',
       fondoUsers: '/icon/userswhite.png',
       colorInvertido: '#fff',
       fondoModal: 'linear-gradient(to right, #d7d2cc 0%, #304352 100%);',
