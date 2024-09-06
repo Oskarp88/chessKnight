@@ -165,11 +165,9 @@ const Channel = () => {
                onClick={()=>toggleTab('Jugadores')}
              >
               <img src={chessColor.fondoUsers} style={{width: '40px', marginRight: '10px'}} alt="" />
-              Jugadores
+                Jugadores
               
               </div>
-              <div style={{width: '36.3%', background: 'radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%)'}}>
-             </div>
           </div>
           <div className={style.contentTabs}>
              <div className={toggle === 'Chat' ? `${style.activeContent}` : `${style.content}`}>

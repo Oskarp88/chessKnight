@@ -61,11 +61,11 @@
     align-items: center;
     padding: 5px 10px 5px 10px;
     cursor: pointer;
-    width: 35%;
+    width: 50%;
     height: 3rem;
     text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
-    font-size: 20px;
-    font-weight: 800;
+    font-size: 18px;
+    font-weight: 700;
   }
 
   .activeTabs{
