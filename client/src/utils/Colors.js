@@ -16,6 +16,7 @@ export const colorChess = [
       colorBorder: '#fff',
       background_login: 'linear-gradient(to top, rgb(35, 33, 33) 0%, rgb(39, 135, 213) 100%)',
       fondoChat: '/fondos/fondo_chat1.jpg',
+      fondoChat01: '/fondos/fondo_chat01.jpg',
       fondoUsers: '/icon/userslight.png',
       colorInvertido: '#0066CC',
       fondoModal: 'radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%)'
@@ -36,7 +37,8 @@ export const colorChess = [
       spinner: '4px solid rgba(255, 255, 255, 0.9)',
       colorBorder: '#85C1E9',
       background_login: 'linear-gradient(to top, rgba(35, 33, 33, 0.2) 0%, rgba(7, 43, 72, 0.7) 100%)',
-      fondoChat: '/fondos/fondo_chat.png',
+      fondoChat: '/fondos/fondo_chat.jpg',
+      fondoChat01: '/fondos/fondo_chat02.jpg',
       fondoUsers: '/icon/userswhite.png',
       colorInvertido: '#fff',
       fondoModal: 'linear-gradient(to right, #d7d2cc 0%, #304352 100%);',

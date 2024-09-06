@@ -134,7 +134,7 @@ const Channel = () => {
       <div className={style.flex}>
         <Row 
           className={style.div2} 
-          style={{backgroundImage: `url(${chessColor.fondoChat})`}}      
+          style={{backgroundImage: `url(${chessColor.fondoChat01})`}}      
         >
           <Chat 
             room={room}

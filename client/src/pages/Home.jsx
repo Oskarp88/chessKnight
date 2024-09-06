@@ -177,7 +177,7 @@ export function Home() {
       <div className={style.image}>
         <div className={style.home}>
           <div className={style.homestyle}>
-            <img src={'logo/chess5.png'} className={style.logo} alt="" />
+            <img src={'logo/CHESS.png'} className={style.logo} alt="" />
             <h1 className={style.titulo} style={{color: chessColor.titulo}}>           
               {language.welcome_to} 
             </h1>
