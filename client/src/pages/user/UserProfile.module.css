@@ -212,7 +212,7 @@
 }
 
 .label{
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +222,7 @@
   border-radius: 50%;
   background-color: #2c3e50 ;
   margin-top: -4rem;
-  margin-left: 3.6rem;
+  margin-left: 10rem;
 }
 
 .label div:hover{
@@ -378,8 +378,8 @@
   .label{
     width: 30px;
     height: 30px;
-    margin-top: -3rem;
-    margin-left: 2.3rem;
+    margin-top: -2rem;
+    margin-left: 4.5rem;
   }
   .label div:hover{
     width: 30px;
