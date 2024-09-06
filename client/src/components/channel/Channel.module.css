@@ -44,6 +44,7 @@
     flex-direction: column;
     margin-top: 4.2rem;
     height: 100%;
+    background-size: cover;
   }
   .blocTabs{
     margin-top: 4rem;

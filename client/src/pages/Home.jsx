@@ -50,6 +50,8 @@ export function Home() {
   const {setCheckMate} = useCheckMateContext();
   const {language} = useLanguagesContext();
 
+  const miContaineHistorial = useRef(null);
+
    useEffect(() => {
       const allPartidas = async() => {
         const response = await getRequest(`${baseUrl}/partida/user/historial/${auth?.user?._id}`);
@@ -167,6 +169,7 @@ export function Home() {
 
   const handleClick = (data) => {
      setStats(data);
+     miContaineHistorial.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   return (
@@ -230,7 +233,7 @@ export function Home() {
       </div>
      {
       auth?.user  && 
-      <div className={style.fondoDatos}>
+      <div className={style.fondoDatos} ref={miContaineHistorial}>
         <div className={style.containerStats}>
           <h5 style={{color: chessColor.titulo}}>{language.statistics_of} {auth?.user?.name ? 
                                     `${auth.user.name} ${auth.user.lastName}`: 
@@ -271,15 +274,8 @@ export function Home() {
                 </svg>
               </div>
           </a>
-              {/* <button 
-                className={style.buttonStats} 
-                style={stast === 'bullet' ?{background: chessColor.navbar, opacity: '80%', border: `2px solid #F39C12 `} : {background: chessColor.navbar}}
-                onClick={()=> handleClick('bullet')}
-              >
-               {language.bullet} <BulletSvg/>
-              </button> */}
         </div>
-        <div className={style.containerStatsRating}>
+        <div className={style.containerStatsRating} >
          
             <div className={style.containerNivel} style={stast === 'fast' ? {border: '2px solid #229954'} : stast === 'blitz' ? {border: '2px solid #F4D03F'} : {border: '2px solid #F39C12 '}}>
             {!user?
@@ -303,7 +299,7 @@ export function Home() {
                   </svg>
               }
             </div>
-            <div className={style.rating}>
+            <div  className={style.rating}>
                 <div className={style.insignia}>
                   {   stast === 'fast' ?
                       user?.eloFast < 21 ? <PrincipianteInsignia /> : 
