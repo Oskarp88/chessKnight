@@ -38,13 +38,52 @@
 
  .navlink{
   color: #fff !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+
+  border-radius: .2rem;
   font-size: 18px !important;
   text-decoration: none;
  }
 
  .navlink:hover{
-  transition: 0.2s;
-  transform: scale(1.1);
-  color: #dc7633;
-  font-weight: bold;
+  background-color: rgba(0,0,0,.15) !important ;
  }
+
+ .dropdownSpan{
+   color: aliceblue !important;
+   font-size: 18px !important;
+   padding: 5px 10px 5px 10px;
+   border-radius: .2rem;
+ }
+
+ .dropdownSpan:hover{
+  background-color: rgba(0,0,0,.15) !important;
+ }
+
+ .dropdownSpan2{
+  font-size: 18px !important;
+  padding: 5px 10px 5px 10px;
+  border-radius: .2rem;
+ }
+
+ .dropdownSpan2:hover{
+  background-color: rgba(0,0,0,.15) !important;
+ }
+ .theme{
+   margin-left: 10px;
+ }
+
+ .color{
+   margin-left: 10px;
+ }
+
+ .item:hover{
+  background-color: rgba(0,0,0,.15) !important;
+ }
+
+ @media (max-width: 310px){
+  .logo{
+    width: 8rem;
+  }
+}

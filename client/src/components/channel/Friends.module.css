@@ -65,6 +65,7 @@
   }
 
   .desafio h5{
+    margin-top: 5px;
     text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
     font-size: 18px;
     font-weight: 700;

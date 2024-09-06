@@ -292,7 +292,10 @@ const Friends = ({ friends, onlineUsers, room }) => {
   return (
     <div className={style.tercerdiv} > 
     <div className={style.desafio}>
+
             <div className={style.titleWithIcon}>
+            <img src={'/icon/userswhite.png'} style={{width: '40px', marginRight: '10px'}} alt="" />
+
               <h5>
                 {language.Challenge_a_match} {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
                                       infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :

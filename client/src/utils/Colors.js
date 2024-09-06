@@ -8,6 +8,7 @@ export const colorChess = [
       fondo: 'linear-gradient(to top, #dfe9f3 0%, white 100%)',
       fondo2: '#d6eaf8 ',
       fondo_3: 'linear-gradient(178deg, rgba(201, 234, 252, 0.51) 14.9%, rgba(139, 192, 216, 0.73) 80%',
+      fondo4: '#d6eaf8 ',
       titulo: '#3949AB',
       color: '#273746',
       color1: '#fff',
@@ -15,6 +16,9 @@ export const colorChess = [
       colorBorder: '#fff',
       background_login: 'linear-gradient(to top, rgb(35, 33, 33) 0%, rgb(39, 135, 213) 100%)',
       fondoChat: '/fondos/fondo_chat1.jpg',
+      fondoUsers: '/icon/userslight.png',
+      colorInvertido: '#0066CC',
+      fondoModal: 'radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%)'
     },
     { 
       id: 2, 
@@ -25,6 +29,7 @@ export const colorChess = [
       fondo: 'linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)',
       fondo_3: 'linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)',
       fondo2: 'linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)',
+      fondo4: 'radial-gradient(circle at 50.3% 44.5%, rgb(116, 147, 179) 0%, rgb(62, 83, 104) 100.2%)',
       titulo: '#85C1E9 ',
       color: '#fff',
       color1: '#85C1E9',
@@ -32,5 +37,8 @@ export const colorChess = [
       colorBorder: '#85C1E9',
       background_login: 'linear-gradient(to top, rgba(35, 33, 33, 0.2) 0%, rgba(7, 43, 72, 0.7) 100%)',
       fondoChat: '/fondos/fondo_chat.jpg',
+      fondoUsers: '/icon/userswhite.png',
+      colorInvertido: '#fff',
+      fondoModal: 'linear-gradient(to right, #d7d2cc 0%, #304352 100%);',
     }
   ]

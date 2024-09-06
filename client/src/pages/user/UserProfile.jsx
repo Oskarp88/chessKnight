@@ -7,6 +7,11 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../../utils/firebase';
 import { baseUrl } from '../../utils/services';
 import { useChessboardContext } from '../../context/boardContext';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import AvatarSelectorModal from './AvatarSelectorModal';
+import { avatars } from '../../utils/avatars';
+import Form from 'react-bootstrap/Form';
+import { useLanguagesContext } from '../../context/languagesContext';
 
 
 const UserProfile = () => {
@@ -27,6 +32,9 @@ const UserProfile = () => {
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
   const {chessColor} = useChessboardContext();
+  const {language} = useLanguagesContext();
+
+  const [showAvatarModal, setShowAvatarModal] = useState(false); // Estado para el modal
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -41,6 +49,10 @@ const UserProfile = () => {
 
     fetchCountries();
   }, []);
+
+  useEffect(() => {
+    console.log('pileperc',filePerc); // Verifica que filePerc se esté actualizando correctamente
+  }, [filePerc]);
 
   useEffect(() => {
     if (file) {
@@ -64,6 +76,7 @@ const UserProfile = () => {
       'state_changed',
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('progress',progress)
         setFilePerc(Math.round(progress));
       },
       (error) => {
@@ -151,10 +164,16 @@ const UserProfile = () => {
     }
   };
 
+  const selectAvatar = (avatar) => {
+    setPhoto(avatar);
+    setShowAvatarModal(false);
+  };
+
   return (
-    <div className={style.userprofile} style={{background: chessColor?.fondo}}>
+    <div className={style.container} style={{background: chessColor?.fondo}}>
+      <div className={style.userprofile} >
       <div className={style.column}>
-        <div className={style.photo}>
+        <div className={style.photo} style={{border: `1px solid ${chessColor.color}`}}>
           <div className={style.profileimage}>
             <img src={photo || user.photo} alt="product-photo" height={'200px'} />
           </div>
@@ -165,47 +184,74 @@ const UserProfile = () => {
               hidden accept='image/*'
               onChange={(e) => setFile(e.target.files[0])}
             />
-            <label className={style.label} onClick={()=>fileRef.current.click()}>
-              <img src="/assets/avatar/outline.png" alt="icon-outline" />
-            </label>
+            <div className={style.label} onClick={()=>fileRef.current.click()}>
+             <div>
+             <svg xmlns="http://www.w3.org/2000/svg" style={{marginLeft: '4.5px'}} width="75%" height="75%" fill="currentColor" className="bi bi-camera2" viewBox="0 0 16 16">
+                <path d="M5 8c0-1.657 2.343-3 4-3V4a4 4 0 0 0-4 4"/>
+                <path d="M12.318 3h2.015C15.253 3 16 3.746 16 4.667v6.666c0 .92-.746 1.667-1.667 1.667h-2.015A5.97 5.97 0 0 1 9 14a5.97 5.97 0 0 1-3.318-1H1.667C.747 13 0 12.254 0 11.333V4.667C0 3.747.746 3 1.667 3H2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1h.682A5.97 5.97 0 0 1 9 2c1.227 0 2.367.368 3.318 1M2 4.5a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0M14 8A5 5 0 1 0 4 8a5 5 0 0 0 10 0"/>
+              </svg>
+             </div>
+            </div>
           </div>
-          <p>
+          <div className={style.carga}>
             {fileUploadError ? 
               (<span style={{color: '#d20b0b'}}>
                  {'Error al cargar la imagen (Max. 5mb)' }
               </span>) :
               filePerc > 0 && filePerc < 100 ? 
-             ( <span style={{color:'#fff'}}>
-                {`Cargando ${filePerc}%`}
-              </span> ) :
+             ( <ProgressBar className={style.progress} now={filePerc} label={`${filePerc}%`} />) :
               filePerc === 100 ? 
              ( <span style={{color:'#0e8527'}}>
                   Carga exitosa
               </span>) :
              ('')
             }
-          </p>
+          </div>
+          <div
+            className={style.avatar}
+            onClick={() => setShowAvatarModal(true)} // Abre el modal al hacer clic
+          >
+            <span style={{color: '#0066CC'}}>O elige un avatar</span>
+            <img src="/icon/avatar.png" alt="" className={style.imgAvatar}/>
+          </div>
+          
         </div>
       </div>
       <div className={style.column1}>
         <div className={style.inputs}>
           <div className={style.profiledetails}>
-            <div className={style.detailrow}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>{language.name}</Form.Label>
+              <Form.Control type="text" placeholder={language.name} name="name" value={name} onChange={(e) => setName(e.target.value)}/>
+            </Form.Group>
+            {/* <div className={style.detailrow}>
               <label htmlFor="name">Name:</label>
               <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className={style.detailrow}>
+            </div> */}
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>{language.lastName}</Form.Label>
+              <Form.Control type="text" placeholder={language.lastName} name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+            </Form.Group>
+            {/* <div className={style.detailrow}>
               <label htmlFor="lastName">Last Name:</label>
               <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-            </div>
-            <div className={style.detailrow}>
+            </div> */}
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>{language.username}</Form.Label>
+              <Form.Control type="text" placeholder={language.username} name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+            </Form.Group>
+            {/* <div className={style.detailrow}>
               <label htmlFor="username">Username:</label>
               <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </div>
-            <div className={style.detailrow}>
+            </div> */}
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>{language.email}</Form.Label>
+              <Form.Control type="email" placeholder={language.email} name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            </Form.Group>
+            {/* <div className={style.detailrow}>
               <label htmlFor="email">Email:</label>
               <input type="email" name="email" value={email} disabled onChange={(e) => setEmail(e.target.value)} />
-            </div>
+            </div> */}
             <div className={style['country-select']}>
               <label htmlFor="country"> Country</label>
               <input
@@ -223,10 +269,17 @@ const UserProfile = () => {
                 ))}
               </datalist>
             </div>
-            <button onClick={handleUpdate}>Actualizar Perfil</button>
+            <button className={style.lightbgyellow} onClick={handleUpdate}>Actualizar Perfil</button>
           </div>
         </div>
       </div>
+      <AvatarSelectorModal
+        show={showAvatarModal}
+        handleClose={() => setShowAvatarModal(false)}
+        avatars={avatars}
+        selectAvatar={selectAvatar}
+      />
+    </div>
     </div>
   );
   

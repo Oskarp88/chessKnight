@@ -6,7 +6,6 @@ export const ChatContext = createContext();
 
 export const ChatContextProvider = ({children, user}) => {
     const [userChats, setUserchats] = useState([]);
-    console.log('chatcontex', userChats);
     const [allUsers, setAllUsers] = useState([]);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
     const [userChatsError, setUserChatsError] = useState(null);
