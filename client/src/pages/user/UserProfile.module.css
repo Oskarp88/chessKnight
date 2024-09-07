@@ -358,7 +358,6 @@
     flex-direction: column;
     height: auto;
   }
-
   .avatarImage{
     width: 5rem;
     height: 5rem;
@@ -400,7 +399,13 @@
   .avatar{
     height: 4rem;
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 700;
+  }
+  .imgAvatar{
+    width: 2rem;
+  }
+  .imgMarcos{
+    width: 1.6rem;
   }
   .label{
     width: 30px;
@@ -416,37 +421,26 @@
 @media (max-width: 610px){
   .avatar{
     height: 4rem;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
   }
-  .imgAvatar{
-    width: 3rem;
+}
+@media (max-width: 550px){
+  .photo{
+    width: 45%;
   }
 }
 @media (max-width: 550px){
   .avatar{
     height: 4rem;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
-  }
-  .photo{
-    width: 45%;
   }
 }
 
 @media (max-width: 450px){
   .avatar{
-    font-size: 18px;
-    font-weight: 700;
-  }
-  .photo{
-    width: 50%;
-  }
-}
-
-@media (max-width: 410px){
-  .avatar{
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 700;
   }
   .photo{
@@ -455,12 +449,10 @@
 }
 
 @media (max-width: 370px){
-
   .photo{
     width: 60%;
   }
 }
-
 
 @media (max-width: 312px){
   .photo{

@@ -142,13 +142,13 @@ const Channel = () => {
             socket={socket}         
           />
         </Row>
-        <Row className={style.div3} style={{background: chessColor.fondo2}}>
+        <Row className={style.div3} style={{backgroundImage: `url(/fondos/fondoFriend.jpg)`}}>
           <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
         </Row>
       </div>
       <div 
         className={style.tabsContainer}
-        style={toggle === 'Jugadores' ? {background: chessColor.fondo2} : {backgroundImage: `url(${chessColor.fondoChat})`}}
+        style={toggle === 'Jugadores' ? {backgroundImage: `url(/fondos/fondoFriend01.jpg)`} : {backgroundImage: `url(${chessColor.fondoChat})`}}
       >
           <div className={style.blocTabs}>
              <div 
