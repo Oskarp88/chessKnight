@@ -148,7 +148,8 @@ io.on("connection", (socket) => {
           fast: game.ratingFast,
           bandera: game.bandera,
           country: game.country,
-          photo: game.photo
+          photo: game.photo,
+          marco: game.marco
         });
         
       }

@@ -116,7 +116,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
      socket.emit('offGame', {off: true, roomGame});  
   };
 
-  const createGame = (firstId, secondId, username, photo) =>{
+  const createGame = (firstId, secondId, username, photo, marco) =>{
     let colorRamdon = Math.random() < 0.5 ? 'white' : 'black';
     if(socket === null) return;
      setAceptarDesafio(true);
@@ -145,7 +145,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
        ratingFast: userChess?.eloFast,
        bandera: userChess?.imagenBandera,
        country: userChess?.country,
-       photo: auth?.user?.photo
+       photo: auth?.user?.photo,
+       marco: auth?.user?.marco
      });   
   }
 
@@ -307,7 +308,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
         
         {sortedUsers.length === 0 ? 
           
-             <SpinnerDowloand text={`${language.Loading_Players} . . .`}/>
+             <SpinnerDowloand text={`${language.Loading_Players} . . .`} color={'#fff'}/>
           
         : sortedUsers.map((o, index) => (
           <>
@@ -402,9 +403,10 @@ const Friends = ({ friends, onlineUsers, room }) => {
                 <div className={style.modalContent}>
                   
                 <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                    <img 
-                      className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} 
-                      src={userModal?.photo} alt='not found' />                  
+                      <div className={style.imageContainerModal} >
+                        <img className={style.photoImage} src={userModal?.photo} alt="User Photo" />                  
+                        <img className={style.marco} src={userModal?.marco} alt="Marco"/>
+                      </div>                  
                     
                     {aceptarDesafio && !isOffGame &&
                       <>
@@ -422,7 +424,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
                            auth?.user?._id, 
                            userModal?._id, 
                            userModal?.username, 
-                           userModal?.photo
+                           userModal?.photo,
+                           userModal?.marco
                           )}
                       >
                         {language.Challenge} 
@@ -470,10 +473,10 @@ const Friends = ({ friends, onlineUsers, room }) => {
                 <div className={style.modalContent}>
                   
                   <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                      <img 
-                        className={`${modalLoading ? `${style.profileLoading}` : `${style.profile}`}`} 
-                        src={userOpponentModal?.photo} alt='assets/avatar/user.png' 
-                      />                  
+                      <div className={style.imageContainerModal} >
+                        <img className={style.photoImage} src={userOpponentModal?.photo} alt="User Photo" />                  
+                        <img className={style.marco} src={userOpponentModal?.marco} alt="Marco"/>
+                      </div>                   
                       <h3>{userOpponentModal?.username && 
                             `${userOpponentModal.username.charAt(0)
                                .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} </h3>
