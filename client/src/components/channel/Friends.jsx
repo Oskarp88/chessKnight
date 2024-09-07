@@ -279,10 +279,6 @@ const Friends = ({ friends, onlineUsers, room }) => {
      updateCurrentChat(chat);
     }
 
-       console.log('chat friens id1', idFirst,'id2',idSecond);
-
-         console.log('chat friends', chat);
-         console.log('userChats', userChats);
           updateCurrentChat(chat);
 
      navigate('/auth/chat');
@@ -294,7 +290,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
     <div className={style.desafio}>
 
             <div className={style.titleWithIcon}>
-            <img src={'/icon/userswhite.png'} style={{width: '40px', marginRight: '10px'}} alt="" />
+              <img src={'/icon/userswhite.png'} style={{width: '40px', marginRight: '10px'}} alt="" />
 
               <h5>
                 {language.Challenge_a_match} {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
@@ -322,13 +318,18 @@ const Friends = ({ friends, onlineUsers, room }) => {
                 onMouseLeave={() => setHoveredFriend(null)}
                 onClick={() => handleModalOpen(o)}
               >                
-                <div>
+                <div className={style.containerProfile}>
                   <span style={{marginRight: '7px', color: '#fff'}}>{count++}.</span>
-                  <img className={style.userIcon} src={o?.photo} alt='assets/avatar/user.png' />                  
-                  <span className={style.friendName} >
-                    {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
-                  </span>
-                  <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                  <div className={style.imageContainer} >
+                    <img className={style.photoImage} src={o?.photo} alt="User Photo" />                  
+                    <img className={style.marco} src={o?.marco} alt="Marco"/>
+                  </div> 
+                  <div className={style.friendName}>
+                    <span  >
+                      {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
+                    </span>
+                    <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                  </div>
                 </div>
                <div className={style.containerFlex}>
                 { infUser?.time === 60 || infUser?.time === 120 ? 
