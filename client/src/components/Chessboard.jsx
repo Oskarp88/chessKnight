@@ -30,6 +30,7 @@ import ConfirmationModal from './modal/ConfirmationModal';
 import { json, useNavigate } from 'react-router-dom';
 import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
+import PromotionPiece from './board/PromotionPiece';
 
 function Chessboard() {
 
@@ -701,30 +702,30 @@ useEffect(()=>{
      
   };
 
-  const handlePromotionSelection = async(promotionPiece) => {
-    // Lógica para manejar la selección de la pieza de promoción
-    // Reemplaza el peón con la pieza seleccionada
-    const updatedPieces = pieces.map((p) => {
-      if (p.x === destinationCell.x && p.y === destinationCell.y && p.type === PieceType.PAWN) {
-        return {...promotionPiece, x: p.x, y: p.y, color: currentTurn === 'white' ? 'black' : 'white'};
-      }
-      return p;
-    });
+  // const handlePromotionSelection = async(promotionPiece) => {
+  //   //  selección de la pieza de promoción
+  //   // Reemplaza el peón con la pieza seleccionada
+  //   const updatedPieces = pieces.map((p) => {
+  //     if (p.x === destinationCell.x && p.y === destinationCell.y && p.type === PieceType.PAWN) {
+  //       return {...promotionPiece, x: p.x, y: p.y, color: currentTurn === 'white' ? 'black' : 'white'};
+  //     }
+  //     return p;
+  //   });
 
     
-    setPieces(updatedPieces);
-    const pieceData = {
-      pieces,
-      promotionPiece,
-      destinationCell,
-      currentTurn,
-      author: auth?.user?.username,
-      room
-    }
+  //   setPieces(updatedPieces);
+  //   const pieceData = {
+  //     pieces,
+  //     promotionPiece,
+  //     destinationCell,
+  //     currentTurn,
+  //     author: auth?.user?.username,
+  //     room
+  //   }
 
-    await socket.emit("promotion", pieceData);
-    setPromotionModalOpen(false);
-  };
+  //   await socket.emit("promotion", pieceData);
+  //   setPromotionModalOpen(false);
+  // };
   
   const handlePieceClick = (piece, x, y) => {
 
@@ -1575,25 +1576,14 @@ useEffect(()=>{
                               aceptarTablas={aceptarTablas}
                           />}
       {promotionModalOpen && (
-        <div className="promotion-modal">
-          <h2>Elige una pieza de promoción</h2>
-          <div className="promotion-options">
-            {[
-              { type: PieceType.ROOK, image: `assets/images/${currentTurn === 'white' ? 'b' : 'w'}r.png` },
-              { type: PieceType.KNIGHT, image: `assets/images/${currentTurn === 'white' ? 'b' : 'w'}n.png` },
-              { type: PieceType.BISHOP, image: `assets/images/${currentTurn === 'white' ? 'b' : 'w'}b.png` },
-              { type: PieceType.QUEEN, image: `assets/images/${currentTurn === 'white' ? 'b' : 'w'}q.png` },
-            ].map((option) => (
-              <div
-                key={option.type}
-                className="promotion-option"
-                onClick={() => handlePromotionSelection(option)}
-              >
-                <img src={option.image} alt={option.type} />
-              </div>
-            ))}
-          </div>
-        </div>
+        <PromotionPiece 
+        currentTurn={currentTurn}
+        pieces={pieces}
+        destinationCell={destinationCell}
+        setPieces={setPieces}
+        room={room}
+        setPromotionModalOpen={setPromotionModalOpen}
+        />
       )}
       </div>
       <div className='space'>

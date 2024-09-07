@@ -61,7 +61,8 @@ export const languages = [
       Score: 'Puntaje',
       Offer_tables: 'Ofrecer tablas',
       Abandon: 'Abandonar',
-      New_GAME: 'NUEVA PARTIDA'
+      New_GAME: 'NUEVA PARTIDA',
+      Choose_a_promotional_piece: 'Elige una pieza de promoción'
    },
    {
     spanish: 'Spanish',
@@ -126,5 +127,6 @@ export const languages = [
     Offer_tables: 'Offer tables',
     Abandon: 'Abandon',
     New_GAME: 'NEW GAME',
+    Choose_a_promotional_piece: 'Choose a promotional piece',
   }
 ];
