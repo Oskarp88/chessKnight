@@ -29,6 +29,7 @@ import { baseUrl, getRequest } from '../utils/services';
 import ConfirmationModal from './modal/ConfirmationModal';
 import { json, useNavigate } from 'react-router-dom';
 import BoardInfo from './board/BoardInfo';
+import RecordPlays from './board/RecordPlays';
 
 function Chessboard() {
 
@@ -89,7 +90,6 @@ function Chessboard() {
   const jakeMateAudio = new Audio(jakeMateSound);
  
   const ref = useRef();
-  const moveLogContainerRef = useRef(null);
 
   useEffect(() => {
     const dataCellStart = localStorage.getItem('startCell');
@@ -352,11 +352,6 @@ useEffect(()=>{
       }
     }
   }, [isWhiteTime]);
-  
-  useEffect(() => {
-    // Ajusta el scroll al final del contenedor
-    moveLogContainerRef.current.scrollTop = moveLogContainerRef.current.scrollHeight;
-  }, [whiteMoveLog,blackMoveLog]);
 
   useEffect(() => {
       if(socket === null) return;
@@ -1619,43 +1614,7 @@ useEffect(()=>{
         <div className='register' style={{background: boardColor.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
           <h5>Registro de jugadas {window.innerWidth}</h5>       
         </div>
-        <div ref={moveLogContainerRef} className="move-log-container" style={{background: boardColor.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>       
-           <div className="move-log">
-            <ul>
-              {whiteMoveLog.map((move, index) => (
-                <li 
-                 style={index % 2 === 0 ? {backgroundColor: 'rgba(0, 0, 0, 0.15)'}: {}} 
-                 className='move-li-white' key={index}
-                 >  <span>{index + 1}.</span> 
-                 { 
-                    move?.charAt(0) === 'R' || move?.charAt(0) === 'N' || move?.charAt(0) === 'B' || move?.charAt(0) === 'K' || move?.charAt(0) === 'Q' ?
-                  <>
-                    <img className='piezaMove' src={`assets/images/w${move?.charAt(0).toLowerCase()}.png`} alt="" />
-                    <p>{move?.slice(1)}</p>
-                  </>    : <p style={{marginLeft:'1.3rem'}}>{move}</p>
-                 }                
-                 
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="move-log">
-            <ul>
-              {blackMoveLog.map((move, index) => (
-                <li 
-                  style={index % 2 === 0 ? {backgroundColor: 'rgba(0, 0, 0, 0.15)'}:{}} 
-                  className='move-li-black' key={index}
-                >{ 
-                  move?.charAt(0) === 'R' || move?.charAt(0) === 'N' || move?.charAt(0) === 'B' || move?.charAt(0) === 'K' || move?.charAt(0) === 'Q' ?
-                <>
-                  <img className='piezaMove' src={`assets/images/b${move?.charAt(0).toLowerCase()}.png`} alt="" />
-                  <p>{move?.slice(1)}</p>
-                </>    : <p style={{marginLeft:'1.3rem'}}>{move}</p>
-               }</li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <RecordPlays whiteMoveLog={whiteMoveLog} blackMoveLog={blackMoveLog}/>
         <ChatChess 
            room={room}
            username={auth?.user?.username}
