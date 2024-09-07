@@ -61,7 +61,6 @@ function Chessboard() {
   const [whiteMoveLog, setWhiteMoveLog] = useState([]);
   const [blackMoveLog, setBlackMoveLog] = useState([]);
   const [moveLog, setMoveLog] = useState([]);
-  console.log(moveLog)
   const [countNoCapture, setCountNoCapture] = useState(0);
   const [whiteTime, setWhiteTime] = useState(infUser?.time || 1);
   const [blackTime, setBlackTime] = useState(infUser?.time || 1);
@@ -90,8 +89,6 @@ function Chessboard() {
  
   const ref = useRef();
   const moveLogContainerRef = useRef(null);
-
-  console.log(infUser?.color, 'colorChess')
 
   useEffect(() => {
     const dataCellStart = localStorage.getItem('startCell');
@@ -152,6 +149,7 @@ function Chessboard() {
       setCheckMate(prevCheckMate => ({
         ...prevCheckMate,
         userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
         name: auth?.user?.username,
         nameOpponent: infUser?.username,
         bandera: auth?.user?.imagenBandera,
@@ -186,6 +184,7 @@ function Chessboard() {
         setCheckMate(prevCheckMate => ({
         ...prevCheckMate,
         userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
         name: auth?.user?.username,
         nameOpponent: infUser?.username,
         bandera: auth?.user?.imagenBandera,
@@ -220,6 +219,7 @@ useEffect(()=>{
     setCheckMate(prevCheckMate => ({
       ...prevCheckMate,
       userId: auth?.user?._id,
+      opponentId: infUser?.idOpponent,
       name: auth?.user?.username,
       nameOpponent: infUser?.username,
       bandera: auth?.user?.imagenBandera,
@@ -300,6 +300,7 @@ useEffect(()=>{
         setCheckMate((prevCheckMate) => ({
           ...prevCheckMate,
           userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
           nameOpponent: infUser?.username,
           bandera: auth?.user?.imagenBandera,
@@ -325,6 +326,7 @@ useEffect(()=>{
         setCheckMate((prevCheckMate) => ({
           ...prevCheckMate,
           userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
           nameOpponent: infUser?.username,
           bandera: auth?.user?.imagenBandera,
@@ -412,6 +414,7 @@ useEffect(()=>{
         setCheckMate(prevCheckMate => ({
           ...prevCheckMate,
           userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
           nameOpponent: infUser?.username,
           bandera: auth?.user?.imagenBandera,
@@ -483,6 +486,7 @@ useEffect(()=>{
         setCheckMate(prevCheckMate => ({
           ...prevCheckMate,
           userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
           nameOpponent: infUser?.username,
           bandera: auth?.user?.imagenBandera,
@@ -510,6 +514,7 @@ useEffect(()=>{
         setCheckMate(prevCheckMate => ({
           ...prevCheckMate,
           userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
           nameOpponent: infUser?.username,
           bandera: auth?.user?.imagenBandera,
@@ -552,6 +557,7 @@ useEffect(()=>{
         setCheckMate((prevCheckMate) => ({
           ...prevCheckMate,
           userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
           nameOpponent: infUser?.username,
           bandera: auth?.user?.imagenBandera,
@@ -801,6 +807,7 @@ useEffect(()=>{
           setCheckMate(prevCheckMate => ({
             ...prevCheckMate,
             userId: auth?.user?._id,
+            opponentId: infUser?.idOpponent,
             name: auth?.user?.username,
             nameOpponent: infUser?.username,
             bandera: auth?.user?.imagenBandera,
@@ -900,6 +907,7 @@ useEffect(()=>{
       setCheckMate(prevCheckMate => ({
         ...prevCheckMate,
         userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
         name: auth?.user?.username,
         nameOpponent: infUser?.username,
         bandera: auth?.user?.imagenBandera,
@@ -952,8 +960,6 @@ useEffect(()=>{
     } else {
       setCountNoCapture(prevCount => prevCount + 1);
     }
-
-    console.log('countNoCapture:', countNoCapture);
        localStorage.setItem('pieces', JSON.stringify(updatedPieces));
         return updatedPieces;
       });
@@ -1050,6 +1056,7 @@ useEffect(()=>{
               setCheckMate(prevCheckMate => ({
                 ...prevCheckMate,
                 userId: auth?.user?._id,
+                opponentId: infUser?.idOpponent,
                 name: auth?.user?.username,
                 nameOpponent: infUser?.username,
                 bandera: auth?.user?.imagenBandera,
@@ -1148,6 +1155,7 @@ useEffect(()=>{
           setCheckMate(prevCheckMate => ({
             ...prevCheckMate,
             userId: auth?.user?._id,
+            opponentId: infUser?.idOpponent,
             name: auth?.user?.username,
             nameOpponent: infUser?.username,
             bandera: auth?.user?.imagenBandera,
@@ -1251,6 +1259,7 @@ useEffect(()=>{
     setCheckMate(prevCheckMate => ({
       ...prevCheckMate,
       userId: auth?.user?._id,
+      opponentId: infUser?.idOpponent,
       name: auth?.user?.username,
       nameOpponent: infUser?.username,
       bandera: auth?.user?.imagenBandera,
@@ -1318,6 +1327,7 @@ useEffect(()=>{
     setCheckMate((prevCheckMate) => ({
       ...prevCheckMate,
       userId: auth?.user?._id,
+      opponentId: infUser?.idOpponent,
       name: auth?.user?.username,
       nameOpponent: infUser?.username,
       bandera: auth?.user?.imagenBandera,

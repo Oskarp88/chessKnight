@@ -8,6 +8,7 @@ const CheckMateProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [checkMate, setCheckMate] = useState({ 
     userId: '',
+    opponentId: '',
     name: '',
     nameOpponent: '',
     bandera: '',
@@ -29,6 +30,7 @@ const CheckMateProvider = ({ children }) => {
      
         const response = await axios.put(`${baseUrl}/partida/user/update/${checkMate.userId}`, {
           name: checkMate?.name,
+          opponentId: checkMate?.opponentId,
           nameOpponent: checkMate?.nameOpponent,
           bandera: checkMate?.bandera,
           banderaOpponent: checkMate?.banderaOpponent,

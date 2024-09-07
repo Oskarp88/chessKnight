@@ -1,8 +1,9 @@
 const { generateToken } = require("../config/jwt");
-const { comparePassword } = require("../helpers/authHelpers");
+const { comparePassword, hashPassword } = require("../helpers/authHelpers");
 const User = require("../model/User");
 const axios = require('axios');
 const { generateRandomUsername } = require("../utils/generateUsername");
+const { generarPasswordAleatorio } = require("../utils/generarPasswordAleatorio,");
 
 exports.login = async(req, res) => {
     const { email , password } = req.body;
@@ -58,13 +59,16 @@ exports.googleAuth = async (req, res) => {
     // Lógica para buscar o crear un usuario en tu base de datos
     let user = await User.findOne({ email });
     if (!user) {
+      const passwordRandom = await generarPasswordAleatorio();
+      const hashedPassword = await hashPassword(passwordRandom);
       usernameRandom = await generateRandomUsername(username);
       user = new User({
         username: usernameRandom,
         email,
+        password: hashedPassword,
         photo,
         country,
-        imagenBandera
+        imagenBandera,
       });
       await user.save();
       const token = generateToken({id: user._id.toString()}, '120d');

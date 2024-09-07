@@ -2,13 +2,22 @@ const User = require("../model/User");
 
 exports.updatePartidas = async(req, res) => {
     const { userId } = req.params;
-    const {name, nameOpponent, bandera, banderaOpponent, country, countryOpponent, time, game,eloUser, eloOpponent, elo, color} = req.body;
-    console.log('partidaRouter', userId, time, game, elo, eloUser, color)
+    const {
+       opponentId, 
+       name,  
+       bandera,  
+       country, 
+       time, 
+       game,
+       eloUser, 
+       eloOpponent, 
+       elo, 
+       color } = req.body;
   
       try{
 
-        const user = await User.findById(userId); // Encuentra el usuario por su ID en la base de datos
-  
+        const user = await User.findById(userId); 
+        const userOpponent = await User.findById(opponentId,'-password -partida')
         if (!user) {
           return res.status(404).json({ error: 'Usuario no encontrado' });
         }
@@ -115,9 +124,9 @@ exports.updatePartidas = async(req, res) => {
                         elo: eloUser
                       },
                       nameOpponent:{
-                        name: nameOpponent,
-                        country: countryOpponent,
-                        bandera: banderaOpponent,
+                        name: userOpponent.username,
+                        country: userOpponent.country,
+                        bandera: userOpponent.imagenBandera,
                         color: color === 'white' ? 'black' : 'white',
                         estado: game === 'victoria' ? 'lost' : game === 'derrota' ? 'won' : 'tied',
                         elo: eloOpponent
@@ -170,9 +179,9 @@ exports.updatePartidas = async(req, res) => {
                         elo: eloUser
                       },
                       nameOpponent:{
-                        name: nameOpponent,
-                        country: countryOpponent,
-                        bandera: banderaOpponent,
+                        name: userOpponent.username,
+                        country: userOpponent.country,
+                        bandera: userOpponent.imagenBandera,
                         color: color === 'white' ? 'black' : 'white',
                         estado: game === 'victoria' ? 'lost' : game === 'derrota' ? 'won' : 'tied',
                         elo: eloOpponent
@@ -225,9 +234,9 @@ exports.updatePartidas = async(req, res) => {
                     elo: eloUser
                   },
                   nameOpponent:{
-                    name: nameOpponent,
-                    country: countryOpponent,
-                    bandera: banderaOpponent,
+                    name: userOpponent.username,
+                    country: userOpponent.country,
+                    bandera: userOpponent.imagenBandera,
                     color: color === 'white' ? 'black' : 'white',
                     estado: game === 'victoria' ? 'lost' : game === 'derrota' ? 'won' : 'tied',
                     elo: eloOpponent
