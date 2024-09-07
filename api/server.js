@@ -25,7 +25,7 @@ const io = new Server(server, {
   cors: {
     origin:[ "https://chessknight.vercel.app", "http://localhost:3000"],
     // origin: 'http://localhost:3000',
-    method: ["GET", "POST"],
+    method: ["GET", "POST",'PUT', 'DELETE'],
   }
 });
 

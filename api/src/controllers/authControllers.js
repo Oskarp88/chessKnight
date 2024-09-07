@@ -56,32 +56,37 @@ exports.googleAuth = async (req, res) => {
   try {
     const { username, email, photo, country, imagenBandera } = req.body;
 
-    // Lógica para buscar o crear un usuario en tu base de datos
+    // buscar o crear un usuario en la base de datos
     let user = await User.findOne({ email });
     if (!user) {
-      const passwordRandom = await generarPasswordAleatorio();
-      const hashedPassword = await hashPassword(passwordRandom);
-      usernameRandom = await generateRandomUsername(username);
+      // Generar una contraseña aleatoria y un nombre de usuario aleatorio
+      // const passwordRandom = await generarPasswordAleatorio();
+      // const hashedPassword = await hashPassword(passwordRandom);
+       // Generar un nombre de usuario aleatorio si es necesario
+      const usernameRandom = await generateRandomUsername(username);
       user = new User({
         username: usernameRandom,
         email,
-        password: hashedPassword,
         photo,
         country,
         imagenBandera,
       });
+
       await user.save();
+       
       const token = generateToken({id: user._id.toString()}, '120d');
-     return res.json({
-        success: true,
-        message: 'Continue with the registration',
-        user,
-        token
+
+      return res.json({
+          success: true,
+          message: 'Continue with the registration',
+          user,
+          token
       });
     }
 
     const token = generateToken({id: user._id.toString()}, '120d');
 
+    // Verificar si falta información para completar el perfil
     if(!user.name || !user.lastName || !user.country){
       return res.json({
         success: true,
@@ -90,7 +95,8 @@ exports.googleAuth = async (req, res) => {
         token
       });
     }
-
+        
+    //el usuario está autenticado
     res.json({
       success: true,
       message: 'User authenticated successfully',
