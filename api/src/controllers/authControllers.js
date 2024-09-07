@@ -59,14 +59,15 @@ exports.googleAuth = async (req, res) => {
     // buscar o crear un usuario en la base de datos
     let user = await User.findOne({ email });
     if (!user) {
-      // Generar una contraseña aleatoria y un nombre de usuario aleatorio
-      // const passwordRandom = await generarPasswordAleatorio();
-      // const hashedPassword = await hashPassword(passwordRandom);
-       // Generar un nombre de usuario aleatorio si es necesario
+      //Generar una contraseña aleatoria y un nombre de usuario aleatorio
+      const passwordRandom = await generarPasswordAleatorio();
+      const hashedPassword = await hashPassword(passwordRandom);
+      // Generar un nombre de usuario aleatorio si es necesario
       const usernameRandom = await generateRandomUsername(username);
       user = new User({
         username: usernameRandom,
         email,
+        password: hashedPassword,
         photo,
         country,
         imagenBandera,

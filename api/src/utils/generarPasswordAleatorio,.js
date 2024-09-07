@@ -1,4 +1,4 @@
-export function generarPasswordAleatorio() {
+exports.generarPasswordAleatorio = () => {
     const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     const numeros = "0123456789";
     const longitudMinima = 7; // 5 caracteres + 2 números

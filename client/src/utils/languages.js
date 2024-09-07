@@ -58,7 +58,10 @@ export const languages = [
       send: 'Enviar',
       reset_password: 'Restablecer la contraseña',
       Range: 'Rango',
-      Score: 'Puntaje'
+      Score: 'Puntaje',
+      Offer_tables: 'Ofrecer tablas',
+      Abandon: 'Abandonar',
+      New_GAME: 'NUEVA PARTIDA'
    },
    {
     spanish: 'Spanish',
@@ -119,6 +122,9 @@ export const languages = [
     send: 'Send',
     reset_password: 'Reset password',
     Range: 'Range',
-    Score: 'Score'
+    Score: 'Score',
+    Offer_tables: 'Offer tables',
+    Abandon: 'Abandon',
+    New_GAME: 'NEW GAME',
   }
 ];

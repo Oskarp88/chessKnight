@@ -1,0 +1,95 @@
+.containerInf{
+    height: 10.5rem;
+     margin-left: 10px;
+     color: aliceblue;
+  }
+
+  .containerDatos{
+    display: flex;   
+  }
+
+  .containerDatos img{
+    margin-top: 5px;
+    width: 20px;
+    height: 20px;
+    filter: invert(100%);
+  }
+
+  .tablas1{
+    margin-top: 10px;
+    display: flex;
+    margin-left: 5px;
+    cursor: pointer;
+    width: 50%;
+    height: 40%;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 5px;
+    color: #fff;
+  }
+  
+  .tabla1:hover{
+    border: 1px solid #f8f8f8 ;  
+  }
+
+  .a{
+    margin-left: 5px;
+    font-weight: bold;
+  }
+  
+  .containerAbandonar{
+    margin-top: 10px;
+    display: flex;
+    margin-left: 5px;
+    cursor: pointer;
+    width: 10rem;
+    height: 40%;
+    padding: 5px;
+  }
+  
+  .containerAbandonar:hover{
+    border: 1px solid #f8f8f8 ;  
+  }
+
+  .abandonar{
+    display: flex;
+     margin-left: 5px;
+   }
+   
+   .iconFlag{
+     margin-top: -1px;
+   }
+   
+   .partida{
+     margin-top: 2rem;
+     margin-left: 10px;
+   }
+   
+   .partida h3{
+     font-weight: bold;
+   }
+
+   @media (max-width: 1491px){
+    .containerInf{
+        height: 9.5rem;
+        margin-top: 1rem;
+         margin-left: 10px;
+         color: #c8dad7;
+    }
+   }
+
+   @media (max-width: 1100px){
+        .containerInf{
+        margin-top: 0;
+        }
+    }
+
+    @media (max-width: 725px){
+        .container-inf{
+            margin-left: 0;
+            margin-bottom: 15px;
+            margin-top: 1.5rem;
+          }
+    }
+
+    

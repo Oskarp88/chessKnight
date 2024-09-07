@@ -20,23 +20,19 @@ function GoogleOAuht() {
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
-      console.log('result', result);
 
       // Dirección IP del usuario
       const ipResponse = await axios.get(`${baseUrl}/auth/get-ip`);
       const userIP = ipResponse.data.ip;
-      console.log('User IP:', userIP);
 
       // Geolocalización basándose en la IP
       const geoResponse = await axios.get(`${baseUrl}/auth/get-geo/${userIP}`);
       const userCountry = geoResponse.data.country_name;
-      console.log('User Country:', userCountry);
 
       // Obtener la bandera del país
       const banderaResponse = await axios.get('https://restcountries.com/v3.1/all');
       const countryData = banderaResponse.data.find(country => country.name.common === userCountry);
       const countryFlag = countryData ? countryData.flags.png : '';
-      console.log('Country Flag URL:', countryFlag);
 
       const response = await axios.post(`${baseUrl}/auth/google`, {
         username: result.user.displayName,
@@ -50,7 +46,6 @@ function GoogleOAuht() {
         }
       });
 
-      console.log('google', response);
       if(response.data && response.data.message === 'Continue with the registration'){
         toast.success(response.data.message);
         setAuth({
