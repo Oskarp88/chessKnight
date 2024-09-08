@@ -34,8 +34,7 @@ import { handleCheckMate } from '../handle/handleCheckMate';
 function Chessboard() {
 
   const {
-     socket, 
-     setSocket, 
+     socket,  
      room, 
      setRoom, 
      infUser, 
