@@ -29,7 +29,7 @@ import ChatChess from './ChatChess';
 import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
 import PromotionPiece from './board/PromotionPiece';
-import { handleCheckMate } from '../../../api/src/handle/handleCheckMate';
+import { handleCheckMate } from '../handle/handleCheckMate';
 
 function Chessboard() {
 
