@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef , memo} from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Chessboard.css';
 import { PieceType } from '../Types';
 import { useChessboardContext } from '../context/boardContext';
@@ -26,9 +26,6 @@ import ModalSendTablas from './modal/ModalSendTablas';
 import ModalTablasAceptada from './modal/ModalTablasAceptada';
 import PlayerInf2 from './profileUser/playerInf2';
 import ChatChess from './ChatChess';
-import { baseUrl, getRequest } from '../utils/services';
-import ConfirmationModal from './modal/ConfirmationModal';
-import { json, useNavigate } from 'react-router-dom';
 import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
 import PromotionPiece from './board/PromotionPiece';
@@ -93,10 +90,11 @@ function Chessboard() {
  
   const ref = useRef();
 
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const unblock = history.block((location, action) => {
+    const unblock = navigate((_, action) => {
       if (action === 'POP') {
         // Mostrar confirmación al presionar el botón de retroceso
         const confirmExit = window.confirm('Si confirmas, perderás la partida. ¿Deseas continuar?');
@@ -124,7 +122,7 @@ function Chessboard() {
       unblock();
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [history]);
+  }, [navigate, location]);
 
 
   useEffect(() => {
