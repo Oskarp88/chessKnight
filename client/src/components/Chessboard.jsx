@@ -93,36 +93,36 @@ function Chessboard() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const unblock = navigate((_, action) => {
-      if (action === 'POP') {
-        // Mostrar confirmación al presionar el botón de retroceso
-        const confirmExit = window.confirm('Si confirmas, perderás la partida. ¿Deseas continuar?');
-        if (confirmExit) {
-          // Permitir la navegación
-          return true;
-        } else {
-          // Cancelar la navegación
-          return false;
-        }
-      }
-      return true;
-    });
+  // useEffect(() => {
+  //   const unblock = navigate((_, action) => {
+  //     if (action === 'POP') {
+  //       // Mostrar confirmación al presionar el botón de retroceso
+  //       const confirmExit = window.confirm('Si confirmas, perderás la partida. ¿Deseas continuar?');
+  //       if (confirmExit) {
+  //         // Permitir la navegación
+  //         return true;
+  //       } else {
+  //         // Cancelar la navegación
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   });
 
-    // Agregar evento beforeunload
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = 'Si sales, perderás la partida. ¿Estás seguro?';
-    };
+  //   // Agregar evento beforeunload
+  //   const handleBeforeUnload = (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = 'Si sales, perderás la partida. ¿Estás seguro?';
+  //   };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // Limpieza de los eventos al desmontar el componente
-    return () => {
-      unblock();
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [navigate, location]);
+  //   // Limpieza de los eventos al desmontar el componente
+  //   return () => {
+  //     unblock();
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, [navigate, location]);
 
 
   useEffect(() => {
