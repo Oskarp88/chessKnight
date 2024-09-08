@@ -1583,6 +1583,7 @@ useEffect(()=>{
         setPieces={setPieces}
         room={room}
         setPromotionModalOpen={setPromotionModalOpen}
+        socket={socket}
         />
       )}
       </div>

@@ -10,9 +10,9 @@ function PromotionPiece({
     destinationCell,
     setPieces,
     room,
-    setPromotionModalOpen
+    setPromotionModalOpen,
+    socket
 }) {
-    const {socket} = useChessboardContext();
     const {language} = useLanguagesContext();
     const {auth} = useAuth();
 
