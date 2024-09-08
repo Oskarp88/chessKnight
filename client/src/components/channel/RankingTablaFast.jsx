@@ -74,6 +74,7 @@ export const RankingTable = () => {
                 key={index} 
                 className={`${style.frienditem}`}              
                 onClick={() => handleModalOpen(o?._id)}
+                title={o?.username}
               > 
                 <Row>
                   <Col>
@@ -93,7 +94,7 @@ export const RankingTable = () => {
                           <img className={style.marco} src={o?.marco} alt="Marco" />
                         </div>                                    
                       <div className={style.column}>
-                        <span>{o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }</span>
+                        <span>{o?.username.length > 8 ? o?.username.substring(0, 8) + '...' : o?.username}</span>
                         <img src={o?.imagenBandera} className={style.bandera} alt="" />
                       </div>
                     </div>

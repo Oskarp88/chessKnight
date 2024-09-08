@@ -76,8 +76,7 @@ export const RankingTableBullet = () => {
                <li 
                 key={index} 
                 className={`${style.frienditem}`}              
-                // onMouseEnter={() => setHoveredFriend(o._id)}
-                // onMouseLeave={() => setHoveredFriend(null)}
+                 title={o?.username}
                  onClick={() => handleModalOpen(o?._id)}
               > 
                 <Row>
@@ -98,7 +97,7 @@ export const RankingTableBullet = () => {
                       <img className={style.marco} src={o?.marco} alt="Marco" />
                     </div>                  
                     <div className={style.column}>
-                      <span>{o?.username}</span>
+                      <span>{o?.username.length > 8 ? o?.username.substring(0, 8) + '...' : o?.username}</span>
                       <img src={o?.imagenBandera} className={style.bandera} alt="" />
                     </div>
                   </div>
