@@ -4,42 +4,8 @@ import { useChessboardContext } from '../../context/boardContext';
 import { useLanguagesContext } from '../../context/languagesContext';
 import style from './PromotionPiece.module.css'
 
-function PromotionPiece({
-    currentTurn,
-    pieces,
-    destinationCell,
-    setPieces,
-    room,
-    setPromotionModalOpen,
-    socket
-}) {
+function PromotionPiece({currentTurn, handlePromotionSelection}) {
     const {language} = useLanguagesContext();
-    const {auth} = useAuth();
-
-    const handlePromotionSelection = async(promotionPiece) => {
-        //  selección de la pieza de promoción
-        // Reemplaza el peón con la pieza seleccionada
-        const updatedPieces = pieces.map((p) => {
-          if (p.x === destinationCell.x && p.y === destinationCell.y && p.type === PieceType.PAWN) {
-            return {...promotionPiece, x: p.x, y: p.y, color: currentTurn === 'white' ? 'black' : 'white'};
-          }
-          return p;
-        });
-    
-        
-        setPieces(updatedPieces);
-        const pieceData = {
-          pieces,
-          promotionPiece,
-          destinationCell,
-          currentTurn,
-          author: auth?.user?.username,
-          room
-        }
-    
-        await socket.emit("promotion", pieceData);
-        setPromotionModalOpen(false);
-   };
 
   return (
     <div className={style.promotionModal}>

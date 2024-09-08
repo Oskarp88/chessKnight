@@ -702,30 +702,30 @@ useEffect(()=>{
      
   };
 
-  // const handlePromotionSelection = async(promotionPiece) => {
-  //   //  selección de la pieza de promoción
-  //   // Reemplaza el peón con la pieza seleccionada
-  //   const updatedPieces = pieces.map((p) => {
-  //     if (p.x === destinationCell.x && p.y === destinationCell.y && p.type === PieceType.PAWN) {
-  //       return {...promotionPiece, x: p.x, y: p.y, color: currentTurn === 'white' ? 'black' : 'white'};
-  //     }
-  //     return p;
-  //   });
+  const handlePromotionSelection = async(promotionPiece) => {
+    //  selección de la pieza de promoción
+    // Reemplaza el peón con la pieza seleccionada
+    const updatedPieces = pieces.map((p) => {
+      if (p.x === destinationCell.x && p.y === destinationCell.y && p.type === PieceType.PAWN) {
+        return {...promotionPiece, x: p.x, y: p.y, color: currentTurn === 'white' ? 'black' : 'white'};
+      }
+      return p;
+    });
 
     
-  //   setPieces(updatedPieces);
-  //   const pieceData = {
-  //     pieces,
-  //     promotionPiece,
-  //     destinationCell,
-  //     currentTurn,
-  //     author: auth?.user?.username,
-  //     room
-  //   }
+    setPieces(updatedPieces);
+    const pieceData = {
+      pieces,
+      promotionPiece,
+      destinationCell,
+      currentTurn,
+      author: auth?.user?.username,
+      room
+    }
 
-  //   await socket.emit("promotion", pieceData);
-  //   setPromotionModalOpen(false);
-  // };
+    await socket.emit("promotion", pieceData);
+    setPromotionModalOpen(false);
+  };
   
   const handlePieceClick = (piece, x, y) => {
 
@@ -1578,12 +1578,7 @@ useEffect(()=>{
       {promotionModalOpen && (
         <PromotionPiece 
         currentTurn={currentTurn}
-        pieces={pieces}
-        destinationCell={destinationCell}
-        setPieces={setPieces}
-        room={room}
-        setPromotionModalOpen={setPromotionModalOpen}
-        socket={socket}
+        handlePromotionSelection={handlePromotionSelection}
         />
       )}
       </div>
