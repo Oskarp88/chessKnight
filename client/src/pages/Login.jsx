@@ -76,7 +76,7 @@ const Login = () => {
       <Container className={style.container}>
         <Row className="d-flex flex-column flex-lg-row">
            <Col className={style.columUno}>
-             <img src={'logo/chessnight.png'} className={style.logo} alt="" />
+             <img src={'logo/CHESS.png'} className={style.logo} alt="" />
              <div className={style.text}>
                 <p className='text-center ' style={{color: chessColor.color}}>
                   Desafia a jugadores de todo el mundo. Mejora tus habilidades, 

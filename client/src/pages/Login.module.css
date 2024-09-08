@@ -6,6 +6,7 @@
     display: flex;
     width: 100%;
     height: 100vh;
+    overflow: auto;
   }
 
   .container{
@@ -27,8 +28,10 @@
   .columUno{
     display: flex;
     flex-direction: column;
-    align-items: self-start;
+    align-items: center;
     justify-content: center;
+    background-image: url('../../public/logo/logoChess.png');
+    background-size: 45rem 25rem ;
   }
   .logo{
     width: 80%;
@@ -107,6 +110,33 @@
     justify-content: center;
   }
 
+  @media (max-width: 1200px){
+    .columUno{
+      background-size: 35rem 23rem ;
+    }
+  }
+
+  @media (max-width: 992px){
+    .columUno{
+      background-size: 38rem 23rem ;
+    }
+    .container{
+      height: 100dvh; 
+    }
+    .login {
+    margin-bottom: 4rem;
+    }
+    .logo{
+      width: 60%;
+    }
+    .text{
+      font-weight: bold;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      padding: 10px 15px 20px 30px;
+      font-size: 14px;
+    }
+  }
+
   @media (max-width: 650px){
     .backgroundImage{
       height: 120vh;
@@ -125,6 +155,32 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+    }
+  }
+
+  @media (max-width: 550px){
+    .columUno{
+      background-size: 30rem 20rem ;
+      
+    }
+  }
+
+  @media (max-width: 430px){
+    .columUno{
+      background-size: 27rem 15rem ;
+      
+    }
+  }
+
+  @media (max-width: 351px){
+    .columUno{
+      background-size: 23rem 15rem ;    
+    }
+  }
+
+  @media (max-width: 300px){
+    .columUno{
+      background-size: 20rem 13rem ;    
     }
   }
 
