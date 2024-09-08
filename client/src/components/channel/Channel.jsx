@@ -7,8 +7,6 @@ import { ChatContext } from '../../context/ChatContext';
 import { useAuth } from '../../context/authContext';
 import { baseUrl, getRequest } from '../../utils/services';
 import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import { useChessboardContext } from '../../context/boardContext';
 
 const Channel = () => {
@@ -20,8 +18,7 @@ const Channel = () => {
     const {chessColor} = useChessboardContext();
 
     let room = infUser.time ? parseInt(infUser.time) : isRoom;
-    // console.log(room, 'room')
-    // console.log('room chanel', room);
+   
     const { onlineUsers} = useContext(ChatContext);
 
     useEffect(()=>{
@@ -112,6 +109,11 @@ const Channel = () => {
     },[]);
 
     useEffect(() => {
+      localStorage.removeItem('destinationCell');
+      localStorage.removeItem('startCell');
+      localStorage.removeItem('pieces'); 
+      localStorage.removeItem('whiteTime');
+      localStorage.removeItem('blackTime');
       const getUsers = async() =>{
        
         const response = await getRequest(`${baseUrl}/users`);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef , memo} from 'react';
+import { useHistory } from 'react-router-dom';
 import './Chessboard.css';
 import { PieceType } from '../Types';
 import { useChessboardContext } from '../context/boardContext';
@@ -91,6 +92,40 @@ function Chessboard() {
   const jakeMateAudio = new Audio(jakeMateSound);
  
   const ref = useRef();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    const unblock = history.block((location, action) => {
+      if (action === 'POP') {
+        // Mostrar confirmación al presionar el botón de retroceso
+        const confirmExit = window.confirm('Si confirmas, perderás la partida. ¿Deseas continuar?');
+        if (confirmExit) {
+          // Permitir la navegación
+          return true;
+        } else {
+          // Cancelar la navegación
+          return false;
+        }
+      }
+      return true;
+    });
+
+    // Agregar evento beforeunload
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = 'Si sales, perderás la partida. ¿Estás seguro?';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      unblock();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [history]);
+
 
   useEffect(() => {
     const dataCellStart = localStorage.getItem('startCell');
