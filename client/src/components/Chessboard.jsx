@@ -333,6 +333,7 @@ useEffect(()=>{
   useEffect(() => {
     if (whiteTime === 0 || blackTime === 0) {
       if (isWhiteTime === infUser?.color) {
+        
         handleCheckMate(
           infUser,
           auth,
