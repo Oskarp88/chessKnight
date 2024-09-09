@@ -9,7 +9,7 @@ export const colorChess = [
       fondo2: '#d6eaf8 ',
       fondo_3: 'linear-gradient(178deg, rgba(201, 234, 252, 0.51) 14.9%, rgba(139, 192, 216, 0.73) 80%',
       fondo4: '#d6eaf8 ',
-      titulo: '#3949AB',
+      titulo: '#2471a3',
       color: '#273746',
       color1: '#fff',
       spinner: '4px solid rgba(23, 21, 21, 0.5)',
