@@ -122,8 +122,8 @@
     margin-right: 8px; /* Espaciado entre el icono y el nombre */
   }
   .insignia{
-    width: 35px;
-    height: 35px;
+    width: 100%;
+    height: 100%;
     margin-right: 10px;
   }
   
