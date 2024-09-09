@@ -1,14 +1,14 @@
 import React from 'react';
 import style from'../components/channel/Friends.module.css';
 
-function IntermedioInsignia() {
+function Aprendiz() {
   return (
     <img className={style.insignia} 
-        src={`/fondos/intermedio.png`} 
+        src={`/insiginias/Aprendiz.png`} 
         alt='assets/avatar/user.png' 
-        title="Intermedio"
+        title="Novato"
     />
   )
 }
 
-export default IntermedioInsignia;
+export default Aprendiz;

@@ -10,12 +10,20 @@ import { RankingTableBullet } from '../components/channel/RakingTablaBullet';
 import { useChessboardContext } from '../context/boardContext';
 import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../svg';
 import { baseUrl, getRequest } from '../utils/services';
-import { AvanzadoInsignia, ExpertoInsignia, GranMaestroInsignia, IntermedioInsignia, MaestroIngsinia, NovatoInsignia, PrincipianteInsignia } from '../img';
-import PieChart from '../components/piechart/PieChart';
+import { 
+  Competente, 
+  Experto, 
+  GranMaestroInsignia, 
+  Avanzado, 
+  Novato,
+  Aprendiz,
+  Veterano, 
+  } from '../img';
 import SpinnerDowloand from '../components/spinner/SpinnerDowloand';
 import TiedSvg from '../svg/tiedSvg';
 import { useLanguagesContext } from '../context/languagesContext';
 import RechartsPieChart from '../components/piechart/RechartsPieChart';
+
 
 const useInterval = (callback, delay) => {
   const savedCallback = useRef();
@@ -304,26 +312,26 @@ export function Home() {
                 <div  className={style.rating}>
                     <div className={style.insignia}>
                       {   stast === 'fast' ?
-                          user?.eloFast < 21 ? <PrincipianteInsignia /> : 
-                          user?.eloFast >= 21  && user?.eloFast <= 61 ? <NovatoInsignia /> : 
-                          user?.eloFast >= 62  && user?.eloFast <= 100 ? <IntermedioInsignia /> : 
-                          user?.eloFast >= 101 && user?.eloFast <= 230 ? <AvanzadoInsignia /> :
-                          user?.eloFast >= 231 && user?.eloFast <= 390 ? <ExpertoInsignia /> :
-                          user?.eloFast >= 391 && user?.eloFast <= 549 ? <MaestroIngsinia /> : 
+                          user?.eloFast < 21 ? <Novato /> : 
+                          user?.eloFast >= 21  && user?.eloFast <= 61 ? <Aprendiz/> : 
+                          user?.eloFast >= 62  && user?.eloFast <= 100 ? <Avanzado /> : 
+                          user?.eloFast >= 101 && user?.eloFast <= 230 ? <Competente /> :
+                          user?.eloFast >= 231 && user?.eloFast <= 390 ? <Experto /> :
+                          user?.eloFast >= 391 && user?.eloFast <= 549 ? <Veterano /> : 
                           <GranMaestroInsignia/> : stast === 'blitz' ? 
-                          user?.eloBlitz < 21 ? <PrincipianteInsignia /> : 
-                          user?.eloBlitz >= 21  && user?.eloBlitz <= 61 ? <NovatoInsignia /> : 
-                          user?.eloBlitz >= 62  && user?.eloBlitz <= 100 ? <IntermedioInsignia /> : 
-                          user?.eloBlitz >= 101 && user?.eloBlitz <= 230 ? <AvanzadoInsignia /> :
-                          user?.eloBlitz >= 231 && user?.eloBlitz <= 390 ? <ExpertoInsignia /> :
-                          user?.eloBlitz >= 391 && user?.eloBlitz <= 549 ? <MaestroIngsinia /> : 
+                          user?.eloBlitz < 21 ? <Novato /> : 
+                          user?.eloBlitz >= 21  && user?.eloBlitz <= 61 ? <Aprendiz /> : 
+                          user?.eloBlitz >= 62  && user?.eloBlitz <= 100 ? <Avanzado /> : 
+                          user?.eloBlitz >= 101 && user?.eloBlitz <= 230 ? <Competente/> :
+                          user?.eloBlitz >= 231 && user?.eloBlitz <= 390 ? <Experto /> :
+                          user?.eloBlitz >= 391 && user?.eloBlitz <= 549 ? <Veterano /> : 
                           <GranMaestroInsignia/> : 
-                          user?.eloBullet < 21 ? <PrincipianteInsignia /> : 
-                          user?.eloBullet >= 21  && user?.eloBullet <= 61 ? <NovatoInsignia /> : 
-                          user?.eloBullet >= 62  && user?.eloBullet <= 100 ? <IntermedioInsignia /> : 
-                          user?.eloBullet >= 101 && user?.eloBullet <= 230 ? <AvanzadoInsignia /> :
-                          user?.eloBullet >= 231 && user?.eloBullet <= 390 ? <ExpertoInsignia /> :
-                          user?.eloBullet >= 391 && user?.eloBullet <= 549 ? <MaestroIngsinia /> : 
+                          user?.eloBullet < 21 ? <Novato /> : 
+                          user?.eloBullet >= 21  && user?.eloBullet <= 61 ? <Aprendiz /> : 
+                          user?.eloBullet >= 62  && user?.eloBullet <= 100 ? <Avanzado /> : 
+                          user?.eloBullet >= 101 && user?.eloBullet <= 230 ? <Competente /> :
+                          user?.eloBullet >= 231 && user?.eloBullet <= 390 ? <Experto /> :
+                          user?.eloBullet >= 391 && user?.eloBullet <= 549 ? <Veterano /> : 
                           <GranMaestroInsignia/> 
                         }
                       <p style={{color: chessColor.titulo}}>{ stast === 'fast' ? user.eloFast :

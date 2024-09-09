@@ -8,13 +8,14 @@ import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
 import { BlitzSvg, BulletSvg, CircleClose, CircleInf, FastSvg } from '../../svg';
 import { 
-  AvanzadoInsignia, 
-  ExpertoInsignia, 
+  Competente, 
+  Experto, 
   GranMaestroInsignia, 
-  IntermedioInsignia, 
-  MaestroIngsinia, 
-  NovatoInsignia, 
-  PrincipianteInsignia 
+  Avanzado,
+  Novato, 
+  Aprendiz,
+  Veterano 
+ 
 } from '../../img';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import { useChessboardContext } from '../../context/boardContext';
@@ -22,6 +23,7 @@ import desafiadoSound from '../../path/to/Awkward Anime Moment.mp3';
 import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
 import { useLanguagesContext } from '../../context/languagesContext';
+
 
 
 const Friends = ({ friends, onlineUsers, room }) => {
@@ -334,27 +336,27 @@ const Friends = ({ friends, onlineUsers, room }) => {
                 </div>
                <div className={style.containerFlex}>
                 { infUser?.time === 60 || infUser?.time === 120 ? 
-                    o?.eloBullet < 21 ? <PrincipianteInsignia /> : 
-                    o?.eloBullet >= 21 && o?.eloBullet <= 61 ? <NovatoInsignia /> : 
-                    o?.eloBullet >= 62 && o?.eloBullet <= 100 ? <IntermedioInsignia /> : 
-                    o?.eloBullet >= 101 && o?.eloBullet <= 230 ? <AvanzadoInsignia /> :
-                    o?.eloBullet >= 231 && o?.eloBullet <= 390 ? <ExpertoInsignia /> :
-                    o?.eloBullet >= 391 && o?.eloBullet <= 549 ? <MaestroIngsinia /> : 
+                    o?.eloBullet < 21 ? <Novato /> : 
+                    o?.eloBullet >= 21 && o?.eloBullet <= 61 ? <Aprendiz/> : 
+                    o?.eloBullet >= 62 && o?.eloBullet <= 100 ? <Avanzado /> : 
+                    o?.eloBullet >= 101 && o?.eloBullet <= 230 ? <Competente /> :
+                    o?.eloBullet >= 231 && o?.eloBullet <= 390 ? <Experto /> :
+                    o?.eloBullet >= 391 && o?.eloBullet <= 549 ? <Veterano /> : 
                     <GranMaestroInsignia/> :
                   infUser?.time === 180 || infUser?.time === 300 ? 
-                    o?.eloBlitz < 21 ? <PrincipianteInsignia/> : 
-                    o?.eloBlitz >= 21 && o?.eloBlitz <= 61 ? <NovatoInsignia/> : 
-                    o?.eloBlitz >= 62 && o?.eloBlitz <= 100 ? <IntermedioInsignia/> : 
-                    o?.eloBlitz >= 101 && o?.eloBlitz <= 230 ? <AvanzadoInsignia /> :
-                    o?.eloBlitz >= 231 && o?.eloBlitz <= 390 ? <ExpertoInsignia/> : 
-                    o?.eloBlitz >= 391 && o?.eloBlitz <= 549 ?  <MaestroIngsinia/> : 
+                    o?.eloBlitz < 21 ? <Novato/> : 
+                    o?.eloBlitz >= 21 && o?.eloBlitz <= 61 ? <Aprendiz/> : 
+                    o?.eloBlitz >= 62 && o?.eloBlitz <= 100 ? <Avanzado/> : 
+                    o?.eloBlitz >= 101 && o?.eloBlitz <= 230 ? <Competente/> :
+                    o?.eloBlitz >= 231 && o?.eloBlitz <= 390 ? <Experto/> : 
+                    o?.eloBlitz >= 391 && o?.eloBlitz <= 549 ?  <Veterano/> : 
                     <GranMaestroInsignia/> : 
-                    o?.eloFast < 21 ? <PrincipianteInsignia/> : 
-                    o?.eloFast >= 21 && o?.eloFast <= 61 ? <NovatoInsignia/> : 
-                    o?.eloFast  >= 62 && o?.eloFast  <= 100 ? <IntermedioInsignia/> : 
-                    o?.eloFast  >= 101 && o?.eloFast  <= 230 ? <AvanzadoInsignia/> :
-                    o?.eloFast  >= 231 && o?.eloFast  <= 390 ? <ExpertoInsignia/> : 
-                    o?.eloFast  >= 391 && o?.eloFast  <= 549 ? <MaestroIngsinia/> :
+                    o?.eloFast < 21 ? <Novato/> : 
+                    o?.eloFast >= 21 && o?.eloFast <= 61 ? <Aprendiz/> : 
+                    o?.eloFast  >= 62 && o?.eloFast  <= 100 ? <Avanzado/> : 
+                    o?.eloFast  >= 101 && o?.eloFast  <= 230 ? <Competente/> :
+                    o?.eloFast  >= 231 && o?.eloFast  <= 390 ? <Experto/> : 
+                    o?.eloFast  >= 391 && o?.eloFast  <= 549 ? <Veterano/> :
                     <GranMaestroInsignia/>
                   } 
                   

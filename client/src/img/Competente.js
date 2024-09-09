@@ -1,14 +1,14 @@
 import React from 'react';
 import style from'../components/channel/Friends.module.css';
 
-function ExpertoInsignia() {
+function Competente() {
   return (
     <img className={style.insignia} 
-        src={`/fondos/experto.png`} 
+        src={`/insignias/Competente.png`} 
         alt='assets/avatar/user.png' 
-        title="Experto"
+        title="Avanzado"
     />
   )
 }
 
-export default ExpertoInsignia;
+export default Competente;

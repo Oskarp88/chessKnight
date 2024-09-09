@@ -1,14 +1,15 @@
 import React from 'react';
 import style from'../components/channel/Friends.module.css';
 
-function NovatoInsignia() {
+function Novato() {
   return (
-    <img className={style.insignia} 
-        src={`/fondos/novato.png`} 
+    <img 
+        className={style.insignia} 
+        src={`/insignias/Novato.png`} 
         alt='assets/avatar/user.png' 
         title="Novato"
     />
   )
 }
 
-export default NovatoInsignia;
+export default Novato;

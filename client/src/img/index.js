@@ -1,17 +1,17 @@
-import PrincipianteInsignia from "./principianteInsignia";
-import NovatoInsignia from "./novatoInsignia";
-import IntermedioInsignia from "./intermedioInsignia";
-import AvanzadoInsignia from "./avanzadoInsignia";
-import ExpertoInsignia from "./expertoInsignia";
-import MaestroIngsinia from "./maestroIngsinia";
+import  Aprendiz from "./Aprendiz";
+import Novato from "./Novato";
+import Avanzado from "./Avanzado";
+import Competente from "./Competente";
+import Experto from "./Experto";
+import Veterano from "./Veterano";
 import GranMaestroInsignia from "./granMaestroInsignia";
 
 export {
-    PrincipianteInsignia,
-    NovatoInsignia,
-    IntermedioInsignia,
-    AvanzadoInsignia,
-    ExpertoInsignia,
-    MaestroIngsinia,
+    Aprendiz,
+    Novato,
+    Avanzado,
+    Competente,
+    Experto,
+    Veterano,
     GranMaestroInsignia
 }
