@@ -34,18 +34,20 @@ function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, g
         {!modal ?
           <>
               <div className={style.userprofile}>
-            {photo ?
-                <img className={style.profileSidebar} src={user.photo} alt='hola' />
-                : <img className={style.profileSidebar} src={'assets/avatar/user.png'} alt='' /> 
-            }
+                {photo ?
+                    <div className={style.imageContainerModal} >
+                        <img className={style.photoImage} src={user?.photo} alt="User Photo" />                  
+                        <img className={style.marco} src={user?.marco} alt="Marco"/>
+                    </div>  
+                    : <img className={style.profileSidebar} src={'assets/avatar/user.png'} alt='' /> 
+                }
             
-            <div className={style.username}>
-                <span>{user.username}</span>
-            </div>
-        </div>
+                    <div className={style.username}>
+                        <span>{user.username}</span>
+                    </div>
+                </div>
 
-        <img className={style.bandera} src={user.imagenBandera} alt={`${user?.country} flag`} />
-
+            <img className={style.bandera} src={user.imagenBandera} alt={`${user?.country} flag`} />
             <span style={{ color: 'white', fontWeight: 'bold' }}> 
                 {user.country}
             </span>     
@@ -100,9 +102,7 @@ function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, g
             </div>
             <div className={style.historial}>
                 <button onClick={() => allPartidas(user?._id)}>
-                    <svg style={{color: '#8D6E63 ', marginTop: '-5px'}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
-                    <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
-                    </svg>
+                    <img src="/icon/carpeta.png" alt="" />
                     <p>Historial partidas</p>
                 </button>
             </div>

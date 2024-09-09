@@ -14,6 +14,7 @@ import Form from 'react-bootstrap/Form';
 import { useLanguagesContext } from '../../context/languagesContext';
 import MarcoSelectorModal from './MarcoSelectorModal';
 import { marcos } from '../../utils/marcos';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const UserProfile = () => {
@@ -185,11 +186,18 @@ const UserProfile = () => {
       <div className={style.column}>
         <div className={style.photo} >
           <div className={style.profileimage}>
-            {/* <img src={photo || user.photo} alt="product-photo" height={'200px'} /> */}
+            {user.photo || user.marco || photo ?
             <div className={style.imageContainer} >
               <img className={style.photoImage} src={photo || user.photo} alt="User Photo" />
               <img className={style.marco} src={marco || user.marco} alt="Marco" height={'200px'}/>
-            </div> 
+            </div> :
+                <>
+                <Spinner animation="border" size="sm" />
+                <Spinner animation="border" />
+                <Spinner animation="grow" size="sm" />
+                <Spinner animation="grow" />
+              </>
+            }
           </div>
           <div className={style.upload}>
             <input 
