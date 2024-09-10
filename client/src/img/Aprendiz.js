@@ -4,7 +4,7 @@ import style from'../components/channel/Friends.module.css';
 function Aprendiz() {
   return (
     <img className={style.insignia} 
-        src={`/insiginias/Aprendiz.png`} 
+        src={`/insignias/Aprendiz.png`} 
         alt='assets/avatar/user.png' 
         title="Novato"
     />

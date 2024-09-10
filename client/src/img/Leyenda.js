@@ -3,7 +3,7 @@ import style from'../components/channel/Friends.module.css';
 function Leyenda() {
   return (
     <img className={style.insignia} 
-    src={`/insiginias/Leyenda.png`} 
+    src={`/insignias/Leyenda.png`} 
     alt='Leyenda' 
     title="Leyenda"
 />
