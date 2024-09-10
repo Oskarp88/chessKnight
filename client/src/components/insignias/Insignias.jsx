@@ -2,7 +2,7 @@ import { Aprendiz, Avanzado, Competente, Elite, Experto, Leyenda, Maestro, Novat
 
 function Insignias({o, time}) {
   return (
-    <div>
+    <>
         { time === 60 || time === 120 || time === 'bullet' ? 
             o?.eloBullet < 50 ? <Novato /> : 
             o?.eloBullet >= 50 && o?.eloBullet <= 150 ? <Aprendiz/> : 
@@ -36,7 +36,7 @@ function Insignias({o, time}) {
              o?.eloFast >= 1000 && o?.eloFast <= 1359 ? <Prodigio /> : 
              <Leyenda/> 
          } 
-    </div>
+    </>
   )
 }
 
