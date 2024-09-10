@@ -8,6 +8,7 @@ import GoogleOAuht from '../components/oauth/GoogleOAuth';
 import { baseUrl } from '../utils/services';
 import { useLanguagesContext } from '../context/languagesContext';
 import { useAuth } from '../context/authContext';
+import Danger from '../svg/danger';
 
 const Registro = ({ onSubmit }) => {
   const {auth} = useAuth();
@@ -16,7 +17,8 @@ const Registro = ({ onSubmit }) => {
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
-
+  const [error, setError] = useState(false);
+ 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -29,7 +31,6 @@ const Registro = ({ onSubmit }) => {
     country: '',
     imagenBandera: ''
   });
-
   const [formErrors, setFormErrors] = useState({
     name: '',
     lastName: '',
@@ -71,16 +72,34 @@ const Registro = ({ onSubmit }) => {
     if (!formData.name) {
       isValid = false;
       errors.name = 'Name is required';
+    }else if(formData.name.length < 4){
+      isValid = false;
+      errors.name = 'Minimo 4 caracteres'
+    }else if(formData.name.length > 12){
+      isValid = false;
+      errors.name = 'Maximo 12 caracteres'
     }
 
     if (!formData.lastName) {
       isValid = false;
       errors.lastName = 'Last name is required';
+    }else if(formData.lastName.length < 4){
+      isValid = false;
+      errors.lastName = 'Minimo 4 caracteres'
+    }else if(formData.lastName.length > 12){
+      isValid = false;
+      errors.lastName = 'Maximo 12 caracteres'
     }
 
     if (!formData.userName) {
       isValid = false;
       errors.userName = 'Username is required';
+    }else if(formData.userName.length > 12){
+      isValid = false;
+      errors.userName = 'Maximo 12 caracteres'
+    }else if(formData.userName.length < 4){
+      isValid = false;
+      errors.userName = 'Minimo 4 caracteres'
     }
 
     if (!formData.email) {
@@ -139,6 +158,9 @@ const Registro = ({ onSubmit }) => {
   };
 
   const handleChange = (event) => {
+    if(error){
+      validateForm();
+    }
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -148,8 +170,9 @@ const Registro = ({ onSubmit }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setError(true);
     if (validateForm()) {
+      
       try {
         const response = await axios.post(`${baseUrl}/user`, {
           name: formData.name,
@@ -167,11 +190,13 @@ const Registro = ({ onSubmit }) => {
         } else {
           toast.error(response.data.message);
         }
+        setError(false);
       } catch (error) {
         console.error(error);
         toast.error('register fallied');
       }
     }
+   
   };
 
 
@@ -188,7 +213,16 @@ const Registro = ({ onSubmit }) => {
               value={formData.name}
               onChange={handleChange}
             />
-            {formErrors.name && <div className={style.error}>{formErrors.name}</div>}
+            {formErrors.name &&
+             <div className={style.error}>
+              <p>
+                {formErrors.name}
+              </p>
+              <div className={style.svg}>
+                <Danger/>
+              </div>
+             </div>
+            }
             <input
               type="text"
               name="lastName"
@@ -196,7 +230,16 @@ const Registro = ({ onSubmit }) => {
               value={formData.lastName}
               onChange={handleChange}
             />
-            {formErrors.lastName && <div className={style.error}>{formErrors.lastName}</div>}
+            {formErrors.lastName && 
+              <div className={style.error}>
+                <p>
+                  {formErrors.lastName}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+            }
             <input
               type="text"
               name="userName"
@@ -204,7 +247,16 @@ const Registro = ({ onSubmit }) => {
               value={formData.userName}
               onChange={handleChange}
             />
-            {formErrors.userName && <div className={style.error}>{formErrors.userName}</div>}
+            {formErrors.userName && 
+              <div className={style.error}>
+                <p>
+                  {formErrors.userName}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+            }
             <input
               type="text"
               name="email"
@@ -212,7 +264,16 @@ const Registro = ({ onSubmit }) => {
               value={formData.email}
               onChange={handleChange}
             />
-             {formErrors.email && <div className={style.error}>{formErrors.email}</div>}
+             {formErrors.email && 
+               <div className={style.error}>
+                <p>
+                  {formErrors.email}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+             }
             <input
               type="password"
               name="password"
@@ -220,7 +281,16 @@ const Registro = ({ onSubmit }) => {
               value={formData.password}
               onChange={handleChange}
             />
-            {formErrors.password && <div className={style.error}>{formErrors.password}</div>}
+            {formErrors.password && 
+              <div className={style.error}>
+                <p>
+                  {formErrors.password}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+            }
             <input
               type="password"
               name="confirmPassword"
@@ -228,7 +298,16 @@ const Registro = ({ onSubmit }) => {
               value={formData.confirmPassword}
               onChange={handleChange}
             />
-            {formErrors.confirmPassword && <div className={style.error}>{formErrors.confirmPassword}</div>}
+            {formErrors.confirmPassword && 
+              <div className={style.error}>
+                <p>
+                  {formErrors.confirmPassword}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+            }
             <div className={style['country-select']}>
               <input
                 type="text"
@@ -245,6 +324,16 @@ const Registro = ({ onSubmit }) => {
                 ))}
               </datalist>
             </div>
+            {formErrors.country && 
+              <div className={style.error}>
+                <p>
+                  {formErrors.country}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+            }
             <input type="submit" name="signup_submit" value={language.sign_me_up} />
           </form>
 

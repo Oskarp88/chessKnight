@@ -15,16 +15,19 @@ import { useLanguagesContext } from '../../context/languagesContext';
 import MarcoSelectorModal from './MarcoSelectorModal';
 import { marcos } from '../../utils/marcos';
 import Spinner from 'react-bootstrap/Spinner';
+import Danger from '../../svg/danger';
 
 
 const UserProfile = () => {
   const { auth, setAuth } = useAuth();
   const fileRef = useRef(null);
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    lastName: '',
+    username: '',
+    country: '',
+  });
   const [email, setEmail] = useState('');
-  const [country, setCountry] = useState('');
   const [photo, setPhoto] = useState('');
   const [marco, setMarco] = useState('');
   const [bandera, setBandera] = useState('');
@@ -35,6 +38,13 @@ const UserProfile = () => {
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    lastName: '',
+    userName: '',
+    country: '',
+  });
+  const [error, setError] = useState(false)
   const {chessColor} = useChessboardContext();
   const {language} = useLanguagesContext();
 
@@ -100,7 +110,10 @@ const UserProfile = () => {
     setSelectedCountry(value);
     const selectedCountryData = countries.find((country) => country.name.common === value);
     if (selectedCountryData) {
-      setCountry(value);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        country: value,
+      }));
       setBandera(selectedCountryData.flags.png)
     }
   };
@@ -117,11 +130,24 @@ const UserProfile = () => {
   const getUser = async () => {
     try {
       const { data } = await axios.get(`${baseUrl}/user/${auth.user._id}`);
-      setName(data.name);
-      setLastName(data.lastName);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        name: data.name,
+      }));
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        lastName: data.lastName,
+      }));
       setEmail(data.email);
-      setUsername(data.username);
-      setCountry(data.country);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        username: data.username,
+      }));
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        country: data.country,
+      }));
+      setSelectedCountry(data.country);
       setUser(data);
     } catch (error) {
       console.log(error);
@@ -131,42 +157,93 @@ const UserProfile = () => {
   useEffect(() => {
     getUser();
   }, []);
-  
+
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    if(formData.name.length < 4){
+      isValid = false;
+      errors.name = 'Minimo 4 caracteres'
+    }else if(formData.name.length > 12){
+      isValid = false;
+      errors.name = 'Maximo 12 caracteres'
+    }
+
+    if (formData.lastName.length < 4){
+      isValid = false;
+      errors.lastName = 'Minimo 4 caracteres'
+    }else if(formData.lastName.length > 12){
+      isValid = false;
+      errors.lastName = 'Maximo 12 caracteres'
+    }
+
+    if(formData.username.length > 12){
+      isValid = false;
+      errors.userName = 'Maximo 12 caracteres'
+    }else if(formData.username.length < 4){
+      isValid = false;
+      errors.userName = 'Minimo 4 caracteres'
+    }
+
+    if (!countries.find((country) => country.name.common === selectedCountry)) {
+      isValid = false;
+      errors.country = 'Invalid country';
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
+  const handleChange = (event) => {
+    if(error){
+      validateForm();
+    }
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
   
   const handleUpdate = async (event) => {
     event.preventDefault();
-    try {
-
-      const response = await axios.put(`${baseUrl}/user/update/${auth.user._id}`, {
-         name,
-         lastName,
-         username,
-         country,
-         photo,
-         imagenBandera: bandera,
-         marco,
-      });
-      if (response.data.success) {
-        toast.success(`${name} is updated`);
-        setAuth({
-          ...auth,
-          user: response.data.userUpdate,
-          token: auth?.token,
+    setError(true)
+    if(validateForm()){
+      try {
+       
+        const response = await axios.put(`${baseUrl}/user/update/${auth.user._id}`, {
+           name: formData.name,
+           lastName: formData.lastName,
+           username: formData.username,
+           country: formData.country,
+           photo,
+           imagenBandera: bandera,
+           marco,
         });
-
-        const data = { user: response.data.userUpdate, token: auth?.token}
-        localStorage.setItem('auth', JSON.stringify(data));
-        // navigate('/dashboard/user/profile');
-      } else {
-        toast.error(response.data.message);
+        if (response.data.success) {
+          toast.success(`${formData.name} is updated`);
+          setAuth({
+            ...auth,
+            user: response.data.userUpdate,
+            token: auth?.token,
+          });
+  
+          const data = { user: response.data.userUpdate, token: auth?.token}
+          localStorage.setItem('auth', JSON.stringify(data));
+          // navigate('/dashboard/user/profile');
+        } else {
+          toast.error(response.data.message);
+        }
+        setError(false);
+      } catch (error) {
+        console.log('error', error);
+  
+        toast.error(String(error), {
+          autoClose: 3000,
+          closeButton: <button className={style.closeButton}>X</button>,
+        });
       }
-    } catch (error) {
-      console.log('error', error);
-
-      toast.error(String(error), {
-        autoClose: 3000,
-        closeButton: <button className={style.closeButton}>X</button>,
-      });
     }
   };
 
@@ -250,36 +327,75 @@ const UserProfile = () => {
           <div className={style.profiledetails}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>{language.name}</Form.Label>
-              <Form.Control type="text" placeholder={language.name} name="name" value={name} onChange={(e) => setName(e.target.value)}/>
+              <Form.Control 
+                type="text" 
+                placeholder={language.name} 
+                name="name" 
+                value={formData.name} 
+                onChange={handleChange}
+              />
+                {formErrors.name &&
+             <div className={style.error}>
+              <p>
+                {formErrors.name}
+              </p>
+              <div className={style.svg}>
+                <Danger/>
+              </div>
+             </div>
+            }
             </Form.Group>
-            {/* <div className={style.detailrow}>
-              <label htmlFor="name">Name:</label>
-              <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div> */}
+          
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>{language.lastName}</Form.Label>
-              <Form.Control type="text" placeholder={language.lastName} name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
-            </Form.Group>
-            {/* <div className={style.detailrow}>
-              <label htmlFor="lastName">Last Name:</label>
-              <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-            </div> */}
+              <Form.Control 
+                type="text" 
+                placeholder={language.lastName} 
+                name="lastName" 
+                value={formData.lastName} 
+                onChange={handleChange}
+              />
+               {formErrors.lastName && 
+                  <div className={style.error}>
+                    <p>
+                      {formErrors.lastName}
+                    </p>
+                    <div className={style.svg}>
+                      <Danger/>
+                    </div>
+                  </div>
+                }
+            </Form.Group >        
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>{language.username}</Form.Label>
-              <Form.Control type="text" placeholder={language.username} name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+              <Form.Control 
+                type="text" 
+                placeholder={language.username} 
+                name="username" 
+                value={formData.username} 
+                onChange={handleChange}
+              />
+                {formErrors.userName && 
+                  <div className={style.error}>
+                    <p>
+                      {formErrors.userName}
+                    </p>
+                    <div className={style.svg}>
+                      <Danger/>
+                    </div>
+                  </div>
+                }
             </Form.Group>
-            {/* <div className={style.detailrow}>
-              <label htmlFor="username">Username:</label>
-              <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </div> */}
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>{language.email}</Form.Label>
-              <Form.Control type="email" placeholder={language.email} name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+              <Form.Control 
+                disabled 
+                type="email" 
+                placeholder={language.email} 
+                name="email" 
+                value={email} 
+              />
             </Form.Group>
-            {/* <div className={style.detailrow}>
-              <label htmlFor="email">Email:</label>
-              <input type="email" name="email" value={email} disabled onChange={(e) => setEmail(e.target.value)} />
-            </div> */}
             <div className={style['country-select']}>
               <label htmlFor="country"> Country</label>
               <input
@@ -297,6 +413,16 @@ const UserProfile = () => {
                 ))}
               </datalist>
             </div>
+            {formErrors.country && 
+              <div className={style.error}>
+                <p>
+                  {formErrors.country}
+                </p>
+                <div className={style.svg}>
+                  <Danger/>
+                </div>
+              </div>
+            }
             <button className={style.lightbgyellow} onClick={handleUpdate}>Actualizar Perfil</button>
           </div>
         </div>

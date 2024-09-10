@@ -1,13 +1,13 @@
 import style from'../components/channel/Friends.module.css';
 
-function Competente() {
+function Maestro() {
   return (
     <img className={style.insignia} 
-        src={`/insignias/Competente.png`} 
+        src={`/insiginias/Maestro.png`} 
         alt='assets/avatar/user.png' 
-        title="Competente"
+        title="Maestro"
     />
   )
 }
 
-export default Competente;
+export default Maestro;

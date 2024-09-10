@@ -5,6 +5,7 @@ import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../../svg';
 import TiedSvg from '../../svg/tiedSvg';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { useAuth } from '../../context/authContext';
+import Insignias from '../insignias/Insignias';
 
 
 function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, gamesWon, gamesTied, gamesLost}) {
@@ -44,6 +45,9 @@ function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, g
             
                     <div className={style.username}>
                         <span>{user.username}</span>
+                        <div className={style.insignia}>
+                            <Insignias o={user} time={nivel}/>
+                        </div>
                     </div>
                 </div>
 

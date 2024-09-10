@@ -1,0 +1,13 @@
+import style from'../components/channel/Friends.module.css';
+
+function Elite() {
+  return (
+    <img className={style.insignia} 
+    src={`/insiginias/Elite.png`} 
+    alt='assets/avatar/user.png' 
+    title="Elite"
+/>
+  )
+}
+
+export default Elite;

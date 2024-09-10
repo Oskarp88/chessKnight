@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Nav.module.css';
 import Sidebar from './Sidebar';
 import Notifications from '../chat/Notifications';
@@ -19,6 +19,7 @@ import styled from 'styled-components';
 
 function NavBar() {
    const{ auth, setAuth } = useAuth();
+   const navigate = useNavigate();
    const location = useLocation();
    const [theme, setTheme] = useState(0); 
    const {chessColor, setChessColor} = useChessboardContext();
@@ -70,6 +71,7 @@ const handleLogout = () => {
   
   localStorage.removeItem('auth');
   toast.success('Logout succefilly');
+  navigate('/login');
 }
 
 const handleLanguageChange = (num) => {

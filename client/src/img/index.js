@@ -4,7 +4,11 @@ import Avanzado from "./Avanzado";
 import Competente from "./Competente";
 import Experto from "./Experto";
 import Veterano from "./Veterano";
-import GranMaestroInsignia from "./granMaestroInsignia";
+import Maestro from "./Maestro";
+import Elite from "./Elite";
+import Prodigio from "./Prodigio";
+import Leyenda from "./Leyenda";
+
 
 export {
     Aprendiz,
@@ -13,5 +17,8 @@ export {
     Competente,
     Experto,
     Veterano,
-    GranMaestroInsignia
+    Maestro,
+    Elite,
+    Prodigio,
+    Leyenda
 }

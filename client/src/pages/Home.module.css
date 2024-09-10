@@ -257,6 +257,11 @@
     font-weight: bold;
     height: 4rem;
   }
+  .insignia p{
+    font-weight: 600;
+    font-size: 22px;
+    margin: auto;
+  }
 
   .rating span{
     margin: auto;
@@ -841,16 +846,6 @@
       height: 100%;
       border-radius: 1rem 1rem 1rem 1rem;
     }
-  
-   
-    .insignia{
-      display: flex;
-    }
-  
-    .insignia{
-      font-weight: bold;
-    }
-
   
     .chartContainer {
       width: 259px;

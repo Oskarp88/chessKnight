@@ -19,9 +19,24 @@
     }
     
     .error {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 220px;
+      height: 1rem;
+      font-size: 8px;
+      margin-top: -1.2rem;
+    }
+    .error p{
       color: red;
-      font-size: 12px;
-      margin-top: 4px;
+      margin-bottom: auto;
+    }
+    .svg{
+      margin-bottom: auto;
+      margin-left: 5px;
+       width: 10px;
+       height: 10px;
+       color: red;
     }
     
     .container{
@@ -31,6 +46,8 @@
     
     .left {
       position: absolute;
+      display: flex;
+      flex-direction: column;
       top: 0;
       left: 0;
       box-sizing: border-box;
@@ -138,10 +155,6 @@
     color: #FFF;
     text-align: center;
     }
-    
-    
-    
-  
 
     @media (max-width: 725px){
       .Registro{       
@@ -200,6 +213,10 @@
     
       .right {
         margin-top: 20px;
+      }
+
+      .error {
+        width: 100%;
       }
     }
     
