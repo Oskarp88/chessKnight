@@ -251,10 +251,10 @@
   cursor: grabbing;
 }
 
-#chessboard .tile .chess-piece img {
+#chessboard .tile .chess-piece{
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Esto hará que la imagen se ajuste al tamaño del contenedor sin distorsionarla */
+  background-size: cover; /* Esto hará que la imagen se ajuste al tamaño del contenedor sin distorsionarla */
 }
 
 /* Estilos para la pieza seleccionada */

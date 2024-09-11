@@ -89,40 +89,6 @@ function Chessboard() {
  
   const ref = useRef();
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // useEffect(() => {
-  //   const unblock = navigate((_, action) => {
-  //     if (action === 'POP') {
-  //       // Mostrar confirmación al presionar el botón de retroceso
-  //       const confirmExit = window.confirm('Si confirmas, perderás la partida. ¿Deseas continuar?');
-  //       if (confirmExit) {
-  //         // Permitir la navegación
-  //         return true;
-  //       } else {
-  //         // Cancelar la navegación
-  //         return false;
-  //       }
-  //     }
-  //     return true;
-  //   });
-
-  //   // Agregar evento beforeunload
-  //   const handleBeforeUnload = (event) => {
-  //     event.preventDefault();
-  //     event.returnValue = 'Si sales, perderás la partida. ¿Estás seguro?';
-  //   };
-
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-
-  //   // Limpieza de los eventos al desmontar el componente
-  //   return () => {
-  //     unblock();
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, [navigate, location]);
-
 
   useEffect(() => {
     const dataCellStart = localStorage.getItem('startCell');
@@ -1528,8 +1494,8 @@ useEffect(()=>{
         {j === 7 ? <div className="tile-content">{HORIZONTAL_AXIS[i]}</div> : null}
         {i === 7 ? <div className="tile-content-num">{VERTICAL_AXIS[j]}</div> : null}
         {image && (
-         <img
-            src={image}
+         <div
+            style={{backgroundImage: `url(${image})`}}
             onMouseDown={() => {
               const clickedPiece = pieces.find((p) => p.x === i && p.y === j);
               if (clickedPiece) {
@@ -1641,7 +1607,6 @@ useEffect(()=>{
          <BoardInfo ofrecerTablas={ofrecerTablas} abandonarHandle={abandonarHandle}/>
     </div>
      </div>
-     {/* </div> */}
      
     </>
   );

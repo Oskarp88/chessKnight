@@ -234,7 +234,7 @@ export function Home() {
       </div>
      {
       auth?.user  && 
-      <div className={style.fondoDatos} ref={miContaineHistorial}>
+      <div className={style.fondoDatos} >
         <div className={style.containerStats}>
           <h5 style={{color: chessColor.titulo}}>{language.statistics_of} {auth?.user?.name ? 
                                     `${auth.user.name} ${auth.user.lastName}`: 

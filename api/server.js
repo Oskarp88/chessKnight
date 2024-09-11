@@ -23,7 +23,7 @@ app.use('/api', router);
 
 const io = new Server(server, {
   cors: {
-    origin:[ "https://chessfive.vercel.app", "http://localhost:3000"],
+    origin:["https://chessfive.vercel.app","http://localhost:3000"],
     method: ["GET", "POST",'PUT', 'DELETE'],
   }
 });
@@ -245,7 +245,8 @@ io.on("connection", (socket) => {
 connectDB();
 
 // Manejar conexiones WebSocket
-const port = process.env.PORT || 5000; // Asegúrate de que no sea el puerto fijo
+const port = process.env.PORT || 5000;
+ // Asegúrate de que no sea el puerto fijo
 
 
 server.listen(port, () => {
