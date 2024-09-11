@@ -12,6 +12,7 @@ import desafiadoSound from '../../path/to/Awkward Anime Moment.mp3';
 import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
 import { useLanguagesContext } from '../../context/languagesContext';
+import Spinner from 'react-bootstrap/Spinner';
 import Insignias from '../insignias/Insignias';
 
 const Friends = ({ friends, onlineUsers, room }) => {
@@ -378,8 +379,10 @@ const Friends = ({ friends, onlineUsers, room }) => {
                     
                     {aceptarDesafio && !isOffGame &&
                       <>
-                        <h3>{userModal?.username && `${language?.You_have_sent_a_challenge}`}</h3>
-                        <div className={style.ldsring}><div></div><div></div><div></div><div></div></div>
+                        <span className={style.text}>
+                          {userModal?.username && `${language?.You_have_sent_a_challenge}`}
+                        </span>
+                        <Spinner animation="grow" style={{color: '#154360'}}/>;
                       </> 
                     }
                     {!aceptarDesafio && isOffGame && <h3>{language.Challenge_rejected}</h3>}
@@ -398,13 +401,19 @@ const Friends = ({ friends, onlineUsers, room }) => {
                       >
                         {language.Challenge} 
                       </button>
-                      <button className={style.button} onClick={() => mensajeChat(auth?.user?._id, userModal?._id, )}>
+                      <button 
+                        className={style.button} 
+                        onClick={() => mensajeChat(auth?.user?._id, userModal?._id, )}
+                      >
                         {language.message}
                       </button>
                       </>}                  
                     {
                       aceptarDesafio && 
-                      <button className={style.button} onClick={() => handleModalClose()}>
+                      <button 
+                        className={style.button} 
+                        style={{width:'90%'}} 
+                        onClick={() => handleModalClose()}>
                         {language.Cancel}
                       </button>
                     }
@@ -445,9 +454,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
                         <img className={style.photoImage} src={userOpponentModal?.photo} alt="User Photo" />                  
                         <img className={style.marco} src={userOpponentModal?.marco} alt="Marco"/>
                       </div>                   
-                      <h3>{userOpponentModal?.username && 
+                      <span className={style.text}>{userOpponentModal?.username && 
                             `${userOpponentModal.username.charAt(0)
-                               .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} </h3>
+                               .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} 
+                      </span>
+                      <Spinner animation="grow" style={{color: '#154360'}}/>
                   </div>                                    
                   <div className={style.modalButtons}>
                     <button className={style.button} onClick={playGame}>

@@ -254,7 +254,7 @@
 #chessboard .tile .chess-piece{
   width: 100%;
   height: 100%;
-  background-size: cover; /* Esto hará que la imagen se ajuste al tamaño del contenedor sin distorsionarla */
+  background-size: cover; 
 }
 
 /* Estilos para la pieza seleccionada */

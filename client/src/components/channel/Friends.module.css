@@ -213,7 +213,7 @@
 
   /* Estilos para el modal */
 .modal {
-  width: 30rem;
+  width: 20rem;
   height: auto;
   display: none;
   position: fixed;
@@ -233,8 +233,9 @@
 .header{
   background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
   border-radius: 1rem 1rem 0 0;
-  height: 4.5rem;
+  height: 5rem;
   padding: .5rem 1rem 1rem 1rem;
+ 
 }
 
 .username{
@@ -243,9 +244,11 @@
 
 .header span {
   color: #fff;
-  font-size: xx-large;
-  font-weight: bold;
   margin-top: -1rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+  font-size: 25px;
+  font-weight: 800;
 }
 
 .circle{
@@ -300,6 +303,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .photoImage {
   top: 0;
@@ -325,7 +330,10 @@
   border-radius: 8px;
 }
 
-
+.text{
+  color: #154360;
+  font-weight: bold;
+}
 .modalButtons {
   margin-top: 10px;
   display: flex;
@@ -337,19 +345,21 @@
 .button {
   background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
   color: #fff;
-  padding: 8px 16px;
+  padding: 8px 8px;
   margin: 0 8px;
+  margin-bottom: 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 95%;
-  
+  width: 8rem;
+  height: 2.5rem;
+  box-shadow: 0px -4px 0px 0px rgba(0,0,0,.3) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
 }
 
 .button:hover {
-  background: linear-gradient(181deg, rgb(2, 0, 97) 15%, rgb(97, 149, 219) 158.5%);
-  height: 2rem;
-  width: 100%;
+  background: linear-gradient(181deg, rgb(0, 39, 97) 15%, rgb(69, 134, 219) 158.5%);
+  height: 2.7rem;
+  width: 8.2;
 }
 
 .gameOverModal {
