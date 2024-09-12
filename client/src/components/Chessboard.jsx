@@ -575,7 +575,6 @@ useEffect(()=>{
             parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
             color: infUser?.color
         }));
-        setTied(true);
         setUserWon(prev => ({
           ...prev, 
           username: auth?.user?.username, 
