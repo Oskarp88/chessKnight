@@ -88,6 +88,7 @@ function Chessboard() {
   const jakeMateAudio = new Audio(jakeMateSound);
  
   const ref = useRef();
+  const chessboardRef = useRef(null);
 
 
   useEffect(() => {
@@ -961,25 +962,6 @@ useEffect(()=>{
     }
   };
    
-  function onDragStart(e, piece) {
-    
-    if (piece && piece.color === currentTurn) {
-      // Establecer la pieza clickeada como la seleccionada
-      setSelectedPiece(piece);
-
-      e.dataTransfer.effectAllmoved ='move';
-      e.dataTransfer.setData('application/json', JSON.stringify(piece));
-      // Establecer la opacidad de la imagen mientras se arrastra
-      
-      setTimeout(()=>{
-        e.target.style.display = 'none';
-      },0)
-    }
-  }
-
-  const onDragEnd = (e) => {
-    e.target.style.display = 'block';
-  }
   
   const onDrop = async(e, x, y) => {
     e.preventDefault();    
@@ -1180,8 +1162,246 @@ useEffect(()=>{
     }
   };
   
-  const onDragOver = (e) => {
+  const handleMouseDown = async(e, piece, x, y) => {
     e.preventDefault();
+
+    if(tied === true) return;
+    if(infUser?.color !== currentTurn) return;
+  
+    if (piece && piece.color === currentTurn) {
+      const pieceElement = e.target;
+      
+      // Obtener el rectángulo del tablero y la pieza
+      const chessboardRect = chessboardRef.current.getBoundingClientRect();
+      // Calcular el desplazamiento de la pieza desde el cursor
+      const offsetX = e.clientX;
+      const offsetY = e.clientY;
+
+      setSelectedPiece(piece);
+  
+   function onMouseMove(event) {
+        // Calcular la nueva posición de la pieza ajustada
+        const newX = event.clientX - offsetX;
+        const newY = event.clientY - offsetY;
+        // Asegurarse de que la pieza no se mueva fuera del tablero
+        
+        pieceElement.style.position = 'absolute';
+        pieceElement.style.zIndex = 5;
+        pieceElement.style.left = `${newX}px`;
+        pieceElement.style.top = `${newY}px`;
+      }
+  
+      async function onMouseUp(event) {
+        const x = Math.floor((event.clientX - chessboardRect.left) / (chessboardRect.width / 8));
+        const y = 7-Math.floor((event.clientY - chessboardRect.top) / (chessboardRect.height / 8));
+  
+        if (x < 0 || x > 7 || y < 0 || y > 7) {
+          console.log("Movimiento fuera del tablero");
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          pieceElement.style.position = '';
+          pieceElement.style.left = '';
+          pieceElement.style.top = '';
+          return;  // Salir de la función si las coordenadas están fuera del tablero
+        }
+
+        if (piece && piece.type === PieceType.PAWN) {
+          if (piece.x !== x || piece.y !== y) {
+            const dy = y - piece.y;
+            if (Math.abs(dy) === 2) {
+              // Esto significa que el peón avanzó dos casillas, y puedes configurar enPassantTarget.
+              setEnPassantTarget({ x, y: y - (dy > 0 ? 1 : -1) });
+            }      
+          }
+        }
+        if(isMoveValid(
+          piece.type, 
+          piece, 
+          x, y,
+          pieces, 
+          enPassantTarget,
+          currentTurn)){
+
+        if (enPassantTarget && x === enPassantTarget.x && 
+            y === enPassantTarget.y && piece.type === PieceType.PAWN) {
+          const pieceAtDestination = pieces.find((p) => 
+            p.x === enPassantTarget.x && p.y === enPassantTarget.y-1 
+            || p.x === enPassantTarget.x && p.y === enPassantTarget.y+1);
+          pieces.splice(pieces.indexOf(pieceAtDestination), 1);             
+        }  
+
+        const check =  isSimulatedMoveCausingCheck(
+          piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white'
+        );
+   
+        if (check) {
+          // Implementar la lógica para manejar el jaque mate
+          console.log('¡estas en jake');       
+          return
+        } 
+
+        const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white')
+        const king = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
+
+        if( isCheck){
+          jakeAudio.play();
+          setKingCheckCell({x: king.x, y: king.y});       
+          const checkMate =  isCheckmateAfterMove(piece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
+         !checkMate && jakeAudio.play();
+          if(checkMate){
+            jakeMateAudio.play();
+            victoryAudio.play();
+            setUserWon(prev => ({
+              ...prev, 
+              username: auth?.user?.username,
+              nameOpponent: infUser?.username, 
+              idUser: auth?.user?._id,
+              idOpponent: infUser?.idOpponent,
+              turn: infUser?.color === 'white' ? 'black' : 'white',
+              status: '1',
+              color: infUser?.color === 'white' ? 'black' : 'white',
+              photo: infUser?.photo
+            }));
+          
+           if(socket ===null) return; 
+            setCheckMate(prevCheckMate => ({
+              ...prevCheckMate,
+              userId: auth?.user?._id,
+              opponentId: infUser?.idOpponent,
+              name: auth?.user?.username,
+              nameOpponent: infUser?.username,
+              bandera: auth?.user?.imagenBandera,
+              banderaOpponent: infUser?.bandera,
+              country: auth?.user?.country,
+              countryOpponent: infUser?.country,
+              time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                        infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                        'fast' }`,
+              game: 'victoria',
+              eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+                infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+                parseInt(userChess?.eloFast)}`,
+              eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+                infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+                parseInt(infUser?.fast)}`,
+              elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+                infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+                parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+              color: infUser?.color
+            }));
+            setFrase('por !!Jaque Mate!!');
+            setGameOver(prevIsGameOver => {
+              console.log("isGameOver:", !prevIsGameOver);
+              return true;
+            });
+            if(socket ===null) return; 
+            socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
+          }
+          
+        }else{
+          setKingCheckCell(null);
+        }
+
+        const pieceData = {
+          pieces,
+          piece,
+          x,
+          y,
+          turn: currentTurn === 'white' ? 'black' : 'white',
+          author: auth?.user?.username,
+          room
+        };
+    
+        movePiece(piece, x, y);
+        setSelectedPiece(null);
+        setCurrentTurn(currentTurn === 'white' ? 'black' : 'white');
+        setDestinationCell({ x, y });
+        
+        localStorage.setItem('destinationCell', JSON.stringify({x,y}));
+        localStorage.removeItem('userChess');
+        localStorage.removeItem('infUser');
+  
+         localStorage.setItem('chessboard',
+          JSON.stringify({ 
+            room,  
+            checkMate,
+            userChess,
+            infUser,
+            currentTurn: currentTurn === 'white' ? 'black' : 'white'
+        }));
+        if(piece){
+          const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 ? 
+          '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+          piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+          piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+          `${
+            piece?.type?.charAt(0) === 'p'
+              ? ''
+              : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
+          }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+            if (piece && piece.color === "white") {
+              setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+              setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+            } else if (piece && piece.color === 'black') {
+              setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+              setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+            }
+        }
+        
+        if (piece.type === PieceType.PAWN && (y === 0 || y === 7)) {
+          // Abrir el modal de promoción
+          setPromotionModalOpen(true);
+          return;
+        }
+        
+        await socket.emit("send_move", pieceData);
+        soltarAudio.play();
+        const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
+        
+      if (!isCheck && isStalemate(king1, pieces, piece, x, y)) {
+        socket.emit('stalemate', {room, state : true});
+        setModalTablasAceptada(true);
+        setTied(true);
+        setFrase('por Rey ahogado');
+        setCheckMate(prevCheckMate => ({
+          ...prevCheckMate,
+          userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
+          name: auth?.user?.username,
+          nameOpponent: infUser?.username,
+          bandera: auth?.user?.imagenBandera,
+          banderaOpponent: infUser?.bandera,
+          country: auth?.user?.country,
+          countryOpponent: infUser?.country,
+          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                   infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                   'fast' }`,
+          game: 'empate',
+          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+            parseInt(userChess?.eloFast)}`,
+          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+            parseInt(infUser?.fast)}`,
+          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+        return;
+      }
+      };
+  
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        pieceElement.style.position = '';
+        pieceElement.style.left = '';
+        pieceElement.style.top = '';
+      }
+  
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    }
   };
   
   const resetBoard = () => {
@@ -1426,15 +1646,13 @@ useEffect(()=>{
         key={`${HORIZONTAL_AXIS[i]}${VERTICAL_AXIS[j]}`}
         onMouseDown={() => handleTileClick(i, j)}
         ref={ref}
-        onDrop={(e) => onDrop(e, i, j)}
-        onDragOver={onDragOver}
       >
         {j === 0 ? <div className="tile-content">{HORIZONTAL_AXIS[i]}</div> : null}
         {i === 0 ? <div className="tile-content-num">{VERTICAL_AXIS[j]}</div> : null}
         {image && (
          <img
             src={image}
-            onMouseDown={() => {
+            onClick={() => {
               const clickedPiece = pieces.find((p) => p.x === i && p.y === j);
               if (clickedPiece) {
                 handlePieceClick(clickedPiece, i, j);
@@ -1446,15 +1664,7 @@ useEffect(()=>{
                 ? 'selected'
                 : ''
             }`}
-            onDragStart={(e) => 
-              {const clickedPiece = pieces.find((p) => p.x === i && p.y === j);
-                if (clickedPiece) {
-                  onDragStart(e,clickedPiece);
-                }
-              }
-            }
-            onDragEnd={onDragEnd}
-            draggable={true}
+            onMouseDown={(e) => handleMouseDown(e, pieces.find(p => p.x === i && p.y === j), i, j)}
          />         
         )}
       </div>
@@ -1487,8 +1697,6 @@ useEffect(()=>{
         key={`${HORIZONTAL_AXIS[i]}${VERTICAL_AXIS[j]}`}
         onMouseDown={() => handleTileClick(i, j)}
         ref={ref}
-        onDrop={(e) => onDrop(e, i, j)}
-        onDragOver={onDragOver}
       >
        
         {j === 7 ? <div className="tile-content">{HORIZONTAL_AXIS[i]}</div> : null}
@@ -1496,7 +1704,7 @@ useEffect(()=>{
         {image && (
          <div
             style={{backgroundImage: `url(${image})`}}
-            onMouseDown={() => {
+            onClick={() => {
               const clickedPiece = pieces.find((p) => p.x === i && p.y === j);
               if (clickedPiece) {
                 handlePieceClick(clickedPiece, i, j);
@@ -1508,15 +1716,8 @@ useEffect(()=>{
                 ? 'selected'
                 : ''
             }`}
-            onDragStart={(e) => 
-              {const clickedPiece = pieces.find((p) => p.x === i && p.y === j);
-                if (clickedPiece) {
-                  onDragStart(e,clickedPiece);
-                }
-              }
-            }
-            onDragEnd={onDragEnd}
-            draggable={true}
+            onMouseDown={(e) => handleMouseDown(e, pieces.find(p => p.x === i && p.y === j), i, j)}
+
          />         
         )}
       </div>
@@ -1540,7 +1741,7 @@ useEffect(()=>{
             currentTurn={ currentTurn === (infUser?.color === 'white' ? 'black' : 'white') ? infUser?.color === 'white' ? 'black' : 'white' : '' }
         />
       </div>
-      <div id="chessboard">     
+      <div id="chessboard" ref={chessboardRef}>     
       {board}
       {isGameOver ? <ModalCheckMate infUser={userWon} time={infUser?.time} revanchaHandle={revanchaHandle} frase={frase}/> : null}
       {modaltime && <Modal 

@@ -8,7 +8,7 @@ import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
 import { BlitzSvg, BulletSvg, CircleClose, CircleInf, FastSvg } from '../../svg';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
-import desafiadoSound from '../../path/to/Awkward Anime Moment.mp3';
+import desafiadoSound from '../../path/to/ding.mp3';
 import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
 import { useLanguagesContext } from '../../context/languagesContext';
@@ -39,7 +39,9 @@ const Friends = ({ friends, onlineUsers, room }) => {
   const {language} = useLanguagesContext();
 
   const desafiadoAudio = new Audio(desafiadoSound);
+  desafiadoAudio.volume = 0.1;
   const rechazadoAudio = new Audio(rechazadoSound);
+  rechazadoAudio.volume = 0.1;
 
 
   const allOponnentOnline = friends.filter((friend)=>
