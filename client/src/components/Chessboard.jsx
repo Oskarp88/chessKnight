@@ -584,7 +584,8 @@ useEffect(()=>{
           idOpponent: data?.idUser,
           turn: data?.color === 'white' ? 'black' : 'white',
           status: '1',
-          color: infUser?.color === 'white' ? 'black' : 'white'
+          color: infUser?.color === 'white' ? 'black' : 'white',
+          photo: infUser?.photo
         }));
         setFrase(`por abandono de las ${data?.color === 'white' ? 'negras' : 'blancas'}`);
         setGameOver(true);

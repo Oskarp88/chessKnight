@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { colorChess } from '../utils/Colors';
+import { PieceType } from '../Types';
 
 const ChessboardContext = createContext();
 
