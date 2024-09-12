@@ -969,7 +969,8 @@ useEffect(()=>{
     if(tied === true) return;
     if(infUser?.color !== currentTurn) return;
   
-    if (piece && piece.color === currentTurn) {
+    if (piece) {
+      setStartCell({ x, y });
       const pieceElement = e.target;
       
       // Obtener el rectángulo del tablero y la pieza
