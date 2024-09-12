@@ -45,7 +45,7 @@ function Chessboard() {
   const {checkMate ,setCheckMate} = useCheckMateContext();
   const {boardColor, setBoardColor} = useChessboardContext();  
   const [currentTurn, setCurrentTurn] = useState('white');
-  const [pieces, setPieces] = useState(initPieces);
+  const {pieces, setPieces} = useChessboardContext();
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [pieceAux, setPieceAux] = useState(null);
   const [startCell, setStartCell] = useState(null);
@@ -1344,8 +1344,6 @@ useEffect(()=>{
     localStorage.removeItem('whiteTime');
     localStorage.removeItem('blackTime');
     if(socket === null) return;
-    setRendicion(true);
-    setTied(true);
     setModalAbandonar(false);
     setGameOver(true)
     setCheckMate((prevCheckMate) => ({
@@ -1381,7 +1379,8 @@ useEffect(()=>{
       idOpponent: infUser?.idOpponent,
       turn: infUser?.color === 'white' ? 'white' : 'black',
       status: '0',
-      color: infUser?.color === 'white' ? 'black' : 'white'
+      color: infUser?.color === 'white' ? 'black' : 'white',
+      photo: infUser?.photo
     }));
     setFrase(`por abandono de las ${infUser?.color === 'white' ? 'blancas' : 'negras'}`);
     socket.emit('sendAbandonar', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
