@@ -761,8 +761,6 @@ useEffect(()=>{
     if (!selectedPiece) {
       return;
     }
-
-    setStartCell({ x, y });
     
     if (isMoveValid(
            selectedPiece.type, 
@@ -970,6 +968,7 @@ useEffect(()=>{
     e.preventDefault();
 
     if(tied === true) return;
+    console.log(infUser?.color, 'currenturn', currentTurn);
     if(infUser?.color !== currentTurn) return;
   
     if (piece) {
