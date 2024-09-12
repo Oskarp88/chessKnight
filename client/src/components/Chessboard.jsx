@@ -783,7 +783,7 @@ useEffect(()=>{
       if( isCheck){
         
         setKingCheckCell({x: king.x, y: king.y});       
-        const checkMate =  isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
+        const checkMate = selectedPiece && isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
         !checkMate && jakeAudio.play();
         if(checkMate){
           jakeMateAudio.play();
@@ -996,8 +996,13 @@ useEffect(()=>{
       }
   
       async function onMouseUp(event) {
-        const x = Math.floor((event.clientX - chessboardRect.left) / (chessboardRect.width / 8));
-        const y = 7-Math.floor((event.clientY - chessboardRect.top) / (chessboardRect.height / 8));
+          // Obtener las coordenadas actuales del ratón en relación con el tablero
+          const xRaw = (event.clientX - chessboardRect.left) / (chessboardRect.width / 8);
+          const yRaw = (event.clientY - chessboardRect.top) / (chessboardRect.height / 8);
+
+          // Calcular las coordenadas en el tablero considerando si el tablero está invertido
+          const x = infUser?.color === 'black' ? 7 - Math.floor(xRaw) : Math.floor(xRaw);
+          const y = infUser?.color === 'black' ? Math.floor(yRaw) : 7 - Math.floor(yRaw);
   
         if (x < 0 || x > 7 || y < 0 || y > 7) {
           console.log("Movimiento fuera del tablero");
@@ -1050,7 +1055,7 @@ useEffect(()=>{
         if( isCheck){
           jakeAudio.play();
           setKingCheckCell({x: king.x, y: king.y});       
-          const checkMate =  isCheckmateAfterMove(piece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
+          const checkMate = piece && isCheckmateAfterMove(piece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
          !checkMate && jakeAudio.play();
           if(checkMate){
             jakeMateAudio.play();
