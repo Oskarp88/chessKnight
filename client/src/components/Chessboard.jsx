@@ -968,10 +968,9 @@ useEffect(()=>{
     e.preventDefault();
 
     if(tied === true) return;
-    console.log(infUser?.color, 'currenturn', currentTurn);
     if(infUser?.color !== currentTurn) return;
   
-    if (piece) {
+    if (piece &&  piece.color === currentTurn) {
       setStartCell({ x, y });
       const pieceElement = e.target;
       
