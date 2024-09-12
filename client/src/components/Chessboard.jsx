@@ -747,6 +747,7 @@ useEffect(()=>{
   const handleTileClick = async(x, y) => {
     if(tied === true) return;
     if(infUser?.color !== currentTurn) return;
+  
     // Manejar el clic en una casilla para mover la pieza
     if (selectedPiece && selectedPiece.type === PieceType.PAWN) {
       if (selectedPiece.x !== x || selectedPiece.y !== y) {
@@ -760,6 +761,8 @@ useEffect(()=>{
     if (!selectedPiece) {
       return;
     }
+
+    setStartCell({ x, y });
     
     if (isMoveValid(
            selectedPiece.type, 
