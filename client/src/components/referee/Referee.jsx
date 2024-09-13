@@ -121,6 +121,30 @@ export const isMoveValid = (pieceType, selectedPiece,x,y,pieces, enPassantTarget
       return false
     }
   }
+  
+ function getPossiblePawnMove(pawn, pieces) {
+    const { x, y, color } = pawn;
+    const possibleMoves = [];
+  
+    // Determinar la dirección de avance basada en el color del peón
+    const forwardDirection = color === 'white' ? 1 : -1;
+  
+    // Función para agregar un movimiento si la casilla está desocupada
+    const addMoveIfEmpty = (dx, dy) => {
+      const targetX = x + dx;
+      const targetY = y + dy;
+      if (targetX >= 0 && targetX <= 7 && targetY >= 0 && targetY <= 7) {
+        if (!pieces.some((p) => p.x === targetX && p.y === targetY)) {
+          possibleMoves.push({ x: targetX, y: targetY });
+        }
+      }
+    };
+  
+    // Mover una casilla hacia adelante
+    addMoveIfEmpty(0, forwardDirection);
+  
+    return possibleMoves;
+  }
 
   export const isStalemate = (king, pieces, piece,x,y) => {
     const { color } = king;
@@ -141,24 +165,39 @@ export const isMoveValid = (pieceType, selectedPiece,x,y,pieces, enPassantTarget
     // Buscar el rey en la copia de las piezas actualizadas
     const updatedPieces = piecesCopy.filter((p) => !(p.x === x && p.y === y && p.color === color)); // Elimina la pieza capturada
   
+    const samePawn = updatedPieces.find((p) => p.type === PieceType.PAWN && p.color === color);
+
+    for(const pawn of samePawn){
+       const possibleMovePawn = getPossiblePawnMove(pawn, updatedPieces);
+
+       for(const move of possibleMovePawn){
+        const isCheckAfterMove = isSimulatedMoveCausingCheck(pawn, move.x, move.y, updatedPieces, null, color);
+      
+        if (!isCheckAfterMove) {
+          // Si alguna pieza tiene un movimiento legal, no es ahogado
+          return false;
+        }
+       }
+    }
     // Obtener todas las piezas del mismo color del rey
     const sameColorPieces = updatedPieces.filter((p) => p.color === color);
   
     // Iterar a través de todas las piezas del mismo color
     for (const piece of sameColorPieces) {
       // Obtener los movimientos posibles de cada pieza
-      const possibleMoves = getMovesFunction(piece.type, piece, updatedPieces, null, color);
+        if(piece.type !== 'pawn') {
+          const possibleMoves = getMovesFunction(piece.type, piece, updatedPieces, null, color);
       
-      for (const move of possibleMoves) {
-        console.log('move', move);
-        // Simular cada movimiento y verificar si deja al rey en jaque
-        const isCheckAfterMove = isSimulatedMoveCausingCheck(piece, move.x, move.y, updatedPieces, null, color);
-  
-        if (!isCheckAfterMove) {
-          // Si alguna pieza tiene un movimiento legal, no es ahogado
-          return false;
+          for (const move of possibleMoves) {
+            // Simular cada movimiento y verificar si deja al rey en jaque
+            const isCheckAfterMove = isSimulatedMoveCausingCheck(piece, move.x, move.y, updatedPieces, null, color);
+      
+            if (!isCheckAfterMove) {
+              // Si alguna pieza tiene un movimiento legal, no es ahogado
+              return false;
+            }
+          }
         }
-      }
     }
     
     const king1 = updatedPieces.find((p) => p.type === PieceType.KING && p.color !== piece.color);
