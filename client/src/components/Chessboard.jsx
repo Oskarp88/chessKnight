@@ -3,7 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './Chessboard.css';
 import { PieceType } from '../Types';
 import { useChessboardContext } from '../context/boardContext';
-import { getCaptureFunction, getMovesFunction, handleThreefoldRepetition, insufficientMaterial, isDrownedKing, isMoveValid, isStalemate } from './referee/Referee';
+import { 
+  getCaptureFunction, 
+  getMovesFunction, 
+  handleThreefoldRepetition, 
+  insufficientMaterial,
+  isMoveValid, 
+  isStalemate } from './referee/Referee';
 import { HORIZONTAL_AXIS, VERTICAL_AXIS, initPieces } from '../Constants';
 import toqueSound from '../path/to/tocar.mp3';
 import soltarSound from '../path/to/soltar.mp3';
@@ -11,7 +17,11 @@ import victorySound from '../path/to/VICTORIA.mp3';
 import derrotaSound from '../path/to/derrota.mp3';
 import jakeMateSound from '../path/to/jakemate.mp3';
 import jakeSound from '../path/to/jake.mp3';
-import {isCheckmateAfterMove, isDrownedKingMove, isSimulatedMoveCausingCheck, isSimulatedMoveCheckOpponent, simulateKingCheckMate, simulateMove } from './pieces/King';
+import {
+  isCheckmateAfterMove,  
+  isSimulatedMoveCausingCheck, 
+  isSimulatedMoveCheckOpponent, 
+} from './pieces/King';
 import { useSocketContext } from '../context/socketContext';
 import { useAuth } from '../context/authContext';
 import PlayerInfo from './profileUser/PlayerInfo';
@@ -1044,7 +1054,12 @@ useEffect(()=>{
    
         if (check) {
           // Implementar la lógica para manejar el jaque mate
-          console.log('¡estas en jake');       
+          console.log('¡estas en jake'); 
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          pieceElement.style.position = '';
+          pieceElement.style.left = '';
+          pieceElement.style.top = '';      
           return
         } 
 
