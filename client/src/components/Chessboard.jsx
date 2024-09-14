@@ -1002,7 +1002,7 @@ useEffect(()=>{
         pieceElement.style.zIndex = 5;
         pieceElement.style.left = `${newX}px`;
         pieceElement.style.top = `${newY}px`;
-      }
+   }
   
       async function onMouseUp(event) {
           // Obtener las coordenadas actuales del ratón en relación con el tablero
@@ -1012,8 +1012,12 @@ useEffect(()=>{
           // Calcular las coordenadas en el tablero considerando si el tablero está invertido
           const x = infUser?.color === 'black' ? 7 - Math.floor(xRaw) : Math.floor(xRaw);
           const y = infUser?.color === 'black' ? Math.floor(yRaw) : 7 - Math.floor(yRaw);
+
+          const check =  isSimulatedMoveCausingCheck(
+            piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white'
+          );
   
-        if (x < 0 || x > 7 || y < 0 || y > 7) {
+        if (!check && x < 0 || x > 7 || y < 0 || y > 7) {
           console.log("Movimiento fuera del tablero");
           document.removeEventListener('mousemove', onMouseMove);
           document.removeEventListener('mouseup', onMouseUp);
@@ -1048,9 +1052,7 @@ useEffect(()=>{
           pieces.splice(pieces.indexOf(pieceAtDestination), 1);             
         }  
 
-        const check =  isSimulatedMoveCausingCheck(
-          piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white'
-        );
+       
    
         if (check) {
           // Implementar la lógica para manejar el jaque mate
@@ -1060,7 +1062,7 @@ useEffect(()=>{
           pieceElement.style.position = '';
           pieceElement.style.left = '';
           pieceElement.style.top = '';      
-          return
+          return;
         } 
 
         const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white')
