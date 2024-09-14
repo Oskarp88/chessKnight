@@ -1055,7 +1055,6 @@ useEffect(()=>{
         if (check) {
           // Implementar la lógica para manejar el jaque mate
           console.log('¡estas en jake'); 
-          document.removeEventListener('mousemove', onMouseMove);
           document.removeEventListener('mouseup', onMouseUp);
           pieceElement.style.position = '';
           pieceElement.style.left = '';
