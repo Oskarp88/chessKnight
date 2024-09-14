@@ -1017,8 +1017,12 @@ useEffect(()=>{
   
         if ( x < 0 || x > 7 || y < 0 || y > 7) {
           console.log("Movimiento fuera del tablero");
-          cleanup();
-          return;
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          pieceElement.style.position = '';
+          pieceElement.style.left = '';
+          pieceElement.style.top = '';
+          return;  // Salir de la función si las coordenadas están fuera del tablero
         }
 
         if (piece && piece.type === PieceType.PAWN) {
@@ -1051,8 +1055,12 @@ useEffect(()=>{
         if (check) {
           // Implementar la lógica para manejar el jaque mate
           console.log('¡estas en jake'); 
-          cleanup();  
-          setSelectedPiece(null);   
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          pieceElement.style.position = '';
+          pieceElement.style.left = '';
+          pieceElement.style.top = '';  
+          selectedPiece(null)    
           return;
         } 
 
@@ -1208,13 +1216,11 @@ useEffect(()=>{
       }
       };
   
-          const cleanup = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-            pieceElement.style.position = '';
-            pieceElement.style.left = '';
-            pieceElement.style.top = '';
-        };
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        pieceElement.style.position = '';
+        pieceElement.style.left = '';
+        pieceElement.style.top = '';
       }
   
       document.addEventListener('mousemove', onMouseMove);
