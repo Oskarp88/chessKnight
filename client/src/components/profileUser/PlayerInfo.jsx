@@ -55,7 +55,7 @@ const PlayerInfo = ({ playerName, playerIcon, playerColor,time, infUser, playerT
   }
   
   return (
-    <div className={style.playerInfoContainer} style={{background: boardColor?.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
+    <div className={style.playerInfoContainer2} style={{background: boardColor?.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
       <div className={style.playerDetails}>
         <div className={style.userprofile}>
             <img className={style.playerIcon} src={playerIcon} alt="Player Icon" />
