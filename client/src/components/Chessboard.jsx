@@ -740,7 +740,7 @@ useEffect(()=>{
 
     if(tied === true) return;
     // if(infUser?.color !== currentTurn) return;
-    if (piece && piece.color !== infUser?.color) {
+    if (piece && piece.color === infUser?.color) {
       if (selectedPiece && piece.x === selectedPiece.x && piece.y === selectedPiece.y) {        
         setStartCell(null); // Limpia la casilla de inicio
         setDestinationCell(null);
