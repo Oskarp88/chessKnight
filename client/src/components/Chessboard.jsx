@@ -1025,6 +1025,18 @@ useEffect(()=>{
           return;  // Salir de la función si las coordenadas están fuera del tablero
         }
 
+        if (check) {
+          // Implementar la lógica para manejar el jaque mate
+          console.log('¡estas en jake'); 
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          pieceElement.style.position = '';
+          pieceElement.style.left = '';
+          pieceElement.style.top = '';  
+          setSelectedPiece(null)     
+          return;
+        } 
+
         if (piece && piece.type === PieceType.PAWN) {
           if (piece.x !== x || piece.y !== y) {
             const dy = y - piece.y;
@@ -1049,20 +1061,6 @@ useEffect(()=>{
             || p.x === enPassantTarget.x && p.y === enPassantTarget.y+1);
           pieces.splice(pieces.indexOf(pieceAtDestination), 1);             
         }  
-
-       
-   
-        if (check) {
-          // Implementar la lógica para manejar el jaque mate
-          console.log('¡estas en jake'); 
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-          pieceElement.style.position = '';
-          pieceElement.style.left = '';
-          pieceElement.style.top = '';  
-          setSelectedPiece(null)     
-          return;
-        } 
 
         const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white')
         const king = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
