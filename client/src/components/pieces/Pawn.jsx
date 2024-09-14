@@ -90,9 +90,16 @@ export const isMoveValidForPawn = (piece, x, y, pieces, enPassantTarget) => {
     // Mover una casilla hacia adelante
     addMoveIfEmpty(0, forwardDirection);
   
-    // En el primer movimiento, el peón puede mover dos casillas hacia adelante
+    // En el primer movimiento, el peón puede mover dos casillas hacia adelante si no hay piezas en el camino
     if ((color === 'white' && y === 1) || (color === 'black' && y === 6)) {
-      addMoveIfEmpty(0, 2 * forwardDirection);
+      // Verificar si tanto la casilla intermedia como la final están vacías
+      const intermediateY = y + forwardDirection;
+      const finalY = y + 2 * forwardDirection;
+      const intermediateCell = pieces.find(p => p.x === x && p.y === intermediateY);
+      const finalCell = pieces.find(p => p.x === x && p.y === finalY);
+      if (!intermediateCell && !finalCell) {
+        possibleMoves.push({ x, y: finalY });
+      }
     }
   
     // Movimiento al paso
@@ -103,7 +110,7 @@ export const isMoveValidForPawn = (piece, x, y, pieces, enPassantTarget) => {
       // Verificar si la casilla adyacente en diagonal al peón tiene una pieza enemiga
       if (
         (targetX === x + 1 || targetX === x - 1) &&
-        targetY === y + forwardDirection && (y ===3 || y === 4)
+        targetY === y + forwardDirection && (y === 3 || y === 4)
       ) {
         possibleMoves.push({ x: targetX, y: targetY });
       }
@@ -111,6 +118,7 @@ export const isMoveValidForPawn = (piece, x, y, pieces, enPassantTarget) => {
   
     return possibleMoves;
   }
+  
   
   export function getPossiblePawnMovesKing(pawn, pieces) {
     const { x, y, color } = pawn;
