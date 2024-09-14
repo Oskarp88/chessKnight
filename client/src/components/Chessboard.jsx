@@ -1058,8 +1058,9 @@ useEffect(()=>{
           document.removeEventListener('mousemove', onMouseMove);
           pieceElement.style.position = '';
           pieceElement.style.left = '';
-          pieceElement.style.top = '';  
-          selectedPiece(null)    
+          pieceElement.style.top = '';
+            
+          setSelectedPiece(null)    
           return;
         } 
 
