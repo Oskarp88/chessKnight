@@ -977,10 +977,8 @@ useEffect(()=>{
   const handleMouseDown = (e, piece, x, y) => {
     e.preventDefault();
 
-    if(tied === true) return;
-    if(infUser?.color !== currentTurn) return;
+    if (tied || infUser?.color !== currentTurn || !piece || piece.color !== currentTurn) return;
   
-    if (piece &&  piece.color === currentTurn) {
       setStartCell({ x, y });
       const pieceElement = e.target;
       
@@ -1017,14 +1015,10 @@ useEffect(()=>{
             piece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white'
           );
   
-        if (!check && x < 0 || x > 7 || y < 0 || y > 7) {
+        if ( x < 0 || x > 7 || y < 0 || y > 7) {
           console.log("Movimiento fuera del tablero");
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-          pieceElement.style.position = '';
-          pieceElement.style.left = '';
-          pieceElement.style.top = '';
-          return;  // Salir de la función si las coordenadas están fuera del tablero
+          cleanup();
+          return;
         }
 
         if (piece && piece.type === PieceType.PAWN) {
@@ -1057,11 +1051,8 @@ useEffect(()=>{
         if (check) {
           // Implementar la lógica para manejar el jaque mate
           console.log('¡estas en jake'); 
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-          pieceElement.style.position = '';
-          pieceElement.style.left = '';
-          pieceElement.style.top = '';      
+          cleanup();  
+          setSelectedPiece(null);   
           return;
         } 
 
@@ -1217,16 +1208,18 @@ useEffect(()=>{
       }
       };
   
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-        pieceElement.style.position = '';
-        pieceElement.style.left = '';
-        pieceElement.style.top = '';
+          const cleanup = () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+            pieceElement.style.position = '';
+            pieceElement.style.left = '';
+            pieceElement.style.top = '';
+        };
       }
   
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
-    }
+    
   };
   
   const resetBoard = () => {
