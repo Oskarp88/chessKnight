@@ -14,6 +14,8 @@ import { useLanguagesContext } from '../../context/languagesContext';
 import toast from 'react-hot-toast';
 import { languages } from '../../utils/languages';
 import styled from 'styled-components';
+import { CerrarSvg, SettingSvg } from '../../svg';
+import SettingsModal from '../modal/SettingsModal';
 
 
 
@@ -24,6 +26,7 @@ function NavBar() {
    const [theme, setTheme] = useState(0); 
    const {chessColor, setChessColor} = useChessboardContext();
    const {language, setLanguage} = useLanguagesContext();
+   const [showModalSettings, setShowSettings] = useState();
   
 
    useEffect(()=>{
@@ -86,6 +89,7 @@ const CustomNavDropdown = styled(NavDropdown)`
 `;
 
 return (
+  <>
   <Navbar className={`${styles.navbar} fixed-top`} expand="lg" >
     <Container >
       <Navbar.Brand href="/" ><img src="/logo/chessfive.png" alt="" className={styles.logo}/></Navbar.Brand>
@@ -147,7 +151,7 @@ return (
                     title={
                       <span className={styles.dropdownSpan2} style={{color: chessColor.color}}>{language?.Language}</span>
                     }
-                    style={{marginLeft: '5px', color:'#fff'}}
+                    style={{marginLeft: '5px', color:chessColor.color}}
                   >
                       <NavDropdown.Item className={styles.item}   style={{color: chessColor.color}} onClick={() => handleLanguageChange(1)}>
                         {language.english}
@@ -156,12 +160,14 @@ return (
                         {language.spanish}
                       </NavDropdown.Item>
                   </NavDropdown>
-                  <NavDropdown.Item className={styles.item} style={{color: chessColor.color}} onClick={handleLogout}>
+                  <NavDropdown.Item className={styles.item} style={{color: chessColor.color}} onClick={()=>setShowSettings(true)}>
                     {language.settings}
+                    <SettingSvg />
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item className={styles.item} style={{color: chessColor.color}} onClick={handleLogout}>
                     {language.logout}
+                    <CerrarSvg />
                   </NavDropdown.Item>
             </CustomNavDropdown>
            
@@ -179,7 +185,7 @@ return (
          <CustomNavDropdown 
                   title={<span className={styles.dropdownSpan}>{language?.dashboard}</span>}
                   id="navbarScrollingDropdown"
-                  style={{marginLeft: '5px', color:'#fff'}}
+                  style={{marginLeft: '5px', color:chessColor.color}}
                 >                                  
                   <NavDropdown.Item 
                     className={`${styles.item} d-flex` } 
@@ -218,6 +224,12 @@ return (
       </Navbar.Collapse>
     </Container>
   </Navbar>
+
+  <SettingsModal 
+    show={showModalSettings}
+    handleClose={()=> setShowSettings(false)}
+  />
+</>
 );
 }
 

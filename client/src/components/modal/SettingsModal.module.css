@@ -1,0 +1,66 @@
+.modalBodyWithScroll {
+    max-height: 400px; /* Altura máxima del body del modal */
+    overflow-y: auto;  /* Activa el scroll vertical */
+  }
+
+.button{
+    width: 100%;
+    background-color: #2e86c1;
+    border: none;
+
+}
+
+.button{
+    background-color: #5dade2;
+}
+
+.coloroptions {
+    margin: 3%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .coloroption {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    margin-bottom: 10px; /* Espacio entre los tableros */
+  }
+
+  .coloroption::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;  /* Inherit para tomar el background desde el div principal */
+    opacity: 0.3;         /* Aplica la opacidad solo al fondo */
+    z-index: 0;           /* Asegúrate de que esté detrás del contenido */
+  }
+  
+  .colorrow {
+    position: relative;
+    z-index: 1; 
+    display: flex;
+    align-items: center;
+  }
+  
+  .colorboard {
+    width: 40px; /* Ajusta el tamaño según tus preferencias */
+    height: 40px; /* Ajusta el tamaño según tus preferencias */
+    border: 1px solid #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .colorboard img{
+    width: 95%;
+    height: 95%px;
+  }

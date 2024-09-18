@@ -44,3 +44,14 @@ export const colorChess = [
       fondoModal: 'linear-gradient(to right, #d7d2cc 0%, #304352 100%);',
     }
   ]
+
+ export const colorBoard = [
+    { id: 0, blackRow: '#2E86C1', whiteRow: '#ebecd0', blackTile: 'black-tile-azul', whiteTile: 'white-tile-azul', register: 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' },
+    { id: 1, blackRow: '#779556', whiteRow: '#ebecd0', blackTile: 'black-tile-verde', whiteTile: 'white-tile-verde', register: 'radial-gradient(circle at -1% 57.5%, rgb(19, 170, 82) 0%, rgb(0, 102, 43) 90%)' },
+    { id: 2, blackRow: '#276d78', whiteRow: '#bbe4e9', blackTile: 'black-tile-verdeGris', whiteTile: 'white-tile-verdeGris', register: 'radial-gradient(circle at 5.6% 54.5%, rgb(47, 71, 79) 0%, rgb(159, 188, 198) 83.6%)' },
+    { id: 3, blackRow: '#e7617e', whiteRow: '#ffcbcb', blackTile: 'black-tile-rosa', whiteTile: 'white-tile-rosa', register: 'linear-gradient(to right, #ff758c 0%, #ff7eb3 100%)' },
+    { id: 4, blackRow: '#f96d00', whiteRow: '#ffebbb', blackTile: 'black-tile-naranja', whiteTile: 'white-tile-naranja', register: 'linear-gradient(105.6deg, rgb(246, 220, 111) 12.4%, rgb(222, 104, 104) 78.7%)' },
+    { id: 5, blackRow: '#810404', whiteRow: '#f0bdbd', blackTile: 'black-tile-rojo', whiteTile: 'white-tile-rojo', register: 'linear-gradient(98.3deg, rgb(0, 0, 0) 10.6%, rgb(135, 16, 16) 97.7%)' },
+    { id: 6, blackRow: '#004445', whiteRow: '#d1ebe7', blackTile: 'black-tile-verdeOscuro', whiteTile: 'white-tile-verdeOscuro', register: 'radial-gradient(759px at 14% 22.3%, rgb(10, 64, 88) 0%, rgb(15, 164, 102) 90%)' },
+    { id: 7, blackRow: '#263849', whiteRow: '#c8dad7', blackTile: 'black-tile-azulOscuro', whiteTile: 'white-tile-azulOscuro', register: 'linear-gradient(177.9deg, rgb(58, 62, 88) 3.6%, rgb(119, 127, 148) 105.8%)' },
+  ];

@@ -6,6 +6,8 @@ import CircleClose from "./circleClose";
 import CursorSend from "./cursorSend";
 import WonSvg from "./wonSvg";
 import LostSvg from "./lostSvg";
+import CerrarSvg from "./CerrarSvg";
+import SettingSvg from "./SettingSvg";
 
 export {
    BulletSvg,
@@ -15,5 +17,7 @@ export {
    CircleClose,
    CursorSend,
    WonSvg,
-   LostSvg
+   LostSvg,
+   CerrarSvg,
+   SettingSvg
 }
