@@ -41,7 +41,7 @@ function SettingsModal({show, handleClose}) {
         <Accordion.Header>Tablero #1</Accordion.Header>
             <Accordion.Body>
                 <div className={style.coloroptions}>
-                    {colorBoard.map((c, index) => {
+                    {colorBoard?.map((c, index) => {
                         const isEvenIndex = (index + 1) % 2 === 0;
                             return (
                             <div 
@@ -67,7 +67,7 @@ function SettingsModal({show, handleClose}) {
         <Accordion.Header>piezas Item #2</Accordion.Header>
             <Accordion.Body>
               <div className={style.coloroptions}>
-                    {piecesTheme.map((c, index) => {
+                    {piecesTheme?.map((c, index) => {
                         const isEvenIndex = (index + 1) % 2 === 0;
                             return (
                             <div 
