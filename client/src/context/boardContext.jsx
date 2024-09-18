@@ -60,7 +60,14 @@ export const ChessboardProvider = ({ children }) => {
     if(!isNaN(themeLocal) && themeLocal) {
       setChessColor(colorChess[parseInt(themeLocal)]);
     }
-  },[chessColor]);
+
+    const board = localStorage.getItem('colorBoard');
+    
+    if(!isNaN(board) && board) {
+      setBoardColor(colorBoard[parseInt(board)]);
+    }
+
+  },[chessColor, boardColor]);
 
 
   return (
