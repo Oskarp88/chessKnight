@@ -368,3 +368,54 @@ exports.userElo = async(req, res) => {
   });
 }
 
+exports.getRatingFast = async (req, res) => {
+  try {
+    // Buscar todos los usuarios
+    const users = await User.find({},'-password -partida')
+      .sort({
+        eloFast: -1,
+        gamesWonFast: -1,  // Ordenar por gamesWonFast de mayor a menor
+        gamesLostFast: 1,  // Si hay empate en victorias, ordenar por gamesLostFast de menor a mayor
+        gamesFast: 1       // Si también hay empate en derrotas, ordenar por gamesFast de menor a mayor
+      });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error al obtener el rating rápido:', error);
+    res.status(500).json({ message: 'Error al obtener el rating rápido' });
+  }
+};
+
+exports.getRatingBlitz = async (req, res) => {
+  try {
+    // Buscar todos los usuarios
+    const users = await User.find({},'-password -partida')
+      .sort({
+        eloBlitz: -1,
+        gamesWonBlitz: -1,  // Ordenar por gamesWonFast de mayor a menor
+        gamesLostBlitz: 1,  // Si hay empate en victorias, ordenar por gamesLostFast de menor a mayor
+        gamesBlitz: 1       // Si también hay empate en derrotas, ordenar por gamesFast de menor a mayor
+      });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error al obtener el rating rápido:', error);
+    res.status(500).json({ message: 'Error al obtener el rating rápido' });
+  }
+};
+
+exports.getRatingBullet = async (req, res) => {
+  try {
+    // Buscar todos los usuarios
+    const users = await User.find({},'-password -partida')
+      .sort({
+        eloBullet: -1,
+        gamesWonBullet: -1,  // Ordenar por gamesWonFast de mayor a menor
+        gamesLostBullet: 1,  // Si hay empate en victorias, ordenar por gamesLostFast de menor a mayor
+        gamesBullet: 1       // Si también hay empate en derrotas, ordenar por gamesFast de menor a mayor
+      });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error al obtener el rating rápido:', error);
+    res.status(500).json({ message: 'Error al obtener el rating rápido' });
+  }
+};
+

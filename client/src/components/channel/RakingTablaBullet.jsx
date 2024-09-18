@@ -18,7 +18,7 @@ export const RankingTableBullet = () => {
 
   useEffect(() => {
     const allUsers = async() => {
-        const response = await getRequest(`${baseUrl}/users`);
+        const response = await getRequest(`${baseUrl}/users/rating-bullet`);
           if(response.error){
              return console.log('Error fetching users', response);
           }
@@ -44,8 +44,6 @@ export const RankingTableBullet = () => {
     setShowModal(false)
   }
 
-  const sortedUsers = users.slice().sort((a, b) => b.eloBullet - a.eloBullet );
-
    let count = 1; 
   return (
     <div className={style.tercerdiv} >
@@ -67,12 +65,12 @@ export const RankingTableBullet = () => {
           </div>
           <span >{language.Score?.toUpperCase()}</span>
         </li>
-        {sortedUsers.length === 0 ? 
+        {users.length === 0 ? 
             <div style={{marginTop: '30%'}}>
               <SpinnerDowloand text={'Cargando rating....'}/>
             </div>
         :
-        sortedUsers?.map((o, index) => (
+        users?.map((o, index) => (
           <>
                <li 
                 key={index} 

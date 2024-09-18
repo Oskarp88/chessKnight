@@ -1,7 +1,19 @@
 const express = require('express');
-const { getUser, getAllUser, protectedUser, createUser, forgotPassword, resetPassword, roleUser, updateUser, statsUser, deleteUser, userElo, getUserBandera } = require('../controllers/userController');
+const { 
+  getUser, 
+  getAllUser, 
+  protectedUser, 
+  createUser, 
+  forgotPassword, 
+  resetPassword, 
+  roleUser, 
+  updateUser, 
+  statsUser, 
+  deleteUser, 
+  userElo, 
+  getUserBandera, 
+  getRatingFast } = require('../controllers/userController');
 const { requireSignIn, isAdmin } = require('../middleware/isAdmin');
-const formidable = require('express-formidable');
 const userRouter = express.Router();
 
 userRouter.get('/user/:id', getUser);
@@ -17,6 +29,9 @@ userRouter.put('/user/update/:userId', updateUser);
 userRouter.delete('/users/:id', isAdmin, deleteUser);
 userRouter.get('/users/:id/stats', statsUser);
 userRouter.get('/users/:id/elo', userElo);
+userRouter.get('/users/rating-fast', getRatingFast);
+userRouter.get('/users/rating-blitz', getRatingFast);
+userRouter.get('/users/rating-bullet', getRatingFast);
   
   // Ruta de administración accesible solo para administradores
 userRouter.get('/admin/dashboard',requireSignIn, isAdmin, (req, res) => {

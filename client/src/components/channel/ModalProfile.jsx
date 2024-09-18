@@ -3,16 +3,22 @@ import style from './ModalProfile.module.css';
 import { baseUrl, getRequest } from '../../utils/services';
 import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../../svg';
 import TiedSvg from '../../svg/tiedSvg';
-import ScrollToBottom from "react-scroll-to-bottom";
-import { useAuth } from '../../context/authContext';
 import Insignias from '../insignias/Insignias';
 import Fast from '../../img/fast';
 
-
-function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, gamesWon, gamesTied, gamesLost}) {
+function ModalProfile({
+    handleModalClose, 
+    photo, 
+    user,
+    racha, 
+    nivel, 
+    elo, 
+    games, 
+    gamesWon, 
+    gamesTied, 
+    gamesLost}) {
     const [partida, setPartidas] = useState([]);
     const [modal, setModal] = useState(false);
-    const {auth} = useAuth();
 
     const allPartidas = async(userId) => {
         const response = await getRequest(`${baseUrl}/partida/user/historial/${userId}`);

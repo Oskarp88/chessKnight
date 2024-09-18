@@ -20,7 +20,7 @@ export const RankingTable = () => {
   
   useEffect(() => {
     const allUsers = async() => {
-        const response = await getRequest(`${baseUrl}/users`);
+        const response = await getRequest(`${baseUrl}/users/rating-fast`);
           if(response.error){
              return console.log('Error fetching users', response);
           }
@@ -46,7 +46,7 @@ export const RankingTable = () => {
     setShowModal(false)
   }
 
-  const sortedUsers = users.slice().sort((a, b) => b.eloFast - a.eloFast);
+  // const sortedUsers = users.slice().sort((a, b) => b.eloFast - a.eloFast);
 
    let count = 1; 
   return (
@@ -67,7 +67,7 @@ export const RankingTable = () => {
           <span >{language.Score?.toUpperCase()}</span>
         </li>
           
-        {sortedUsers.length !== 0 ?  sortedUsers.map((o, index) => (
+        {users.length !== 0 ?  users.map((o, index) => (
           <>
                <li 
                 key={index} 

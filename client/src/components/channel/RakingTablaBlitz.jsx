@@ -19,7 +19,7 @@ export const RankingTableBlitz = () => {
 
   useEffect(() => {
     const allUsers = async() => {
-        const response = await getRequest(`${baseUrl}/users`);
+        const response = await getRequest(`${baseUrl}/users/rating-blitz`);
           if(response.error){
              return console.log('Error fetching users', response);
           }
@@ -45,7 +45,6 @@ export const RankingTableBlitz = () => {
     setShowModal(false)
   }
 
-  const sortedUsers = users.slice().sort((a, b) => b.eloBlitz - a.eloBlitz);
 
    let count = 1; 
   return (
@@ -67,12 +66,12 @@ export const RankingTableBlitz = () => {
           </div>
           <span >{language.Score?.toUpperCase()}</span>
         </li>
-        {sortedUsers.length === 0 ? 
+        {users.length === 0 ? 
           <div style={{marginTop: '30%'}}>
             <SpinnerDowloand text={'Cargando rating....'}/>
           </div>
         :
-        sortedUsers?.map((o, index) => (
+       users?.map((o, index) => (
           <>
                <li 
                 key={index} 
