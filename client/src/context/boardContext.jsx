@@ -17,6 +17,7 @@ export const ChessboardProvider = ({ children }) => {
   const [boardColor, setBoardColor] = useState(colorBoard[0]);
   const [themePiece, setTemePiece] = useState(piecesTheme[0]);
   const [pieces, setPieces] = useState([]);
+  const [resetPieces, setResetPieces] = useState([]);
   const [chessColor, setChessColor] = useState(colorChess[0]);
   const [view, setView] = useState(window.innerWidth <= 690);
 
@@ -57,6 +58,7 @@ export const ChessboardProvider = ({ children }) => {
     ];
     
     setPieces(updatedPieces);
+    setResetPieces(updatedPieces)
   }, [themePiece]);
 
   useEffect(()=>{

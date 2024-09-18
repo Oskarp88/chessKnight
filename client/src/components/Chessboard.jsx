@@ -53,9 +53,8 @@ function Chessboard() {
     } = useSocketContext();
   const {auth} = useAuth();
   const {checkMate ,setCheckMate} = useCheckMateContext();
-  const {boardColor, setBoardColor} = useChessboardContext();  
+  const {boardColor, setBoardColor, pieces, setPieces, resetPieces} = useChessboardContext();  
   const [currentTurn, setCurrentTurn] = useState('white');
-  const {pieces, setPieces} = useChessboardContext();
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [pieceAux, setPieceAux] = useState(null);
   const [startCell, setStartCell] = useState(null);
@@ -1228,6 +1227,7 @@ useEffect(()=>{
   const resetBoard = () => {
     localStorage.removeItem('destinationCell');
     localStorage.removeItem('startCell');
+    setPieces(resetPieces);
     setFrase(null);
     setModalTiedRepetition(false);
     setTied(false);
