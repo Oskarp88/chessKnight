@@ -71,8 +71,15 @@ export const ChessboardProvider = ({ children }) => {
     if(!isNaN(board) && board) {
       setBoardColor(colorBoard[parseInt(board)]);
     }
+    
+    const themePieza = localStorage.getItem('pieceTheme');
+    
+    if(!isNaN(themePieza) && themePieza) {
+      setTemePiece(piecesTheme[parseInt(themePiece)]);
+    }
 
-  },[chessColor, boardColor]);
+
+  },[chessColor, boardColor, themePiece]);
 
 
   return (
