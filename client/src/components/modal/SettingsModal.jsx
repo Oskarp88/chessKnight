@@ -64,7 +64,7 @@ function SettingsModal({show, handleClose}) {
             </Accordion.Body>
         </Accordion.Item>
       <Accordion.Item eventKey="1">
-        <Accordion.Header>piezas Item #2</Accordion.Header>
+        <Accordion.Header>piezas #2</Accordion.Header>
             <Accordion.Body>
               <div className={style.coloroptions}>
                     {piecesTheme?.map((c, index) => {
@@ -73,21 +73,21 @@ function SettingsModal({show, handleClose}) {
                             <div 
                               key={c.id} className={`${style.coloroption} ${isEvenIndex ? `${style.even}` : `${style.odd}`}`}
                               onClick={() => handlePiecesChange(c.id)}
-                              style={c.id === boardColor.id ? {background: boardColor.whiteRow} : {}}
+                              style={c?.id === themePiece.id ? {background: boardColor?.whiteRow} : {}}
                             >                           
                                 <div className={style.colorrow}>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor.blackRow }}>
+                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.blackRow }}>
                                       <img src={ `assets/${c.images}/wk.png`} alt="" />
                                     </div>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor.whiteRow }}>
+                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.whiteRow }}>
                                       <img src={ `assets/${c.images}/wq.png`} alt="" />
                                     </div>
                                 </div>
                                 <div className={style.colorrow}>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor.whiteRow }}>
+                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.whiteRow }}>
                                       <img src={ `assets/${c.images}/bk.png`} alt="" />
                                     </div>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor.blackRow }}>
+                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.blackRow }}>
                                       <img src={ `assets/${c.images}/bq.png`} alt="" />
                                     </div>
                                 </div>

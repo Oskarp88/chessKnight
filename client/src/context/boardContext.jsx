@@ -18,38 +18,38 @@ export const ChessboardProvider = ({ children }) => {
   const [themePiece, setTemePiece] = useState(piecesTheme[0]);
   const [pieces, setPieces] = useState(
   [
-    { image: `assets/${themePiece.images}/wp.png`, x: 0, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 1, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 2, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 3, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 4, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 5, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 6, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wp.png`, x: 7, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/wk.png`, x: 4, y: 0, color: 'white', hasMoved: false, type: PieceType.KING },
-    { image: `assets/${themePiece.images}/bb.png`, x: 2, y: 7, color: 'black', hasMoved: false, type: PieceType.BISHOP },
-    { image: `assets/${themePiece.images}/bb.png`, x: 5, y: 7, color: 'black', hasMoved: false, type: PieceType.BISHOP },
-    { image: `assets/${themePiece.images}/wr.png`, x: 0, y: 0, color: 'white', hasMoved: false, type: PieceType.ROOK },
-    { image: `assets/${themePiece.images}/wr.png`, x: 7, y: 0, color: 'white', hasMoved: false, type: PieceType.ROOK },
-    { image: `assets/${themePiece.images}/wq.png`, x: 3, y: 0, color: 'white', hasMoved: false, type: PieceType.QUEEN },
-    { image: `assets/${themePiece.images}/wb.png`, x: 2, y: 0, color: 'white', hasMoved: false, type: PieceType.BISHOP },
-    { image: `assets/${themePiece.images}/wb.png`, x: 5, y: 0, color: 'white', hasMoved: false, type: PieceType.BISHOP },
-    { image: `assets/${themePiece.images}/wn.png`, x: 1, y: 0, color: 'white', hasMoved: false, type: PieceType.KNIGHT},
-    { image: `assets/${themePiece.images}/wn.png`, x: 6, y: 0, color: 'white', hasMoved: false, type: PieceType.KNIGHT },
-    { image: `assets/${themePiece.images}/br.png`, x: 0, y: 7, color: 'black', hasMoved: false, type: PieceType.ROOK },
-    { image: `assets/${themePiece.images}/br.png`, x: 7, y: 7, color: 'black', hasMoved: false, type: PieceType.ROOK },
-    { image: `assets/${themePiece.images}/bn.png`, x: 1, y: 7, color: 'black', hasMoved: false, type: PieceType.KNIGHT },
-    { image: `assets/${themePiece.images}/bn.png`, x: 6, y: 7, color: 'black', hasMoved: false, type: PieceType.KNIGHT },
-    { image: `assets/${themePiece.images}/bk.png`, x: 4, y: 7, color: 'black', hasMoved: false, type: PieceType.KING },
-    { image: `assets/${themePiece.images}/bq.png`, x: 3, y: 7, color: 'black', hasMoved: false, type: PieceType.QUEEN },
-    { image: `assets/${themePiece.images}/bp.png`, x: 0, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN },
-    { image: `assets/${themePiece.images}/bp.png`, x: 1, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
-    { image: `assets/${themePiece.images}/bp.png`, x: 2, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
-    { image: `assets/${themePiece.images}/bp.png`, x: 3, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
-    { image: `assets/${themePiece.images}/bp.png`, x: 4, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
-    { image: `assets/${themePiece.images}/bp.png`, x: 5, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
-    { image: `assets/${themePiece.images}/bp.png`, x: 6, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
-    { image: `assets/${themePiece.images}/bp.png`, x: 7, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  }
+    { image: `assets/${themePiece?.images}/wp.png`, x: 0, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 1, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 2, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 3, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 4, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 5, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 6, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wp.png`, x: 7, y: 1, color: 'white', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/wk.png`, x: 4, y: 0, color: 'white', hasMoved: false, type: PieceType.KING },
+    { image: `assets/${themePiece?.images}/bb.png`, x: 2, y: 7, color: 'black', hasMoved: false, type: PieceType.BISHOP },
+    { image: `assets/${themePiece?.images}/bb.png`, x: 5, y: 7, color: 'black', hasMoved: false, type: PieceType.BISHOP },
+    { image: `assets/${themePiece?.images}/wr.png`, x: 0, y: 0, color: 'white', hasMoved: false, type: PieceType.ROOK },
+    { image: `assets/${themePiece?.images}/wr.png`, x: 7, y: 0, color: 'white', hasMoved: false, type: PieceType.ROOK },
+    { image: `assets/${themePiece?.images}/wq.png`, x: 3, y: 0, color: 'white', hasMoved: false, type: PieceType.QUEEN },
+    { image: `assets/${themePiece?.images}/wb.png`, x: 2, y: 0, color: 'white', hasMoved: false, type: PieceType.BISHOP },
+    { image: `assets/${themePiece?.images}/wb.png`, x: 5, y: 0, color: 'white', hasMoved: false, type: PieceType.BISHOP },
+    { image: `assets/${themePiece?.images}/wn.png`, x: 1, y: 0, color: 'white', hasMoved: false, type: PieceType.KNIGHT},
+    { image: `assets/${themePiece?.images}/wn.png`, x: 6, y: 0, color: 'white', hasMoved: false, type: PieceType.KNIGHT },
+    { image: `assets/${themePiece?.images}/br.png`, x: 0, y: 7, color: 'black', hasMoved: false, type: PieceType.ROOK },
+    { image: `assets/${themePiece?.images}/br.png`, x: 7, y: 7, color: 'black', hasMoved: false, type: PieceType.ROOK },
+    { image: `assets/${themePiece?.images}/bn.png`, x: 1, y: 7, color: 'black', hasMoved: false, type: PieceType.KNIGHT },
+    { image: `assets/${themePiece?.images}/bn.png`, x: 6, y: 7, color: 'black', hasMoved: false, type: PieceType.KNIGHT },
+    { image: `assets/${themePiece?.images}/bk.png`, x: 4, y: 7, color: 'black', hasMoved: false, type: PieceType.KING },
+    { image: `assets/${themePiece?.images}/bq.png`, x: 3, y: 7, color: 'black', hasMoved: false, type: PieceType.QUEEN },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 0, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 1, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 2, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 3, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 4, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 5, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 6, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  },
+    { image: `assets/${themePiece?.images}/bp.png`, x: 7, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  }
   ]);
   const [chessColor, setChessColor] = useState(colorChess[0]);
   const [view, setView] = useState(window.innerWidth <= 690);
@@ -60,8 +60,9 @@ export const ChessboardProvider = ({ children }) => {
     if(!isNaN(themeLocal) && themeLocal) {
       setChessColor(colorChess[parseInt(themeLocal)]);
     }
-  },[chessColor])
-  
+  },[chessColor]);
+
+
   return (
     <ChessboardContext.Provider value={{ 
        boardColor, 

@@ -53,7 +53,6 @@
   .colorboard {
     width: 40px; /* Ajusta el tamaño según tus preferencias */
     height: 40px; /* Ajusta el tamaño según tus preferencias */
-    border: 1px solid #000;
     cursor: pointer;
     display: flex;
     align-items: center;
