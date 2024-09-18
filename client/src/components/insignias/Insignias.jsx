@@ -1,4 +1,14 @@
-import { Aprendiz, Avanzado, Competente, Elite, Experto, Leyenda, Maestro, Novato, Prodigio, Veterano } from '../../img'
+import { 
+  Aprendiz, 
+  Avanzado, 
+  Competente, 
+  Elite, 
+  Experto, 
+  Leyenda, 
+  Maestro, 
+  Novato, 
+  Prodigio, 
+  Veterano } from '../../img'
 
 function Insignias({o, time}) {
   return (

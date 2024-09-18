@@ -19,7 +19,11 @@ export const avatars = [
     {avatar: '/avatars/avatar_15.png'},
     {avatar: '/avatars/avatar_16.png'},
     {avatar: '/avatars/avatar_18.png'},
+    {avatar: '/avatars/avatar_19.png'},
     {avatar: '/avatars/avatar_21.png'},
     {avatar: '/avatars/avatar_22.png'},
     {avatar: '/avatars/avatar_23.png'},
+    {avatar: '/avatars/avatar_24.png'},
+    {avatar: '/avatars/avatar_25.png'},
+    {avatar: '/avatars/avatar_27.png'},
 ];

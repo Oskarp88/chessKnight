@@ -25,9 +25,6 @@ function NavBar() {
    const {chessColor, setChessColor} = useChessboardContext();
    const {language, setLanguage} = useLanguagesContext();
   
-   useEffect(()=>{
-    setChessColor(colorChess[theme]);
-   },[theme, setChessColor])
 
    useEffect(()=>{
     const languageNum = localStorage.getItem('languageNum');
@@ -43,8 +40,11 @@ function NavBar() {
   
     if(!isNaN(themeLocal) && themeLocal) {
       setChessColor(colorChess[parseInt(themeLocal)]);
+      setTheme(parseInt(themeLocal));
+    }else{
+      setChessColor(colorChess[theme]);
     }
-  },[chessColor])
+  },[chessColor, theme, setChessColor])
 
    // Verificar si la ruta actual es /chess
    if (location.pathname === "/chess" || location.pathname === "/dashboard/next") {
@@ -89,9 +89,15 @@ return (
   <Navbar className={`${styles.navbar} fixed-top`} expand="lg" >
     <Container >
       <Navbar.Brand href="/" ><img src="/logo/chessfive.png" alt="" className={styles.logo}/></Navbar.Brand>
-      <Navbar.Toggle aria-controls="navbar scroll" /*style={{border: `solid 1px ${chessColor.color1}`, backgroundColor: chessColor.color1, color: chessColor.color1}}*//>
+      <Navbar.Toggle
+  aria-controls="basic-navbar-nav"
+  style={{ borderColor: 'rgba(255, 255, 255, 0.6)', color: 'rgba(255, 255, 255, 0.6)'}}
+>
+  <span className="navbar-toggler-icon" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath stroke=%27rgba(255, 255, 255, 0.8)%27 stroke-width=%272%27 d=%27M4 7h22M4 15h22M4 23h22%27/%3E%3C/svg%3E")' }}></span>
+</Navbar.Toggle>
 
-      <Navbar.Collapse id="navbarScroll">
+
+      <Navbar.Collapse id="navbarScroll" style={{color: '#fff'}}>
         <Nav 
           className="me-auto my-2 my-lg-0"
           style={{Height: 'auto'}}
@@ -113,7 +119,7 @@ return (
          <> 
             <CustomNavDropdown 
                   title={<span className={styles.dropdownSpan}>{language?.dashboard}</span>}
-                  style={{ "--bs-dropdown-caret-color": chessColor.color }}
+                  style={{ "--bs-dropdown-caret-color": chessColor.color, color: '#fff' }}
                 >                
                   <NavDropdown.Item href="/dashboard/profile" className={styles.item} style={{color: chessColor.color}}>{language?.profile}</NavDropdown.Item>                   
                   
@@ -141,7 +147,7 @@ return (
                     title={
                       <span className={styles.dropdownSpan2} style={{color: chessColor.color}}>{language?.Language}</span>
                     }
-                    style={{marginLeft:'1rem'}}
+                    style={{marginLeft: '5px', color:'#fff'}}
                   >
                       <NavDropdown.Item className={styles.item}   style={{color: chessColor.color}} onClick={() => handleLanguageChange(1)}>
                         {language.english}
@@ -149,10 +155,13 @@ return (
                       <NavDropdown.Item className={styles.item}  style={{color: chessColor.color}} onClick={() => handleLanguageChange(0)}>
                         {language.spanish}
                       </NavDropdown.Item>
-                    </NavDropdown>
+                  </NavDropdown>
+                  <NavDropdown.Item className={styles.item} style={{color: chessColor.color}} onClick={handleLogout}>
+                    {language.settings}
+                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item className={styles.item} style={{color: chessColor.color}} onClick={handleLogout}>
-                    Logout
+                    {language.logout}
                   </NavDropdown.Item>
             </CustomNavDropdown>
            
@@ -170,6 +179,7 @@ return (
          <CustomNavDropdown 
                   title={<span className={styles.dropdownSpan}>{language?.dashboard}</span>}
                   id="navbarScrollingDropdown"
+                  style={{marginLeft: '5px', color:'#fff'}}
                 >                                  
                   <NavDropdown.Item 
                     className={`${styles.item} d-flex` } 
@@ -191,14 +201,18 @@ return (
                       </div>
                     </Nav>
                   </NavDropdown.Item>
-                  <NavDropdown className='fw-bold ml-[20px]' title={<span style={{color: chessColor.color}}>{language?.Language}</span>}>
-                      <NavDropdown.Item style={{color: chessColor.color}} onClick={() => handleLanguageChange(1)}>
+                  <NavDropdown                     
+                    title={
+                      <span className={styles.dropdownSpan2} style={{color: chessColor.color}}>{language?.Language}</span>
+                    }
+                  >
+                      <NavDropdown.Item className={styles.item}   style={{color: chessColor.color}} onClick={() => handleLanguageChange(1)}>
                         {language.english}
                       </NavDropdown.Item>
-                      <NavDropdown.Item style={{color: chessColor.color}} onClick={() => handleLanguageChange(0)}>
+                      <NavDropdown.Item className={styles.item}  style={{color: chessColor.color}} onClick={() => handleLanguageChange(0)}>
                         {language.spanish}
                       </NavDropdown.Item>
-                    </NavDropdown>
+                  </NavDropdown>
                 </CustomNavDropdown> 
       }
       </Navbar.Collapse>

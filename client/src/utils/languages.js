@@ -62,7 +62,10 @@ export const languages = [
       Offer_tables: 'Ofrecer tablas',
       Abandon: 'Abandonar',
       New_GAME: 'NUEVA PARTIDA',
-      Choose_a_promotional_piece: 'Elige una pieza de promoción'
+      Choose_a_promotional_piece: 'Elige una pieza de promoción',
+      login_welcome: 'Desafia a jugadores de todo el mundo. Mejora tus habilidades, escala en la clasificación y demuestra que eres el mejor.',
+      logout: 'Cerrar sección',
+      settings: 'Configuración',
    },
    {
     spanish: 'Spanish',
@@ -128,5 +131,8 @@ export const languages = [
     Abandon: 'Abandon',
     New_GAME: 'NEW GAME',
     Choose_a_promotional_piece: 'Choose a promotional piece',
-  }
+    login_welcome: 'Challenge players from all over the world. Improve your skills, climb the leaderboard and prove that you are the best.',
+    logout: 'Logout',
+    settings: 'Settings'
+   }
 ];

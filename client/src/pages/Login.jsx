@@ -79,9 +79,7 @@ const Login = () => {
              <img src={'logo/CHESS.png'} className={style.logo} alt="" />
              <div className={style.text}>
                 <p className='text-center ' style={{color: chessColor.color}}>
-                  Desafia a jugadores de todo el mundo. Mejora tus habilidades, 
-                  escala en la clasificación y 
-                  demuestra que eres el mejor.
+                  {language.login_welcome}
                 </p>
              </div>
            </Col>

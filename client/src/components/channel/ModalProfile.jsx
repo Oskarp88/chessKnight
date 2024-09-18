@@ -6,6 +6,7 @@ import TiedSvg from '../../svg/tiedSvg';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { useAuth } from '../../context/authContext';
 import Insignias from '../insignias/Insignias';
+import Fast from '../../img/fast';
 
 
 function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, gamesWon, gamesTied, gamesLost}) {
@@ -58,10 +59,10 @@ function ModalProfile({handleModalClose, photo, user,racha, nivel, elo, games, g
             <div className={style.area}>
                 <span>Nivel</span>
                 {nivel === 'fast' ? 
-                    <svg style={{ color: '#80de83', marginLeft: '10px', marginTop: '5px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
-                    </svg>: nivel === 'blitz' ? 
+                     <div style={{width: '20px' , height: '20px', marginLeft: '5px', marginTop: '-2px'}}>
+                        <Fast/>
+                     </div>
+                    : nivel === 'blitz' ? 
                     <svg style={{ color: '#FFEB3B', marginLeft: '10px', marginTop: '5px' }} xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
                         <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
                     </svg> : 

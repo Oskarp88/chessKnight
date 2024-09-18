@@ -6,6 +6,7 @@ import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useLanguagesContext } from '../../context/languagesContext';
+import Insignias from '../insignias/Insignias';
 
 
 export const RankingTableBlitz = () => {
@@ -100,7 +101,12 @@ export const RankingTableBlitz = () => {
                         </div>                  
                         <div className={style.column}>
                           <span>{o?.username.length > 8 ? o?.username.substring(0, 8) + '...' : o?.username}</span>
-                          <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                          <div className={style.containerInsignias}>
+                            <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                            <div className={style.insignia}>
+                              <Insignias o={o} time={'blitz'}/>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </Col>

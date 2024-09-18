@@ -33,7 +33,7 @@
     -moz-border-radius: 13px;
     -ie-border-radius: 13px;
     border-radius: 13px;
-    background: rgba(0,0,0,.3);
+    background: rgba(0,0,0,.5);
     float: right;
     -webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
     -moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
@@ -108,10 +108,6 @@
   .friendName span{
     margin-left: 4rem;
   }
-
-  .bandera{
-    width: 2rem;
-  }
   
   .frienditem {
     height: auto;
@@ -152,8 +148,10 @@
   .rango{
     width: 5rem;
     display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
   }
-
   .medallaIcon{
     width: 40px;
     height: 40px;
@@ -202,6 +200,20 @@
      flex-direction: column;
      justify-content: center;
      align-items: flex-start;
+  }
+  .containerInsignias{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bandera{
+    width: 3rem;
+  }
+  .insignia{
+    margin-top: -2px;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .friendRank{

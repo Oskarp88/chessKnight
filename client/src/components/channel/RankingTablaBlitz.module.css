@@ -107,10 +107,6 @@
   .friendName span{
     margin-left: 4rem;
   }
-
-  .bandera{
-    width: 2rem;
-  }
   
   .frienditem {
     height: auto;
@@ -151,6 +147,9 @@
   .rango{
     width: 5rem;
     display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
   }
 
   .medallaIcon{
@@ -201,6 +200,21 @@
      flex-direction: column;
      justify-content: center;
      align-items: flex-start;
+  }
+
+  .containerInsignias{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bandera{
+    width: 3rem;
+  }
+  .insignia{
+    margin-top: -2px;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .friendRank{

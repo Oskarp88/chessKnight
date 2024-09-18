@@ -6,7 +6,7 @@ function Veterano() {
     <img className={style.insignia} 
         src={`/insignias/Veterano.png`} 
         alt='assets/avatar/user.png' 
-        title="Maestro"
+        title="Veterano"
     />
   )
 }

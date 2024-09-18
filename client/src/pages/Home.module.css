@@ -140,6 +140,12 @@
     animation-play-state: paused;
 }
 
+.fast{
+  display: flex;
+ justify-content: center;
+ margin: auto;
+}
+
   .home {
     display: flex;
     height: 80%;

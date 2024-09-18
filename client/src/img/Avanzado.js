@@ -6,7 +6,7 @@ function Avanzado() {
     <img className={style.insignia} 
         src={`/insignias/Avanzado.png`} 
         alt='assets/avatar/user.png' 
-        title="Intermedio"
+        title="Avanzado"
     />
   )
 }

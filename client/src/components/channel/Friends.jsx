@@ -14,6 +14,7 @@ import { ChatContext } from '../../context/ChatContext';
 import { useLanguagesContext } from '../../context/languagesContext';
 import Spinner from 'react-bootstrap/Spinner';
 import Insignias from '../insignias/Insignias';
+import Fast from '../../img/fast';
 
 const Friends = ({ friends, onlineUsers, room }) => {
   const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
@@ -280,31 +281,37 @@ const Friends = ({ friends, onlineUsers, room }) => {
   let count = 1;
   return (
     <div className={style.tercerdiv} > 
-    <div className={style.desafio}>
-
-            <div className={style.titleWithIcon}>
-              <img src={'/icon/userswhite.png'} style={{width: '40px', marginRight: '10px'}} alt="" />
-
-              <h5>
-                {language.Challenge_a_match} {infUser?.time === 60 ? '1' : infUser?.time === 120 ? '2' : 
-                                      infUser?.time === 180 ? '3' : infUser.time === 300 ? '5' :
-                                      infUser?.time === 600 ? '10' : '20'} mn
-              </h5>
-              {infUser?.time === 60  || infUser?.time === 120 ? <BulletSvg/> : 
-                                            infUser?.time === 180 || infUser.time === 300 ? <BlitzSvg/> :
-                                            <FastSvg/>}
-            </div>
-        </div>  
-      
-      <div>
-        
-        {sortedUsers.length === 0 ? 
-          
-             <SpinnerDowloand text={`${language.Loading_Players} . . .`} color={'#fff'}/>
-          
+      <div className={style.desafio}>
+          <div className={style.titleWithIcon}>
+            <img 
+              src={'/icon/userswhite.png'} 
+              style={{width: '40px', marginRight: '10px'}} 
+              alt="" 
+            />
+            <h5>
+              {language.Challenge_a_match} {infUser?.time === 60 
+                ? '1' : infUser?.time === 120 
+                ? '2' : infUser?.time === 180 
+                ? '3' : infUser.time === 300 
+                ? '5' : infUser?.time === 600 ? '10' : '20'
+              } mn
+            </h5>
+            {infUser?.time === 60  || infUser?.time === 120 
+              ? <BulletSvg/> 
+              : infUser?.time === 180 || infUser.time === 300 
+              ? <BlitzSvg/> 
+              : <div style={{width: '25px', height: '25px', marginTop: '-2px'}}>
+                    <Fast/>
+                </div>
+              }
+          </div>
+      </div>       
+      <div>        
+        {sortedUsers.length === 0 ?          
+           <SpinnerDowloand text={`${language.Loading_Players} . . .`} color={'#fff'}/>         
         : sortedUsers.map((o, index) => (
           <>
-               <li 
+              <li 
                 key={index} 
                 className={`${style.frienditem} ${hoveredFriend === o._id ? `${style.frienditem} ${style.frienditemHovered}` : ''}`}              
                 onMouseEnter={() => setHoveredFriend(o._id)}
@@ -324,27 +331,28 @@ const Friends = ({ friends, onlineUsers, room }) => {
                     <img src={o?.imagenBandera} className={style.bandera} alt="" />
                   </div>
                 </div>
-               <div className={style.containerFlex}>
-                  <div className={style.imageInsignia}>
-                   <Insignias o={o} time={infUser?.time}/>
+                <div className={style.containerFlex}>
+                    <div className={style.imageInsignia}>
+                      <Insignias o={o} time={infUser?.time}/>
+                    </div>
+                    
+                    <div className={style.containerRanking}>
+                    <div style={{marginTop: '-2px'}} >
+                      {infUser?.time === 60 || infUser?.time === 120 
+                        ?  <BulletSvg/> : infUser?.time === 180 || infUser?.time === 300 
+                        ?  <BlitzSvg /> : 
+                            <div style={{width: '25px', height: '25px'}}>
+                              <Fast/>
+                            </div>
+                      }
+                    </div>
+                    <div className={style.friendRank}>
+                        <span >{infUser?.time === 60 || infUser?.time === 120 ? o?.eloBullet : 
+                            infUser?.time === 180 || infUser?.time === 300 ? o?.eloBlitz : o?.eloFast}
+                        </span>
+                    </div>
                   </div>
-                  
-                  <div className={style.containerRanking}>
-                   <div >
-                    {infUser?.time === 60 || infUser?.time === 120 ? 
-                        <BulletSvg/> :
-                        infUser?.time === 180 || infUser?.time === 300 ?
-                        <BlitzSvg /> : <FastSvg/>
-                    }
-                   </div>
-                   <div className={style.friendRank}>
-                      <span >{infUser?.time === 60 || infUser?.time === 120 ? o?.eloBullet : 
-                          infUser?.time === 180 || infUser?.time === 300 ? o?.eloBlitz : o?.eloFast}
-                      </span>
-                   </div>
-                  </div>
-                  </div>
-              
+                </div>              
               </li>
               {showModal && (
               <div className={`${style.modal} ${showModal ? style.show : ''}`}>
@@ -449,8 +457,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
                        </span>
                     </div>
                 </div>
-                <div className={style.modalContent}>
-                  
+                <div className={style.modalContent}>                  
                   <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
                       <div className={style.imageContainerModal} >
                         <img className={style.photoImage} src={userOpponentModal?.photo} alt="User Photo" />                  
