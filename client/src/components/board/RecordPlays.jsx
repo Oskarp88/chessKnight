@@ -3,7 +3,7 @@ import { useChessboardContext } from '../../context/boardContext';
 import style from './RecordPlay.module.css';
 
 function RecordPlays({ whiteMoveLog, blackMoveLog}) {
-    const {boardColor} = useChessboardContext();
+    const {boardColor,themePiece} = useChessboardContext();
     const moveLogContainerRef = useRef(null);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function RecordPlays({ whiteMoveLog, blackMoveLog}) {
                  { 
                     move?.charAt(0) === 'R' || move?.charAt(0) === 'N' || move?.charAt(0) === 'B' || move?.charAt(0) === 'K' || move?.charAt(0) === 'Q' ?
                   <>
-                    <img className={style.piezaMove} src={`assets/images/w${move?.charAt(0).toLowerCase()}.png`} alt="" />
+                    <img className={style.piezaMove} src={`assets/${themePiece.images}/w${move?.charAt(0).toLowerCase()}.png`} alt="" />
                     <p>{move?.slice(1)}</p>
                   </>    : <p style={{marginLeft:'1.3rem'}}>{move}</p>
                  }                
@@ -41,7 +41,7 @@ function RecordPlays({ whiteMoveLog, blackMoveLog}) {
                 >{ 
                   move?.charAt(0) === 'R' || move?.charAt(0) === 'N' || move?.charAt(0) === 'B' || move?.charAt(0) === 'K' || move?.charAt(0) === 'Q' ?
                 <>
-                  <img className={style.piezaMove} src={`assets/images/b${move?.charAt(0).toLowerCase()}.png`} alt="" />
+                  <img className={style.piezaMove} src={`assets/${themePiece.images}/b${move?.charAt(0).toLowerCase()}.png`} alt="" />
                   <p>{move?.slice(1)}</p>
                 </>    : <p style={{marginLeft:'1.3rem'}}>{move}</p>
                }</li>

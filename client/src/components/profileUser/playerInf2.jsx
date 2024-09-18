@@ -6,7 +6,7 @@ import { useChessboardContext } from '../../context/boardContext';
 import { baseUrl, getRequest } from '../../utils/services';
 
 const PlayerInf2 = ({ playerName, playerIcon, playerColor, infUser, playerTime, currentTurn }) => {
-  const {boardColor} = useChessboardContext();
+  const {boardColor, themePiece} = useChessboardContext();
   const [elo, setElo] = useState(10);
   const [id, setId] = useState(null);
   
@@ -58,7 +58,7 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, infUser, playerTime, 
         </div>
         <div className={style.playerName}>
         <div className={style.status}>
-          <img className={style.playerStatusIcon} src={`${playerColor === 'black' ? 'assets/images/wk.png' : 'assets/images01/bk.png'}`} alt="Player Status Icon" />
+          <img className={style.playerStatusIcon} src={`${playerColor === 'black' ? `assets/${themePiece.images}/wk.png` : `assets/${themePiece.images}/bk.png`}`} alt="Player Status Icon" />
           <span>{truncateText(capitalizeFirstLetter(playerName))}</span>
           <img className={style.bandera} src={localStorage.getItem('bandera')} alt={`flag`} />
         </div>
