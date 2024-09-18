@@ -1232,7 +1232,6 @@ useEffect(()=>{
     setModalTiedRepetition(false);
     setTied(false);
     setModalTablasAceptada(false);
-    setPieces(initPieces);
     setGameOver(false);
     setDestinationCell(null);
     setStartCell(null);
