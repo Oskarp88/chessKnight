@@ -93,7 +93,8 @@ export const ChessboardProvider = ({ children }) => {
        chessColor,
        setChessColor,
        pieces, setPieces,
-       themePiece, setTemePiece
+       themePiece, setTemePiece,
+       resetPieces
     }}>
       {children}
     </ChessboardContext.Provider>
