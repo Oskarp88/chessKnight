@@ -617,7 +617,6 @@ useEffect(()=>{
   const handleOpponentMove = async (data) => {
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
-      setPieces(pieces);
       setDestinationCell(null);
       setSelectedPiece(null);
       
@@ -1613,9 +1612,7 @@ useEffect(()=>{
           currentTurn={currentTurn === infUser?.color ? infUser?.color : ''}
         />
       </div>
-     </div>
-     {/* <div className='display-board'> */}
-     
+     </div>     
      <div  className='move-container'>
         <div className='register' style={{background: boardColor.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
           <h5>Registro de jugadas</h5>       
