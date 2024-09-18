@@ -75,7 +75,7 @@ export const ChessboardProvider = ({ children }) => {
     const themePieza = localStorage.getItem('pieceTheme');
     
     if(!isNaN(themePieza) && themePieza) {
-      setTemePiece(piecesTheme[parseInt(themePiece)]);
+      setTemePiece(piecesTheme[parseInt(themePieza)]);
     }
 
 
