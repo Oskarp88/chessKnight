@@ -387,20 +387,48 @@ exports.getRatingFast = async (req, res) => {
 
 exports.getRatingBlitz = async (req, res) => {
   try {
-    // Buscar todos los usuarios
-    const users = await User.find({},'-password -partida')
-      .sort({
-        eloBlitz: -1,
-        gamesWonBlitz: -1,  // Ordenar por gamesWonFast de mayor a menor
-        gamesLostBlitz: 1,  // Si hay empate en victorias, ordenar por gamesLostFast de menor a mayor
-        gamesBlitz: 1       // Si también hay empate en derrotas, ordenar por gamesFast de menor a mayor
+    // Buscar todos los usuarios excluyendo las contraseñas y partidas
+    const users = await User.find({}, '-password -partida');
+    
+    // Separar los usuarios que tienen todos los valores en 0
+    const usersWithZeroValues = users.filter(user => 
+      user.eloBlitz === 0 && 
+      user.gamesWonBlitz === 0 && 
+      user.gamesLostBlitz === 0 && 
+      user.gamesBlitz === 0
+    );
+
+    // Ordenar los usuarios que tienen al menos un valor distinto de 0
+    const sortedUsers = users
+      .filter(user => 
+        user.eloBlitz !== 0 || 
+        user.gamesWonBlitz !== 0 || 
+        user.gamesLostBlitz !== 0 || 
+        user.gamesBlitz !== 0
+      )
+      .sort((a, b) => {
+        if (a.eloBlitz !== b.eloBlitz) {
+          return b.eloBlitz - a.eloBlitz; // Ordenar por eloBlitz (mayor a menor)
+        } else if (a.gamesWonBlitz !== b.gamesWonBlitz) {
+          return b.gamesWonBlitz - a.gamesWonBlitz; // Ordenar por victorias (mayor a menor)
+        } else if (a.gamesLostBlitz !== b.gamesLostBlitz) {
+          return a.gamesLostBlitz - b.gamesLostBlitz; // Ordenar por derrotas (menor a mayor)
+        } else {
+          return a.gamesBlitz - b.gamesBlitz; // Ordenar por juegos totales (menor a mayor)
+        }
       });
-    res.status(200).json(users);
+
+    // Combinar los usuarios ordenados con los usuarios que tienen todos los campos en 0 (estos irán al final)
+    const finalUsers = [...sortedUsers, ...usersWithZeroValues];
+
+    // Enviar la respuesta con los usuarios ordenados
+    res.status(200).json(finalUsers);
   } catch (error) {
-    console.error('Error al obtener el rating rápido:', error);
-    res.status(500).json({ message: 'Error al obtener el rating rápido' });
+    console.error('Error al obtener el rating Blitz:', error);
+    res.status(500).json({ message: 'Error al obtener el rating Blitz' });
   }
 };
+
 
 exports.getRatingBullet = async (req, res) => {
   try {

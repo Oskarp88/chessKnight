@@ -12,7 +12,9 @@ const {
   deleteUser, 
   userElo, 
   getUserBandera, 
-  getRatingFast } = require('../controllers/userController');
+  getRatingFast, 
+  getRatingBlitz,
+  getRatingBullet} = require('../controllers/userController');
 const { requireSignIn, isAdmin } = require('../middleware/isAdmin');
 const userRouter = express.Router();
 
@@ -30,8 +32,8 @@ userRouter.delete('/users/:id', isAdmin, deleteUser);
 userRouter.get('/users/:id/stats', statsUser);
 userRouter.get('/users/:id/elo', userElo);
 userRouter.get('/users/rating-fast', getRatingFast);
-userRouter.get('/users/rating-blitz', getRatingFast);
-userRouter.get('/users/rating-bullet', getRatingFast);
+userRouter.get('/users/rating-blitz', getRatingBlitz);
+userRouter.get('/users/rating-bullet', getRatingBullet);
   
   // Ruta de administración accesible solo para administradores
 userRouter.get('/admin/dashboard',requireSignIn, isAdmin, (req, res) => {
