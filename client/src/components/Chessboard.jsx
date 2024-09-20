@@ -620,19 +620,19 @@ useEffect(()=>{
   const handleOpponentMove = async (data) => {
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
-      setPieces((prevPieces) => {
-        return pieces.map((newPiece) => {
-            const prevPiece = prevPieces.find(p => p.x === newPiece.x && p.y === newPiece.y && p.color === newPiece.color);
+    //   setPieces((prevPieces) => {
+    //     return pieces.map((newPiece) => {
+    //         const prevPiece = prevPieces.find(p => p.x === newPiece.x && p.y === newPiece.y && p.color === newPiece.color);
             
-            if (prevPiece) {
-                // Mantener la imagen existente y actualizar el resto de propiedades
-                return { ...newPiece, image: prevPiece.image };
-            }
+    //         if (prevPiece) {
+    //             // Mantener la imagen existente y actualizar el resto de propiedades
+    //             return { ...newPiece, image: prevPiece.image };
+    //         }
 
-            // Si no hay pieza previa, usar las propiedades tal cual (incluyendo image de newPiece)
-            return newPiece;
-        });
-    });
+    //         // Si no hay pieza previa, usar las propiedades tal cual (incluyendo image de newPiece)
+    //         return newPiece;
+    //     });
+    // });
 
       setStartCell(null)
       setDestinationCell(null);
@@ -666,14 +666,28 @@ useEffect(()=>{
       }  else{
         setKingCheckCell(null);
     }
+      setPieces((prevPieces) => {
+        const updatedPieces = prevPieces.map((p) => {
+          const king = prevPieces.find(k => k.type === PieceType.KING && k.color === piece.color );
+
+          if(king && piece.king === PieceType.KING && (king.x === 4 && (king.y === 0 || king.y === 7))  && x === 2 && (y === 0 || y === 7) ){
+              if(p.type === PieceType.ROOK && p.x === 7){
+                 return {...p , x: 3, y: 0}
+              }
+          }
+        })
+        return updatedPieces;
+      })
      
       setPieces((prevPieces) => {
         let captureOccurred = false;
         // Crea una copia actualizada de la lista de piezas
         const updatedPieces = prevPieces.map((p) => {
+          
           if (p.x === piece.x && p.y === piece.y) {
+          
             // Encuentra la pieza que está siendo movida y actualiza su posición
-            return { ...p, x, y , image: p.image};
+            return { ...p, x, y };
           } else if (p.x === x && p.y === y && p.color !== piece.color) {
             // Si la casilla de destino está ocupada por una pieza enemiga, cápturala (no la incluyas en la nueva lista)
             captureOccurred = true;
