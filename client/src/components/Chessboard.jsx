@@ -976,22 +976,22 @@ useEffect(()=>{
         
         captureOccurred ? capturedAudio.play() : soltarAudio.play();
         // Solo actualizar el registro de movimientos una vez
-        if (selectedPiece) {
-          const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
-            '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-            selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-            selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+        if (piece) {
+          const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 ? 
+            '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+            piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+            piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
             `${
-              selectedPiece?.type?.charAt(0) === 'p'
+              piece?.type?.charAt(0) === 'p'
                 ? `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` // Captura de peón
-                : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toUpperCase()) || ''
+                : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toUpperCase()) || ''
             }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`; // Agrega 'x' si hay captura
   
           // Guardar el registro de movimientos para blanco o negro
-          if (selectedPiece.color === "white") {
+          if (piece.color === "white") {
             setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-          } else if (selectedPiece.color === 'black') {
+          } else if (piece.color === 'black') {
             setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
           }
