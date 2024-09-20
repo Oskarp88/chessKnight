@@ -17,6 +17,7 @@ import victorySound from '../path/to/VICTORIA.mp3';
 import derrotaSound from '../path/to/derrota.mp3';
 import jakeMateSound from '../path/to/jakemate.mp3';
 import jakeSound from '../path/to/jake.mp3';
+import capturedSound from '../path/to/captured.mp3';
 import {
   isCheckmateAfterMove,  
   isSimulatedMoveCausingCheck, 
@@ -96,6 +97,7 @@ function Chessboard() {
 
   const toqueAudio = new Audio(toqueSound);
   const soltarAudio = new Audio(soltarSound);
+  const capturedAudio = new Audio(capturedSound);
   const victoryAudio = new Audio(victorySound);
   const derrotaAudio = new Audio(derrotaSound);
   const jakeAudio = new Audio(jakeSound);
@@ -911,7 +913,7 @@ useEffect(()=>{
       }
       
       await socket.emit("send_move", pieceData);
-      soltarAudio.play();
+      
       const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
       console.log('king', king1.color);
     if (!isCheck && isStalemate(king1, pieces, selectedPiece, x, y)) {
@@ -957,9 +959,12 @@ useEffect(()=>{
         const updatedPieces = prevPieces.map((p) => {
           if (p.x === piece.x && p.y === piece.y && !(p.x === x && p.y === y && p.color !== piece.color)) {
             // Encuentra la pieza que está siendo movida y actualiza su posición
+            soltarAudio.play();
             return { ...p, x, y };
+
           } else if (p.x === x && p.y === y && p.color !== piece.color) {
             // Si la casilla de destino está ocupada por una pieza enemiga, cápturala
+            capturedAudio.play();
             captureOccurred = true;
             return null;
           } else {
@@ -1179,24 +1184,7 @@ useEffect(()=>{
             infUser,
             currentTurn: currentTurn === 'white' ? 'black' : 'white'
         }));
-        if(piece){
-          const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 ? 
-          '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-          piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-          piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
-          `${
-            piece?.type?.charAt(0) === 'p'
-              ? ''
-              : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-          }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-            if (piece && piece.color === "white") {
-              setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-              setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-            } else if (piece && piece.color === 'black') {
-              setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-              setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-            }
-        }
+        
         
         if (piece.type === PieceType.PAWN && (y === 0 || y === 7)) {
           // Abrir el modal de promoción
@@ -1205,7 +1193,6 @@ useEffect(()=>{
         }
         
         await socket.emit("send_move", pieceData);
-        soltarAudio.play();
         const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
         
       if (!isCheck && isStalemate(king1, pieces, piece, x, y)) {
