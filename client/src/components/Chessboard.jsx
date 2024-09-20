@@ -959,12 +959,10 @@ useEffect(()=>{
         const updatedPieces = prevPieces.map((p) => {
           if (p.x === piece.x && p.y === piece.y && !(p.x === x && p.y === y && p.color !== piece.color)) {
             // Encuentra la pieza que está siendo movida y actualiza su posición
-            soltarAudio.play();
             return { ...p, x, y };
 
           } else if (p.x === x && p.y === y && p.color !== piece.color) {
             // Si la casilla de destino está ocupada por una pieza enemiga, cápturala
-            capturedAudio.play();
             captureOccurred = true;
             return null;
           } else {
@@ -972,7 +970,7 @@ useEffect(()=>{
             return p;
           }
         }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
-  
+        
         captureOccurred ? capturedAudio.play() : soltarAudio.play();
         // Solo actualizar el registro de movimientos una vez
         if (selectedPiece) {
