@@ -707,9 +707,9 @@ useEffect(()=>{
             ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
             ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
             ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
-            ? captureOccurred ? `${HORIZONTAL_AXIS[x]}` : ''
+            ?  `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` 
             : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-          }${captureOccurred && 'x'}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+          }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
            if (piece && piece.color === "white") {
              setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
              setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
