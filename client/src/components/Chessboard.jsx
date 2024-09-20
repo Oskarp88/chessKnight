@@ -699,6 +699,24 @@ useEffect(()=>{
             return p;
           }
         }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
+
+        captureOccurred ? capturedAudio.play() : soltarAudio.play();
+
+        const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
+            ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
+            ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
+            ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
+            ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
+            ? captureOccurred ? `${HORIZONTAL_AXIS[x]}` : ''
+            : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
+          }${captureOccurred && 'x'}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+           if (piece && piece.color === "white") {
+             setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+           } else if (piece && piece.color === 'black'){
+             setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+           }
         
         if (captureOccurred) {
           setCountNoCapture(0);
@@ -711,22 +729,7 @@ useEffect(()=>{
         return updatedPieces;
       });
 
-      soltarAudio.play();
-    const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
-        ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
-        ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
-        ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
-        ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
-        ? ''
-        : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-      }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-       if (piece && piece.color === "white") {
-         setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-         setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-       } else if (piece && piece.color === 'black'){
-         setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-         setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-       }
+   
 
        localStorage.removeItem('userChess');
        localStorage.removeItem('infUser');
