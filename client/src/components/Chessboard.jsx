@@ -973,6 +973,7 @@ useEffect(()=>{
           }
         }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
   
+        captureOccurred ? capturedAudio.play() : soltarAudio.play();
         // Solo actualizar el registro de movimientos una vez
         if (selectedPiece) {
           const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
