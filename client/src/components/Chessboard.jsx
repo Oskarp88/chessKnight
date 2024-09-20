@@ -957,64 +957,51 @@ useEffect(()=>{
         const updatedPieces = prevPieces.map((p) => {
           if (p.x === piece.x && p.y === piece.y && !(p.x === x && p.y === y && p.color !== piece.color)) {
             // Encuentra la pieza que está siendo movida y actualiza su posición
-            if(selectedPiece){
-              const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
-              '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-              selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-              selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
-              `${
-                selectedPiece?.type?.charAt(0) === 'p'
-                  ? ''
-                  : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
-              }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-                if (selectedPiece && selectedPiece.color === "white") {
-                  setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                } else if (selectedPiece && selectedPiece.color === 'black') {
-                  setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                }
-            }
             return { ...p, x, y };
           } else if (p.x === x && p.y === y && p.color !== piece.color) {
-            // Si la casilla de destino está ocupada por una pieza enemiga, cápturala (no la incluyas en la nueva lista)
+            // Si la casilla de destino está ocupada por una pieza enemiga, cápturala
             captureOccurred = true;
-            if(selectedPiece){
-              const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
-              '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-              selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-              selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
-              `${
-                selectedPiece?.type?.charAt(0) === 'p'
-                  ? `${HORIZONTAL_AXIS[x]}`
-                  : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
-              }x${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-                if (selectedPiece && selectedPiece.color === "white") {
-                  setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                } else if (selectedPiece && selectedPiece.color === 'black') {
-                  setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-                }
-            }
             return null;
           } else {
             // Mantén inalteradas las otras piezas
-          
             return p;
           }
         }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
-        
-    if (captureOccurred) {
-      setCountNoCapture(0);
-    } else {
-      setCountNoCapture(prevCount => prevCount + 1);
-    }
-       localStorage.setItem('pieces', JSON.stringify(updatedPieces));
+  
+        // Solo actualizar el registro de movimientos una vez
+        if (selectedPiece) {
+          const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
+            '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+            selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+            selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+            `${
+              selectedPiece?.type?.charAt(0) === 'p'
+                ? `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` // Captura de peón
+                : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toUpperCase()) || ''
+            }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`; // Agrega 'x' si hay captura
+  
+          // Guardar el registro de movimientos para blanco o negro
+          if (selectedPiece.color === "white") {
+            setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+            setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+          } else if (selectedPiece.color === 'black') {
+            setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+            setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+          }
+        }
+  
+        if (captureOccurred) {
+          setCountNoCapture(0);
+        } else {
+          setCountNoCapture(prevCount => prevCount + 1);
+        }
+  
+        localStorage.setItem('pieces', JSON.stringify(updatedPieces));
         return updatedPieces;
       });
     }
   };
+  
    
   
   const handleMouseDown = (e, piece, x, y) => {
