@@ -620,20 +620,6 @@ useEffect(()=>{
   const handleOpponentMove = async (data) => {
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
-    //   setPieces((prevPieces) => {
-    //     return pieces.map((newPiece) => {
-    //         const prevPiece = prevPieces.find(p => p.x === newPiece.x && p.y === newPiece.y && p.color === newPiece.color);
-            
-    //         if (prevPiece) {
-    //             // Mantener la imagen existente y actualizar el resto de propiedades
-    //             return { ...newPiece, image: prevPiece.image };
-    //         }
-
-    //         // Si no hay pieza previa, usar las propiedades tal cual (incluyendo image de newPiece)
-    //         return newPiece;
-    //     });
-    // });
-
       setStartCell(null)
       setDestinationCell(null);
       
@@ -649,8 +635,8 @@ useEffect(()=>{
 
       setStartCellRival({x: piece.x, y: piece.y});
       setDestinationCellRival({ x, y }); // Establece la casilla de destino
-      localStorage.setItem('startCell', JSON.stringify({x: piece.x, y: piece.y}));
-      localStorage.setItem('destinationCell', JSON.stringify({x,y}));
+      // localStorage.setItem('startCell', JSON.stringify({x: piece.x, y: piece.y}));
+      // localStorage.setItem('destinationCell', JSON.stringify({x,y}));
 
       const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, turn)
       const king = pieces.find((p) => p.type === PieceType.KING && p.color === turn);
@@ -722,14 +708,16 @@ useEffect(()=>{
         localStorage.setItem('pieces', JSON.stringify(updatedPieces));
         return updatedPieces;
       });
-    const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 ? 
-    '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-    piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-    piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :`${
-      piece?.type?.charAt(0) === 'p'
+
+      soltarAudio.play();
+    const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
+        ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
+        ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
+        ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
+        ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
         ? ''
         : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-    }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+      }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
        if (piece && piece.color === "white") {
          setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
          setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
@@ -783,7 +771,6 @@ useEffect(()=>{
     // if(infUser?.color !== currentTurn) return;
     if (piece && piece.color === infUser?.color) {
       if (selectedPiece && piece.x === selectedPiece.x && piece.y === selectedPiece.y) {        
-        setStartCell(null); // Limpia la casilla de inicio
         setDestinationCell(null);
       } else {
         toqueAudio.play(); 
@@ -906,8 +893,6 @@ useEffect(()=>{
       setCurrentTurn(currentTurn === 'white' ? 'black' : 'white');
       setDestinationCell({ x, y });
       localStorage.setItem('destinationCell', JSON.stringify({x,y}));
-      localStorage.removeItem('userChess');
-      localStorage.removeItem('infUser');
 
        localStorage.setItem('chessboard',
         JSON.stringify({ 
@@ -1180,8 +1165,6 @@ useEffect(()=>{
         setDestinationCell({ x, y });
         
         localStorage.setItem('destinationCell', JSON.stringify({x,y}));
-        localStorage.removeItem('userChess');
-        localStorage.removeItem('infUser');
   
          localStorage.setItem('chessboard',
           JSON.stringify({ 
