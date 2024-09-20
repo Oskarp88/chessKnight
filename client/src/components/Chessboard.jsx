@@ -621,10 +621,9 @@ useEffect(()=>{
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
       setPieces((prevPieces) => 
-        prevPieces.map((p) => 
-          (p.x === piece.x && p.y === piece.y) // Encuentra la pieza a mover
-            ? { ...p, x: x, y: y }             // Actualiza solo las propiedades x e y
-            : p                                 // Mantén las demás piezas sin cambios
+       pieces.map((p) => 
+          ({ ...prevPieces, x: p.x, y: p.y } )            // Actualiza solo las propiedades x e y
+                                             // Mantén las demás piezas sin cambios
         )
       );
 
