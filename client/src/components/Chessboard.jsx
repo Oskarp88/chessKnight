@@ -955,7 +955,7 @@ useEffect(()=>{
       setPieces((prevPieces) => {         
         // Crea una copia actualizada de la lista de piezas
         const updatedPieces = prevPieces.map((p) => {
-          if (p.x === piece.x && p.y === piece.y) {
+          if (p.x === piece.x && p.y === piece.y && !(p.x === x && p.y === y && p.color !== piece.color)) {
             // Encuentra la pieza que está siendo movida y actualiza su posición
             if(selectedPiece){
               const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
