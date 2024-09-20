@@ -620,6 +620,7 @@ useEffect(()=>{
   const handleOpponentMove = async (data) => {
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
+      setStartCell(null)
       setDestinationCell(null);
       
       if (piece && piece.type === PieceType.PAWN) {
@@ -757,7 +758,8 @@ useEffect(()=>{
   const handleTileClick = async(x, y) => {
     if(tied === true) return;
     if(infUser?.color !== currentTurn) return;
-  
+     setStartCellRival(null);
+     setDestinationCellRival(null);
     // Manejar el clic en una casilla para mover la pieza
     if (selectedPiece && selectedPiece.type === PieceType.PAWN) {
       if (selectedPiece.x !== x || selectedPiece.y !== y) {
