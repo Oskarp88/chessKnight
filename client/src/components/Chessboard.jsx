@@ -673,7 +673,7 @@ useEffect(()=>{
         const updatedPieces = prevPieces.map((p) => {
           if (p.x === piece.x && p.y === piece.y) {
             // Encuentra la pieza que está siendo movida y actualiza su posición
-            return { ...p, x, y , image: prevPieces.image};
+            return { ...p, x, y , image: p.image};
           } else if (p.x === x && p.y === y && p.color !== piece.color) {
             // Si la casilla de destino está ocupada por una pieza enemiga, cápturala (no la incluyas en la nueva lista)
             captureOccurred = true;
