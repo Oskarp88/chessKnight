@@ -30,7 +30,6 @@ import ModalTablas from './modal/ModalTablas';
 import ModalRevancha from './modal/ModalRevancha';
 import ModalCheckMate from './modal/ModalCheckMate';
 import ModalAbandonar from './modal/ModalAbandonar';
-import ModalRendicion from './modal/ModalRendicion';
 import { useCheckMateContext } from '../context/checkMateContext';
 import ModalSendTablas from './modal/ModalSendTablas';
 import ModalTablasAceptada from './modal/ModalTablasAceptada';
@@ -53,12 +52,18 @@ function Chessboard() {
     } = useSocketContext();
   const {auth} = useAuth();
   const {checkMate ,setCheckMate} = useCheckMateContext();
-  const {boardColor, setBoardColor, pieces, setPieces, resetPieces} = useChessboardContext();  
+  const {
+    boardColor,
+    pieces, 
+    setPieces, 
+    resetPieces} = useChessboardContext();  
   const [currentTurn, setCurrentTurn] = useState('white');
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [pieceAux, setPieceAux] = useState(null);
   const [startCell, setStartCell] = useState(null);
+  const [startCellRival, setStartCellRival] = useState(null);
   const [destinationCell, setDestinationCell] = useState(null);
+  const [destinationCellRival, setDestinationCellRival] = useState(null);
   const [kingCheckCell, setKingCheckCell] = useState(null);
   const [enPassantTarget, setEnPassantTarget] = useState(null);
   const [frase, setFrase] = useState(null);
@@ -260,7 +265,6 @@ useEffect(()=>{
     const seconds = (time % 60).toString().padStart(2, "0");
     return `${minutes}:${seconds}`;
   };
-
   
   useEffect(() => {
 
@@ -617,7 +621,6 @@ useEffect(()=>{
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
       setDestinationCell(null);
-      setSelectedPiece(null);
       
       if (piece && piece.type === PieceType.PAWN) {
         if (piece.x !== x || piece.y !== y) {
@@ -629,15 +632,14 @@ useEffect(()=>{
         }
       }
 
-      setStartCell({x: piece.x, y: piece.y});
-      setDestinationCell({ x, y }); // Establece la casilla de destino
+      setStartCellRival({x: piece.x, y: piece.y});
+      setDestinationCellRival({ x, y }); // Establece la casilla de destino
       localStorage.setItem('startCell', JSON.stringify({x: piece.x, y: piece.y}));
       localStorage.setItem('destinationCell', JSON.stringify({x,y}));
 
       const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, turn)
       const king = pieces.find((p) => p.type === PieceType.KING && p.color === turn);
       const checkMate =  isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-
 
      if(isCheck){
        
@@ -648,7 +650,7 @@ useEffect(()=>{
        }
       }  else{
         setKingCheckCell(null);
-      }
+    }
      
       setPieces((prevPieces) => {
         let captureOccurred = false;
@@ -1417,7 +1419,8 @@ useEffect(()=>{
     const isSelected = selectedPiece && selectedPiece.x === i && selectedPiece.y === j;
     const isStartCell = startCell && startCell.x === i && startCell.y === j;
     const isDestinationCell = destinationCell && destinationCell.x === i && destinationCell.y === j;
-
+    const isStartCellRival = startCellRival && startCellRival.x === i && startCellRival.y === j;
+    const isDestinationCellRival = destinationCellRival && destinationCellRival.x === i && destinationCellRival.y === j;
     const isKingCheckCell = kingCheckCell && kingCheckCell.x === i && kingCheckCell.y === j;
 
   if (isKingCheckCell) {
@@ -1430,7 +1433,11 @@ useEffect(()=>{
       return 'start-cell';
     } else if (isDestinationCell) {
       return 'destination-cell';
-    } 
+    } else if (isStartCellRival){
+      return 'start-cell'
+    } else if (isDestinationCellRival) {
+      return 'destination-cell'
+    }
     else{      
       return isEven ? boardColor?.blackTile ||  'black-tile-azul' : boardColor?.whiteTile || 'white-tile-azul';
     }
