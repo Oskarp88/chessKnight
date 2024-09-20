@@ -620,19 +620,7 @@ useEffect(()=>{
   const handleOpponentMove = async (data) => {
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
-      setPieces((prevPieces) => {
-        return pieces.map((newPiece) => {
-            const prevPiece = prevPieces.find(p => p.x === newPiece.x && p.y === newPiece.y && p.color === newPiece.color);
-            
-            if (prevPiece) {
-                // Mantener la imagen existente y actualizar el resto de propiedades
-                return { newPiece, image: prevPiece.image };
-            }
-
-            // Si no hay pieza previa, usar las propiedades tal cual (incluyendo image de newPiece)
-            return newPiece;
-        });
-    });
+      setPieces(pieces);
 
       setStartCell(null)
       setDestinationCell(null);
