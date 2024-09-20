@@ -902,24 +902,7 @@ useEffect(()=>{
           infUser,
           currentTurn: currentTurn === 'white' ? 'black' : 'white'
       }));
-      if(selectedPiece){
-        const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
-        '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-        selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-        selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
-        `${
-          selectedPiece?.type?.charAt(0) === 'p'
-            ? ''
-            : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
-        }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-          if (selectedPiece && selectedPiece.color === "white") {
-            setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-            setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-          } else if (selectedPiece && selectedPiece.color === 'black') {
-            setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-            setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-          }
-      }
+      
       
       if (selectedPiece.type === PieceType.PAWN && (y === 0 || y === 7)) {
         // Abrir el modal de promoción
@@ -974,11 +957,46 @@ useEffect(()=>{
         const updatedPieces = prevPieces.map((p) => {
           if (p.x === piece.x && p.y === piece.y) {
             // Encuentra la pieza que está siendo movida y actualiza su posición
+            if(selectedPiece){
+              const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
+              '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+              selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+              selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+              `${
+                selectedPiece?.type?.charAt(0) === 'p'
+                  ? ''
+                  : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
+              }${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+                if (selectedPiece && selectedPiece.color === "white") {
+                  setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                } else if (selectedPiece && selectedPiece.color === 'black') {
+                  setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                }
+            }
             return { ...p, x, y };
           } else if (p.x === x && p.y === y && p.color !== piece.color) {
             // Si la casilla de destino está ocupada por una pieza enemiga, cápturala (no la incluyas en la nueva lista)
             captureOccurred = true;
-            
+            if(selectedPiece){
+              const move = selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 6 && y === 0 ? 
+              '0-0' : selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 6 && y === 7 ? '0-0' :
+              selectedPiece?.color === 'white' && selectedPiece?.x === 4 && selectedPiece?.y === 0 && x === 2 && y === 0 ? '0-0' :
+              selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
+              `${
+                selectedPiece?.type?.charAt(0) === 'p'
+                  ? ''
+                  : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
+              }x${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+                if (selectedPiece && selectedPiece.color === "white") {
+                  setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                } else if (selectedPiece && selectedPiece.color === 'black') {
+                  setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                  setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+                }
+            }
             return null;
           } else {
             // Mantén inalteradas las otras piezas
