@@ -986,7 +986,7 @@ useEffect(()=>{
               selectedPiece?.color === 'black' && selectedPiece?.x === 4 && selectedPiece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
               `${
                 selectedPiece?.type?.charAt(0) === 'p'
-                  ? ''
+                  ? `${HORIZONTAL_AXIS[x]}`
                   : (selectedPiece?.type === 'knight') ? 'N' : (selectedPiece?.type?.charAt(0).toLocaleUpperCase()) || ''
               }x${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
                 if (selectedPiece && selectedPiece.color === "white") {
