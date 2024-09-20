@@ -666,18 +666,30 @@ useEffect(()=>{
       }  else{
         setKingCheckCell(null);
     }
-      setPieces((prevPieces) => {
-        const updatedPieces = prevPieces.map((p) => {
-          const king = prevPieces.find(k => k.type === PieceType.KING && k.color === piece.color );
-
-          if(king && piece.king === PieceType.KING && (king.x === 4 && (king.y === 0 || king.y === 7))  && x === 2 && (y === 0 || y === 7) ){
-              if(p.type === PieceType.ROOK && p.x === 7){
-                 return {...p , x: 3, y: 0}
+    setPieces((prevPieces) => {
+      const updatedPieces = prevPieces.map((p) => {
+          // Verificar si el rey está en su posición inicial y va a hacer enroque corto o largo
+          if (piece.type === PieceType.KING && piece.x === 4 && (piece.y === 0 || piece.y === 7)) {
+              // Enroque corto
+              if (x === 6 && (y === 0 || y === 7)) {
+                  if (p.type === PieceType.ROOK && p.x === 7 && p.y === piece.y) {
+                      // Mover la torre del enroque corto
+                      return { ...p, x: 5, y: piece.y }; // La torre se mueve de (7, y) a (5, y)
+                  }
+              }
+              // Enroque largo
+              else if (x === 2 && (y === 0 || y === 7)) {
+                  if (p.type === PieceType.ROOK && p.x === 0 && p.y === piece.y) {
+                      // Mover la torre del enroque largo
+                      return { ...p, x: 3, y: piece.y }; // La torre se mueve de (0, y) a (3, y)
+                  }
               }
           }
-        })
-        return updatedPieces;
-      })
+          return p;
+      });
+      return updatedPieces;
+  });
+
      
       setPieces((prevPieces) => {
         let captureOccurred = false;
