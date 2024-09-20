@@ -7,11 +7,10 @@ import Carousel from 'react-bootstrap/Carousel';
 import { useChessboardContext } from '../../context/boardContext';
 import { colorBoard } from '../../utils/Colors';
 import { piecesTheme } from '../../utils/pieces';
-
+import Collapse from 'react-bootstrap/Collapse';
 
 
 function SettingsModal({show, handleClose}) {
-
     const {
         setBoardColor, 
         boardColor,
@@ -19,16 +18,18 @@ function SettingsModal({show, handleClose}) {
         setTemePiece
      } = useChessboardContext();
 
-   const handleColorChange = (num) => {
+   const handleColorChange = ( num, event) => {
+   
     setBoardColor(colorBoard[num]);
     localStorage.setItem('colorBoard', num);
    }
 
-   const handlePiecesChange = (num) => {
+   const handlePiecesChange = (num, event) => {
+    
     setTemePiece(piecesTheme[num]);
     localStorage.setItem('pieceTheme', num);
    }
-
+  console.log(piecesTheme)
     
   return (
     <Modal show={show} onHide={handleClose} >
@@ -39,23 +40,22 @@ function SettingsModal({show, handleClose}) {
       <Accordion defaultActiveKey="0" flush>
       <Accordion.Item eventKey="0">
         <Accordion.Header>Tablero #1</Accordion.Header>
-            <Accordion.Body>
-                <div className={style.coloroptions}>
+            <Accordion.Body style={{background: colorBoard.whiteRow}}>
+                <div eventKey="0" className={style.colorOptions} >
                     {colorBoard?.map((c, index) => {
-                        const isEvenIndex = (index + 1) % 2 === 0;
+              
                             return (
                             <div 
-                              key={c.id} className={`${style.coloroption} ${isEvenIndex ? `${style.even}` : `${style.odd}`}`}
-                              onClick={() => handleColorChange(c.id)}
-                              style={c.id === boardColor.id ? {background: boardColor.register} : {}}
+                              key={c.id} className={`${style.colorOption} ${c.id === boardColor.id ? `${style.even}` : ''}`}
+                              onClick={(e) => handleColorChange(c.id, e)}
                             >                           
-                                <div className={style.colorrow}>
-                                    <div className={style.colorboard} style={{ backgroundColor: c.blackRow }}></div>
-                                    <div className={style.colorboard} style={{ backgroundColor: c.whiteRow }}></div>
+                                <div className={style.colorRow}>
+                                    <div className={style.colorBoard} style={{ backgroundColor: c.blackRow }}></div>
+                                    <div className={style.colorBoard} style={{ backgroundColor: c.whiteRow }}></div>
                                 </div>
-                                <div className={style.colorrow}>
-                                    <div className={style.colorboard} style={{ backgroundColor: c.whiteRow }}></div>
-                                    <div className={style.colorboard} style={{ backgroundColor: c.blackRow }}></div>
+                                <div className={style.colorRow}>
+                                    <div className={style.colorBoard} style={{ backgroundColor: c.whiteRow }}></div>
+                                    <div className={style.colorBoard} style={{ backgroundColor: c.blackRow }}></div>
                                 </div>
                             </div>
                        )}
@@ -66,29 +66,28 @@ function SettingsModal({show, handleClose}) {
       <Accordion.Item eventKey="1">
         <Accordion.Header>piezas #2</Accordion.Header>
             <Accordion.Body>
-              <div className={style.coloroptions}>
-                    {piecesTheme?.map((c, index) => {
-                        const isEvenIndex = (index + 1) % 2 === 0;
+              <div className={style.colorOptions}>
+                    {piecesTheme.map((c, index) => {
                             return (
                             <div 
-                              key={c.id} className={`${style.coloroption} ${isEvenIndex ? `${style.even}` : `${style.odd}`}`}
-                              onClick={() => handlePiecesChange(c.id)}
-                              style={c.id === themePiece.id ? {background: boardColor?.whiteRow} : {}}
+                              key={c.id} className={`${style.colorOptionPiece} ${c.id === themePiece.id ? `${style.evenPiece}` : ''}`}
+                              onClick={(e) => handlePiecesChange(c.id, e)}
+                              style={c.id === piecesTheme.id ? {backgroundColor: 'rgba(0,0,0,0.5)'} : {}}
                             >                           
-                                <div className={style.colorrow}>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.blackRow }}>
-                                      <img src={`assets/${c.images}/wk.png`} alt="" />
+                                <div className={style.colorRow}>
+                                    <div className={style.colorBoardPiece} style={{ backgroundColor: boardColor?.blackRow }}>
+                                      <img src={`/assets/${c.images}/wk.png`} alt="" />
                                     </div>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.whiteRow }}>
-                                      <img src={`assets/${c.images}/wq.png`} alt="" />
+                                    <div className={style.colorBoardPiece} style={{ backgroundColor: boardColor?.whiteRow }}>
+                                      <img src={`/assets/${c.images}/wq.png`} alt="" />
                                     </div>
                                 </div>
-                                <div className={style.colorrow}>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.whiteRow }}>
-                                      <img src={`assets/${c.images}/bk.png`} alt="" />
+                                <div className={style.colorRow}>
+                                    <div className={style.colorBoardPiece} style={{ backgroundColor: boardColor?.whiteRow }}>
+                                      <img src={`/assets/${c.images}/bk.png`} alt="" />
                                     </div>
-                                    <div className={style.colorboard} style={{ backgroundColor: boardColor?.blackRow }}>
-                                      <img src={`assets/${c.images}/bq.png`} alt="" />
+                                    <div className={style.colorBoardPiece} style={{ backgroundColor: boardColor?.blackRow }}>
+                                      <img src={`/assets/${c.images}/bq.png`} alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +95,7 @@ function SettingsModal({show, handleClose}) {
                     )}
                 </div>
             </Accordion.Body>
-        </Accordion.Item>
+     </Accordion.Item>
         </Accordion>
       </Modal.Body>
       <Modal.Footer>

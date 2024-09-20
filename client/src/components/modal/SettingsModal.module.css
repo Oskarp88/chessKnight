@@ -14,16 +14,19 @@
     background-color: #5dade2;
 }
 
-.coloroptions {
+.colorOptions {
     margin: 3%;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
   }
   
-  .coloroption {
+  .colorOption {
     width: 5rem;
     height: 5rem;
     display: flex;
+    border-radius: 5px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -31,26 +34,38 @@
     margin-bottom: 10px; /* Espacio entre los tableros */
   }
 
-  .coloroption::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;  /* Inherit para tomar el background desde el div principal */
-    opacity: 0.3;         /* Aplica la opacidad solo al fondo */
-    z-index: 0;           /* Asegúrate de que esté detrás del contenido */
+  .colorOptionPiece {
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    border-radius: 5px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    margin-bottom: 10px; /* Espacio entre los tableros */
   }
-  
-  .colorrow {
+
+  .even{
+     background: rgba(0, 0, 0, .2);
+     width: 6rem;
+     height: 6rem;
+  }
+
+  .evenPiece{
+    background: rgba(0, 0, 0, .2);
+    width: 7rem;
+    height: 7rem;
+ }
+
+  .colorRow {
     position: relative;
     z-index: 1; 
     display: flex;
     align-items: center;
   }
   
-  .colorboard {
+  .colorBoard {
     width: 40px; /* Ajusta el tamaño según tus preferencias */
     height: 40px; /* Ajusta el tamaño según tus preferencias */
     cursor: pointer;
@@ -59,7 +74,28 @@
     justify-content: center;
   }
 
-  .colorboard img{
-    width: 95%;
-    height: 95%px;
+  .colorBoardPiece {
+    width: 50px; /* Ajusta el tamaño según tus preferencias */
+    height: 50px; /* Ajusta el tamaño según tus preferencias */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  .colorBoardPiece img{
+    width: 95%;
+    height: 95%;
+    z-index: 2;
+  }
+
+ 
+  .icon{
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: -4px;
+  }
+
+  
+  
+  
