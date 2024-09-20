@@ -621,11 +621,15 @@ useEffect(()=>{
     const { piece, x, y, turn, pieces} = data;
       setCurrentTurn(turn);
       setPieces((prevPieces) => 
-       pieces.map((p) => 
-          ({ ...prevPieces, x: p.x, y: p.y } )            // Actualiza solo las propiedades x e y
-                                             // Mantén las demás piezas sin cambios
-        )
-      );
+      prevPieces.map((prevPiece) => {
+        const newPiece = pieces.find((p) => p.type === prevPiece.type && p.color === prevPiece.color);
+        if (newPiece) {
+          // Solo actualizamos las coordenadas x y y, manteniendo el resto de propiedades
+          return { ...prevPiece, x: newPiece.x, y: newPiece.y };
+        }
+        return prevPiece; // Si no encuentra la pieza equivalente, no hace cambios
+      })
+    );
 
       setStartCell(null)
       setDestinationCell(null);
