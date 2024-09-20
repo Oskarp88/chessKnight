@@ -643,17 +643,17 @@ useEffect(()=>{
       const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, turn)
       const king = pieces.find((p) => p.type === PieceType.KING && p.color === turn);
       const checkMate =  isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-
-     if(isCheck){
+      if(isCheck){
        
-       setKingCheckCell({x: king.x, y: king.y});
-       !checkMate && jakeAudio.play(); 
-       if(checkMate){
-          jakeMateAudio.play();
-       }
-      }  else{
-        setKingCheckCell(null);
-    }
+        setKingCheckCell({x: king.x, y: king.y});
+        !checkMate && jakeAudio.play(); 
+        if(checkMate){
+           jakeMateAudio.play();
+        }
+       }  else{
+         setKingCheckCell(null);
+     }
+   
     setPieces((prevPieces) => {
       const updatedPieces = prevPieces.map((p) => {
           // Verificar si el rey está en su posición inicial y va a hacer enroque corto o largo
@@ -700,7 +700,7 @@ useEffect(()=>{
           }
         }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
 
-        captureOccurred ? capturedAudio.play() : soltarAudio.play();
+     !isCheck && !checkMate ?  captureOccurred ? capturedAudio.play() : soltarAudio.play() : '';
 
         const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
             ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
