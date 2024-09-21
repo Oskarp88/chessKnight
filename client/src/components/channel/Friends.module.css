@@ -48,27 +48,7 @@
     color: #fff; /* Cambia el color del texto al pasar el ratón */
   }
 
-  .desafio{
-    background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
-    padding: 5px;
-    margin-top: 4rem;
-    margin-bottom: 10px;
-    border-radius: 1rem;
-    -webkit-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
-    -moz-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
-    -ie-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
-    box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
-  }
-
-  .desafio h5{
-    margin-top: 5px;
-    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #dafffe;
-  }
-
-  .containerProfile{
+ .containerProfile{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,10 +85,39 @@
     z-index: 2; /* Marco en la capa superior */
   }
 
+  .desafio{
+    display: flex;
+    justify-content: center;
+    background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
+    padding: 5px;
+    margin-top: 4rem;
+    margin-bottom: 10px;
+    border-radius: 1rem;
+    -webkit-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+    -moz-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+    -ie-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+    box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
+  }
+
+  .desafio h5{
+    margin-top: 5px;
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #dafffe;
+  }
+
+  .setting{
+    cursor: pointer;
+    margin-right: 5px;
+    padding-top: 2px;
+  }
+  
   .titleWithIcon {
     display: flex;
     align-items: center; 
     justify-content: center;
+    width: 95%;
   }
   
   .titleWithIcon h5 {

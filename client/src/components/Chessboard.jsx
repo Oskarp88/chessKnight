@@ -700,7 +700,9 @@ useEffect(()=>{
           }
         }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
 
-     !isCheck && !checkMate ?  captureOccurred ? capturedAudio.play() : soltarAudio.play() : '';
+      if(!isCheck || !checkMate){
+        captureOccurred ? capturedAudio.play() : soltarAudio.play();
+      }
 
         const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
             ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 

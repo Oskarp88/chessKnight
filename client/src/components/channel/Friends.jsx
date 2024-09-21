@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
-import { BlitzSvg, BulletSvg, CircleClose, CircleInf, FastSvg } from '../../svg';
+import { BlitzSvg, BulletSvg, CircleClose, CircleInf, FastSvg, SettingSvg } from '../../svg';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import desafiadoSound from '../../path/to/ding.mp3';
 import rechazadoSound from '../../path/to/Splat.mp3';
@@ -15,10 +15,11 @@ import { useLanguagesContext } from '../../context/languagesContext';
 import Spinner from 'react-bootstrap/Spinner';
 import Insignias from '../insignias/Insignias';
 import Fast from '../../img/fast';
+import SettingsModal from '../modal/SettingsModal';
 
 const Friends = ({ friends, onlineUsers, room }) => {
   const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
-
+  const [showModalSettings, setShowSettings] = useState();
   const [hoveredFriend, setHoveredFriend] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showModalInf, setShowModalInf] = useState(false);
@@ -280,7 +281,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
   
   let count = 1;
   return (
-    <div className={style.tercerdiv} > 
+   <>
+      <div className={style.tercerdiv} > 
       <div className={style.desafio}>
           <div className={style.titleWithIcon}>
             <img 
@@ -304,6 +306,12 @@ const Friends = ({ friends, onlineUsers, room }) => {
                     <Fast/>
                 </div>
               }
+          </div>
+          <div 
+            className={style.setting} 
+            title={language.settings}
+            onClick={()=>setShowSettings(true)}>
+            <SettingSvg/>
           </div>
       </div>       
       <div>        
@@ -514,6 +522,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
       </div>
       
     </div>
+    <SettingsModal 
+    show={showModalSettings}
+    handleClose={()=> setShowSettings(false)}
+  />
+   </>
   );
 };
 

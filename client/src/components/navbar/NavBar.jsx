@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Nav.module.css';
-import Sidebar from './Sidebar';
 import Notifications from '../chat/Notifications';
 import { useAuth } from '../../context/authContext';
 import { useChessboardContext } from '../../context/boardContext';

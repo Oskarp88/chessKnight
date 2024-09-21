@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
-import { toast } from 'react-toastify';
-import style from '../components/navbar/Sidebar.module.css'; 
 
 
 const Spinner = ({ path = 'login'}) => {
