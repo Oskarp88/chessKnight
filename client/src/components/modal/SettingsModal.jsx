@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import style from './SettingsModal.module.css';
 import Accordion from 'react-bootstrap/Accordion';
-import Carousel from 'react-bootstrap/Carousel';
 import { useChessboardContext } from '../../context/boardContext';
 import { colorBoard } from '../../utils/Colors';
 import { piecesTheme } from '../../utils/pieces';
-import Collapse from 'react-bootstrap/Collapse';
 
 
 function SettingsModal({show, handleClose}) {
@@ -42,8 +40,7 @@ function SettingsModal({show, handleClose}) {
         <Accordion.Header>Tablero #1</Accordion.Header>
             <Accordion.Body style={{background: colorBoard.whiteRow}}>
                 <div eventKey="0" className={style.colorOptions} >
-                    {colorBoard?.map((c, index) => {
-              
+                    {colorBoard?.map((c, index) => {        
                             return (
                             <div 
                               key={c.id} className={`${style.colorOption} ${c.id === boardColor.id ? `${style.even}` : ''}`}

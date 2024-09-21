@@ -80,8 +80,14 @@ export const ChessboardProvider = ({ children }) => {
       setTemePiece(piecesTheme[parseInt(themePieza)]);
     }
 
+    const piecesData = localStorage.getItem('pieces');
+    if(piecesData){
+      const parseData = JSON.parse(piecesData);
+      setPieces(parseData);
+    }
 
-  },[chessColor, boardColor, themePiece]);
+
+  },[chessColor, boardColor, themePiece,pieces]);
 
 
   return (

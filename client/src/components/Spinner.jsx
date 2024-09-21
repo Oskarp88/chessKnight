@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
-
 
 const Spinner = ({ path = 'login'}) => {
   const [count, setCount] = useState(5);
   const navigate = useNavigate();
   const location = useLocation();
-  const {auth, setAuth} = useAuth();
 
   useEffect(() => {
    
