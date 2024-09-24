@@ -336,7 +336,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
                     <span  >
                       {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
                     </span>
-                    <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                    <img src={o?.imagenBandera} title={o?.country} className={style.bandera} alt="" />
                   </div>
                 </div>
                 <div className={style.containerFlex}>

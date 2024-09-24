@@ -206,6 +206,7 @@ export function Home() {
               <button 
                 className={style.wrapper}
                 onClick={joinRoom}
+                ref={miContaineHistorial}
               >
                 {language?.join_a_room} 
                 <span></span>

@@ -55,33 +55,38 @@ function Chessboard() {
   const {checkMate ,setCheckMate} = useCheckMateContext();
   const {
     boardColor,
-    pieces, 
-    setPieces, 
-    resetPieces} = useChessboardContext();  
-  const [currentTurn, setCurrentTurn] = useState('white');
-  const [selectedPiece, setSelectedPiece] = useState(null);
+    pieces, setPieces, 
+    resetPieces,
+    currentTurn, setCurrentTurn,
+    selectedPiece, setSelectedPiece,
+    startCell, setStartCell,
+    destinationCell, setDestinationCell,
+    startCellRival, setStartCellRival,
+    destinationCellRival, setDestinationCellRival,
+    kingCheckCell, setKingCheckCell,
+    enPassantTarget, setEnPassantTarget,
+    userWon, setUserWon,
+    promotionModalOpen, setPromotionModalOpen,
+    isPromotionComplete, setPromotionComplete,
+    modaltime, setModalTime,
+    isGameOver, setGameOver,
+    whiteMoveLog, setWhiteMoveLog,
+    blackMoveLog, setBlackMoveLog,
+    moveLog, setMoveLog,
+    countNoCapture, setCountNoCapture,
+    whiteTime, setWhiteTime,
+    blackTime, setBlackTime,
+    isWhiteTime, setIsWhiteTime,
+    loadingTablas, setLoadingTablas,
+    modalTablas, setModalTablas,
+  } = useChessboardContext();  
+  
+  
   const [pieceAux, setPieceAux] = useState(null);
-  const [startCell, setStartCell] = useState(null);
-  const [startCellRival, setStartCellRival] = useState(null);
-  const [destinationCell, setDestinationCell] = useState(null);
-  const [destinationCellRival, setDestinationCellRival] = useState(null);
-  const [kingCheckCell, setKingCheckCell] = useState(null);
-  const [enPassantTarget, setEnPassantTarget] = useState(null);
+
   const [frase, setFrase] = useState(null);
-  const [userWon, setUserWon] = useState(null);
-  const [promotionModalOpen, setPromotionModalOpen] = useState(false);
-  const [isPromotionComplete, setPromotionComplete] = useState(false);
-  const [modaltime, setModalTime] = useState(false);
-  const [isGameOver, setGameOver] = useState(false);
-  const [whiteMoveLog, setWhiteMoveLog] = useState([]);
-  const [blackMoveLog, setBlackMoveLog] = useState([]);
-  const [moveLog, setMoveLog] = useState([]);
-  const [countNoCapture, setCountNoCapture] = useState(0);
-  const [whiteTime, setWhiteTime] = useState(infUser?.time || 1);
-  const [blackTime, setBlackTime] = useState(infUser?.time || 1);
-  const [isWhiteTime, setIsWhiteTime] = useState('');
-  const [loadingTablas, setLoadingTablas] = useState(false);
-  const [modalTablas, setModalTablas] = useState(false);
+  
+ 
   const [modalSendTablas, setSendTablas] = useState(false);
   const [modalTablasAceptada, setModalTablasAceptada] = useState(false);
   const [aceptarRevancha, setAceptarRevancha] = useState(false);

@@ -24,6 +24,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Register from "./pages/user/Register";
 import { LanguagesProvider } from "./context/languagesContext";
+import Sidebar from "./components/navbar/sidebar";
 
 function App() {
   const {auth} = useAuth();
@@ -37,7 +38,8 @@ function App() {
          <ChessboardProvider >
             <div id="app">
               <Router>
-                <NavBar/>                
+                <NavBar/>
+                <Sidebar/>                
               <Routes>                          
                 <Route path="/" element={<Home/>}/>
                 <Route path="/login" element={<Login/>} />

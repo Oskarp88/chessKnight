@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { colorBoard, colorChess } from '../utils/Colors';
 import { PieceType } from '../Types';
 import { piecesTheme } from '../utils/pieces';
+import { useSocketContext } from './socketContext';
 
 const ChessboardContext = createContext();
 
@@ -14,12 +15,35 @@ export const useChessboardContext = () => {
 };
 
 export const ChessboardProvider = ({ children }) => {
+  const {infUser} = useSocketContext();
   const [boardColor, setBoardColor] = useState(colorBoard[0]);
   const [themePiece, setTemePiece] = useState(piecesTheme[0]);
   const [pieces, setPieces] = useState([]);
   const [resetPieces, setResetPieces] = useState([]);
   const [chessColor, setChessColor] = useState(colorChess[0]);
   const [view, setView] = useState(window.innerWidth <= 690);
+  const [currentTurn, setCurrentTurn] = useState('white');
+  const [selectedPiece, setSelectedPiece] = useState(null);
+  const [startCell, setStartCell] = useState(null);
+  const [startCellRival, setStartCellRival] = useState(null);
+  const [destinationCell, setDestinationCell] = useState(null);
+  const [destinationCellRival, setDestinationCellRival] = useState(null);
+  const [kingCheckCell, setKingCheckCell] = useState(null);
+  const [enPassantTarget, setEnPassantTarget] = useState(null);
+  const [userWon, setUserWon] = useState(null);
+  const [promotionModalOpen, setPromotionModalOpen] = useState(false);
+  const [isPromotionComplete, setPromotionComplete] = useState(false);
+  const [modaltime, setModalTime] = useState(false);
+  const [isGameOver, setGameOver] = useState(false);
+  const [whiteMoveLog, setWhiteMoveLog] = useState([]);
+  const [blackMoveLog, setBlackMoveLog] = useState([]);
+  const [moveLog, setMoveLog] = useState([]);
+  const [countNoCapture, setCountNoCapture] = useState(0);
+  const [whiteTime, setWhiteTime] = useState(infUser?.time || 1);
+  const [blackTime, setBlackTime] = useState(infUser?.time || 1);
+  const [isWhiteTime, setIsWhiteTime] = useState('');
+  const [loadingTablas, setLoadingTablas] = useState(false);
+  const [modalTablas, setModalTablas] = useState(false);
 
   useEffect(() => {
     const updatedPieces = [
@@ -89,6 +113,10 @@ export const ChessboardProvider = ({ children }) => {
 
   },[chessColor, boardColor, themePiece,pieces]);
 
+  const handleOpponentMove = useCallback(async(data)=>{
+     
+  });
+
 
   return (
     <ChessboardContext.Provider value={{ 
@@ -100,7 +128,29 @@ export const ChessboardProvider = ({ children }) => {
        setChessColor,
        pieces, setPieces,
        themePiece, setTemePiece,
-       resetPieces
+       resetPieces,
+       currentTurn, setCurrentTurn,
+       selectedPiece, setSelectedPiece,
+       startCell, setStartCell,
+       destinationCell, setDestinationCell,
+       startCellRival, setStartCellRival,
+       destinationCellRival, setDestinationCellRival,
+       kingCheckCell, setKingCheckCell,
+       enPassantTarget, setEnPassantTarget,
+       userWon, setUserWon,
+       promotionModalOpen, setPromotionModalOpen,
+       isPromotionComplete, setPromotionComplete,
+       modaltime, setModalTime,
+       isGameOver, setGameOver,
+       whiteMoveLog, setWhiteMoveLog,
+       blackMoveLog, setBlackMoveLog,
+       moveLog, setMoveLog,
+       countNoCapture, setCountNoCapture,
+       whiteTime, setWhiteTime,
+       blackTime, setBlackTime,
+       isWhiteTime, setIsWhiteTime,
+       loadingTablas, setLoadingTablas,
+       modalTablas, setModalTablas
     }}>
       {children}
     </ChessboardContext.Provider>
