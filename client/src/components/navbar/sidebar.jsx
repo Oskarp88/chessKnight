@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
 import { FaHome, FaUser, FaSignInAlt, FaBars, FaUserPlus, FaGlobe, FaSignOutAlt, FaTimes,  } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
-import { Nav, NavDropdown } from 'react-bootstrap';
+import { Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import { useLanguagesContext } from '../../context/languagesContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
@@ -107,8 +107,8 @@ useEffect(()=>{
 
   return (
     <> 
-      <div 
-        className={`sidebar ${isOpen ? 'mobile-open' : ''}`}
+      <Navbar
+        className={`sidebar ${isOpen ? 'mobile-open' : ''} fixed-top`}
         onMouseEnter={windowWidth > 768 ? handleMouseEnter : undefined}  // Expande cuando el mouse está sobre el sidebar
         onMouseLeave={handleMouseLeave}  // Contrae cuando el mouse sale del sidebar
         style={{background: chessColor.navbar}}
@@ -211,7 +211,7 @@ useEffect(()=>{
           </div>
         }
         </div>
-      </div>
+      </Navbar>
       <SettingsModal 
         show={showModalSettings}
         handleClose={()=> setShowSettings(false)}

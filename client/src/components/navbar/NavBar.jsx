@@ -38,7 +38,7 @@ function NavBar() {
 
 return (
   <>
-  <Navbar className={`${styles.navbar} `}>
+  <Navbar className={`${styles.navbar} fixed-top`}>
     <div className={styles.containerMoneda}>
       <div className={styles.moneda}>
         <img src="/icon/moneda.png" alt="" />

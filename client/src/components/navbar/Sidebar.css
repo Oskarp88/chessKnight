@@ -1,6 +1,5 @@
 /* Estilos generales del sidebar */
 .sidebar {
-    position: fixed;
     height: 95%;
     margin-top: 1.2rem;
     margin-left: .5rem;
@@ -205,8 +204,7 @@
 
   @media(max-width: 500px){
     .iconTop{
-      margin-top: -1rem;
-      
+      margin-top: -1rem;  
     }
   }
   
