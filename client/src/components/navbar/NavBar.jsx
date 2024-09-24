@@ -38,7 +38,7 @@ function NavBar() {
 
 return (
   <>
-  <Navbar className={styles.navbar}>
+  <div className={styles.navbar}>
     <div className={styles.containerMoneda}>
       <div className={styles.moneda}>
         <img src="/icon/moneda.png" alt="" />
@@ -111,7 +111,7 @@ return (
          
     
     </div>
-  </Navbar>
+  </div>
 
   <SettingsModal 
     show={showModalSettings}

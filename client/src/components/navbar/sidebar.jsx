@@ -107,7 +107,7 @@ useEffect(()=>{
 
   return (
     <> 
-      <Navbar
+      <div
         className={`sidebar ${isOpen ? 'mobile-open' : ''} fixed-top`}
         onMouseEnter={windowWidth > 768 ? handleMouseEnter : undefined}  // Expande cuando el mouse está sobre el sidebar
         onMouseLeave={handleMouseLeave}  // Contrae cuando el mouse sale del sidebar
@@ -211,7 +211,7 @@ useEffect(()=>{
           </div>
         }
         </div>
-      </Navbar>
+      </div>
       <SettingsModal 
         show={showModalSettings}
         handleClose={()=> setShowSettings(false)}
