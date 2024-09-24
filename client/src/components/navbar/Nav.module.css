@@ -3,6 +3,7 @@
   position: fixed;
   width: 100%;
   display: flex;
+  z-index: 999;
 }
 
 .containerMoneda{
@@ -116,7 +117,20 @@
 
 }
 
+.ligaContainer{
+  position: relative;
+  width: 65px;
+  height: 65px;
+  margin-left: .3rem;
+  margin-right: .5rem;
+}
 
+.imageLiga {
+  position: relative;
+  width: 100%; /* Asegúrate de que ambos elementos ocupen todo el contenedor */
+  height: 100%;
+  margin-left: 1rem;
+}
 .userprofile {
   position: relative;
   border-radius: 50%;
@@ -261,4 +275,25 @@
     margin-left: 5px;
     margin-right: 5px;
   }
+}
+
+@media (max-width: 500px){
+  .userprofile, .ligaContainer{
+    width: 50px;
+    height: 50px;
+  }
+  .name span{
+    font-size: 15px;
+  }
+  .imageLiga{
+    margin-left: .3rem;
+    background-color: #2e86c1;
+  }
+}
+
+@media (max-width: 393px) {
+   .name span{
+     font-size: 13px;
+     font-weight: 600;
+   }
 }

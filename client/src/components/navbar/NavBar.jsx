@@ -55,16 +55,15 @@ return (
                   boxShadow: '0px 0px 0px 1px #4e8381 inset, 0px 0px 0px 2px #74b6b4 inset, 0px 4px 0px 0px #4a7c7b, 0px 5px 0px 0px #355655, 0px 8px 0px 0px rgba(0,0,0,.15)'
                 }}
               >
-                  <div className={styles.userprofile} >           
+                  <div className={styles.ligaContainer} >           
                       <div 
-                        className={styles.imageContainer}
-                        style={{marginLeft: '1rem'}}
+                        className={styles.imageLiga}
                       >
                         <img className={styles.liga} src={'/ligas/bronceLiga.png'} alt="User Photo" />
                       </div>
                     </div>
                     <div className={styles.inf} style={{color: '#0b5345'}}>
-                      <div className={styles.name}>
+                      <div className={styles.nameLiga}>
                         <span >LIGA</span>
                       </div>
                       <div className={styles.insignias}>

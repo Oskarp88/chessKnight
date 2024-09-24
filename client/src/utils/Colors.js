@@ -1,7 +1,7 @@
 export const colorChess = [
     { 
       id: 1, 
-      navbar: 'radial-gradient(circle at 48.7% 44.3%, #2e86c1 0%, #2874a6 22.9%, rgb(38, 76, 140) 76.7%, rgb(31, 63, 116) 100.2%)',
+      navbar: '#2980b9 ',
       boxShadow: '0 5px 15px rgba(7, 7, 235, 0.2), -5px 0 20px rgba(1, 36, 141, 0.2)',
       border: 'solid 2px #fff',
       border2: 'solid 1px #1565C0',
