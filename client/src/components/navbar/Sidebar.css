@@ -163,6 +163,13 @@
     object-fit: cover; /* Ajusta el marco para que coincida con la foto */
     z-index: 2; /* Marco en la capa superior */
   }
+
+  /* @media (max-width: 966px){
+    .sidebar{
+      height: 75%;
+      margin-top: 10rem;
+    }
+  } */
   
   @media (max-width: 768px) {
     .sidebar {
@@ -172,6 +179,14 @@
     .sidebar.open {
       width: 250px;
       z-index: 1000;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin-top: 1rem;
     }
   
     .sidebar-icon {

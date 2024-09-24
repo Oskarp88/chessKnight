@@ -1,8 +1,6 @@
-.fixed{
-  position: relative;
-}
 
 .navbar{
+  position: fixed;
   width: 80%;
   margin-right: 10%;
   margin-left: 10%;
@@ -232,11 +230,17 @@
       width: 85%;
     }
  }
+ @media (max-width: 966px){
+   .navbar{
+    margin: 0;
+    width: 100%;
+   }
+ }
  @media (max-width: 700px){
   .navbar{
-    margin-right: .5rem;
-    width: 85%;
-    margin-left: 14%;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
     justify-content: flex-end;
     align-items: flex-end;
   }
@@ -246,5 +250,14 @@
   .insignias{
     font-size: 13px;
     margin-right: 2px;
+  }
+  .profileContainer{
+    width: 50%;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }
