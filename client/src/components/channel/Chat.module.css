@@ -1,12 +1,18 @@
 .chatBox {
-  height: 100%;
+  height: 90%;
+  width: 75%;
   overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 1rem 1rem 1rem 1rem;
+  padding: 0;
 }
 .chatHeader {
+  width: 100%;
   display: flex;
   align-items: center;
+  border-radius: 1rem 1rem 0 0;
   justify-content: center;
-  height: 15%;
+  height: 8%;
   color: #f9e79f;
   text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
   font-size: 20px;
@@ -14,12 +20,12 @@
 }
 
 .chatHeader strong{
-  margin-top: 4rem;
+  margin-top: 1.5rem;
 }
 
 .messages {
   padding: 1rem;
-  height: 77%;
+  height: 84%;
   overflow-y: auto;
   background-size: cover;
 }
@@ -194,7 +200,7 @@
 .emojipicker {
   position: absolute;
   bottom: 50px;
-  left: 10px;
+  left: 150px;
   z-index: 1;
 }
 
@@ -228,14 +234,20 @@
 	box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
 }
 
-  @media (max-width: 725px){
-   .messages {
-    height: 92%;
-    overflow-y: auto;
+@media (max-width: 950px){
+  .chatBox {
+    height: 95%;
+    width: 75%;
+    margin-top: .3rem;
   }
-   .chatHeader {
-    display: none;
-  }
+ }
+
+  @media (max-width: 769px){
+    .chatBox {
+      height: 95%;
+      width: 95%;
+      margin-top: .3rem;
+    }
   }
 
 

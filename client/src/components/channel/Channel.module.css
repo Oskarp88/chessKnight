@@ -22,19 +22,25 @@
   height: 100%;  
   color: #ffffff;
   background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .div3{
   width: 51%;
   height: 100%;
   background-size: cover;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 
 @media (max-width: 950px) {
   .contenedor {
     height: 100dvh;
-    margin-top: -4.2rem;
+ 
   }
   .flex{
     display: none;   
@@ -44,12 +50,11 @@
     display: flex;
     width: 100%;
     flex-direction: column;
-    margin-top: 4.2rem;
     height: 100%;
     background-size: cover;
   }
   .blocTabs{
-    margin-top: 4rem;
+    margin-top: 10rem;
     display: flex;
     font-weight: bold;
     /* background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%); */
@@ -80,6 +85,8 @@
   .activeContent{
     margin: 0;
     height: 100%;
+    display: flex;
+    justify-content: center;
     box-sizing: border-box;
   }
   .div2{

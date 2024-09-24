@@ -283,38 +283,40 @@ const Friends = ({ friends, onlineUsers, room }) => {
   return (
    <>
       <div className={style.tercerdiv} > 
-      <div className={style.desafio}>
-          <div className={style.titleWithIcon}>
-            <img 
-              src={'/icon/userswhite.png'} 
-              style={{width: '40px', marginRight: '10px'}} 
-              alt="" 
-            />
-            <h5>
-              {language.Challenge_a_match} {infUser?.time === 60 
-                ? '1' : infUser?.time === 120 
-                ? '2' : infUser?.time === 180 
-                ? '3' : infUser.time === 300 
-                ? '5' : infUser?.time === 600 ? '10' : '20'
-              } mn
-            </h5>
-            {infUser?.time === 60  || infUser?.time === 120 
-              ? <BulletSvg/> 
-              : infUser?.time === 180 || infUser.time === 300 
-              ? <BlitzSvg/> 
-              : <div style={{width: '25px', height: '25px', marginTop: '-2px'}}>
-                    <Fast/>
-                </div>
-              }
-          </div>
-          <div 
-            className={style.setting} 
-            title={language.settings}
-            onClick={()=>setShowSettings(true)}>
-            <SettingSvg/>
-          </div>
-      </div>       
-      <div>        
+         <div className={style.container}>
+            <div className={style.desafio}>
+            <div className={style.titleWithIcon}>
+              <img 
+                src={'/icon/userswhite.png'} 
+                style={{width: '40px', marginRight: '10px'}} 
+                alt="" 
+              />
+              <h5>
+                {language.Challenge_a_match} {infUser?.time === 60 
+                  ? '1' : infUser?.time === 120 
+                  ? '2' : infUser?.time === 180 
+                  ? '3' : infUser.time === 300 
+                  ? '5' : infUser?.time === 600 ? '10' : '20'
+                } mn
+              </h5>
+              {infUser?.time === 60  || infUser?.time === 120 
+                ? <BulletSvg/> 
+                : infUser?.time === 180 || infUser.time === 300 
+                ? <BlitzSvg/> 
+                : <div style={{width: '25px', height: '25px', marginTop: '-2px'}}>
+                      <Fast/>
+                  </div>
+                }
+            </div>
+            <div 
+              className={style.setting} 
+              title={language.settings}
+              onClick={()=>setShowSettings(true)}>
+              <SettingSvg/>
+            </div>
+            </div>       
+            <div>  
+            </div>      
         {sortedUsers.length === 0 ?          
            <SpinnerDowloand text={`${language.Loading_Players} . . .`} color={'#fff'}/>         
         : sortedUsers.map((o, index) => (
@@ -519,8 +521,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
       } 
           </>
         ))}
-      </div>
-      
+         </div>     
     </div>
     <SettingsModal 
     show={showModalSettings}

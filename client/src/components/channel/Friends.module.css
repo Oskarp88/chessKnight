@@ -5,6 +5,17 @@
     padding: 20px;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .container{
+    width: 95%;
+    height: 85%;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 1rem;
+    overflow-y: auto;
   }
 
   .tercerdiv ul{
@@ -90,9 +101,8 @@
     justify-content: center;
     background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
     padding: 5px;
-    margin-top: 4rem;
     margin-bottom: 10px;
-    border-radius: 1rem;
+    border-radius: 1rem 1rem 0 0;
     -webkit-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
     -moz-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
     -ie-box-shadow: 0px 0px 0px 1px #4e5883 inset, 0px 0px 0px 2px #748ab6 inset, 0px 4px 0px 0px #4a617c, 0px 5px 0px 0px #354256, 0px 8px 0px 0px rgba(0,0,0,.15);
@@ -457,12 +467,23 @@
   }
 }
 
+@media (max-width: 950px){
+  .container{
+    height: 100%;
+    width: 85%;
+  }
+}
+
 @media (max-width: 725px){
   .tercerdiv {
     margin-top: 0;
     height: 100%;
-    padding: 0;
-    padding-top: 20px;
+    padding: 5px;
+  }
+
+  .container{
+    height: 100%;
+    width: 95%;
   }
   .desafio{
     margin-top: 0;
