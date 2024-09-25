@@ -13,6 +13,12 @@
 
 .socialsignin.google {
     background: #DD4B39;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    .spinner{
+        margin-right: 5px;
     }
 .socialsignin:active {
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);

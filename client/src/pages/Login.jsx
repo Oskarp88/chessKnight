@@ -14,9 +14,11 @@ import { useChessboardContext } from '../context/boardContext';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Spinner } from 'react-bootstrap';
 
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const {language} = useLanguagesContext();
   const { auth, setAuth } = useAuth();
   const {chessColor} = useChessboardContext();
@@ -47,6 +49,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/auth/login`, {
         email: formData.email,
@@ -60,12 +63,15 @@ const Login = () => {
           user: response.data.user,
           token: response.data.token,
         });
+        setLoading(false);
         localStorage.setItem('auth', JSON.stringify(response.data));
+        navigate('/');
       } else {
+        setLoading(false);
         toast.error(response.data.message);
-      }
-      navigate('/');
+      }      
     } catch (error) {
+      setLoading(false);
       console.error(error);
       toast.error('Login failed');
     }
@@ -108,9 +114,14 @@ const Login = () => {
                   </Link>
                   <Button              
                     type="submit"
-                    className='text-uppercase'
+                    className='text-uppercase d-flex aling-items-center justify-content-center'
                   >
-                    {language.sign_in}
+                    {loading ? 
+                      <>
+                       <Spinner animation="grow" className={style.sppiner}/>
+                       {language.logging_in}...
+                      </> 
+                      : language.sign_in}
                   </Button>                
                   <div className={style.oauth}>
                     <GoogleOAuht/>

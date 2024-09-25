@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './GoogleOAuth.module.css';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from '@firebase/auth';
 import { app } from '../../utils/firebase';
@@ -8,17 +8,19 @@ import { useAuth } from '../../context/authContext';
 import toast from 'react-hot-toast';
 import { baseUrl } from '../../utils/services';
 import { useLanguagesContext } from '../../context/languagesContext';
+import { Spinner } from 'react-bootstrap';
 
 function GoogleOAuht() {
   const {language} = useLanguagesContext();
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleClick = async () => {
+    setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
-
       const result = await signInWithPopup(auth, provider);
 
       // Dirección IP del usuario
@@ -54,6 +56,7 @@ function GoogleOAuht() {
           token: response.data.token,
         });
         localStorage.setItem('auth', JSON.stringify(response.data));
+        setLoading(false);
        return navigate('/dashboard/next');
       }
       if (response.data && response.data.success) {
@@ -64,23 +67,31 @@ function GoogleOAuht() {
           token: response.data.token,
         });
         localStorage.setItem('auth', JSON.stringify(response.data));
+        setLoading(false);
         navigate('/');
+
       } else {
+        setLoading(false);
         toast.error(response.data.message);
       }
     } catch (error) {
+      setLoading(false);
       console.log('could not sign in with Google', error);
       toast.error('Authentication failed. Please try again.');
     }
   }
 
+  
   return (
     <button 
       className={`${style.socialsignin} ${style.google}`}
       onClick={handleGoogleClick}
       type='button'
-    >
-      {language.Log_in_with_Google}
+    >  
+      {loading ? 
+                 <> <Spinner  className={style.spinner} animation="grow" /> {`${language.authenticating}...`}</>
+               : language.Log_in_with_Google
+      }
     </button>
   );
 }

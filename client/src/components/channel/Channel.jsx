@@ -155,7 +155,7 @@ const Channel = () => {
           <div className={style.blocTabs}>
              <div 
                className={toggle === 'Chat' ? `${style.tabs} ${style.activeTabs} ` : `${style.tabs}`}
-               style={toggle === 'Chat' ? {} : {background: 'radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%)'}}
+               style={toggle === 'Chat' ? {background: 'rgba(0,0,0,.5)'} : {background: 'rgba(0,0,0,.15)'}}
                onClick={()=>toggleTab('Chat')}
              >
                 <img src="/icon/chat.png" style={{width: '40px', marginRight: '10px'}} alt="" />
@@ -163,7 +163,7 @@ const Channel = () => {
              </div>
              <div 
                className={toggle === 'Jugadores' ? `${style.tabs} ${style.activeTabs} ` : `${style.tabs}`}
-               style={toggle === 'Jugadores' ? {color:'#fff'} : {background: 'radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%)'}}
+               style={toggle === 'Jugadores' ? {color:'#fff', background: 'rgba(0,0,0,.5)'} : {background: 'rgba(0,0,0,.15)'}}
                onClick={()=>toggleTab('Jugadores')}
              >
               <img src={chessColor.fondoUsers} style={{width: '40px', marginRight: '10px'}} alt="" />
