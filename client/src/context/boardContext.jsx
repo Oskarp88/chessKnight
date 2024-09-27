@@ -21,6 +21,7 @@ export const ChessboardProvider = ({ children }) => {
   const {auth} = useAuth();
   const {setCheckMate} = useCheckMateContext();
   const {infUser, setInfUser, setUser, setRoom,userChess, socket, room} = useSocketContext();
+  console.log('infUserChessboardcontex', infUser)
   const [boardColor, setBoardColor] = useState(colorBoard[0]);
   const [themePiece, setTemePiece] = useState(piecesTheme[0]);
   const [pieces, setPieces] = useState([]);
