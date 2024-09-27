@@ -4,6 +4,8 @@ import { PieceType } from '../Types';
 import { piecesTheme } from '../utils/pieces';
 import { useSocketContext } from './socketContext';
 import { useCheckMateContext } from './checkMateContext';
+import { useAuth } from './authContext';
+import { handleThreefoldRepetition, insufficientMaterial } from '../components/referee/Referee';
 
 const ChessboardContext = createContext();
 
@@ -16,8 +18,9 @@ export const useChessboardContext = () => {
 };
 
 export const ChessboardProvider = ({ children }) => {
+  const {auth} = useAuth();
   const {setCheckMate} = useCheckMateContext();
-  const {infUser, setInfUser, setUser, setRoom} = useSocketContext();
+  const {infUser, setInfUser, setUser, setRoom,userChess, socket, room} = useSocketContext();
   const [boardColor, setBoardColor] = useState(colorBoard[0]);
   const [themePiece, setTemePiece] = useState(piecesTheme[0]);
   const [pieces, setPieces] = useState([]);
@@ -46,6 +49,17 @@ export const ChessboardProvider = ({ children }) => {
   const [isWhiteTime, setIsWhiteTime] = useState('');
   const [loadingTablas, setLoadingTablas] = useState(false);
   const [modalTablas, setModalTablas] = useState(false);
+  const [modalSendTablas, setSendTablas] = useState(false);
+  const [modalTablasAceptada, setModalTablasAceptada] = useState(false);
+  const [aceptarRevancha, setAceptarRevancha] = useState(false);
+  const [modalAbandonar, setModalAbandonar] = useState(false);
+  const [modalRendicion, setModalRendicion] = useState(false);
+  const [sendRevancha, setSendRevancha] = useState(false);
+  const [sendRevanchaRechada, setRevanchaRechazada] = useState(false);  
+  const [tied, setTied] = useState(false);
+  const [modalTiedRepetition, setModalTiedRepetition] = useState(false);
+  const [frase, setFrase] = useState(null);
+
 
   useEffect(() => {
     const updatedPieces = [
@@ -160,10 +174,215 @@ export const ChessboardProvider = ({ children }) => {
     }
   },[]);
 
-  const handleOpponentMove = useCallback(async(data)=>{
-     
-  });
+  useEffect(()=>{  
+    if(countNoCapture === 100) {
+      console.log('empate por inactividad de captura');
+      setFrase('por inactividad de captura');
+      setModalTablasAceptada(true);
+      setTied(true);
+      setCheckMate(prevCheckMate => ({
+        ...prevCheckMate,
+        userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
+        name: auth?.user?.username,
+        nameOpponent: infUser?.username,
+        bandera: auth?.user?.imagenBandera,
+        banderaOpponent: infUser?.bandera,
+        country: auth?.user?.country,
+        countryOpponent: infUser?.country,
+        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                'fast' }`,
+        game: 'empate',
+        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+          parseInt(userChess?.eloFast)}`,
+        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+          parseInt(infUser?.fast)}`,
+        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+    }
+  },[countNoCapture]);
 
+  useEffect(()=>{
+    const isInsufficientMaterial = insufficientMaterial(pieces);
+    if(isInsufficientMaterial){
+        setFrase('Empate por material insuficiente');
+        setTied(true);
+        setModalTablasAceptada(true);
+        setCheckMate(prevCheckMate => ({
+        ...prevCheckMate,
+        userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
+        name: auth?.user?.username,
+        nameOpponent: infUser?.username,
+        bandera: auth?.user?.imagenBandera,
+        banderaOpponent: infUser?.bandera,
+        country: auth?.user?.country,
+        countryOpponent: infUser?.country,
+        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                'fast' }`,
+        game: 'empate',
+        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+          parseInt(userChess?.eloFast)}`,
+        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+          parseInt(infUser?.fast)}`,
+        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+    }  
+  },[pieces]);
+
+  useEffect(()=>{
+    const tiedRepetition = handleThreefoldRepetition(moveLog);    
+    if(tiedRepetition){
+      setFrase('Tablas por repetición');
+      setTied(true);
+      setModalTablasAceptada(true);
+      setCheckMate(prevCheckMate => ({
+        ...prevCheckMate,
+        userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
+        name: auth?.user?.username,
+        nameOpponent: infUser?.username,
+        bandera: auth?.user?.imagenBandera,
+        banderaOpponent: infUser?.bandera,
+        country: auth?.user?.country,
+        countryOpponent: infUser?.country,
+        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                'fast' }`,
+        game: 'empate',
+        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+          parseInt(userChess?.eloFast)}`,
+        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+          parseInt(infUser?.fast)}`,
+        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+      }));
+    }
+  },[moveLog]);
+
+  
+  // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
+  const formatTime = useCallback((time) => {
+    const minutes = Math.floor(time / 60).toString().padStart(2, "0");
+    const seconds = (time % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  });
+  
+  useEffect(() => {
+
+     let timer = null;
+     localStorage.setItem('whiteTime', whiteTime);
+     localStorage.setItem('blackTime', blackTime);
+
+     if(socket){
+      if(infUser?.color === currentTurn){
+        socket.emit('tiempo', {room, whiteTime, blackTime ,turno: currentTurn});
+      }
+     }
+     if (whiteTime === 0 || blackTime === 0) {
+        setIsWhiteTime(whiteTime === 0 ? 'white' : 'black');
+        setModalTime(true);
+      
+     }
+    
+    if (!isGameOver && !tied  && whiteTime > 0 && blackTime > 0 ) {
+      // Cambiar de turno y actualizar el tiempo restante
+      if (currentTurn === 'white') {
+        if(infUser?.color === 'white') {
+          timer = setTimeout(() => {
+            setWhiteTime((prevTime) => prevTime - 1);           
+          }, 1000);
+        }
+         
+        
+      } else {
+        if(infUser?.color === 'black'){
+        timer = setTimeout(() => {
+          setBlackTime((prevTime) => prevTime - 1);
+        }, 1000);}
+      }
+    }
+  
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [currentTurn, whiteTime, blackTime, isWhiteTime]);
+
+  useEffect(() => {
+    if (whiteTime === 0 || blackTime === 0) {
+      if (isWhiteTime === infUser?.color) {
+        setCheckMate((prevCheckMate) => ({
+          ...prevCheckMate,
+          userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
+          name: auth?.user?.username,
+          nameOpponent: infUser?.username,
+          bandera: auth?.user?.imagenBandera,
+          banderaOpponent: infUser?.bandera,
+          country: auth?.user?.country,
+          countryOpponent: infUser?.country,
+          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+              'fast'}`,
+          game: 'derrota',
+          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+            parseInt(userChess?.eloFast)}`,
+          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+            parseInt(infUser?.fast)}`,
+          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+      } else {
+        setCheckMate((prevCheckMate) => ({
+          ...prevCheckMate,
+          userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
+          name: auth?.user?.username,
+          nameOpponent: infUser?.username,
+          bandera: auth?.user?.imagenBandera,
+          banderaOpponent: infUser?.bandera,
+          country: auth?.user?.country,
+          countryOpponent: infUser?.country,
+          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+              'fast'}`,
+          game: 'victoria',
+          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+            parseInt(userChess?.eloFast)}`,
+          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+            parseInt(infUser?.fast)}`,
+          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+            color: infUser?.color
+        }));
+      }
+    }
+  }, [isWhiteTime]);
 
   return (
     <ChessboardContext.Provider value={{ 
@@ -197,7 +416,18 @@ export const ChessboardProvider = ({ children }) => {
        blackTime, setBlackTime,
        isWhiteTime, setIsWhiteTime,
        loadingTablas, setLoadingTablas,
-       modalTablas, setModalTablas
+       modalTablas, setModalTablas,
+       modalSendTablas, setSendTablas,
+       modalTablasAceptada, setModalTablasAceptada,
+       aceptarRevancha, setAceptarRevancha,
+       modalAbandonar, setModalAbandonar,
+       modalRendicion, setModalRendicion,
+       sendRevancha, setSendRevancha,
+       sendRevanchaRechada, setRevanchaRechazada,
+       tied, setTied,
+       modalTiedRepetition, setModalTiedRepetition,
+       frase, setFrase,
+       formatTime
     }}>
       {children}
     </ChessboardContext.Provider>
