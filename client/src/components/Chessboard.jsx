@@ -56,48 +56,45 @@ function Chessboard() {
   const {
     boardColor,
     pieces, setPieces, 
-    resetPieces,
-    currentTurn, setCurrentTurn,
-    selectedPiece, setSelectedPiece,
-    startCell, setStartCell,
-    destinationCell, setDestinationCell,
-    startCellRival, setStartCellRival,
-    destinationCellRival, setDestinationCellRival,
-    kingCheckCell, setKingCheckCell,
-    enPassantTarget, setEnPassantTarget,
-    userWon, setUserWon,
-    promotionModalOpen, setPromotionModalOpen,
-    isPromotionComplete, setPromotionComplete,
-    modaltime, setModalTime,
-    isGameOver, setGameOver,
-    whiteMoveLog, setWhiteMoveLog,
-    blackMoveLog, setBlackMoveLog,
-    moveLog, setMoveLog,
-    countNoCapture, setCountNoCapture,
-    whiteTime, setWhiteTime,
-    blackTime, setBlackTime,
-    isWhiteTime, setIsWhiteTime,
-    loadingTablas, setLoadingTablas,
-    modalTablas, setModalTablas,
-    modalSendTablas, setSendTablas,
-    modalTablasAceptada, setModalTablasAceptada,
-    aceptarRevancha, setAceptarRevancha,
-    modalAbandonar, setModalAbandonar,
-    modalRendicion, setModalRendicion,
-    sendRevancha, setSendRevancha,
-    sendRevanchaRechada, setRevanchaRechazada,
-    tied, setTied,
-    modalTiedRepetition, setModalTiedRepetition,
-    frase, setFrase,
-    formatTime
+    resetPieces
   } = useChessboardContext();  
   
   
   const [pieceAux, setPieceAux] = useState(null);
-
   
  
-  
+  const [currentTurn, setCurrentTurn] = useState('white');
+  const [selectedPiece, setSelectedPiece] = useState(null);
+  const [startCell, setStartCell] = useState(null);
+  const [startCellRival, setStartCellRival] = useState(null);
+  const [destinationCell, setDestinationCell] = useState(null);
+  const [destinationCellRival, setDestinationCellRival] = useState(null);
+  const [kingCheckCell, setKingCheckCell] = useState(null);
+  const [enPassantTarget, setEnPassantTarget] = useState(null);
+  const [userWon, setUserWon] = useState(null);
+  const [promotionModalOpen, setPromotionModalOpen] = useState(false);
+  const [isPromotionComplete, setPromotionComplete] = useState(false);
+  const [modaltime, setModalTime] = useState(false);
+  const [isGameOver, setGameOver] = useState(false);
+  const [whiteMoveLog, setWhiteMoveLog] = useState([]);
+  const [blackMoveLog, setBlackMoveLog] = useState([]);
+  const [moveLog, setMoveLog] = useState([]);
+  const [countNoCapture, setCountNoCapture] = useState(0);
+  const [whiteTime, setWhiteTime] = useState(infUser?.time || 1);
+  const [blackTime, setBlackTime] = useState(infUser?.time || 1);
+  const [isWhiteTime, setIsWhiteTime] = useState('');
+  const [loadingTablas, setLoadingTablas] = useState(false);
+  const [modalTablas, setModalTablas] = useState(false);
+  const [modalSendTablas, setSendTablas] = useState(false);
+  const [modalTablasAceptada, setModalTablasAceptada] = useState(false);
+  const [aceptarRevancha, setAceptarRevancha] = useState(false);
+  const [modalAbandonar, setModalAbandonar] = useState(false);
+  const [modalRendicion, setModalRendicion] = useState(false);
+  const [sendRevancha, setSendRevancha] = useState(false);
+  const [sendRevanchaRechada, setRevanchaRechazada] = useState(false);  
+  const [tied, setTied] = useState(false);
+  const [modalTiedRepetition, setModalTiedRepetition] = useState(false);
+  const [frase, setFrase] = useState(null);
 
   const toqueAudio = new Audio(toqueSound);
   const soltarAudio = new Audio(soltarSound);
@@ -111,266 +108,266 @@ function Chessboard() {
   const chessboardRef = useRef(null);
 
 
-  // useEffect(() => {
-  //   const dataCellStart = localStorage.getItem('startCell');
-  //   if(dataCellStart){
-  //     const parseData = JSON.parse(dataCellStart);
-  //     setStartCell({x: parseData.x, y: parseData.y});
-  //   }
+  useEffect(() => {
+    const dataCellStart = localStorage.getItem('startCell');
+    if(dataCellStart){
+      const parseData = JSON.parse(dataCellStart);
+      setStartCell({x: parseData.x, y: parseData.y});
+    }
 
-  //   const dataDestinationCell = localStorage.getItem('destinationCell');
-  //   if(dataDestinationCell){
-  //     const parseData = JSON.parse(dataDestinationCell);
-  //     setDestinationCell({x: parseData.x, y: parseData.y})
-  //   }
-  //   const data = localStorage.getItem('chessboard');
-  //   if (data) {
-  //     const parseData = JSON.parse(data);
-  //     setInfUser(parseData.infUser);
-  //     setRoom(parseData.room);
-  //     setCheckMate(parseData.checkMate);
-  //     setInfUser(parseData.infUser);
-  //     setUser(parseData.userChess);
-  //     setCurrentTurn(parseData.currentTurn);
-  //   }
-  //   const piecesData = localStorage.getItem('pieces');
-  //   if(piecesData){
-  //     const parseData = JSON.parse(piecesData);
-  //     setPieces(parseData);
-  //   }
-  //   const userData = localStorage.getItem('userChess');
-  //   if(userData){
-  //     const parseData = JSON.parse(userData);
-  //     setUser(parseData);
-  //   }
-  //   const userOpponent = localStorage.getItem('infUser');
-  //   if(userOpponent) {
-  //     const parseData = JSON.parse(userOpponent);
-  //     setInfUser(parseData);
-  //   }
-  //   const dataTimeWhite = localStorage.getItem('whiteTime');
+    const dataDestinationCell = localStorage.getItem('destinationCell');
+    if(dataDestinationCell){
+      const parseData = JSON.parse(dataDestinationCell);
+      setDestinationCell({x: parseData.x, y: parseData.y})
+    }
+    const data = localStorage.getItem('chessboard');
+    if (data) {
+      const parseData = JSON.parse(data);
+      setInfUser(parseData.infUser);
+      setRoom(parseData.room);
+      setCheckMate(parseData.checkMate);
+      setInfUser(parseData.infUser);
+      setUser(parseData.userChess);
+      setCurrentTurn(parseData.currentTurn);
+    }
+    const piecesData = localStorage.getItem('pieces');
+    if(piecesData){
+      const parseData = JSON.parse(piecesData);
+      setPieces(parseData);
+    }
+    const userData = localStorage.getItem('userChess');
+    if(userData){
+      const parseData = JSON.parse(userData);
+      setUser(parseData);
+    }
+    const userOpponent = localStorage.getItem('infUser');
+    if(userOpponent) {
+      const parseData = JSON.parse(userOpponent);
+      setInfUser(parseData);
+    }
+    const dataTimeWhite = localStorage.getItem('whiteTime');
     
-  //   if(!isNaN(dataTimeWhite) && dataTimeWhite) {
-  //     setWhiteTime(parseInt(dataTimeWhite));
-  //   }
-  //   const dataTimeBlack = localStorage.getItem('blackTime');
+    if(!isNaN(dataTimeWhite) && dataTimeWhite) {
+      setWhiteTime(parseInt(dataTimeWhite));
+    }
+    const dataTimeBlack = localStorage.getItem('blackTime');
     
-  //   if(!isNaN(dataTimeBlack) && dataTimeBlack) {
-  //     setBlackTime(parseInt(dataTimeBlack));
-  //   }
-  // },[]);
+    if(!isNaN(dataTimeBlack) && dataTimeBlack) {
+      setBlackTime(parseInt(dataTimeBlack));
+    }
+  },[]);
 
-  // useEffect(()=>{
+  useEffect(()=>{
     
-  //   if(countNoCapture === 100) {
-  //     console.log('empate por inactividad de captura');
-  //     setFrase('por inactividad de captura');
-  //     setModalTablasAceptada(true);
-  //     setTied(true);
-  //     setCheckMate(prevCheckMate => ({
-  //       ...prevCheckMate,
-  //       userId: auth?.user?._id,
-  //       opponentId: infUser?.idOpponent,
-  //       name: auth?.user?.username,
-  //       nameOpponent: infUser?.username,
-  //       bandera: auth?.user?.imagenBandera,
-  //       banderaOpponent: infUser?.bandera,
-  //       country: auth?.user?.country,
-  //       countryOpponent: infUser?.country,
-  //       time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-  //               infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-  //               'fast' }`,
-  //       game: 'empate',
-  //       eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-  //         parseInt(userChess?.eloFast)}`,
-  //       eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-  //         parseInt(infUser?.fast)}`,
-  //       elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-  //         parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-  //         color: infUser?.color
-  //       }));
-  //   }
-  // },[countNoCapture]);
+    if(countNoCapture === 100) {
+      console.log('empate por inactividad de captura');
+      setFrase('por inactividad de captura');
+      setModalTablasAceptada(true);
+      setTied(true);
+      setCheckMate(prevCheckMate => ({
+        ...prevCheckMate,
+        userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
+        name: auth?.user?.username,
+        nameOpponent: infUser?.username,
+        bandera: auth?.user?.imagenBandera,
+        banderaOpponent: infUser?.bandera,
+        country: auth?.user?.country,
+        countryOpponent: infUser?.country,
+        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                'fast' }`,
+        game: 'empate',
+        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+          parseInt(userChess?.eloFast)}`,
+        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+          parseInt(infUser?.fast)}`,
+        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+    }
+  },[countNoCapture]);
 
-  // useEffect(()=>{
-  //   const  isInsufficientMaterial = insufficientMaterial(pieces);
+  useEffect(()=>{
+    const  isInsufficientMaterial = insufficientMaterial(pieces);
 
-  //   if(isInsufficientMaterial){
-  //       setFrase('Empate por material insuficiente');
-  //       setTied(true);
-  //       setModalTablasAceptada(true);
-  //       setCheckMate(prevCheckMate => ({
-  //       ...prevCheckMate,
-  //       userId: auth?.user?._id,
-  //       opponentId: infUser?.idOpponent,
-  //       name: auth?.user?.username,
-  //       nameOpponent: infUser?.username,
-  //       bandera: auth?.user?.imagenBandera,
-  //       banderaOpponent: infUser?.bandera,
-  //       country: auth?.user?.country,
-  //       countryOpponent: infUser?.country,
-  //       time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-  //               infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-  //               'fast' }`,
-  //       game: 'empate',
-  //       eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-  //         parseInt(userChess?.eloFast)}`,
-  //       eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-  //         parseInt(infUser?.fast)}`,
-  //       elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-  //         parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-  //         color: infUser?.color
-  //       }));
-  //   }  
-  // },[pieces]);
+    if(isInsufficientMaterial){
+        setFrase('Empate por material insuficiente');
+        setTied(true);
+        setModalTablasAceptada(true);
+        setCheckMate(prevCheckMate => ({
+        ...prevCheckMate,
+        userId: auth?.user?._id,
+        opponentId: infUser?.idOpponent,
+        name: auth?.user?.username,
+        nameOpponent: infUser?.username,
+        bandera: auth?.user?.imagenBandera,
+        banderaOpponent: infUser?.bandera,
+        country: auth?.user?.country,
+        countryOpponent: infUser?.country,
+        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                'fast' }`,
+        game: 'empate',
+        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+          parseInt(userChess?.eloFast)}`,
+        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+          parseInt(infUser?.fast)}`,
+        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+    }  
+  },[pieces]);
 
-  // useEffect(()=>{
-  //   const tiedRepetition = handleThreefoldRepetition(moveLog);
-    
-  //   if(tiedRepetition){
-  //     setFrase('Tablas por repetición');
-  //     setTied(true);
-  //     setModalTablasAceptada(true);
-  //     setCheckMate(prevCheckMate => ({
-  //       ...prevCheckMate,
-  //       userId: auth?.user?._id,
-  //       opponentId: infUser?.idOpponent,
-  //       name: auth?.user?.username,
-  //       nameOpponent: infUser?.username,
-  //       bandera: auth?.user?.imagenBandera,
-  //       banderaOpponent: infUser?.bandera,
-  //       country: auth?.user?.country,
-  //       countryOpponent: infUser?.country,
-  //       time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-  //               infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-  //               'fast' }`,
-  //       game: 'empate',
-  //       eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-  //         parseInt(userChess?.eloFast)}`,
-  //       eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-  //         parseInt(infUser?.fast)}`,
-  //       elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-  //         infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-  //         parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-  //         color: infUser?.color
-  //     }));
-  //   }
-  // },[moveLog]);
+useEffect(()=>{
+  const tiedRepetition = handleThreefoldRepetition(moveLog);
+  
+  if(tiedRepetition){
+    setFrase('Tablas por repetición');
+    setTied(true);
+    setModalTablasAceptada(true);
+    setCheckMate(prevCheckMate => ({
+      ...prevCheckMate,
+      userId: auth?.user?._id,
+      opponentId: infUser?.idOpponent,
+      name: auth?.user?.username,
+      nameOpponent: infUser?.username,
+      bandera: auth?.user?.imagenBandera,
+      banderaOpponent: infUser?.bandera,
+      country: auth?.user?.country,
+      countryOpponent: infUser?.country,
+      time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+               infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+               'fast' }`,
+      game: 'empate',
+      eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+        parseInt(userChess?.eloFast)}`,
+      eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+        infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+        parseInt(infUser?.fast)}`,
+      elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+        parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+        color: infUser?.color
+    }));
+  }
+ },[moveLog]);
 
   // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
-  // const formatTime = (time) => {
-  //   const minutes = Math.floor(time / 60).toString().padStart(2, "0");
-  //   const seconds = (time % 60).toString().padStart(2, "0");
-  //   return `${minutes}:${seconds}`;
-  // };
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60).toString().padStart(2, "0");
+    const seconds = (time % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  };
   
-  // useEffect(() => {
+  useEffect(() => {
 
-  //    let timer = null;
-  //    localStorage.setItem('whiteTime', whiteTime);
-  //    localStorage.setItem('blackTime', blackTime);
+     let timer = null;
+     localStorage.setItem('whiteTime', whiteTime);
+     localStorage.setItem('blackTime', blackTime);
 
-  //    if(socket){
-  //     if(infUser?.color === currentTurn){
-  //       socket.emit('tiempo', {room, whiteTime, blackTime ,turno: currentTurn});
-  //     }
-  //    }
-  //    if (whiteTime === 0 || blackTime === 0) {
-  //       setIsWhiteTime(whiteTime === 0 ? 'white' : 'black');
-  //       setModalTime(true);
+     if(socket){
+      if(infUser?.color === currentTurn){
+        socket.emit('tiempo', {room, whiteTime, blackTime ,turno: currentTurn});
+      }
+     }
+     if (whiteTime === 0 || blackTime === 0) {
+        setIsWhiteTime(whiteTime === 0 ? 'white' : 'black');
+        setModalTime(true);
       
-  //    }
+     }
     
-  //   if (!isGameOver && !tied  && whiteTime > 0 && blackTime > 0 ) {
-  //     // Cambiar de turno y actualizar el tiempo restante
-  //     if (currentTurn === 'white') {
-  //       if(infUser?.color === 'white') {
-  //         timer = setTimeout(() => {
-  //           setWhiteTime((prevTime) => prevTime - 1);           
-  //         }, 1000);
-  //       }
+    if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0 ) {
+      // Cambiar de turno y actualizar el tiempo restante
+      if (currentTurn === 'white') {
+        if(infUser?.color === 'white') {
+          timer = setTimeout(() => {
+            setWhiteTime((prevTime) => prevTime - 1);           
+          }, 1000);
+        }
          
         
-  //     } else {
-  //       if(infUser?.color === 'black'){
-  //       timer = setTimeout(() => {
-  //         setBlackTime((prevTime) => prevTime - 1);
-  //       }, 1000);}
-  //     }
-  //   }
+      } else {
+        if(infUser?.color === 'black'){
+        timer = setTimeout(() => {
+          setBlackTime((prevTime) => prevTime - 1);
+        }, 1000);}
+      }
+    }
   
-  //   return () => {
-  //     if (timer) {
-  //       clearTimeout(timer);
-  //     }
-  //   };
-  // }, [currentTurn, whiteTime, blackTime, isWhiteTime]);
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [currentTurn, whiteTime, blackTime, isWhiteTime]);
   
-  // useEffect(() => {
-  //   if (whiteTime === 0 || blackTime === 0) {
-  //     if (isWhiteTime === infUser?.color) {
-  //       setCheckMate((prevCheckMate) => ({
-  //         ...prevCheckMate,
-  //         userId: auth?.user?._id,
-  //         opponentId: infUser?.idOpponent,
-  //         name: auth?.user?.username,
-  //         nameOpponent: infUser?.username,
-  //         bandera: auth?.user?.imagenBandera,
-  //         banderaOpponent: infUser?.bandera,
-  //         country: auth?.user?.country,
-  //         countryOpponent: infUser?.country,
-  //         time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-  //           infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-  //             'fast'}`,
-  //         game: 'derrota',
-  //         eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-  //           infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-  //           parseInt(userChess?.eloFast)}`,
-  //         eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-  //           infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-  //           parseInt(infUser?.fast)}`,
-  //         elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-  //           infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-  //           parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-  //         color: infUser?.color
-  //       }));
-  //     } else {
-  //       setCheckMate((prevCheckMate) => ({
-  //         ...prevCheckMate,
-  //         userId: auth?.user?._id,
-  //         opponentId: infUser?.idOpponent,
-  //         name: auth?.user?.username,
-  //         nameOpponent: infUser?.username,
-  //         bandera: auth?.user?.imagenBandera,
-  //         banderaOpponent: infUser?.bandera,
-  //         country: auth?.user?.country,
-  //         countryOpponent: infUser?.country,
-  //         time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-  //           infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-  //             'fast'}`,
-  //         game: 'victoria',
-  //         eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-  //           infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-  //           parseInt(userChess?.eloFast)}`,
-  //         eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-  //           infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-  //           parseInt(infUser?.fast)}`,
-  //         elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-  //           infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-  //           parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-  //           color: infUser?.color
-  //       }));
-  //     }
-  //   }
-  // }, [isWhiteTime]);
+  useEffect(() => {
+    if (whiteTime === 0 || blackTime === 0) {
+      if (isWhiteTime === infUser?.color) {
+        setCheckMate((prevCheckMate) => ({
+          ...prevCheckMate,
+          userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
+          name: auth?.user?.username,
+          nameOpponent: infUser?.username,
+          bandera: auth?.user?.imagenBandera,
+          banderaOpponent: infUser?.bandera,
+          country: auth?.user?.country,
+          countryOpponent: infUser?.country,
+          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+              'fast'}`,
+          game: 'derrota',
+          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+            parseInt(userChess?.eloFast)}`,
+          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+            parseInt(infUser?.fast)}`,
+          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+          color: infUser?.color
+        }));
+      } else {
+        setCheckMate((prevCheckMate) => ({
+          ...prevCheckMate,
+          userId: auth?.user?._id,
+          opponentId: infUser?.idOpponent,
+          name: auth?.user?.username,
+          nameOpponent: infUser?.username,
+          bandera: auth?.user?.imagenBandera,
+          banderaOpponent: infUser?.bandera,
+          country: auth?.user?.country,
+          countryOpponent: infUser?.country,
+          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+              'fast'}`,
+          game: 'victoria',
+          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+            parseInt(userChess?.eloFast)}`,
+          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+            parseInt(infUser?.fast)}`,
+          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+            color: infUser?.color
+        }));
+      }
+    }
+  }, [isWhiteTime]);
 
   useEffect(() => {
       if(socket === null) return;
