@@ -7,7 +7,15 @@
     align-items: center;
     height: 100vh;
     width: 100%;
+  }
+
+  .containerFondoImage{
+    height: 100vh;
+    width: 100%;
     overflow: auto;
+    background-image: url('../../public/fondos/fondoHome.png');
+    background-size: cover;
+    padding-bottom: 2rem;
   }
   
   .image{
@@ -219,7 +227,6 @@
     margin: 5px;
     margin-top: 2rem;
     background-color: rgba(0, 0, 0, 0.12);
-    border: solid 1px #3949AB;
     width: 96%;
     height: 100%;
     border-radius: 1rem 1rem 1rem 1rem;
@@ -228,20 +235,20 @@
   .roww{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     height: 100%;
     width: 70%;
   }
   .ratingSvg{
-    width: 60%;
+    width: 50%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
   }
   .svg{
     padding: 1rem;
-    width: 40%;
+    width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -252,23 +259,36 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    justify-content: center;
-    margin-right: 0rem;
-    width: 40%;
+    justify-content: flex-start;
+    width: 50%;
   }
   
   
   .insignia{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     font-weight: bold;
     height: 4rem;
+    width: 100%;
+  }
+  .insignia div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 30%;
   }
   .insignia p{
+    width: 60%;
+    background-color: rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: flex-end;
+    padding: .3rem;
     font-weight: 600;
     font-size: 22px;
-    margin: auto;
+    margin-top: 1rem; 
+    border-radius: 10px 10px 10px 10px; 
   }
 
   .rating span{
@@ -293,6 +313,10 @@
     padding-left: 1rem;
     flex-direction: column;
     margin: auto;
+  }
+
+  .span span{
+    margin-right: 5px;
   }
 
   
@@ -649,6 +673,7 @@
   @media (max-width: 1300px){
     .svg{
       width: 45%;
+      height: 90%;
     }
     .table{
       display: flex;
@@ -698,17 +723,11 @@
       margin-top: 5rem;
       width: 20rem;
     }
-
-    .rating{
-      align-self: center;
-      justify-content: center;
-      margin-right: 0rem;
-      width: 30%;
-    }
   }
   @media (max-width: 1150px){
     .svg{
-      width: 55%;
+      width: 50%;
+      height: 80%;
     }
     .containerDatos{
       width: 40%;
@@ -716,13 +735,17 @@
   }
   @media (max-width: 980px){
     .svg{
-     height: 80%;
+     height: 75%;
+     padding: 0;
     }
     .insignia{
       height: 2rem;
     }
     .rating{
-      width: 40%;
+    }
+    .insignia p{
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
  @media (max-width: 920px){
@@ -749,9 +772,6 @@
     .insignia{
       height: 2rem;
     }
-    .rating{
-      width: 40%;
-    }
     .rating span{
       font-size: 13px;
     }
@@ -759,10 +779,6 @@
 
   @media (max-width: 750px){
    
-    .container{
-      height: 300vh;
-      width: 100%;
-    }
     .titulo {
       font-size: 35px;
     }
@@ -827,10 +843,6 @@
       justify-content: center;
       padding: 1rem;
     }
-
-    .rating{
-      width: 40%;
-    }
   
     .rating span{
       margin: auto;
@@ -874,22 +886,14 @@
       margin-bottom: 1rem;
     }
   }
-  @media (max-width: 630px){
-     .svg{
-      width: 50%;
-      height: 70%;
-      padding: 0;
-     }
-
-  }
   @media (max-width: 550px){
     .svg{
      height: 80%;
     }
  }
  @media (max-width: 500px){
-  .rating{
-  width:30%;
+  .svg{
+    padding: .15rem;
   }
 }
   @media (max-width: 450px){ 
@@ -902,6 +906,10 @@
     .home p {
       font-size: 14px;
       color: black;
+    }
+    .logo{
+      width: 80%;
+      margin-left: -4rem;
     }
     .table{
       display: flex;
@@ -961,7 +969,6 @@
     }
    
     .ratingSvg{
-      width: 55%;
       flex-direction: column;
     }
     .containerDatos{
@@ -970,10 +977,10 @@
   
     .svg{
       width: 50%;
-      height: 60%;
+      max-height: auto;
     }
      .rating{
-      width: 50%;
+      width: 100%;
      }
     .rating span{
       font-size: 13px;
@@ -987,11 +994,8 @@
 
   @media (max-width: 415px){
     .svg{
-      height: 50%;
       width: 60%;
-    }
-    .rating{
-      width: 60%;
+      padding: .3rem;
     }
     .span{
       font-size: 15px;
@@ -1003,15 +1007,13 @@
   @media (max-width: 370px){
     .svg{
       width: 70%;
-    }
-    .rating{
-      width: 70%;
-    }
-    
+    }    
   }
 
   @media (max-width: 340px){
-    
+    .svg{
+      width: 80%;
+    } 
     .span{
       font-size: 13px;
       padding-left: .2rem;

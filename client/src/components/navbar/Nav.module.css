@@ -73,14 +73,12 @@
   border-radius: 1rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .containerProfile:hover{
-  width: 97%;
-  height: 97%;
-  transition: width .3s ease;
-  transition: height .3s ease;
-  cursor: pointer;
+  transition: 0.5s;
+  transform: scale(.95);
   
 }
 

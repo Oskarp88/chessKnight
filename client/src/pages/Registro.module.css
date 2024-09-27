@@ -1,21 +1,30 @@
 .Registro{
     display: flex;
     width: 100%;
-    height: 100%;
-    background-image: url('../../public/fondos/register.jpg');
-    background-size: cover; /* Ajustar la imagen de fondo para cubrir completamente el contenedor */
-    background-position: center;
+    height: 100vh;
     color: #FFF;
     justify-content: center;
   }
+
+  .containerImage{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-image: url('../../public/fondos/fondoRegister.png');
+    background-size: cover; 
+  }
   #loginbox {
-      position: relative;
-      margin: 5% auto;
-      width: 600px;
-      height: 550px;
-      background-color: rgba(0,0,0,0.7);
-      border-radius: 2px;
-      box-shadow: 0 2px 4px rgba(245, 243, 243, 0.4);
+      width: 50%;
+      height: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      background-color: rgba(0,0,0,0.15);
+      border-radius: 1rem;
+      box-shadow: 0 2px 4px rgba(26, 111, 186, 0.4);
     }
     
     .error {
@@ -39,40 +48,22 @@
        color: red;
     }
     
-    .container{
-      width: 550px;
-      margin: auto;
-    }
-    
     .left {
-      position: absolute;
       display: flex;
       flex-direction: column;
-      top: 0;
-      left: 0;
-      box-sizing: border-box;
-      padding: 40px;
-      width: 300px;
-      height: 400px;
-      margin-left: 20px;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      height: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
     }
     
-     h1 {
-      margin-top: 1rem;
-      font-weight: 600;
-      font-size: 28px;
-      color: aliceblue;
-    }
-    
-    .letf input[type="text"],
-    .letf input[type="password"] {
+    .left input {
       display: block;
-      box-sizing: border-box;
       margin-bottom: 20px;
-      padding: 4px;
-      width: 220px;
+      width: 100%;
       height: 32px;
-      border: none;
       border-bottom: 1px solid #AAA;
       border-left: none;
       border-right: none;
@@ -82,17 +73,11 @@
       font-size: 15px;
       transition: 0.2s ease;
     }
+  
     
-    .letf input[type="text"]:focus,
-    input[type="password"]:focus {
-      border-bottom: 2px solid #16a085;
-      color: #16a085;
-      transition: 0.2s ease;
-    }
-    
-    .letf input[type="submit"] {
+    .left input[type="submit"] {
       margin-top: 28px;
-      width: 220px;
+      width: 100%;
       height: 32px;
       background: #16a085;
       border: none;
@@ -105,14 +90,14 @@
       cursor: pointer;
     }
     
-    .letf input[type="submit"]:hover,
+    .left input[type="submit"]:hover,
     input[type="submit"]:focus {
       opacity: 0.8;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
       transition: 0.1s ease;
     }
     
-    .letf input[type="submit"]:active {
+    .left input[type="submit"]:active {
       opacity: 1;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
       transition: 0.1s ease;
@@ -132,28 +117,28 @@
     }
     
     .right {
-      position: absolute;
-      top: 0;
-      right: 0;
-      box-sizing: border-box;
-      padding: 40px;
-      width: 300px;
-      height: 400px;
-      background: url('https://goo.gl/YbktSj');
-      background-size: cover;
-      background-position: center;
-      background: url('https://goo.gl/YbktSj');
-    background-size: cover;
-    background-position: center;
-    border-radius: 0 2px 2px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-left: 10px;
+      padding-right: 10px;
+      width: 50%;
+      height: auto;
     }
     
     .right .loginwith {
-    display: block;
-    margin-bottom: 40px;
-    font-size: 28px;
-    color: #FFF;
-    text-align: center;
+      display: flex;
+      margin-bottom: 40px;
+      font-size: 28px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+   .left .country-select{
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     @media (max-width: 725px){

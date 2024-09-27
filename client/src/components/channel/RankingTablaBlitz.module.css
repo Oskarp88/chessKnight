@@ -75,12 +75,12 @@
 }
 
 .itemContainer::-webkit-scrollbar-thumb {
-  background-color: #3498db; /* Color del thumb (barra de desplazamiento) */
+  background-color: #f1c40f; /* Color del thumb (barra de desplazamiento) */
   border-radius: 10px; /* Bordes redondeados */
 }
 
 .itemContainer::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color del thumb al hacer hover */
+  background-color: #7d6608; /* Color del thumb al hacer hover */
 }
   .item {
     background: radial-gradient(circle at 74.2% 50.9%, rgb(244, 208, 63) 5.2%, rgb(60, 65, 3) 75.3%);    

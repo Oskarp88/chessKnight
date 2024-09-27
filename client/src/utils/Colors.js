@@ -5,7 +5,7 @@ export const colorChess = [
       boxShadow: '0 5px 15px rgba(7, 7, 235, 0.2), -5px 0 20px rgba(1, 36, 141, 0.2)',
       border: 'solid 2px #fff',
       border2: 'solid 1px #1565C0',
-      fondo: 'linear-gradient(to top, #dfe9f3 0%, white 100%)',
+      fondo: 'linear-gradient(181.2deg, rgb(181, 239, 249) 10.5%, rgb(254, 254, 254) 86.8%)',
       fondo2: '#d6eaf8 ',
       fondo_3: 'linear-gradient(178deg, rgba(201, 234, 252, 0.51) 14.9%, rgba(139, 192, 216, 0.73) 80%',
       fondo4: '#d6eaf8 ',

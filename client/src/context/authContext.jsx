@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState, useContext, useEffect } from "react";
+import { baseUrl, getRequest } from "../utils/services";
 
 const AuthContext = createContext(undefined);
 
@@ -8,8 +9,19 @@ const AuthProvider = ({ children }) => {
     user: null,
     token: ''
   });
+  const [user, setUser] = useState(null);
 
-  
+  useEffect(()=>{
+    
+    const User = async() => {
+      const response = await getRequest(`${baseUrl}/user/${auth?.user?._id}`);
+      if(response.error){
+         return console.log('Error fetching users', response);
+      }
+       setUser(response);
+    }   
+    User();
+  },[auth]);
 
   // default axios
   axios.defaults.headers.common['Authorization'] = auth?.token;
@@ -27,7 +39,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, user }}>
       {children}
     </AuthContext.Provider>
   );

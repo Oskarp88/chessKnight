@@ -82,9 +82,7 @@
   .sidebar.mobile-open .text {
     display: block;
     margin-left: 20px;
-    opacity: 1;
     white-space: nowrap;
-    transition: opacity 0.3s;
     color: aliceblue;
   }
   

@@ -9,10 +9,11 @@ import { baseUrl } from '../utils/services';
 import { useLanguagesContext } from '../context/languagesContext';
 import { useAuth } from '../context/authContext';
 import Danger from '../svg/danger';
+import { Form } from 'react-bootstrap';
 
 const Registro = ({ onSubmit }) => {
   const {auth} = useAuth();
-  const { boardColor } = useChessboardContext();
+  const { chessColor } = useChessboardContext();
   const {language} = useLanguagesContext();
   const [countries, setCountries] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
@@ -201,35 +202,41 @@ const Registro = ({ onSubmit }) => {
 
 
   return (
-    <div className={style.Registro}>
-      <div id={style.loginbox}>
-        <div className={style.container}>
-          <form className={style.letf} onSubmit={handleSubmit}>
-            <h1>{language.Sign_up}</h1>
-            <input
-              type="text"
-              name="name"
-              placeholder={language.name}
-              value={formData.name}
-              onChange={handleChange}
-            />
+    <div className={style.Registro} style={{background: chessColor?.fondo}}>
+      <div className={style.containerImage}>
+        <div id={style.loginbox}>               
+          <form className={style.left} onSubmit={handleSubmit}>
+            <h1 style={{
+              color: chessColor?.titulo,
+              fontSize: '1.6rem',
+              fontWeight: 700
+            }}>
+              {language.Sign_up.toUpperCase()}
+            </h1>
+              <Form.Control
+                type="text"
+                name="name"
+                placeholder={language.name} 
+                value={formData.name} 
+                onChange={handleChange}
+              />
             {formErrors.name &&
-             <div className={style.error}>
+            <div className={style.error}>
               <p>
                 {formErrors.name}
               </p>
               <div className={style.svg}>
                 <Danger/>
               </div>
-             </div>
+            </div>
             }
-            <input
-              type="text"
-              name="lastName"
-              placeholder={language.lastName}
-              value={formData.lastName}
-              onChange={handleChange}
-            />
+             <Form.Control
+                type="text"
+                name="lastName"
+                placeholder={language.lastName}
+                value={formData.lastName}
+                onChange={handleChange}
+              />
             {formErrors.lastName && 
               <div className={style.error}>
                 <p>
@@ -240,13 +247,13 @@ const Registro = ({ onSubmit }) => {
                 </div>
               </div>
             }
-            <input
-              type="text"
-              name="userName"
-              placeholder={language.username}
-              value={formData.userName}
-              onChange={handleChange}
-            />
+             <Form.Control
+                type="text"
+                name="userName"
+                placeholder={language.username}
+                value={formData.userName}
+                onChange={handleChange}
+              />
             {formErrors.userName && 
               <div className={style.error}>
                 <p>
@@ -257,15 +264,15 @@ const Registro = ({ onSubmit }) => {
                 </div>
               </div>
             }
-            <input
-              type="text"
-              name="email"
-              placeholder={language.email}
-              value={formData.email}
-              onChange={handleChange}
-            />
-             {formErrors.email && 
-               <div className={style.error}>
+             <Form.Control
+                type="email"
+                name="email"
+                placeholder={language.email}
+                value={formData.email}
+                onChange={handleChange}
+              />
+            {formErrors.email && 
+              <div className={style.error}>
                 <p>
                   {formErrors.email}
                 </p>
@@ -273,14 +280,14 @@ const Registro = ({ onSubmit }) => {
                   <Danger/>
                 </div>
               </div>
-             }
-            <input
-              type="password"
-              name="password"
-              placeholder={language.password}
-              value={formData.password}
-              onChange={handleChange}
-            />
+            }
+             <Form.Control
+               type="password"
+               name="password"
+               placeholder={language.password}
+               value={formData.password}
+               onChange={handleChange}
+              />
             {formErrors.password && 
               <div className={style.error}>
                 <p>
@@ -291,7 +298,7 @@ const Registro = ({ onSubmit }) => {
                 </div>
               </div>
             }
-            <input
+            <Form.Control
               type="password"
               name="confirmPassword"
               placeholder={`${language.confirm} ${language.password}`}
@@ -309,7 +316,7 @@ const Registro = ({ onSubmit }) => {
               </div>
             }
             <div className={style['country-select']}>
-              <input
+              <Form.Control
                 type="text"
                 name="country"
                 value={selectedCountry}
@@ -335,13 +342,11 @@ const Registro = ({ onSubmit }) => {
               </div>
             }
             <input type="submit" name="signup_submit" value={language.sign_me_up} />
-          </form>
-
+          </form>         
           <div className={style.right}>
-            <span className={style.loginwith}>{language.Sign_in_with}<br />{language.social_network}</span>
+            <span className={style.loginwith} style={{color: chessColor?.titulo}}>{language.Sign_in_with}<br />{language.social_network}</span>
             <GoogleOAuht/>
           </div>
-
         </div>
       </div>
     </div>

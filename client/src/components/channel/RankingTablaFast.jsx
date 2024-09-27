@@ -9,7 +9,6 @@ import { useLanguagesContext } from '../../context/languagesContext';
 import Insignias from '../insignias/Insignias';
 import Fast from '../../img/fast';
 
-
 export const RankingTable = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
@@ -20,14 +19,12 @@ export const RankingTable = () => {
   
   useEffect(() => {
     const allUsers = async() => {
-        const response = await getRequest(`${baseUrl}/users/rating-fast`);
-          if(response.error){
-             return console.log('Error fetching users', response);
-          }
-
-          setUsers(response);
+      const response = await getRequest(`${baseUrl}/users/rating-fast`);
+        if(response.error){
+            return console.log('Error fetching users', response);
+        }
+        setUsers(response);
     }
-
     allUsers();
   },[]);
 
@@ -36,7 +33,6 @@ export const RankingTable = () => {
     if(response.error){
        return console.log('Error fetching users', response);
     }
-
     setUser(response);
     setPhoto(userId);
     setShowModal(true);
@@ -46,11 +42,10 @@ export const RankingTable = () => {
     setShowModal(false)
   }
 
-  // const sortedUsers = users.slice().sort((a, b) => b.eloFast - a.eloFast);
+  let count = 1;
 
-   let count = 1; 
   return (
-    <div className={style.tercerdiv} /*style={{border: '2px solid #229954'}}*/>
+    <div className={style.tercerdiv}>
        <div className={style.title}>            
             <div className={style.icon}>
               <Fast />
@@ -65,8 +60,7 @@ export const RankingTable = () => {
             <span >{language.name?.toUpperCase()}</span>
           </div>
           <span >{language.Score?.toUpperCase()}</span>
-        </li>
-          
+        </li>         
         {users.length !== 0 ?  users.map((o, index) => (
           <>
                <li 
@@ -93,7 +87,11 @@ export const RankingTable = () => {
                           <img className={style.marco} src={o?.marco} alt="Marco" />
                         </div>                                    
                       <div className={style.column}>
-                        <span>{o?.username.length > 8 ? o?.username.substring(0, 8) + '...' : o?.username}</span>
+                        <span>
+                           {o?.username.length > 8 
+                              ? o?.username.substring(0, 8) + '...' 
+                              : o?.username}
+                        </span>
                         <div className={style.containerInsignias}>
                           <img src={o?.imagenBandera} className={style.bandera} alt="" />
                           <div className={style.insignia}>
@@ -134,8 +132,7 @@ export const RankingTable = () => {
             gamesTied={user.gamesTiedFast}
             gamesLost={user.gamesLostFast}
           /> 
-      }
-                    
+      }                   
     </div>
   );
 };

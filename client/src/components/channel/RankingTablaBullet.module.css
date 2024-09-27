@@ -76,12 +76,12 @@
 }
 
 .itemContainer::-webkit-scrollbar-thumb {
-  background-color: #3498db; /* Color del thumb (barra de desplazamiento) */
+  background-color: #e67e22; /* Color del thumb (barra de desplazamiento) */
   border-radius: 10px; /* Bordes redondeados */
 }
 
 .itemContainer::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color del thumb al hacer hover */
+  background-color: #784212; /* Color del thumb al hacer hover */
 }
 
 

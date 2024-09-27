@@ -15,11 +15,12 @@ import { languages } from '../../utils/languages';
 import styled from 'styled-components';
 import { CerrarSvg, SettingSvg } from '../../svg';
 import SettingsModal from '../modal/SettingsModal';
+import { Spinner } from 'react-bootstrap';
 
 
 
 function NavBar() {
-   const{ auth, setAuth } = useAuth();
+   const{ auth, user } = useAuth();
    const location = useLocation();
    const [showModalSettings, setShowSettings] = useState();
 
@@ -37,7 +38,19 @@ function NavBar() {
     const lastName = (auth?.user?.lastName || "").charAt(0).toUpperCase() + (auth?.user?.lastName || "").slice(1);
     const trimmedLastName = lastName.substring(0, 8);
 
-
+    function formatScore(score) {
+      if(!score) return;
+      if (score >= 1_000_000_000) {
+        return (score / 1_000_000_000).toFixed(score % 1_000_000_000 >= 100_000_000 ? 1 : 0) + 'B';
+      } else if (score >= 1_000_000) {
+        return (score / 1_000_000).toFixed(score % 1_000_000 >= 100_000 ? 1 : 0) + 'M';
+      } else if (score >= 1_000) {
+        return (score / 1_000).toFixed(score % 1_000 >= 100 ? 1 : 0) + 'K';
+      } else {
+        return score.toString();
+      }
+    }
+    
 return (
   <>
    {auth?.user &&        
@@ -46,7 +59,15 @@ return (
           <div className={styles.moneda}>
             <img src="/icon/moneda.png" alt="" />
             <div className={styles.dinero}>
-              <span>0</span>
+              {user?.score
+                ?  
+                 <span>{formatScore(user?.score)}</span>
+                :
+                  <div className='text-white'>
+                    <Spinner animation="grow" size="sm" />
+                    <Spinner animation="grow" />
+                  </div>
+              }
             </div>
           </div>
         </div>

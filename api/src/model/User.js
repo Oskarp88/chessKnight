@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     default: '/marcos/marco_001.png'
 },
   role: String,
-  score: { type: Number, default: 0 },
+  score: { type: Number, default: 10000 },
   deleted: { type: Boolean, default: false },
   games: { type: Number, default: 0 },
   gamesWon: { type: Number, default: 0 },
