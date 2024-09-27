@@ -3,6 +3,7 @@ import { colorBoard, colorChess } from '../utils/Colors';
 import { PieceType } from '../Types';
 import { piecesTheme } from '../utils/pieces';
 import { useSocketContext } from './socketContext';
+import { useCheckMateContext } from './checkMateContext';
 
 const ChessboardContext = createContext();
 
@@ -15,7 +16,8 @@ export const useChessboardContext = () => {
 };
 
 export const ChessboardProvider = ({ children }) => {
-  const {infUser} = useSocketContext();
+  const {setCheckMate} = useCheckMateContext();
+  const {infUser, setInfUser, setUser, setRoom} = useSocketContext();
   const [boardColor, setBoardColor] = useState(colorBoard[0]);
   const [themePiece, setTemePiece] = useState(piecesTheme[0]);
   const [pieces, setPieces] = useState([]);
@@ -112,6 +114,51 @@ export const ChessboardProvider = ({ children }) => {
 
 
   },[chessColor, boardColor, themePiece,pieces]);
+
+  useEffect(() => {
+    const dataCellStart = localStorage.getItem('startCell');
+    if(dataCellStart){
+      const parseData = JSON.parse(dataCellStart);
+      setStartCell({x: parseData.x, y: parseData.y});
+    }
+
+    const dataDestinationCell = localStorage.getItem('destinationCell');
+    if(dataDestinationCell){
+      const parseData = JSON.parse(dataDestinationCell);
+      setDestinationCell({x: parseData.x, y: parseData.y})
+    }
+    const data = localStorage.getItem('chessboard');
+    if (data) {
+      const parseData = JSON.parse(data);
+      setInfUser(parseData.infUser);
+      setRoom(parseData.room);
+      setCheckMate(parseData.checkMate);
+      setInfUser(parseData.infUser);
+      setUser(parseData.userChess);
+      setCurrentTurn(parseData.currentTurn);
+    }
+
+    const userData = localStorage.getItem('userChess');
+    if(userData){
+      const parseData = JSON.parse(userData);
+      setUser(parseData);
+    }
+    const userOpponent = localStorage.getItem('infUser');
+    if(userOpponent) {
+      const parseData = JSON.parse(userOpponent);
+      setInfUser(parseData);
+    }
+    const dataTimeWhite = localStorage.getItem('whiteTime');
+    
+    if(!isNaN(dataTimeWhite) && dataTimeWhite) {
+      setWhiteTime(parseInt(dataTimeWhite));
+    }
+    const dataTimeBlack = localStorage.getItem('blackTime');
+    
+    if(!isNaN(dataTimeBlack) && dataTimeBlack) {
+      setBlackTime(parseInt(dataTimeBlack));
+    }
+  },[]);
 
   const handleOpponentMove = useCallback(async(data)=>{
      
