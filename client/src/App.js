@@ -21,10 +21,10 @@ import UserProfile from "./pages/user/UserProfile";
 import Channel from "./components/channel/Channel";
 import { SocketProvider } from "./context/socketContext";
 import { Toaster } from 'react-hot-toast';
-
 import Register from "./pages/user/Register";
 import { LanguagesProvider } from "./context/languagesContext";
 import Sidebar from "./components/navbar/sidebar";
+import NotFound from "./pages/PageNotFound";
 
 function App() {
   const {auth} = useAuth();
@@ -42,6 +42,7 @@ function App() {
                 <Sidebar/>                
               <Routes>                          
                 <Route path="/" element={<Home/>}/>
+                <Route path="*" element={<NotFound/>}/>
                 <Route path="/login" element={<Login/>} />
                 <Route path="/register" element={<Registro/>} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
