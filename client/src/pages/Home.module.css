@@ -47,16 +47,23 @@
     align-items: center;
     justify-content: center;
   }
-
   .logo{
     width: 80%;
     margin-left: -4rem;
   }
-
+  .containerWelcome{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+    margin-top: 1rem;
+  }
   .titulo {
     font-size: 40px;
     text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
     font-weight: 800;
+    margin: 0;
   }
 
   .wrapper{
@@ -894,6 +901,15 @@
  @media (max-width: 500px){
   .svg{
     padding: .15rem;
+  }
+  .home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .homestyle{
+    width: 100%;
+    margin: 0;
   }
 }
   @media (max-width: 450px){ 

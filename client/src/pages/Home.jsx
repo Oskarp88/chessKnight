@@ -186,23 +186,25 @@ export function Home() {
         <div className={style.home}>
           <div className={style.homestyle}>
             <img src={'logo/CHESS.png'} className={style.logo} alt="" />
-            <h1 
-              className={style.titulo} 
-              style={{color: chessColor?.titulo}}
-            >           
-              {language.welcome_to} 
-              {' '}
-              {auth?.user?.name 
-                  ? auth.user.name.length > 8 
-                      ? auth.user.name.charAt(0).toUpperCase() + auth.user.name.substring(1, 8) + '...' 
-                      : auth.user.name.charAt(0).toUpperCase() + auth.user.name.slice(1)
-                  : ''
-              }
+            <div className={style.containerWelcome}>
+              <h1 
+                className={style.titulo} 
+                style={{color: chessColor?.titulo}}
+              >           
+                {language.welcome_to} 
+                {' '}
+                {auth?.user?.name 
+                    ? auth.user.name.length > 8 
+                        ? auth.user.name.charAt(0).toUpperCase() + auth.user.name.substring(1, 8) + '...' 
+                        : auth.user.name.charAt(0).toUpperCase() + auth.user.name.slice(1)
+                    : ''
+                }
 
-            </h1>
-            <p style={{color: chessColor?.color}}>
-              {language?.play_chess_online_and_improve_your_skills}
-            </p>
+              </h1>
+              <p style={{color: chessColor?.color}}>
+                {language?.play_chess_online_and_improve_your_skills}
+              </p>
+            </div>
                         
               <button 
                 className={style.wrapper}
