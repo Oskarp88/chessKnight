@@ -114,7 +114,7 @@ return (
                 </div>
                 <div className={styles.inf}>
                   <div className={styles.name}>
-                    <span>{`${trimmedFirstName} ${trimmedLastName}`}</span>
+                    <span>{trimmedFirstName}</span>
                     <div><Notifications /></div>
                   </div>
                   <div className={styles.insignias}>
