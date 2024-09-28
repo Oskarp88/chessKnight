@@ -376,11 +376,9 @@
 @media (max-width: 650px){
   .container{
     height:100dvh;
-    overflow-y: auto;
   }
   .userprofile {
     flex-direction: column;
-    height: auto;
   }
   .avatarImage{
     width: 5rem;

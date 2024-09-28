@@ -94,6 +94,11 @@
   padding-right: 5px;
 }
 
+.textName{
+  text-decoration: none;
+  color: #ebf5fb;
+}
+
 .div1{
   position: absolute;
   background-color: #2874a6;

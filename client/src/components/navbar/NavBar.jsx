@@ -85,7 +85,7 @@ return (
                     >
                       <img className={styles.liga} src={'/ligas/bronceLiga.png'} alt="User Photo" />
                     </div>
-                  </div>
+                </div>
                   <div className={styles.inf} style={{color: '#0b5345'}}>
                     <div className={styles.nameLiga}>
                       <span >LIGA</span>
@@ -114,7 +114,14 @@ return (
                 </div>
                 <div className={styles.inf}>
                   <div className={styles.name}>
-                    <span>{trimmedFirstName}</span>
+                    <span>
+                      <Link 
+                        to='dashboard/profile'
+                        className={styles.textName}
+                      >
+                        {trimmedFirstName}
+                      </Link>
+                    </span>
                     <div><Notifications /></div>
                   </div>
                   <div className={styles.insignias}>
