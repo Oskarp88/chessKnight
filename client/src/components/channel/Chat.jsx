@@ -94,17 +94,26 @@ function Chat({ socket, username, room }) {
               >
                 <div className={style.containerContentMeta}>
                   <div className={style.containerProfileMessage}>
-                    { username === messageContent.author && <img className={style.profile} src={messageContent?.photo} alt='' />}                  
+                  { username !== messageContent.author && 
+                      <div className={style.containerPhoto}>
+                          <img className={style.profile} src={messageContent?.photo} alt='' />
+                      </div>
+                    }                
                     <div className={style.messagecontent}>
                       <p>{messageContent.message}</p>
-                    </div>
-                    { username !== messageContent.author && <img className={style.profile} src={messageContent?.photo} alt='' />}                  
+                      <div className={style.messagemeta} >
+                        <span className={style.time} >{messageContent.time}</span>
+                        <span className={style.author} >{messageContent.author}</span>
+                      </div>
+                    </div>  
+                     { username === messageContent.author && 
+                      <div className={style.containerPhoto}>
+                          <img className={style.profile} src={messageContent?.photo} alt='' />
+                      </div>
+                    }               
 
                   </div>
-                  <div className={style.messagemeta} >
-                    <p id={style.time} style={{color: chessColor.color}}>{messageContent.time}</p>
-                    <p id={style.author} style={{color: chessColor.color}}>{messageContent.author}</p>
-                  </div>
+                  
                 </div>
               </div>
             );

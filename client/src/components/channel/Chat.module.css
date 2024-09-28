@@ -69,25 +69,41 @@
    .message .messagecontent {
     width: auto;
     height: auto;
-    min-height: 40px;
-    max-width: 600px;
+    min-height: 30%;
+    max-width: 80%;
     color: white;
     display: flex;
+    flex-direction: column;
     align-items: center;
     overflow-wrap: break-word;
     word-break: break-word;
   }
 
   .containerContentMeta{
-    width: auto;
+    width: 100%;
   }
 
-  .containerProfileMessage{
+ #you .containerProfileMessage{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 100%; 
+  }
+
+  #other .containerProfileMessage{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .containerPhoto{
+    width: 10%;
+    height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  
  
   .profile{
     width: 30px;
@@ -101,22 +117,50 @@
   }
   
   #you .messagecontent {
-    justify-content: flex-start; 
-    background: linear-gradient(114.3deg, rgb( 247, 220, 111) 0.2%, rgb(156, 100, 12) 68.5%);   
+    justify-content: flex-end; 
+    align-items: flex-end;
+    background: #b7950b;   
     border-radius: 0px 20px 20px 20px;
   }
 
   #you .messagecontent p{
+    margin: 0;
     margin-left: 15px;
     margin-right: 15px;
   }
 
+ 
   .messagemeta{
     display: flex;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: auto;
+    color: #d5dbdb;
+    font-weight: 500;
   }
   
   #you .messagemeta {
+    justify-content: flex-end;
+    color: #f9e79f;
+  }
+
+  #other .messagemeta {
     justify-content: flex-start;
+    color: #2980b9;
+  }
+
+  .author{
+    display: flex;
+    width: auto;
+    
+    font-size: 10px;
+    margin-right: 5px;
+    margin-left: 2px;
+  }
+  
+  .time{
+    font-size: 10px;
+    margin-left: 5px;
   }
   
   #other {
@@ -124,33 +168,17 @@
   }
   
   #other .messagecontent {
-    justify-content: flex-end;
-    background: radial-gradient(circle at 50.4% 50.5%, rgb(174, 214, 241) 0%, rgb(31, 97, 141) 90%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background: #154360;
     border-radius: 20px 0px 20px 20px;
   }
 
   #other .messagecontent p{
+    margin: 0;
     margin-left: 15px;
     margin-right: 15px;
-  }
-
- 
-  
-  #other .messagemeta {
-    justify-content: flex-end;
-    margin-right: 5px;
-  }
-  
-  #author{
-    margin-left: 10px;
-    font-weight: bold;
-    color: #fff;
-    font-size: 10px;
-  }
-  
-  .chatwindow .chatbody .message .messagemeta {
-    display: flex;
-    font-size: 12px;
   }
   
   .chatwindow .chatfooter {
@@ -192,13 +220,6 @@
   .hide {
     opacity: 0 !important;
   }
-
-  #time{
-    color: #fff;
-    font-size: 10px;
-    margin-left: 5px;
-  }
-
 
 .emojipicker {
   position: absolute;
