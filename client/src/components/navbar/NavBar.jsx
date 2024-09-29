@@ -106,12 +106,14 @@ return (
           </div>                            
           <div className={styles.profileContainer}>
             <div className={styles.containerProfile}>
-                <div className={styles.userprofile} >           
-                    <div className={styles.imageContainer}>
-                      <img className={styles.photo} src={auth?.user?.photo} alt="User Photo" />
-                      <img className={styles.marco} src={auth?.user?.marco} alt="Marco" />
-                    </div>
-                </div>
+                <Link to='dashboard/profile'>
+                  <div className={styles.userprofile} >           
+                      <div className={styles.imageContainer}>
+                        <img className={styles.photo} src={auth?.user?.photo} alt="User Photo" />
+                        <img className={styles.marco} src={auth?.user?.marco} alt="Marco" />
+                      </div>
+                  </div>
+                </Link>
                 <div className={styles.inf}>
                   <div className={styles.name}>
                     <span>

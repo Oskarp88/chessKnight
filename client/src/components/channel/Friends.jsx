@@ -18,6 +18,7 @@ import Fast from '../../img/fast';
 import SettingsModal from '../modal/SettingsModal';
 
 const Friends = ({ friends, onlineUsers, room }) => {
+  const {playersTotal, setPlayersTotal} = useSocketContext();
   const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
   const [showModalSettings, setShowSettings] = useState();
   const [hoveredFriend, setHoveredFriend] = useState(null);

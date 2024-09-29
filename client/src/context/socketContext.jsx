@@ -45,8 +45,17 @@ export const SocketProvider = ({ children, user }) => {
     country: '',
     color:'',
   });
+  const [playersTotal, setPlayersTotal] = useState({
+    uno: 0,
+    dos: 0,
+    tres: 0,
+    cinco: 0,
+    diez: 0,
+    veinte: 0,
+  });
   const [allUsers, setAllUsers] = useState([]);
   const [onlineUsersGame, setOnlineUsersGame] = useState([]);
+  const [online, setOnline] = useState(null);
   const [infUser, setInfUser] = useState({
     idOpponent: null,
     color: '',
@@ -84,6 +93,28 @@ useEffect(() => {
   localStorage.setItem('infUser', JSON.stringify(infUser));
 },[infUser]);
 
+useEffect(() => {
+  if (online) {  // Asegúrate de que online está definido
+    const minUno = online.filter((userOnline) => userOnline.time === 60);
+    const minDos = online.filter((userOnline) => userOnline.time === 120);
+    const minTres = online.filter((userOnline) => userOnline.time === 180);
+    const minCinco = online.filter((userOnline) => userOnline.time === 300);
+    const minDiez = online.filter((userOnline) => userOnline.time === 600);
+    const minVeinte = online.filter((userOnline) => userOnline.time === 1200);
+
+    // Actualiza el estado de playersTotal
+    setPlayersTotal({
+      uno: minUno.length,
+      dos: minDos.length,
+      tres: minTres.length,
+      cinco: minCinco.length,
+      diez: minDiez.length,
+      veinte: minVeinte.length,
+    });
+  }
+}, [online, setPlayersTotal]); // Escucha cambios en online
+
+
   return (
     <SocketContext.Provider value={{ 
       socket, 
@@ -103,7 +134,11 @@ useEffect(() => {
       messageList,
       setMessageList,
       currentMessage,
-      setCurrentMessage
+      setCurrentMessage,
+      playersTotal, 
+      setPlayersTotal,
+      online,
+      setOnline
     }}>
       {children}
     </SocketContext.Provider>

@@ -16,6 +16,7 @@ import { useLanguagesContext } from '../context/languagesContext';
 import RechartsPieChart from '../components/piechart/RechartsPieChart';
 import Insignias from '../components/insignias/Insignias';
 import Fast from '../img/fast';
+import { ChatContext } from '../context/ChatContext';
 
 
 const useInterval = (callback, delay) => {
@@ -46,14 +47,17 @@ export function Home() {
   const [partida, setPartidas] = useState([]);
   const [user, setUser] = useState(null);
   const [stast, setStats] = useState('fast');
-
+  const { onlineUsers} = useContext(ChatContext);
   const {auth} = useAuth();
-  const {socket, setInfUser} = useSocketContext();
+  const {socket, setInfUser, playersTotal, setOnline} = useSocketContext();
   const {setCheckMate} = useCheckMateContext();
   const {language} = useLanguagesContext();
 
   const miContaineHistorial = useRef(null);
 
+  useEffect(() => {
+    setOnline(onlineUsers);
+  },[onlineUsers]);
    useEffect(() => {
       const allPartidas = async() => {
         const response = await getRequest(`${baseUrl}/partida/user/historial/${auth?.user?._id}`);
@@ -562,25 +566,32 @@ export function Home() {
                 <span style={{ color: '#1A237E ', fontWeight: 'bold' }}> 
                   Bullet
                 </span>     
-              <div className={style.buttons}>
-                <a 
-                  className={style.a} 
-                  onClick={() => createRoom(auth?.user?._id,  60)}
-                >
-                  1 min
-                  <div className={style.icon}>
-                    <div className={style.arrow}></div>
+             
+                <div className={style.buttons}>
+                  <div className={style.containerButtons}>
+                    <a 
+                      className={style.a} 
+                      onClick={() => createRoom(auth?.user?._id,  60)}
+                    >
+                      1 min
+                      <div className={style.icon}>
+                        <div className={style.arrow}></div>
+                      </div>
+                    </a>
+                    <p className={style.playersTotal}>{ `(${playersTotal.uno} players)`}</p>
                   </div>
-                </a>
-                <a 
-                  className={style.a} 
-                  onClick={() => createRoom(auth?.user?._id, 120)}
-                >
-                  2 min
-                  <div className={style.icon}>
-                    <div className={style.arrow}></div>
+                  <div className={style.containerButtons}>
+                    <a 
+                      className={style.a} 
+                      onClick={() => createRoom(auth?.user?._id, 120)}
+                    >
+                      2 min
+                      <div className={style.icon}>
+                        <div className={style.arrow}></div>
+                      </div>
+                    </a>
+                    <p className={style.playersTotal}>{ `(${playersTotal.dos} players)`}</p>
                   </div>
-                </a>
               </div>
                 <svg style={{ color: '#FFEB3B', marginRight: '5px' }} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
                   <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
@@ -588,25 +599,31 @@ export function Home() {
                 <span style={{ color: '#1A237E ', fontWeight: 'bold' }}> 
                   Blitz
                 </span>       
-                <div className={style.buttons}>          
-                  <a 
-                    className={style.a} 
-                    onClick={() => createRoom(auth?.user?._id, 180)}
-                  >
-                    3 min
-                    <div className={style.icon}>
+                <div className={style.buttons}>   
+                  <div className={style.containerButtons}>       
+                    <a 
+                      className={style.a} 
+                      onClick={() => createRoom(auth?.user?._id, 180)}
+                    >
+                      3 min
+                      <div className={style.icon}>
+                        <div className={style.arrow}></div>
+                      </div>
+                    </a>
+                    <p className={style.playersTotal}>{ `(${playersTotal.tres} players)`}</p>
+                  </div>
+                  <div className={style.containerButtons}> 
+                    <a 
+                      className={style.a} 
+                      onClick={() => createRoom(auth?.user?._id, 300)}
+                    >
+                      5 min
+                      <div className={style.icon}>
                       <div className={style.arrow}></div>
                     </div>
-                  </a>
-                  <a 
-                    className={style.a} 
-                    onClick={() => createRoom(auth?.user?._id, 300)}
-                  >
-                    5 min
-                    <div className={style.icon}>
-                    <div className={style.arrow}></div>
+                    </a>
+                  <p className={style.playersTotal}>{ `(${playersTotal.cinco} players)`}</p>
                   </div>
-                  </a>
                 </div>
                 <div className={style.fast}>
                 <div style={{width: '20px', height: '20px', marginRight: '5px'}}>
@@ -617,24 +634,30 @@ export function Home() {
                 </span>
                 </div>
               <div className={style.buttons}>
-                <a 
-                  className={style.a} 
-                  onClick={() => createRoom(auth?.user?._id,  600)}
-                >
-                  10 min
-                  <div className={style.icon}>
-                    <div className={style.arrow}></div>
-                  </div>
-                </a>
-                <a 
-                  className={style.a} 
-                  onClick={() => createRoom(auth?.user?._id,  1200)}
-                >
-                  20 min
-                  <div className={style.icon}>
-                    <div className={style.arrow}></div>
-                  </div>
-                </a>
+                <div className={style.containerButtons}> 
+                  <a 
+                    className={style.a} 
+                    onClick={() => createRoom(auth?.user?._id,  600)}
+                  >
+                    10 min
+                    <div className={style.icon}>
+                      <div className={style.arrow}></div>
+                    </div>
+                  </a>
+                <p className={style.playersTotal}>{ `(${playersTotal.diez} players)`}</p>
+                </div>
+                <div className={style.containerButtons}> 
+                  <a 
+                    className={style.a} 
+                    onClick={() => createRoom(auth?.user?._id,  1200)}
+                  >
+                    20 min
+                    <div className={style.icon}>
+                      <div className={style.arrow}></div>
+                    </div>
+                  </a>
+                  <p className={style.playersTotal}>{ `(${playersTotal.veinte} players)`}</p>
+                </div>
               </div>
              </div>
           </div>
