@@ -377,7 +377,14 @@ useEffect(()=>{
       if(socket === null) return;
        // Manejar el evento "connect" para detectar la conexión exitosa
       socket.on("connect", () => {
-        console.log("Conexión al servidor establecida.");
+        textToast("Conexión al servidor establecida.");
+        setColor('#58d68d');
+        setShowToast(true);
+        setTimeout(()=>{
+           setShowToast(false);
+        },3000)
+        // Realiza cualquier lógica adicional que necesites después de la reconexión
+        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
         socket.emit('joinRoomGamePlay', room); 
       });
       // Manejar el evento "disconnect" para detectar desconexiones
