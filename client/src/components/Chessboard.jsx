@@ -385,9 +385,6 @@ useEffect(()=>{
         socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
         socket.emit('joinRoomGamePlay', room); 
 
-       setTimeout(()=>{
-          setShowToast(false);
-       },15000)
       });
       // Manejar el evento "disconnect" para detectar desconexiones
       socket.on("disconnect", (reason) => {
