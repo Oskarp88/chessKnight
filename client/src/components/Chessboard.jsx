@@ -380,12 +380,14 @@ useEffect(()=>{
         setTextToast("Conexión al servidor establecida.");
         setColor('#58d68d');
         setShowToast(true);
-        setTimeout(()=>{
-           setShowToast(false);
-        },5000)
+       
         // Realiza cualquier lógica adicional que necesites después de la reconexión
         socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
         socket.emit('joinRoomGamePlay', room); 
+
+       setTimeout(()=>{
+          setShowToast(false);
+       },5000)
       });
       // Manejar el evento "disconnect" para detectar desconexiones
       socket.on("disconnect", (reason) => {
