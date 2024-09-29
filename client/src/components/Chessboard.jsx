@@ -39,6 +39,7 @@ import ChatChess from './ChatChess';
 import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
 import PromotionPiece from './board/PromotionPiece';
+import Toast from './toast/Toast';
 
 function Chessboard() {
 
@@ -95,6 +96,9 @@ function Chessboard() {
   const [tied, setTied] = useState(false);
   const [modalTiedRepetition, setModalTiedRepetition] = useState(false);
   const [frase, setFrase] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [color, setColor] = useState('');
+  const [textToast, setTextToast] = useState('');
 
   const toqueAudio = new Audio(toqueSound);
   const soltarAudio = new Audio(soltarSound);
@@ -375,15 +379,20 @@ useEffect(()=>{
       socket.on("connect", () => {
         console.log("Conexión al servidor establecida.");
         socket.emit('joinRoomGamePlay', room); 
-      });;
+      });
       // Manejar el evento "disconnect" para detectar desconexiones
       socket.on("disconnect", (reason) => {
         console.log("Desconectado. Razón:", reason);
         //medidas específicas en caso de desconexión aquí, volver a conectar automáticamente o mostrar un mensaje de error al usuario.
+        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
       });
       socket.on("reconnect", (attemptNumber) => {
-        console.log(`Reconectado en el intento ${attemptNumber}`);
+        textToast(`Reconectado en el intento ${attemptNumber}`);
+        setColor('#58d68d');
+        setShowToast(true);
         // Realiza cualquier lógica adicional que necesites después de la reconexión
+        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
+        socket.emit('joinRoomGamePlay', room); 
       });
       socket.on("reconnect_error", (error) => {
         console.log("Error al intentar reconectar:", error);
@@ -392,7 +401,7 @@ useEffect(()=>{
 
       socket.on("reconnect_failed", () => {
         console.log("Fallo al reconectar. No se pudo restablecer la conexión.");
-        // Puedes implementar lógica adicional si es necesario
+        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
       });
       socket.on("pawn_promotion", (data)=>{
 
@@ -1575,7 +1584,12 @@ useEffect(()=>{
   return (
     <>
      <div className='display'>
-    
+     <Toast 
+       text={textToast} 
+       show={showToast} 
+       color={color} 
+       setToastShow={setShowToast}
+     />
      <div className='profile-container-chess'>
       <div className='space1'>
         <PlayerInf2
