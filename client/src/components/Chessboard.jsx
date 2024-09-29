@@ -387,7 +387,7 @@ useEffect(()=>{
 
        setTimeout(()=>{
           setShowToast(false);
-       },5000)
+       },15000)
       });
       // Manejar el evento "disconnect" para detectar desconexiones
       socket.on("disconnect", (reason) => {
