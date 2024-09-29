@@ -382,7 +382,7 @@ useEffect(()=>{
         setShowToast(true);
         setTimeout(()=>{
            setShowToast(false);
-        },3000)
+        },5000)
         // Realiza cualquier lógica adicional que necesites después de la reconexión
         socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
         socket.emit('joinRoomGamePlay', room); 
