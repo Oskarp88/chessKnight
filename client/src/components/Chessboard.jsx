@@ -377,7 +377,7 @@ useEffect(()=>{
       if(socket === null) return;
        // Manejar el evento "connect" para detectar la conexión exitosa
       socket.on("connect", () => {
-        textToast("Conexión al servidor establecida.");
+        setTextToast("Conexión al servidor establecida.");
         setColor('#58d68d');
         setShowToast(true);
         setTimeout(()=>{
@@ -394,7 +394,7 @@ useEffect(()=>{
         socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
       });
       socket.on("reconnect", (attemptNumber) => {
-        textToast(`Reconectado en el intento ${attemptNumber}`);
+        setTextToast(`Reconectado en el intento ${attemptNumber}`);
         setColor('#58d68d');
         setShowToast(true);
         // Realiza cualquier lógica adicional que necesites después de la reconexión
