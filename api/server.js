@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const http = require('http');
 const {Server} = require('socket.io');
+const Games = require('./src/model/Games');
 
 dotenv.config();
 
@@ -16,14 +17,19 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",  // Permitir solicitudes desde este origen
+  methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+  credentials: true,  // Si necesitas usar cookies o autenticación
+}));
+
 app.use(morgan('dev'));
 app.use('/api', router);
 
 
 const io = new Server(server, {
   cors: {
-    origin:["https://chessfive.vercel.app","http://localhost:3000"],
+    origin:["","http://localhost:3000"],
     method: ["GET", "POST",'PUT', 'DELETE'],
   }
 });
@@ -53,7 +59,6 @@ io.on("connection", (socket) => {
       onlineUser[userIndex].time = parseInt(data.time);
       io.emit('getOnlineUsers', onlineUser);
     }
-    console.log('TIME', onlineUser);
   });
 
    socket.on('userBusy', (userId) => {
@@ -81,9 +86,6 @@ io.on("connection", (socket) => {
       socketId: socket.id,
       o
     });
-
-    console.log('usuarios', onlineUserGame)
-
     // console.log('userOnline' , onlineUser);
     io.emit('getOnlineUsersGame', onlineUserGame);
  });
@@ -127,10 +129,28 @@ io.on("connection", (socket) => {
   });
 
    socket.on("send_message", (data) => {
-    console.log('send_mensage', data);
     socket.to(data.room).emit("receive_message", data);
    })
 
+   socket.on('requestLatestGameState', async (room) => {
+      try {
+        // Buscar el juego en la base de datos utilizando el gamesId (que es igual a room)
+        const gameState = await Games.findOne({ gamesId: room });
+
+        if (gameState) {
+          // Emitir el estado más reciente de la partida de vuelta al cliente
+          socket.to(room).emit('latestGameState', gameState);
+        } else {
+          console.log(`No se encontró un juego con el gamesId: ${room}`);
+        }
+      } catch (error) {
+        console.error('Error al obtener el estado del juego:', error);
+      }
+   });
+
+  //  socket.on('sendGameState', (data)=>{
+  //   socket.to(data.room).emit('receiveGameState', data.latestGameState)
+  //  })
     // send game
     socket.on('sendGame', (game) => {
       // console.log('sendGame', game)
@@ -153,10 +173,18 @@ io.on("connection", (socket) => {
         
       }
     );
-
    socket.on("send_move", (data) => {
     socket.to(data.room).emit("opponentMove", data);
    });
+   
+   socket.on('reconnectMove', (data) =>{
+      socket.to(data).emit('receiveReconnectMove', data);
+   })
+   socket.on("get_last_move", (data) => {
+    // Cuando un jugador pide el último movimiento, lo envías
+    socket.to(data.room).emit("opponentMove", data);
+  });
+  
 
    socket.on("playGame", (data) => {
     socket.to(data.roomGame).emit("receivePlayGame", data);
@@ -169,7 +197,6 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("receiveRevancha", data);
    });
    socket.on("tiempo", (data) => {
-    console.log('turno', data?.turno)
     socket.to(data.room).emit("receiveTiempo", data);
    });
 
@@ -211,7 +238,6 @@ io.on("connection", (socket) => {
    })
 
    socket.on("modalClose", (data) => {
-    console.log('modal close', data)
     socket.to(data.room).emit("receivemodalClose", data);
    });
 
@@ -225,7 +251,6 @@ io.on("connection", (socket) => {
 
    socket.on('deletePartida', (data) =>{
     partidas = partidas.filter((p) => p.room !== data?.roomPartida);   
-    console.log('regresar', partidas);
     socket.to(data?.room).emit('getPartidas', partidas);
    })
    
@@ -233,14 +258,10 @@ io.on("connection", (socket) => {
     onlineUser = onlineUser.filter((u) => u.socketId !== socket.id );
     io.emit('getOnlineUsers', onlineUser);
     onlineUserGame = onlineUserGame.filter((u) => u.socketId !== socket.id);
-     
-     console.log('onlineUserGame', onlineUserGame);
      io.emit('getOnlineUsersGame', onlineUserGame);
     console.log("User Disconnected", socket.id);
    })
-})
-
-
+});
 
 connectDB();
 
