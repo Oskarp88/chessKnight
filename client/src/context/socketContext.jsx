@@ -75,7 +75,7 @@ export const SocketProvider = ({ children, user }) => {
   const [games, setGames] = useState(null);
 
   useEffect(() => {
-    const newSocket = io.connect(/*'https://chessknigth-22fe0ebf751e.herokuapp.com'*/'http://localhost:8080');
+    const newSocket = io.connect('https://chessknigth-22fe0ebf751e.herokuapp.com');
     
     setSocket(newSocket);
 
