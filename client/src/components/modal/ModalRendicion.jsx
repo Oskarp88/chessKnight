@@ -20,11 +20,6 @@ export default function ModalRendicion({
   const {setCheckMate} = useCheckMateContext();
 
   const regresarHandle = () => {
-    localStorage.removeItem('pieces'); 
-    localStorage.removeItem('whiteTime');
-    localStorage.removeItem('blackTime');
-    localStorage.removeItem('destinationCell');
-    localStorage.removeItem('startCell');
     if(socket === null) return;
     if (auth?.user) {    
       setCheckMate(prevCheckMate => ({
@@ -35,7 +30,7 @@ export default function ModalRendicion({
         elo: 0
       })); 
       socket.emit('userAvailable', auth?.user?._id);
-       socket.emit('join-room', infUser?.room);
+       socket.emit('join-room', infUser?.time);
        socket.emit('deletePartida', {room: infUser?.time, roomPartida: room});
 
       navigate('/auth/channel');

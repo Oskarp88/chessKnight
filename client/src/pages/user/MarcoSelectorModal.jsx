@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import style from './UserProfile.module.css'; 
+import Spinner from 'react-bootstrap/esm/Spinner';
 
 const MarcoSelectorModal = ({ show, handleClose, marcos, selectMarco }) => {
   return (
@@ -13,8 +14,16 @@ const MarcoSelectorModal = ({ show, handleClose, marcos, selectMarco }) => {
         <div className={style.avatarGrid}>
           {marcos.map((item, index) => (
             <div key={index} className={style.avatarItem}  onClick={() => selectMarco(item.marco)}>
+             {item?.marco ? 
               <img src={item.marco} alt={`Marco ${index}`} className={style.avatarImage} style={{border:'none'}}/>
-            </div>
+              :  <div style={{color: '#000'}}>
+                <Spinner animation="border" size="sm" />
+                <Spinner animation="border" />
+                <Spinner animation="grow" size="sm" />
+                <Spinner animation="grow" />
+              </div>}
+            </div> 
+    
           ))}
         </div>
       </Modal.Body>

@@ -25,17 +25,20 @@ import Register from "./pages/user/Register";
 import { LanguagesProvider } from "./context/languagesContext";
 import Sidebar from "./components/navbar/sidebar";
 import NotFound from "./pages/PageNotFound";
+import { GameContextProvider } from "./context/gameContext";
 
 function App() {
   const {auth} = useAuth();
  
   return (
+    
   <SocketProvider user={auth.user}>
    <ChatContextProvider user={auth.user}>
      <PieceProvider>
        <LanguagesProvider>
        <CheckMateProvider >
-         <ChessboardProvider >
+         <ChessboardProvider user={auth.user}>  
+         <GameContextProvider user={auth.user}>      
             <div id="app">
               <Router>
                 <NavBar/>
@@ -60,12 +63,14 @@ function App() {
               </Router>
               <Toaster />  
             </div>
+            </GameContextProvider>
          </ChessboardProvider>
        </CheckMateProvider>
        </LanguagesProvider>
     </PieceProvider>
    </ChatContextProvider>
    </SocketProvider>
+   
   );
 }
 

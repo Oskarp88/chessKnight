@@ -1,23 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import style from './Modal.module.css'; // Asegúrate de importar correctamente el archivo CSS
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import { useSocketContext } from '../../context/socketContext';
 import { useCheckMateContext } from '../../context/checkMateContext';
 import { BlitzSvg, BulletSvg, FastSvg } from '../../svg';
+import { GameContext } from '../../context/gameContext';
 
-const Modal = ({infUser, user, isWhiteTime, revanchaHandle}) => {
+const Modal = ({infUser, user}) => {
   const navigate = useNavigate();
   const {auth} = useAuth();
   const {socket, room} = useSocketContext();
   const {setCheckMate} = useCheckMateContext();
+  const {isWhiteTime, revanchaHandle} = useContext(GameContext);
 
   const regresarHandle = () => {
-    localStorage.removeItem('pieces'); 
-    localStorage.removeItem('whiteTime');
-    localStorage.removeItem('blackTime');
-    localStorage.removeItem('destinationCell');
-    localStorage.removeItem('startCell');
     if(socket === null) return;  
     if (auth?.user) {  
       setCheckMate(prevCheckMate => ({

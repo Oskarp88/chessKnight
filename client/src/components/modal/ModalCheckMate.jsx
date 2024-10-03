@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import style from './ModalCheckMate.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
@@ -6,14 +6,16 @@ import { useSocketContext } from '../../context/socketContext';
 import { useCheckMateContext } from '../../context/checkMateContext';
 import FastSvg from '../../svg/fastSvg';
 import { BlitzSvg, BulletSvg } from '../../svg';
+import { GameContext } from '../../context/gameContext';
 
-export default function ModalCheckMate({ infUser, time, revanchaHandle, frase }) {
+export default function ModalCheckMate({ infUser, time, frase }) {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { socket, room } = useSocketContext();
   const { setCheckMate } = useCheckMateContext();
   const [redirecting, setRedirecting] = useState(false);
   const [countdown, setCountdown] = useState(5);
+  const {revanchaHandle} = useContext(GameContext);
 
   useEffect(() => {
     let interval;
@@ -30,11 +32,6 @@ export default function ModalCheckMate({ infUser, time, revanchaHandle, frase })
 
   useEffect(() => {
     if (redirecting && countdown === 0) {
-      localStorage.removeItem('destinationCell');
-      localStorage.removeItem('startCell');
-      localStorage.removeItem('pieces'); 
-      localStorage.removeItem('whiteTime');
-      localStorage.removeItem('blackTime');
       if (auth?.user) {
         setCheckMate((prevCheckMate) => ({
           ...prevCheckMate,
@@ -43,7 +40,7 @@ export default function ModalCheckMate({ infUser, time, revanchaHandle, frase })
           game: '',
           elo: 0,
         }));
-        socket.emit('join-room', 123);
+        socket.emit('join-room', time);
         socket.emit('userAvailable', auth?.user?._id);
         socket.emit('deletePartida', { room: infUser?.time, roomPartida: room });
         navigate('/auth/channel');

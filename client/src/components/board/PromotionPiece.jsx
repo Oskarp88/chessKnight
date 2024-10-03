@@ -1,10 +1,13 @@
+import { useContext } from 'react';
 import { PieceType } from '../../Types'
 import { useAuth } from '../../context/authContext';
 import { useChessboardContext } from '../../context/boardContext';
 import { useLanguagesContext } from '../../context/languagesContext';
 import style from './PromotionPiece.module.css'
+import { GameContext } from '../../context/gameContext';
 
-function PromotionPiece({currentTurn, handlePromotionSelection}) {
+function PromotionPiece() {
+    const {handlePromotionSelection, currentTurn} = useContext(GameContext);
     const {language} = useLanguagesContext();
 
   return (

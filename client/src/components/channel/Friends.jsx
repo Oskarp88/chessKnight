@@ -16,9 +16,12 @@ import Spinner from 'react-bootstrap/Spinner';
 import Insignias from '../insignias/Insignias';
 import Fast from '../../img/fast';
 import SettingsModal from '../modal/SettingsModal';
+import { useChessboardContext } from '../../context/boardContext';
+import { GameContext } from '../../context/gameContext';
 
 const Friends = ({ friends, onlineUsers, room }) => {
-  const {playersTotal, setPlayersTotal} = useSocketContext();
+  const {setPieces, resetPieces} = useChessboardContext();
+  const{resetBoard} = useContext(GameContext);
   const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
   const [showModalSettings, setShowSettings] = useState();
   const [hoveredFriend, setHoveredFriend] = useState(null);
@@ -38,13 +41,13 @@ const Friends = ({ friends, onlineUsers, room }) => {
   const {auth} = useAuth();
   const navigate = useNavigate();
 
-  const {socket, setRoom, setInfUser, infUser, userChess} = useSocketContext();
+  const {socket, setRoom, setInfUser, infUser, userChess, postGames} = useSocketContext();
   const {language} = useLanguagesContext();
 
-  const desafiadoAudio = new Audio(desafiadoSound);
-  desafiadoAudio.volume = 0.1;
-  const rechazadoAudio = new Audio(rechazadoSound);
-  rechazadoAudio.volume = 0.1;
+  // const desafiadoAudio = new Audio(desafiadoSound);
+  // desafiadoAudio.volume = 0.1;
+  // const rechazadoAudio = new Audio(rechazadoSound);
+  // rechazadoAudio.volume = 0.1;
 
 
   const allOponnentOnline = friends.filter((friend)=>
@@ -87,63 +90,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
      socket.emit('offGame', {off: true, roomGame});
   };
 
-  const playGame = () => {
-    setShowModalOpponent(false);
-    if(socket === null) return;
-     socket.emit('playGame', {
-      showModalOpponent, roomGame, 
-      idOpponent: auth?.user?._id,
-      username: userChess?.username, 
-      bandera: userChess?.imagenBandera,
-      ratingBullet: userChess?.eloBullet,
-      ratingBlitz: userChess?.eloBlitz,
-      ratingFast: userChess?.eloFast,
-      country: userChess?.country
-    });
-     socket.emit('joinRoomGamePlay', roomGame); 
-     socket.emit('userBusy', auth?.user?._id);
-     navigate('/chess');    
-  };
-
   const offGame = () => {
     setShowModalOpponent(false);
     if(socket === null) return;
      socket.emit('offGame', {off: true, roomGame});  
   };
-
-  const createGame = (firstId, secondId, username, photo, marco) =>{
-    let colorRamdon = Math.random() < 0.5 ? 'white' : 'black';
-    if(socket === null) return;
-     setAceptarDesafio(true);
-     setOffGame(false);
-     setShowModalMin(false);
-     const uuid = uuidv4(); 
-     socket.emit('joinRoomGamePlay', uuid);   
-     setRoomGame(uuid);
-     setInfUser((prevInfUser) => ({
-      ...prevInfUser,
-      color: colorRamdon,
-      idOpponent: secondId,
-      username: userModal.username,
-      photo
-    }));
-     socket.emit('sendGame', {
-       color: colorRamdon,
-       room,
-       gameId: uuid,
-       Id: firstId,
-       username: userChess?.username,
-       opponentId: secondId,
-       time: infUser?.time,
-       ratingBullet: userChess?.eloBullet,
-       ratingBlitz: userChess?.eloBlitz,
-       ratingFast: userChess?.eloFast,
-       bandera: userChess?.imagenBandera,
-       country: userChess?.country,
-       photo: auth?.user?.photo,
-       marco: auth?.user?.marco
-     });   
-  }
 
   useEffect(() => {
     setRoom(roomGame);
@@ -155,7 +106,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
       
       if(data?.senderId === auth?.user?._id){
          handleModalOpponentOpen(data);
-         desafiadoAudio.play();
+        //  desafiadoAudio.play();
          setInfUser((prevInfUser) => ({
           ...prevInfUser,
           idOpponent: data?.idOpponent,
@@ -193,7 +144,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
     });
 
     socket.on('getGame', handleGetGame);
+    //datos recibidos de quien acepto el desafio
+    
     socket.on('receivePlayGame',(data) => {
+      resetBoard();
+      setPieces(resetPieces);
       localStorage.setItem('bandera', data?.bandera);
       setInfUser((prevInfUser) => ({
         ...prevInfUser,
@@ -223,7 +178,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
 
     socket.on('receiveOffGame',(data) => {
       if(data?.off){
-         rechazadoAudio.play();
+        //  rechazadoAudio.play();
          setOffGame(data?.off);
          setAceptarDesafio(false);
       }    
@@ -244,6 +199,64 @@ const Friends = ({ friends, onlineUsers, room }) => {
     };
     
   }, [socket, roomGame, isOffGame, aceptarDesafio, setIdUser, auth.user]);
+
+  
+  //enviar desafio
+  const createGame = (firstId, secondId, username, photo, marco) =>{
+    let colorRamdon = Math.random() < 0.5 ? 'white' : 'black';
+    if(socket === null) return;
+     setAceptarDesafio(true);
+     setOffGame(false);
+     setShowModalMin(false);
+     const uuid = uuidv4(); 
+     socket.emit('joinRoomGamePlay', uuid);   
+     setRoomGame(uuid);
+     setInfUser((prevInfUser) => ({
+      ...prevInfUser,
+      color: colorRamdon,
+      idOpponent: secondId,
+      username: userModal.username,
+      photo
+    }));
+     socket.emit('sendGame', {
+       color: colorRamdon,
+       room,
+       gameId: uuid,
+       Id: firstId,
+       username: userChess?.username,
+       opponentId: secondId,
+       time: infUser?.time,
+       ratingBullet: userChess?.eloBullet,
+       ratingBlitz: userChess?.eloBlitz,
+       ratingFast: userChess?.eloFast,
+       bandera: userChess?.imagenBandera,
+       country: userChess?.country,
+       photo: auth?.user?.photo,
+       marco: auth?.user?.marco
+     });   
+  }
+  
+  //cuando el desafiado acepta
+  const playGame = () => {
+    resetBoard();
+    postGames(roomGame,resetPieces);
+    setPieces(resetPieces);
+    setShowModalOpponent(false);   
+    if(socket === null) return;
+     socket.emit('playGame', {
+      showModalOpponent, roomGame, 
+      idOpponent: auth?.user?._id,
+      username: userChess?.username, 
+      bandera: userChess?.imagenBandera,
+      ratingBullet: userChess?.eloBullet,
+      ratingBlitz: userChess?.eloBlitz,
+      ratingFast: userChess?.eloFast,
+      country: userChess?.country
+    });
+     socket.emit('joinRoomGamePlay', roomGame); 
+     socket.emit('userBusy', auth?.user?._id);
+     navigate('/chess');    
+  };
 
   const handleModalInf = async(userId) => {
     const response = await getRequest(`${baseUrl}/user/${userId}`);

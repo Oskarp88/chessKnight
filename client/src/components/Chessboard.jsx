@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef , memo} from 'react';
+import React, { useEffect, useState, useRef , memo, useContext} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Chessboard.css';
 import { PieceType } from '../Types';
@@ -40,6 +40,7 @@ import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
 import PromotionPiece from './board/PromotionPiece';
 import Toast from './toast/Toast';
+import { GameContext } from '../context/gameContext';
 
 function Chessboard() {
 
@@ -50,67 +51,63 @@ function Chessboard() {
      infUser, 
      userChess, 
      setInfUser, 
-     setUser
+     setUser,
+     gamesUpdate,
+     games
     } = useSocketContext();
+  const {
+    whiteMoveLog, 
+    blackMoveLog, 
+    currentTurn, setCurrentTurn,
+    selectedPiece, setSelectedPiece,
+    startCell, setStartCell,
+    startCellRival, 
+    destinationCell, setDestinationCell,
+    destinationCellRival, 
+    kingCheckCell, setKingCheckCell,
+    enPassantTarget, setEnPassantTarget,
+    userWon, setUserWon,
+    promotionModalOpen, setPromotionModalOpen,
+    modaltime,
+    isGameOver, setGameOver,
+    whiteTime, setWhiteTime,
+    blackTime, setBlackTime,
+    modalTablas, 
+    modalSendTablas, 
+    aceptarRevancha, 
+    modalAbandonar, 
+    tied, setTied,
+    frase, setFrase,
+    showToast, setShowToast,
+    color, 
+    textToast, 
+    modalTablasAceptada, setModalTablasAceptada,
+    isCheckMate,
+    handlePieceClick,
+    handleTileClick,
+    movePiece,
+    ofrecerTablas,
+    abandonarHandle,
+    formatTime,
+  } = useContext(GameContext);
   const {auth} = useAuth();
   const {checkMate ,setCheckMate} = useCheckMateContext();
   const {
     boardColor,
     pieces, setPieces, 
-    resetPieces
   } = useChessboardContext();  
-  
-  
-  const [pieceAux, setPieceAux] = useState(null);
-  
  
-  const [currentTurn, setCurrentTurn] = useState('white');
-  const [selectedPiece, setSelectedPiece] = useState(null);
-  const [startCell, setStartCell] = useState(null);
-  const [startCellRival, setStartCellRival] = useState(null);
-  const [destinationCell, setDestinationCell] = useState(null);
-  const [destinationCellRival, setDestinationCellRival] = useState(null);
-  const [kingCheckCell, setKingCheckCell] = useState(null);
-  const [enPassantTarget, setEnPassantTarget] = useState(null);
-  const [userWon, setUserWon] = useState(null);
-  const [promotionModalOpen, setPromotionModalOpen] = useState(false);
-  const [isPromotionComplete, setPromotionComplete] = useState(false);
-  const [modaltime, setModalTime] = useState(false);
-  const [isGameOver, setGameOver] = useState(false);
-  const [whiteMoveLog, setWhiteMoveLog] = useState([]);
-  const [blackMoveLog, setBlackMoveLog] = useState([]);
-  const [moveLog, setMoveLog] = useState([]);
-  const [countNoCapture, setCountNoCapture] = useState(0);
-  const [whiteTime, setWhiteTime] = useState(infUser?.time || 1);
-  const [blackTime, setBlackTime] = useState(infUser?.time || 1);
-  const [isWhiteTime, setIsWhiteTime] = useState('');
-  const [loadingTablas, setLoadingTablas] = useState(false);
-  const [modalTablas, setModalTablas] = useState(false);
-  const [modalSendTablas, setSendTablas] = useState(false);
-  const [modalTablasAceptada, setModalTablasAceptada] = useState(false);
-  const [aceptarRevancha, setAceptarRevancha] = useState(false);
-  const [modalAbandonar, setModalAbandonar] = useState(false);
-  const [modalRendicion, setModalRendicion] = useState(false);
-  const [sendRevancha, setSendRevancha] = useState(false);
-  const [sendRevanchaRechada, setRevanchaRechazada] = useState(false);  
-  const [tied, setTied] = useState(false);
-  const [modalTiedRepetition, setModalTiedRepetition] = useState(false);
-  const [frase, setFrase] = useState(null);
-  const [showToast, setShowToast] = useState(false);
-  const [color, setColor] = useState('');
-  const [textToast, setTextToast] = useState('');
 
-  const toqueAudio = new Audio(toqueSound);
-  const soltarAudio = new Audio(soltarSound);
-  const capturedAudio = new Audio(capturedSound);
-  const victoryAudio = new Audio(victorySound);
-  const derrotaAudio = new Audio(derrotaSound);
-  const jakeAudio = new Audio(jakeSound);
-  const jakeMateAudio = new Audio(jakeMateSound);
+  // const toqueAudio = new Audio(toqueSound);
+  // const soltarAudio = new Audio(soltarSound);
+  // const capturedAudio = new Audio(capturedSound);
+  // const victoryAudio = new Audio(victorySound);
+  // const derrotaAudio = new Audio(derrotaSound);
+  // const jakeAudio = new Audio(jakeSound);
+  // const jakeMateAudio = new Audio(jakeMateSound);
  
   const ref = useRef();
   const chessboardRef = useRef(null);
-
 
   useEffect(() => {
     const dataCellStart = localStorage.getItem('startCell');
@@ -161,874 +158,6 @@ function Chessboard() {
     }
   },[]);
 
-  useEffect(()=>{
-    
-    if(countNoCapture === 100) {
-      console.log('empate por inactividad de captura');
-      setFrase('por inactividad de captura');
-      setModalTablasAceptada(true);
-      setTied(true);
-      setCheckMate(prevCheckMate => ({
-        ...prevCheckMate,
-        userId: auth?.user?._id,
-        opponentId: infUser?.idOpponent,
-        name: auth?.user?.username,
-        nameOpponent: infUser?.username,
-        bandera: auth?.user?.imagenBandera,
-        banderaOpponent: infUser?.bandera,
-        country: auth?.user?.country,
-        countryOpponent: infUser?.country,
-        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                'fast' }`,
-        game: 'empate',
-        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-          parseInt(userChess?.eloFast)}`,
-        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-          parseInt(infUser?.fast)}`,
-        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-          color: infUser?.color
-        }));
-    }
-  },[countNoCapture]);
-
-  useEffect(()=>{
-    const  isInsufficientMaterial = insufficientMaterial(pieces);
-
-    if(isInsufficientMaterial){
-        setFrase('Empate por material insuficiente');
-        setTied(true);
-        setModalTablasAceptada(true);
-        setCheckMate(prevCheckMate => ({
-        ...prevCheckMate,
-        userId: auth?.user?._id,
-        opponentId: infUser?.idOpponent,
-        name: auth?.user?.username,
-        nameOpponent: infUser?.username,
-        bandera: auth?.user?.imagenBandera,
-        banderaOpponent: infUser?.bandera,
-        country: auth?.user?.country,
-        countryOpponent: infUser?.country,
-        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                'fast' }`,
-        game: 'empate',
-        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-          parseInt(userChess?.eloFast)}`,
-        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-          parseInt(infUser?.fast)}`,
-        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-          color: infUser?.color
-        }));
-    }  
-  },[pieces]);
-
-useEffect(()=>{
-  const tiedRepetition = handleThreefoldRepetition(moveLog);
-  
-  if(tiedRepetition){
-    setFrase('Tablas por repetición');
-    setTied(true);
-    setModalTablasAceptada(true);
-    setCheckMate(prevCheckMate => ({
-      ...prevCheckMate,
-      userId: auth?.user?._id,
-      opponentId: infUser?.idOpponent,
-      name: auth?.user?.username,
-      nameOpponent: infUser?.username,
-      bandera: auth?.user?.imagenBandera,
-      banderaOpponent: infUser?.bandera,
-      country: auth?.user?.country,
-      countryOpponent: infUser?.country,
-      time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-               infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-               'fast' }`,
-      game: 'empate',
-      eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-        parseInt(userChess?.eloFast)}`,
-      eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-        infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-        parseInt(infUser?.fast)}`,
-      elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-        parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-        color: infUser?.color
-    }));
-  }
- },[moveLog]);
-
-  // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60).toString().padStart(2, "0");
-    const seconds = (time % 60).toString().padStart(2, "0");
-    return `${minutes}:${seconds}`;
-  };
-  
-  useEffect(() => {
-
-     let timer = null;
-     localStorage.setItem('whiteTime', whiteTime);
-     localStorage.setItem('blackTime', blackTime);
-
-     if(socket){
-      if(infUser?.color === currentTurn){
-        socket.emit('tiempo', {room, whiteTime, blackTime ,turno: currentTurn});
-      }
-     }
-     if (whiteTime === 0 || blackTime === 0) {
-        setIsWhiteTime(whiteTime === 0 ? 'white' : 'black');
-        setModalTime(true);
-      
-     }
-    
-    if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0 ) {
-      // Cambiar de turno y actualizar el tiempo restante
-      if (currentTurn === 'white') {
-        if(infUser?.color === 'white') {
-          timer = setTimeout(() => {
-            setWhiteTime((prevTime) => prevTime - 1);           
-          }, 1000);
-        }
-         
-        
-      } else {
-        if(infUser?.color === 'black'){
-        timer = setTimeout(() => {
-          setBlackTime((prevTime) => prevTime - 1);
-        }, 1000);}
-      }
-    }
-  
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [currentTurn, whiteTime, blackTime, isWhiteTime]);
-  
-  useEffect(() => {
-    if (whiteTime === 0 || blackTime === 0) {
-      if (isWhiteTime === infUser?.color) {
-        setCheckMate((prevCheckMate) => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-              'fast'}`,
-          game: 'derrota',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-          color: infUser?.color
-        }));
-      } else {
-        setCheckMate((prevCheckMate) => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-              'fast'}`,
-          game: 'victoria',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-            color: infUser?.color
-        }));
-      }
-    }
-  }, [isWhiteTime]);
-
-  useEffect(() => {
-      if(socket === null) return;
-       // Manejar el evento "connect" para detectar la conexión exitosa
-      socket.on("connect", () => {
-        setTextToast("Conexión al servidor establecida.");
-        setColor('#58d68d');
-        setShowToast(true);
-       
-        // Realiza cualquier lógica adicional que necesites después de la reconexión
-        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
-        socket.emit('joinRoomGamePlay', room); 
-
-      });
-      // Manejar el evento "disconnect" para detectar desconexiones
-      socket.on("disconnect", (reason) => {
-        console.log("Desconectado. Razón:", reason);
-        //medidas específicas en caso de desconexión aquí, volver a conectar automáticamente o mostrar un mensaje de error al usuario.
-        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
-      });
-      socket.on("reconnect", (attemptNumber) => {
-        setTextToast(`Reconectado en el intento ${attemptNumber}`);
-        setColor('#58d68d');
-        setShowToast(true);
-        // Realiza cualquier lógica adicional que necesites después de la reconexión
-        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
-        socket.emit('joinRoomGamePlay', room); 
-      });
-      socket.on("reconnect_error", (error) => {
-        console.log("Error al intentar reconectar:", error);
-        // Puedes implementar una lógica de manejo de errores personalizada aquí
-      });
-
-      socket.on("reconnect_failed", () => {
-        console.log("Fallo al reconectar. No se pudo restablecer la conexión.");
-        socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
-      });
-      socket.on("pawn_promotion", (data)=>{
-
-        setPieces(data.pieces)
-        setCurrentTurn(data.currentTurn);
-        setDestinationCell({x: data.destinationCell.x, y: data.destinationCell.y});
-        setSelectedPiece(null);
-        setStartCell(null);
-
-        const updatedPieces = data.pieces.map((p) => {
-          if (p.x === data.destinationCell.x && p.y === data.destinationCell.y && p.type === PieceType.PAWN) {
-                return { ...data.promotionPiece, x: p.x, y: p.y, color: data.currentTurn === 'white' ? 'black' : 'white' };
-          }
-          return p;
-        });
-
-        setPieces(updatedPieces);
-      });
-   
-      socket.on('receiveRevancha', (data) => {
-        setModalTablasAceptada(false);
-        setModalRendicion(false);
-        setModalTiedRepetition(false);
-        setAceptarRevancha(data?.revancha);    
-      });
-
-      socket.on('receiveStalemate', (data) => {
-        setFrase('por Rey ahogado');
-        setModalTablasAceptada(data.state);
-        setTied(true);
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                   infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                   'fast' }`,
-          game: 'empate',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-          color: infUser?.color
-        }));
-      })
-
-      socket.on('receiveTiempo', (data) => {
-        if (data?.turno === 'white') {
-            setWhiteTime(parseInt(data?.whiteTime));                 
-        } else {
-          setBlackTime(parseInt(data?.blackTime));       
-        }       
-      });
-
-      socket.on('revanchaAceptada', async(data)=>{ 
-        localStorage.removeItem('pieces'); 
-        localStorage.removeItem('whiteTime');
-        localStorage.removeItem('blackTime');
-        localStorage.removeItem('destinationCell');
-        localStorage.removeItem('startCell');      
-        setInfUser((prevInfUser) => ({
-          ...prevInfUser,
-          color: data?.color === 'white' ? 'black' : 'white',
-        }));
-        setUser((prevInfUser) => ({
-          ...prevInfUser,
-          color: data?.color === 'white' ? 'black' : 'white',
-        }));
-          resetBoard();
-      });
-
-      socket.on('receiveRevanchaRechazada',(data) => {
-        setRevanchaRechazada(true);
-        setSendRevancha(false);
-      })
-
-      socket.on('receiveTablas',(data) => {     
-           setSendTablas(true);      
-      });
-      socket.on('receiveCancelarTablas', (data) => {
-         setSendTablas(false);
-      })
-      socket.on('receiveRechazarTablas', () => {
-        setModalTablas(false);
-      })
-      socket.on('receiveAceptarTablas', () => {
-        localStorage.removeItem('whiteTime');
-        localStorage.removeItem('blackTime'); 
-        setModalTablas(false);
-        setSendTablas(false);
-        setModalTablasAceptada(true);
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                   infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                   'fast' }`,
-          game: 'empate',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-            color: infUser?.color
-        }));
-      })
-      socket.on('receiveCheckMate',(data) => {
-        derrotaAudio.play();
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                   infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                   'fast' }`,
-          game: 'derrota',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-            color: infUser?.color
-        }));
-        setUserWon(prev => ({
-          ...prev, 
-          username: auth?.user?.username, 
-          nameOpponent: data?.username, 
-          idUser: auth?.user?._id,
-          idOpponent: data?.idUser,
-          turn: data?.color,
-          status: '0',
-          color: infUser?.color === 'white' ? 'black' : 'white',
-          photo: infUser?.photo
-        }));
-        setFrase('por !!Jaque Mate!!');
-        setGameOver(true);
-      })
-      socket.on('receiveAbandonar',(data) => {
-        localStorage.removeItem('whiteTime');
-        localStorage.removeItem('blackTime');
-        victoryAudio.play();
-        setCheckMate((prevCheckMate) => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-              'fast'}`,
-          game: 'victoria',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-            color: infUser?.color
-        }));
-        setUserWon(prev => ({
-          ...prev, 
-          username: auth?.user?.username, 
-          nameOpponent: data?.username, 
-          idUser: auth?.user?._id,
-          idOpponent: data?.idUser,
-          turn: data?.color === 'white' ? 'black' : 'white',
-          status: '1',
-          color: infUser?.color === 'white' ? 'black' : 'white',
-          photo: infUser?.photo
-        }));
-        setFrase(`por abandono de las ${data?.color === 'white' ? 'negras' : 'blancas'}`);
-        setGameOver(true);
-      })
-      socket.on("opponentMove", handleOpponentMove);
-
-      return () => {
-        if (socket) {
-          socket.off("opponentMove", handleOpponentMove);
-        }
-      };
-  }, [socket] );
-
-  useEffect(() => {
-    if (isPromotionComplete) {
-      setPromotionComplete(false);
-    }
-  }, [isPromotionComplete, startCell]);
-
-  const handleOpponentMove = async (data) => {
-    const { piece, x, y, turn, pieces} = data;
-      setCurrentTurn(turn);
-      setStartCell(null)
-      setDestinationCell(null);
-      
-      if (piece && piece.type === PieceType.PAWN) {
-        if (piece.x !== x || piece.y !== y) {
-          const dy = y - piece.y;
-          if (Math.abs(dy) === 2) {
-            //el peón avanzó dos casillas, y configura enPassantTarget.
-            setEnPassantTarget({ x, y: y - (dy > 0 ? 1 : -1) });
-          }      
-        }
-      }
-
-      setStartCellRival({x: piece.x, y: piece.y});
-      setDestinationCellRival({ x, y }); // Establece la casilla de destino
-      // localStorage.setItem('startCell', JSON.stringify({x: piece.x, y: piece.y}));
-      // localStorage.setItem('destinationCell', JSON.stringify({x,y}));
-
-      const isCheck = isSimulatedMoveCheckOpponent(piece, x, y, pieces, enPassantTarget, turn)
-      const king = pieces.find((p) => p.type === PieceType.KING && p.color === turn);
-      const checkMate =  isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-      if(isCheck){
-       
-        setKingCheckCell({x: king.x, y: king.y});
-        !checkMate && jakeAudio.play(); 
-        if(checkMate){
-           jakeMateAudio.play();
-        }
-       }  else{
-         setKingCheckCell(null);
-     }
-   
-    setPieces((prevPieces) => {
-      const updatedPieces = prevPieces.map((p) => {
-          // Verificar si el rey está en su posición inicial y va a hacer enroque corto o largo
-          if (piece.type === PieceType.KING && piece.x === 4 && (piece.y === 0 || piece.y === 7)) {
-              // Enroque corto
-              if (x === 6 && (y === 0 || y === 7)) {
-                  if (p.type === PieceType.ROOK && p.x === 7 && p.y === piece.y) {
-                      // Mover la torre del enroque corto
-                      return { ...p, x: 5, y: piece.y }; // La torre se mueve de (7, y) a (5, y)
-                  }
-              }
-              // Enroque largo
-              else if (x === 2 && (y === 0 || y === 7)) {
-                  if (p.type === PieceType.ROOK && p.x === 0 && p.y === piece.y) {
-                      // Mover la torre del enroque largo
-                      return { ...p, x: 3, y: piece.y }; // La torre se mueve de (0, y) a (3, y)
-                  }
-              }
-          }
-          return p;
-      });
-      return updatedPieces;
-  });
-
-     
-      setPieces((prevPieces) => {
-        let captureOccurred = false;
-        // Crea una copia actualizada de la lista de piezas
-        const updatedPieces = prevPieces.map((p) => {
-          
-          if (p.x === piece.x && p.y === piece.y) {
-          
-            // Encuentra la pieza que está siendo movida y actualiza su posición
-            return { ...p, x, y };
-          } else if (p.x === x && p.y === y && p.color !== piece.color) {
-            // Si la casilla de destino está ocupada por una pieza enemiga, cápturala (no la incluyas en la nueva lista)
-            captureOccurred = true;
-            
-            return null;
-          } else {
-            // Mantén inalteradas las otras piezas
-           
-            return p;
-          }
-        }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
-
-      if(!isCheck || !checkMate){
-        captureOccurred ? capturedAudio.play() : soltarAudio.play();
-      }
-
-        const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
-            ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
-            ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
-            ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
-            ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
-            ?  `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` 
-            : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-          }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-           if (piece && piece.color === "white") {
-             setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-           } else if (piece && piece.color === 'black'){
-             setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-             setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-           }
-        
-        if (captureOccurred) {
-          setCountNoCapture(0);
-          
-        } else {
-          setCountNoCapture(prevCount => prevCount + 1);
-    
-        }
-        localStorage.setItem('pieces', JSON.stringify(updatedPieces));
-        return updatedPieces;
-      });
-
-   
-
-       localStorage.removeItem('userChess');
-       localStorage.removeItem('infUser');
-
-       localStorage.setItem('chessboard',
-        JSON.stringify({
-          room,  
-          checkMate,
-          userChess,
-          infUser,
-          currentTurn: turn
-      }));
-     
-  };
-
-  const handlePromotionSelection = async(promotionPiece) => {
-    //  selección de la pieza de promoción
-    // Reemplaza el peón con la pieza seleccionada
-    const updatedPieces = pieces.map((p) => {
-      if (p.x === destinationCell.x && p.y === destinationCell.y && p.type === PieceType.PAWN) {
-        return {...promotionPiece, x: p.x, y: p.y, color: currentTurn === 'white' ? 'black' : 'white'};
-      }
-      return p;
-    });
-
-    
-    setPieces(updatedPieces);
-    const pieceData = {
-      pieces,
-      promotionPiece,
-      destinationCell,
-      currentTurn,
-      author: auth?.user?.username,
-      room
-    }
-
-    await socket.emit("promotion", pieceData);
-    setPromotionModalOpen(false);
-  };
-  
-  const handlePieceClick = (piece, x, y) => {
-
-    if(tied === true) return;
-    // if(infUser?.color !== currentTurn) return;
-    if (piece && piece.color === infUser?.color) {
-      if (selectedPiece && piece.x === selectedPiece.x && piece.y === selectedPiece.y) {        
-        setDestinationCell(null);
-      } else {
-        toqueAudio.play(); 
-        setSelectedPiece(piece);
-        setPieceAux(piece);
-        setStartCell({ x, y }); // Establece la casilla de inicio     
-        localStorage.setItem('startCell', JSON.stringify({x,y}));
-      }
-    }
-  };
-  
-  const handleTileClick = async(x, y) => {
-    if(tied === true) return;
-    if(infUser?.color !== currentTurn) return;
-     setStartCellRival(null);
-     setDestinationCellRival(null);
-    // Manejar el clic en una casilla para mover la pieza
-    if (selectedPiece && selectedPiece.type === PieceType.PAWN) {
-      if (selectedPiece.x !== x || selectedPiece.y !== y) {
-        const dy = y - selectedPiece.y;
-        if (Math.abs(dy) === 2) {
-          // Esto significa que el peón avanzó dos casillas, y puedes configurar enPassantTarget.
-          setEnPassantTarget({ x, y: y - (dy > 0 ? 1 : -1) });
-        }      
-      }
-    }
-    if (!selectedPiece) {
-      return;
-    }
-    
-    if (isMoveValid(
-           selectedPiece.type, 
-           selectedPiece, 
-           x,y,pieces,
-           enPassantTarget,
-           currentTurn)) {
-
-            const check =  isSimulatedMoveCausingCheck(selectedPiece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-     
-            if (check) {
-              // Implementar la lógica para manejar el jaque mate
-              console.log('¡estas en jake');       
-              return
-            } 
-
-            const isCheck = isSimulatedMoveCheckOpponent(selectedPiece, x, y, pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white')
-            const king = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
-     
-      if( isCheck){
-        
-        setKingCheckCell({x: king.x, y: king.y});       
-        const checkMate = selectedPiece && isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-        !checkMate && jakeAudio.play();
-        if(checkMate){
-          jakeMateAudio.play();
-          victoryAudio.play();
-          setUserWon(prev => ({
-            ...prev, 
-            username: auth?.user?.username,
-            nameOpponent: infUser?.username, 
-            idUser: auth?.user?._id,
-            idOpponent: infUser?.idOpponent,
-            turn: infUser?.color === 'white' ? 'black' : 'white',
-            status: '1',
-            color: infUser?.color === 'white' ? 'black' : 'white',
-            photo: infUser?.photo
-          }));
-        
-         if(socket ===null) return; 
-          setCheckMate(prevCheckMate => ({
-            ...prevCheckMate,
-            userId: auth?.user?._id,
-            opponentId: infUser?.idOpponent,
-            name: auth?.user?.username,
-            nameOpponent: infUser?.username,
-            bandera: auth?.user?.imagenBandera,
-            banderaOpponent: infUser?.bandera,
-            country: auth?.user?.country,
-            countryOpponent: infUser?.country,
-            time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                      infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                      'fast' }`,
-            game: 'victoria',
-            eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-              infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-              parseInt(userChess?.eloFast)}`,
-            eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-              infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-              parseInt(infUser?.fast)}`,
-            elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-              infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-              parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-            color: infUser?.color
-          }));
-          setFrase('por !!Jaque Mate!!');
-          setGameOver(prevIsGameOver => {
-            console.log("isGameOver:", !prevIsGameOver);
-            return true;
-          });
-          if(socket ===null) return; 
-          socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
-        }
-        
-      }else{
-        setKingCheckCell(null);
-      }
-      
-      const pieceData = {
-        pieces,
-        piece: selectedPiece,
-        x,
-        y,
-        turn: currentTurn === 'white' ? 'black' : 'white',
-        author: auth?.user?.username,
-        room
-      };
-      
-      movePiece(selectedPiece, x, y);    
-      setSelectedPiece(null);
-      setCurrentTurn(currentTurn === 'white' ? 'black' : 'white');
-      setDestinationCell({ x, y });
-      localStorage.setItem('destinationCell', JSON.stringify({x,y}));
-
-       localStorage.setItem('chessboard',
-        JSON.stringify({ 
-          room,  
-          checkMate,
-          userChess,
-          infUser,
-          currentTurn: currentTurn === 'white' ? 'black' : 'white'
-      }));
-      
-      
-      if (selectedPiece.type === PieceType.PAWN && (y === 0 || y === 7)) {
-        // Abrir el modal de promoción
-        setPromotionModalOpen(true);
-        return;
-      }
-      
-      await socket.emit("send_move", pieceData);
-      
-      const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
-      console.log('king', king1.color);
-    if (!isCheck && isStalemate(king1, pieces, selectedPiece, x, y)) {
-      socket.emit('stalemate', {room, state : true});
-      setModalTablasAceptada(true);
-      setTied(true);
-      setFrase('por Rey ahogado');
-      setCheckMate(prevCheckMate => ({
-        ...prevCheckMate,
-        userId: auth?.user?._id,
-        opponentId: infUser?.idOpponent,
-        name: auth?.user?.username,
-        nameOpponent: infUser?.username,
-        bandera: auth?.user?.imagenBandera,
-        banderaOpponent: infUser?.bandera,
-        country: auth?.user?.country,
-        countryOpponent: infUser?.country,
-        time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                 infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                 'fast' }`,
-        game: 'empate',
-        eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-          parseInt(userChess?.eloFast)}`,
-        eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-          infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-          parseInt(infUser?.fast)}`,
-        elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-          infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-          parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-        color: infUser?.color
-      }));
-      return;
-    }
-    }
-  }; 
-  
-  const movePiece = async (piece, x, y) => {
-    if (piece && piece.color === currentTurn) {
-      let captureOccurred = false;
-      setPieces((prevPieces) => {         
-        // Crea una copia actualizada de la lista de piezas
-        const updatedPieces = prevPieces.map((p) => {
-          if (p.x === piece.x && p.y === piece.y && !(p.x === x && p.y === y && p.color !== piece.color)) {
-            // Encuentra la pieza que está siendo movida y actualiza su posición
-            return { ...p, x, y };
-
-          } else if (p.x === x && p.y === y && p.color !== piece.color) {
-            // Si la casilla de destino está ocupada por una pieza enemiga, cápturala
-            captureOccurred = true;
-            return null;
-          } else {
-            // Mantén inalteradas las otras piezas
-            return p;
-          }
-        }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
-        
-        captureOccurred ? capturedAudio.play() : soltarAudio.play();
-        // Solo actualizar el registro de movimientos una vez
-        if (piece) {
-          const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 ? 
-            '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 ? '0-0' :
-            piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 ? '0-0' :
-            piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 ? '0-0-0' :
-            `${
-              piece?.type?.charAt(0) === 'p'
-                ? `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` // Captura de peón
-                : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toUpperCase()) || ''
-            }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`; // Agrega 'x' si hay captura
-  
-          // Guardar el registro de movimientos para blanco o negro
-          if (piece.color === "white") {
-            setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-            setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-          } else if (piece.color === 'black') {
-            setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-            setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-          }
-        }
-  
-        if (captureOccurred) {
-          setCountNoCapture(0);
-        } else {
-          setCountNoCapture(prevCount => prevCount + 1);
-        }
-  
-        localStorage.setItem('pieces', JSON.stringify(updatedPieces));
-        return updatedPieces;
-      });
-    }
-  };
-  
-   
-  
   const handleMouseDown = (e, piece, x, y) => {
     e.preventDefault();
 
@@ -1121,13 +250,13 @@ useEffect(()=>{
         const king = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
 
         if( isCheck){
-          jakeAudio.play();
+          // jakeAudio.play();
           setKingCheckCell({x: king.x, y: king.y});       
           const checkMate = piece && isCheckmateAfterMove(piece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-         !checkMate && jakeAudio.play();
+        //  !checkMate && jakeAudio.play();
           if(checkMate){
-            jakeMateAudio.play();
-            victoryAudio.play();
+            // jakeMateAudio.play();
+            // victoryAudio.play();
             setUserWon(prev => ({
               ...prev, 
               username: auth?.user?.username,
@@ -1141,31 +270,7 @@ useEffect(()=>{
             }));
           
            if(socket ===null) return; 
-            setCheckMate(prevCheckMate => ({
-              ...prevCheckMate,
-              userId: auth?.user?._id,
-              opponentId: infUser?.idOpponent,
-              name: auth?.user?.username,
-              nameOpponent: infUser?.username,
-              bandera: auth?.user?.imagenBandera,
-              banderaOpponent: infUser?.bandera,
-              country: auth?.user?.country,
-              countryOpponent: infUser?.country,
-              time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                        infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                        'fast' }`,
-              game: 'victoria',
-              eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-                infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-                parseInt(userChess?.eloFast)}`,
-              eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-                infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-                parseInt(infUser?.fast)}`,
-              elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-                infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-                parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-              color: infUser?.color
-            }));
+            isCheckMate('victoria');
             setFrase('por !!Jaque Mate!!');
             setGameOver(prevIsGameOver => {
               console.log("isGameOver:", !prevIsGameOver);
@@ -1173,8 +278,7 @@ useEffect(()=>{
             });
             if(socket ===null) return; 
             socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
-          }
-          
+          }         
         }else{
           setKingCheckCell(null);
         }
@@ -1211,7 +315,7 @@ useEffect(()=>{
           setPromotionModalOpen(true);
           return;
         }
-        
+        localStorage.setItem('send_move', JSON.stringify(pieceData));
         await socket.emit("send_move", pieceData);
         const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
         
@@ -1220,31 +324,7 @@ useEffect(()=>{
         setModalTablasAceptada(true);
         setTied(true);
         setFrase('por Rey ahogado');
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
-          userId: auth?.user?._id,
-          opponentId: infUser?.idOpponent,
-          name: auth?.user?.username,
-          nameOpponent: infUser?.username,
-          bandera: auth?.user?.imagenBandera,
-          banderaOpponent: infUser?.bandera,
-          country: auth?.user?.country,
-          countryOpponent: infUser?.country,
-          time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-                   infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-                   'fast' }`,
-          game: 'empate',
-          eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-            parseInt(userChess?.eloFast)}`,
-          eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-            parseInt(infUser?.fast)}`,
-          elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-            infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-            parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-          color: infUser?.color
-        }));
+        isCheckMate('empate');
         return;
       }
       };
@@ -1260,179 +340,106 @@ useEffect(()=>{
       document.addEventListener('mouseup', onMouseUp);
     
   };
+
+  // const moveNomenclatura = (piece, captureOccurred,x,y) => {
+  //   const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
+  //   ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
+  //   ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
+  //   ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
+  //   ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
+  //   ?  `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` 
+  //   : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
+  // }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
+  //  if (piece && piece.color === "white") {
+  //    setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+  //    setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+  //  } else if (piece && piece.color === 'black'){
+  //    setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+  //    setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+  //  }
+  // }
+
+  // const isCheckMate = (game) => {
+  //   setCheckMate(prevCheckMate => ({
+  //     ...prevCheckMate,
+  //     userId: auth?.user?._id,
+  //     opponentId: infUser?.idOpponent,
+  //     name: auth?.user?.username,
+  //     nameOpponent: infUser?.username,
+  //     bandera: auth?.user?.imagenBandera,
+  //     banderaOpponent: infUser?.bandera,
+  //     country: auth?.user?.country,
+  //     countryOpponent: infUser?.country,
+  //     time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+  //              infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+  //              'fast' }`,
+  //     game,
+  //     eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
+  //       infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
+  //       parseInt(userChess?.eloFast)}`,
+  //     eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
+  //       infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
+  //       parseInt(infUser?.fast)}`,
+  //     elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
+  //       infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
+  //       parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
+  //     color: infUser?.color
+  //   }));
+  // }
   
-  const resetBoard = () => {
-    localStorage.removeItem('destinationCell');
-    localStorage.removeItem('startCell');
-    setPieces(resetPieces);
-    setFrase(null);
-    setModalTiedRepetition(false);
-    setTied(false);
-    setModalTablasAceptada(false);
-    setGameOver(false);
-    setDestinationCell(null);
-    setStartCell(null);
-    setKingCheckCell(null);
-    setSelectedPiece(null);
-    setCurrentTurn('white');
-    setBlackMoveLog([]);
-    setWhiteMoveLog([]);
-    setMoveLog([]);
-    setAceptarRevancha(false);
-    setModalTime(false);
-    setWhiteTime(infUser?.time || 0);
-    setBlackTime(infUser?.time || 0);
-    setModalRendicion(false);
-    setCheckMate(prevCheckMate => ({
-      ...prevCheckMate,
-      userId: '',
-      time: '',
-      game: '',
-      elo: 0
-    }));
-    // Agrega cualquier lógica adicional que necesites para reiniciar el juego.
-  };
+  // const resetBoard = () => {
+  //   localStorage.removeItem('destinationCell');
+  //   localStorage.removeItem('startCell');
+  //   setPieces(resetPieces);
+  //   setFrase(null);
+  //   setModalTiedRepetition(false);
+  //   setTied(false);
+  //   setModalTablasAceptada(false);
+  //   setGameOver(false);
+  //   setDestinationCell(null);
+  //   setStartCell(null);
+  //   setKingCheckCell(null);
+  //   setSelectedPiece(null);
+  //   setCurrentTurn('white');
+  //   setBlackMoveLog([]);
+  //   setWhiteMoveLog([]);
+  //   setMoveLog([]);
+  //   setAceptarRevancha(false);
+  //   setModalTime(false);
+  //   setWhiteTime(infUser?.time || 0);
+  //   setBlackTime(infUser?.time || 0);
+  //   setModalRendicion(false);
+  //   setCheckMate(prevCheckMate => ({
+  //     ...prevCheckMate,
+  //     userId: '',
+  //     time: '',
+  //     game: '',
+  //     elo: 0
+  //   }));
+  //   // Agrega cualquier lógica adicional que necesites para reiniciar el juego.
+  // };
 
-  const AceptarRevancha = async() => {
-    localStorage.removeItem('pieces'); 
-    localStorage.removeItem('whiteTime');
-    localStorage.removeItem('blackTime');
-    localStorage.removeItem('destinationCell');
-    localStorage.removeItem('startCell');
-    const color = infUser?.color === 'white' ? 'black' : 'white';
-    if(socket === null) return;
-    setInfUser((prevInfUser) => ({
-      ...prevInfUser,
-      color: color,
-    }));
-    setUser((prevInfUser) => ({
-      ...prevInfUser,
-      color: color,
-    }));
-    socket.emit('aceptarRevancha', {revancha: true, room, color});
-    resetBoard();
-  }
+  // const AceptarRevancha = async() => {
+  //   localStorage.removeItem('pieces'); 
+  //   localStorage.removeItem('whiteTime');
+  //   localStorage.removeItem('blackTime');
+  //   localStorage.removeItem('destinationCell');
+  //   localStorage.removeItem('startCell');
+  //   const color = infUser?.color === 'white' ? 'black' : 'white';
+  //   if(socket === null) return;
+  //   setInfUser((prevInfUser) => ({
+  //     ...prevInfUser,
+  //     color: color,
+  //   }));
+  //   setUser((prevInfUser) => ({
+  //     ...prevInfUser,
+  //     color: color,
+  //   }));
+  //   socket.emit('aceptarRevancha', {revancha: true, room, color});
+  //   resetBoard();
+  // }
 
-  const ofrecerTablas = () => {
-     setLoadingTablas(true);
-     setModalTablas(true);
-     if(socket === null) return;
-     socket.emit('sendTablas', {Tablas: true, room});
-  }
-  
-  const aceptarTablas = () => {
-    localStorage.removeItem('whiteTime');
-    localStorage.removeItem('blackTime');
-    setFrase('por tablas aceptada')
-    if(socket === null) return;
-    socket.emit('aceptarTablas', 
-      room,
-    );
-    setCheckMate(prevCheckMate => ({
-      ...prevCheckMate,
-      userId: auth?.user?._id,
-      opponentId: infUser?.idOpponent,
-      name: auth?.user?.username,
-      nameOpponent: infUser?.username,
-      bandera: auth?.user?.imagenBandera,
-      banderaOpponent: infUser?.bandera,
-      country: auth?.user?.country,
-      countryOpponent: infUser?.country,
-      time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-               infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-               'fast' }`,
-      game: 'empate',
-      eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-        parseInt(userChess?.eloFast)}`,
-      eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-        infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-        parseInt(infUser?.fast)}`,
-      elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-        parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-      color: infUser?.color
-    }));
-    setModalTablas(false);
-    setSendTablas(false);
-    setModalTablasAceptada(true);
-  }
 
-  const cancelarTablas = () => {
-    setLoadingTablas(false);
-    setModalTablas(false);
-    if(socket === null) return;
-      socket.emit('cancelarTablas', room);   
-  }
-
-  const rechazarTablas = () => {
-    setSendTablas(false);
-    if(socket === null) return;
-    socket.emit('rechazarTablas', room);
-  }
-
-  const revanchaHandle = () => {
-    if(socket === null) return;
-    socket.emit("send_revancha", {
-      revancha: true, 
-      room, 
-    });
-    setSendRevancha(true);
-  }
-
-  const abandonarHandle = () => {
-     setModalAbandonar(true);
-  }
-
-  const notHandle = () => {
-    setModalAbandonar(false);
-  }
-
-  const yesHandle = () => {
-    localStorage.removeItem('whiteTime');
-    localStorage.removeItem('blackTime');
-    if(socket === null) return;
-    setModalAbandonar(false);
-    setGameOver(true)
-    setCheckMate((prevCheckMate) => ({
-      ...prevCheckMate,
-      userId: auth?.user?._id,
-      opponentId: infUser?.idOpponent,
-      name: auth?.user?.username,
-      nameOpponent: infUser?.username,
-      bandera: auth?.user?.imagenBandera,
-      banderaOpponent: infUser?.bandera,
-      country: auth?.user?.country,
-      countryOpponent: infUser?.country,
-      time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-        infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-          'fast'}`,
-      game: 'derrota',
-      eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-        parseInt(userChess?.eloFast)}`,
-      eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-        infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-        parseInt(infUser?.fast)}`,
-      elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-        infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-        parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-      color: infUser?.color
-    }));
-    setUserWon(prev => ({
-      ...prev, 
-      username: auth?.user?.username,
-      nameOpponent: infUser?.username, 
-      idUser: auth?.user?._id,
-      idOpponent: infUser?.idOpponent,
-      turn: infUser?.color === 'white' ? 'white' : 'black',
-      status: '0',
-      color: infUser?.color === 'white' ? 'black' : 'white',
-      photo: infUser?.photo
-    }));
-    setFrase(`por abandono de las ${infUser?.color === 'white' ? 'blancas' : 'negras'}`);
-    socket.emit('sendAbandonar', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
-  }
         
     const possibleMoves = getMovesFunction(
       selectedPiece && selectedPiece.type,
@@ -1609,43 +616,31 @@ useEffect(()=>{
       </div>
       <div id="chessboard" ref={chessboardRef}>     
       {board}
-      {isGameOver ? <ModalCheckMate infUser={userWon} time={infUser?.time} revanchaHandle={revanchaHandle} frase={frase}/> : null}
+      {isGameOver ? <ModalCheckMate 
+                      infUser={userWon} 
+                      time={infUser?.time}  
+                      frase={frase}/> : null}
       {modaltime && <Modal 
                       infUser={infUser} 
                       user={auth?.user} 
-                      isWhiteTime={isWhiteTime} 
-                      revanchaHandle={revanchaHandle}
-                      />
+                    />
       }
       {aceptarRevancha && <ModalRevancha 
                             infUser={infUser} 
-                            AceptarRevancha={AceptarRevancha}
                           />
       }
-      {modalAbandonar && <ModalAbandonar 
-                           yesHandle={yesHandle} 
-                           notHandle={notHandle}
-                         />}
+      {modalAbandonar && <ModalAbandonar />}
       {modalTablasAceptada && <ModalTablasAceptada 
                                 infUser={infUser} 
-                                revanchaHandle={revanchaHandle} 
                                 frase={frase}
                               />}
       {modalTablas && <ModalTablas 
                         infUser={infUser} 
-                        cancelarTablas={cancelarTablas}
                       />}
       {modalSendTablas && <ModalSendTablas 
                               infUser={infUser} 
-                              rechazarTablas={rechazarTablas} 
-                              aceptarTablas={aceptarTablas}
                           />}
-      {promotionModalOpen && (
-        <PromotionPiece 
-        currentTurn={currentTurn}
-        handlePromotionSelection={handlePromotionSelection}
-        />
-      )}
+      {promotionModalOpen && <PromotionPiece/>}
       </div>
       <div className='space'>
         <PlayerInfo        

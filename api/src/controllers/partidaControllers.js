@@ -1,4 +1,64 @@
+const Games = require("../model/Games");
 const User = require("../model/User");
+
+exports.gamesPost = async(req,res) => {
+  try {
+    const {gamesId, pieces, piece, x, y, turn  } = req.body;
+    const newGame = new Games({
+      gamesId,
+      pieces,
+      piece,
+      x,
+      y,
+      turn
+    });
+    const savedGame = await newGame.save();
+    res.status(201).json(savedGame);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+exports.updateGames = async(req, res)=>{
+  try {
+    const {gamesId} = req.params;
+    const { pieces, piece, x, y, turn } = req.body; 
+
+    // Busca y actualiza el documento por su id
+    const updatedGame = await Games.findOneAndUpdate(
+      {gamesId},
+      {
+       $set: {pieces,piece,x,y,turn,}
+      },
+      { new: true } //devuelve el documento actualizado
+    );
+
+    if (!updatedGame) {
+      return res.status(404).json({ message: 'Game not found' });
+    }
+
+    res.status(200).json(updatedGame);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+// Ruta GET para obtener un juego por su ID
+exports.getGameById = async (req, res) => {
+  try {
+    const { gamesId } = req.params; // El ID se pasará como parámetro en la URL
+
+    // Busca el juego por su ID
+    const game = await Games.findOne(gamesId);
+
+    if (!game) {
+      return res.status(404).json({ message: 'Game not found' });
+    }
+
+    res.status(200).json(game); // Devuelve el juego encontrado
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 exports.updatePartidas = async(req, res) => {
     const { userId } = req.params;

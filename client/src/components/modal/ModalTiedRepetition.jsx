@@ -13,11 +13,6 @@ export default function ModalTiedRepetition({infUser, revanchaHandle, frase}) {
     const {setCheckMate} = useCheckMateContext();
 
     const regresarHandle = () => {
-      localStorage.removeItem('destinationCell');
-      localStorage.removeItem('startCell');
-      localStorage.removeItem('pieces'); 
-      localStorage.removeItem('whiteTime');
-      localStorage.removeItem('blackTime');
         if(socket === null) return;
         if (auth?.user) {  
           setCheckMate(prevCheckMate => ({
@@ -27,7 +22,7 @@ export default function ModalTiedRepetition({infUser, revanchaHandle, frase}) {
             game: '',
             elo: 0
           }));   
-           socket.emit('join-room', 123);
+           socket.emit('join-room', infUser?.time);
            socket.emit('userAvailable', auth?.user?._id);
            socket.emit('deletePartida', {room: infUser?.time, roomPartida: room});
           navigate('/auth/channel');

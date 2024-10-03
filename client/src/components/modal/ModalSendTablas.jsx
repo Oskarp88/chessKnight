@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import style from './ModalsendTablas.module.css'; // Asegúrate de importar correctamente el archivo CSS
+import { GameContext } from '../../context/gameContext';
 
-const ModalSendTablas = ({infUser, rechazarTablas, aceptarTablas}) => {
+const ModalSendTablas = ({infUser}) => {
+  const {rechazarTablas, aceptarTablas} = useContext(GameContext);
   return (
     <div className={style.overlay}>
       <div className={style.gameOverModal}>

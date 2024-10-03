@@ -2,10 +2,6 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { colorBoard, colorChess } from '../utils/Colors';
 import { PieceType } from '../Types';
 import { piecesTheme } from '../utils/pieces';
-import { useSocketContext } from './socketContext';
-import { useCheckMateContext } from './checkMateContext';
-import { useAuth } from './authContext';
-import { handleThreefoldRepetition, insufficientMaterial } from '../components/referee/Referee';
 
 const ChessboardContext = createContext();
 
@@ -89,9 +85,7 @@ export const ChessboardProvider = ({ children }) => {
       const parseData = JSON.parse(piecesData);
       setPieces(parseData);
     }
-
-
-  },[chessColor, boardColor, themePiece,pieces]);
+  },[pieces]);
 
   return (
     <ChessboardContext.Provider value={{ 

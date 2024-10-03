@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import  io  from 'socket.io-client';
+import { baseUrl, postRequest } from '../utils/services';
+import axios from 'axios';
 
 const SocketContext = createContext();
 
@@ -70,9 +72,10 @@ export const SocketProvider = ({ children, user }) => {
     photo: ''
   });
   const [partidas, setPartidas] = useState([]);
+  const [games, setGames] = useState(null);
 
   useEffect(() => {
-    const newSocket = io.connect('https://chessknigth-22fe0ebf751e.herokuapp.com');
+    const newSocket = io.connect(/*'https://chessknigth-22fe0ebf751e.herokuapp.com'*/'http://localhost:8080');
     
     setSocket(newSocket);
 
@@ -91,6 +94,11 @@ useEffect(() => {
 
 useEffect(() => {
   localStorage.setItem('infUser', JSON.stringify(infUser));
+  const gamesData = localStorage.getItem('games');
+    if(gamesData){
+      const parseData = JSON.parse(gamesData);
+      setGames(parseData);
+    }
 },[infUser]);
 
 useEffect(() => {
@@ -114,7 +122,52 @@ useEffect(() => {
   }
 }, [online, setPlayersTotal]); // Escucha cambios en online
 
+useEffect(() => {
+ const getGame = async()=>{
+    try {
+      const response = await axios.get(`${baseUrl}/partida/user/games/${room}`);
+      setGames(response.data);
+      localStorage.setItem('games', JSON.stringify(response.data));
+      console.log('response game', response.data)
+    } catch (error) {
+      console.log('error getGame',error)
+    }
+ }
+ if(room) getGame();
+},[infUser?.color]);
 
+const postGames = useCallback(async (roomGame, resetPieces) => {
+  try {
+      const response = await postRequest(`${baseUrl}/partida/user/games/create`, 
+       JSON.stringify({
+          gamesId: roomGame,
+          pieces: resetPieces,
+          piece: {},
+          x: 0,
+          y: 0,
+          turn: 'white'
+        })
+      );
+     console.log(response); // Devuelve la respuesta si es necesario
+  } catch (error) {
+      console.error('Error posting game:', error);
+  }
+},[]);
+
+const gamesUpdate = useCallback(async (roomGame, pieces, piece, x, y, turn) => {
+    try {
+     
+     await axios.put(`${baseUrl}/partida/user/games/update/${roomGame}`, {
+        pieces,
+        piece,
+        x,
+        y,
+        turn,
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+},[]);
   return (
     <SocketContext.Provider value={{ 
       socket, 
@@ -138,7 +191,10 @@ useEffect(() => {
       playersTotal, 
       setPlayersTotal,
       online,
-      setOnline
+      setOnline,
+      postGames,
+      gamesUpdate,
+      games,
     }}>
       {children}
     </SocketContext.Provider>
