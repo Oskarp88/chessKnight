@@ -18,13 +18,7 @@ export default function ModalTablasAceptada({infUser, frase}) {
     const regresarHandle = () => {
         if(socket === null) return;
         if (auth?.user) {  
-          setCheckMate(prevCheckMate => ({
-            ...prevCheckMate,
-            userId: '',
-            time: '',
-            game: '',
-            elo: 0
-          }));   
+          setCheckMate(null);   
            socket.emit('join-room', infUser?.time);
            socket.emit('userAvailable', auth?.user?._id);
            socket.emit('deletePartida', {room: infUser?.time, roomPartida: room});

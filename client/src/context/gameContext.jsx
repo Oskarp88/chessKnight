@@ -1,6 +1,4 @@
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
-import { getRequest, baseUrl, postRequest } from "../utils/services";
-import  io  from 'socket.io-client';
 import { useChessboardContext } from "./boardContext";
 import { isCheckmateAfterMove, isSimulatedMoveCausingCheck, isSimulatedMoveCheckOpponent } from "../components/pieces/King";
 import { useSocketContext } from "./socketContext";
@@ -36,8 +34,8 @@ export const GameContextProvider = ({children, user}) => {
     const [modaltime, setModalTime] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
    
-    const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time) || 1);
-    const [blackTime, setBlackTime] = useState(parseInt(infUser.time) || 1);
+    const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
+    const [blackTime, setBlackTime] = useState(parseInt(infUser.time));
     const [isWhiteTime, setIsWhiteTime] = useState('');
     const [loadingTablas, setLoadingTablas] = useState(false);
     const [modalTablas, setModalTablas] = useState(false);
@@ -62,9 +60,9 @@ export const GameContextProvider = ({children, user}) => {
         if(socket === null) return;
         const handleConnect = () => {
           console.log("Conexión al servidor establecida.");
-          setTextToast("Conexión al servidor establecida.");
-          setColor('#58d68d');
-          setShowToast(true);
+          // setTextToast("Conexión al servidor establecida.");
+          // setColor('#58d68d');
+          // setShowToast(true);
           socket.emit('joinRoomGamePlay', room);    
         };
          // Manejar el evento "connect" para detectar la conexión exitosa
@@ -72,7 +70,7 @@ export const GameContextProvider = ({children, user}) => {
         // Manejar el evento "disconnect" para detectar desconexiones
         socket.on("disconnect", (reason) => {
           console.log("Desconectado. Razón:", reason);
-          setTextToast("Desconectado. Razón:", reason);
+          // setTextToast("Desconectado. Razón:", reason);
           setIsConnected(false);
           // Iniciar un temporizador de reconexión
           const timeout = setTimeout(() => {
@@ -238,10 +236,6 @@ export const GameContextProvider = ({children, user}) => {
         const data = localStorage.getItem('chessboard');
         if (data) {
           const parseData = JSON.parse(data);
-          setInfUser(parseData.infUser);
-          setRoom(parseData.room);
-          setCheckMate(parseData.checkMate);
-          setInfUser(parseData.infUser);
           setUser(parseData.userChess);
           setCurrentTurn(parseData.currentTurn);
         }
@@ -252,7 +246,35 @@ export const GameContextProvider = ({children, user}) => {
           setWhiteMoveLog(parseData.whiteMoveLog);
           setMoveLog(parseData.moveLog);
         }
-    },[socket])
+        const dataInfUser = localStorage.getItem('infUser');
+        if(dataInfUser){
+          setInfUser(JSON.parse(dataInfUser));
+        }
+        const gameRoom = localStorage.getItem('gameRoom');
+        if(gameRoom){
+          setRoom(gameRoom)
+        }
+    },[socket]);
+
+    useEffect(()=>{
+      const data = localStorage.getItem('chessboard');
+      if (data) {
+        const parseData = JSON.parse(data);
+        setUser(parseData.userChess);
+        setCurrentTurn(parseData.currentTurn);
+      }
+      const dataMove = localStorage.getItem('move');
+      if (dataMove) {
+        const parseData = JSON.parse(dataMove);
+        setBlackMoveLog(parseData.blackMoveLog);
+        setWhiteMoveLog(parseData.whiteMoveLog);
+        setMoveLog(parseData.moveLog);
+      }
+      const dataInfUser = localStorage.getItem('infUser');
+        if(dataInfUser){
+          setInfUser(JSON.parse(dataInfUser));
+        }
+  },[])
 
     useEffect(() => {
       if(socket === null) return;
@@ -306,7 +328,7 @@ export const GameContextProvider = ({children, user}) => {
         setFrase('Empate por material insuficiente');
         setTied(true);
         setModalTablasAceptada(true);
-        isCheckMate('empate')
+        isCheckMate('empate');
     }  
   },[pieces]);
 
@@ -370,7 +392,7 @@ useEffect(()=>{
         isCheckMate('victoria');
       }
     }
-  }, [isWhiteTime]);
+  }, [whiteTime, blackTime]);
   //     const handleConnect = () => {
   //       console.log("Conexión al servidor establecida.");
   //       setTextToast("Conexión al servidor establecida.");
@@ -568,6 +590,14 @@ useEffect(()=>{
       setPromotionComplete(false);
     }
   }, [isPromotionComplete, startCell]);
+
+  useEffect(()=>{
+    localStorage.setItem('move',JSON.stringify({
+      whiteMoveLog,
+      blackMoveLog,
+      moveLog,
+   }));
+  },[moveLog]);
 
       // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
   const formatTime = (time) => {
@@ -978,17 +1008,13 @@ useEffect(()=>{
             }
             localStorage.setItem('pieces', JSON.stringify(updatedPieces));
             return updatedPieces;
-          });
-    
-       
-    
-           localStorage.removeItem('userChess');
-           localStorage.removeItem('infUser');
+          });           
+          //  localStorage.removeItem('userChess');
+          //  localStorage.removeItem('infUser');
     
            localStorage.setItem('chessboard',
             JSON.stringify({
               room,  
-              checkMate,
               userChess,
               infUser,
               currentTurn: turn
@@ -1006,22 +1032,45 @@ useEffect(()=>{
         : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
       }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
        if (piece && piece.color === "white") {
-         setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-         setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+        setWhiteMoveLog((prevMoveLog) => {
+          // Verifica si el último movimiento es igual al nuevo 'move'
+          if (prevMoveLog.length > 0 && prevMoveLog[prevMoveLog.length - 1] === move) {
+            return prevMoveLog; // Si son iguales, retorna el array sin cambios
+          }      
+          // Si son diferentes, añade el nuevo movimiento
+          return [...prevMoveLog, move];
+        });
+         setMoveLog((prevMoveLog) => {
+          // Verifica si el último movimiento es igual al nuevo 'move'
+          if (prevMoveLog.length > 0 && prevMoveLog[prevMoveLog.length - 2] === move) {
+            return prevMoveLog; // Si son iguales, retorna el array sin cambios
+          }      
+          // Si son diferentes, añade el nuevo movimiento
+          return [...prevMoveLog, move];
+         });
        } else if (piece && piece.color === 'black'){
-         setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-         setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
+         setBlackMoveLog((prevMoveLog) => {
+          // Verifica si el último movimiento es igual al nuevo 'move'
+          if (prevMoveLog.length > 0 && prevMoveLog[prevMoveLog.length - 1] === move) {
+            return prevMoveLog; // Si son iguales, retorna el array sin cambios
+          }      
+          // Si son diferentes, añade el nuevo movimiento
+          return [...prevMoveLog, move];
+         });
+         setMoveLog((prevMoveLog) => {
+          // Verifica si el último movimiento es igual al nuevo 'move'
+          if (prevMoveLog.length > 0 && prevMoveLog[prevMoveLog.length - 2] === move) {
+            return prevMoveLog; // Si son iguales, retorna el array sin cambios
+          }      
+          // Si son diferentes, añade el nuevo movimiento
+          return [...prevMoveLog, move];
+         });
        }
-       localStorage.setItem('move',JSON.stringify({
-          whiteMoveLog,
-          blackMoveLog,
-          moveLog,
-       }))
+      
       };
 
       const isCheckMate = (game) => {
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
+        setCheckMate({
           userId: auth?.user?._id,
           opponentId: infUser?.idOpponent,
           name: auth?.user?.username,
@@ -1044,7 +1093,7 @@ useEffect(()=>{
             infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
             parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
           color: infUser?.color
-        }));
+        });
       };
 
       const resetBoard = () => {
@@ -1069,16 +1118,12 @@ useEffect(()=>{
         setMoveLog([]);
         setAceptarRevancha(false);
         setModalTime(false);
-        setWhiteTime(infUser?.time || 0);
-        setBlackTime(infUser?.time || 0);
+        setWhiteTime(infUser.time);
+        setBlackTime(infUser.time);
         setModalRendicion(false);
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
-          userId: '',
-          time: '',
-          game: '',
-          elo: 0
-        }));
+        setCheckMate(null);
+        setDestinationCellRival(null);
+        setStartCellRival(null);
         // Agrega cualquier lógica adicional que necesites para reiniciar el juego.
       };
 
@@ -1214,7 +1259,6 @@ useEffect(()=>{
            localStorage.setItem('chessboard',
             JSON.stringify({ 
               room,  
-              checkMate,
               userChess,
               infUser,
               currentTurn: currentTurn === 'white' ? 'black' : 'white'

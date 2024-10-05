@@ -4,7 +4,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../utils/services';
-import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useChessboardContext } from '../context/boardContext';

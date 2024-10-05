@@ -63,19 +63,21 @@ export const SocketProvider = ({ children, user }) => {
     color: '',
     username: '',
     room: 0,
-    time: 0,
+    time: 1,
     bullet: 0,
     blitz: 0,
     fast: 0,
     bandera: '',
     country: '',
-    photo: ''
+    photo: '',
+    marco: ''
   });
   const [partidas, setPartidas] = useState([]);
   const [games, setGames] = useState(null);
-
+ console.log('roomgame', room);
   useEffect(() => {
-    const newSocket = io.connect('https://chessknigth-22fe0ebf751e.herokuapp.com');
+    const newSocket = io.connect(/*'https://chessknigth-22fe0ebf751e.herokuapp.com'*/'http://localhost:8080');
+
     
     setSocket(newSocket);
 
@@ -91,6 +93,13 @@ useEffect(() => {
      setPartidas(data);
   });
 },[socket]);
+
+useEffect(() => {
+  const gameRoom = localStorage.getItem('gameRoom');
+  if(gameRoom){
+    setRoom(gameRoom)
+  }
+},[])
 
 useEffect(() => {
   localStorage.setItem('infUser', JSON.stringify(infUser));
@@ -121,6 +130,7 @@ useEffect(() => {
     });
   }
 }, [online, setPlayersTotal]); // Escucha cambios en online
+
 
 useEffect(() => {
  const getGame = async()=>{

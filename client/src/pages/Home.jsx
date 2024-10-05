@@ -457,54 +457,54 @@ export function Home() {
                           <div className={style.gameType}>
                             <div>
                               {
-                                p.gameType === 'bullet' ? 
+                                p?.gameType === 'bullet' ? 
                                   <BulletSvg /> :
-                                p.gameType === 'blitz' ? 
+                                p?.gameType === 'blitz' ? 
                                   <BlitzSvg /> :
                                   <FastSvg />
                               }
                             </div>
                               <span style={{color: chessColor?.titulo}}>
                                 {
-                                  p.gameType === 'bullet' ? 'Bullet' : 
-                                  p.gameType === 'blitz' ? 'Blizt' : 'Fast'
+                                  p?.gameType === 'bullet' ? 'Bullet' : 
+                                  p?.gameType === 'blitz' ? 'Blizt' : 'Fast'
                                 }
                               </span>
                           </div>
                           <div>
                             {
-                              p.player.color === 'white' ?
+                              p?.player?.color === 'white' ?
                                 <div className={style.datos}> 
-                                  <span> {p.player.name}({p.player.elo})</span>
+                                  <span> {p?.player?.name}({p?.player?.elo})</span>
                                   <img  
-                                    src={p.player.bandera} 
-                                    alt={`${p.player.country} flag`} 
+                                    src={p?.player?.bandera} 
+                                    alt={`${p?.player?.country} flag`} 
                                   />  
                                 </div>
                                     :
                                 <div className={style.datos}>
-                                    <span> {p.nameOpponent.name}({p.nameOpponent.elo})</span>
+                                    <span> {p?.nameOpponent?.name}({p?.nameOpponent?.elo})</span>
                                     <img  
-                                      src={p.nameOpponent.bandera} 
-                                      alt={`${p.nameOpponent.country} flag`} 
+                                      src={p?.nameOpponent?.bandera} 
+                                      alt={`${p?.nameOpponent?.country} flag`} 
                                     />
                                 </div>                        
                               }
                               {
-                                p.player.color === 'black' ?
+                                p?.player?.color === 'black' ?
                                   <div className={style.datos}> 
-                                    <span> {p.player.name}({p.player.elo})</span>
+                                    <span> {p?.player?.name}({p?.player?.elo})</span>
                                     <img  
-                                      src={p.player.bandera} 
-                                      alt={`${p.player.country} flag`} 
+                                      src={p?.player?.bandera} 
+                                      alt={`${p?.player?.country} flag`} 
                                     />  
                                   </div>
                                     :
                                   <div className={style.datos}>
-                                      <span> {p.nameOpponent.name}({p.nameOpponent.elo})</span>
+                                      <span> {p?.nameOpponent?.name}({p?.nameOpponent?.elo})</span>
                                       <img  
-                                         src={p.nameOpponent.bandera} 
-                                         alt={`${p.nameOpponent.country} flag`} 
+                                         src={p?.nameOpponent?.bandera} 
+                                         alt={`${p?.nameOpponent?.country} flag`} 
                                       />
                                   </div>  
                               }
@@ -513,27 +513,27 @@ export function Home() {
                             <div className={style.valors}>
                                 <p>
                                     {
-                                      p.player.color === 'white' ? 
-                                      p.player.estado === 'won' ? '1' : 
-                                      p.player.estado === 'lost' ? '0' : '1/2' :
-                                      p.nameOpponent.estado === 'won' ? '1' :
-                                      p.nameOpponent.estado === 'lost' ? '0' : '1/2'
+                                      p?.player?.color === 'white' ? 
+                                      p?.player?.estado === 'won' ? '1' : 
+                                      p?.player?.estado === 'lost' ? '0' : '1/2' :
+                                      p?.nameOpponent?.estado === 'won' ? '1' :
+                                      p?.nameOpponent?.estado === 'lost' ? '0' : '1/2'
                                     }
                                 </p>
                                 <p>
                                   {
-                                      p.player.color === 'black' ? 
-                                      p.player.estado === 'won' ? '1' : 
-                                      p.player.estado === 'lost' ? '0' : '1/2' :
-                                      p.nameOpponent.estado === 'won' ? '1' :
-                                      p.nameOpponent.estado === 'lost' ? '0' : '1/2'
+                                      p?.player?.color === 'black' ? 
+                                      p?.player?.estado === 'won' ? '1' : 
+                                      p?.player?.estado === 'lost' ? '0' : '1/2' :
+                                      p?.nameOpponent?.estado === 'won' ? '1' :
+                                      p?.nameOpponent?.estado === 'lost' ? '0' : '1/2'
                                   }
                                 </p>
                             </div>
                             <div className={style.estado}>
                               {
-                                p.player.estado === 'won' ? <WonSvg/> :
-                                p.player.estado === 'lost' ? <LostSvg/> : <TiedSvg/>
+                                p?.player?.estado === 'won' ? <WonSvg/> :
+                                p?.player?.estado === 'lost' ? <LostSvg/> : <TiedSvg/>
                               } 
                             </div>
                           </div>                          

@@ -6,28 +6,15 @@ const CheckMateContext = createContext();
 const CheckMateProvider = ({ children }) => {
 
   const [error, setError] = useState(null);
-  const [checkMate, setCheckMate] = useState({ 
-    userId: '',
-    opponentId: '',
-    name: '',
-    nameOpponent: '',
-    bandera: '',
-    banderaOpponent: '',
-    country: '',
-    countryOpponent: '',
-    time: '',
-    game: '',
-    elo: 0,
-    eloUser: 0, 
-    eloOpponent: 0,
-    color: '',
-   });
+  const [checkMate, setCheckMate] = useState(null);
 
   useEffect(() => {
-    const result = async() => {
-
-     if(!checkMate.userId) return null;
-     
+    console.log('checkmate',checkMate)
+    const updateCheckMate = async () => {
+      
+      if (!checkMate) return; // Asegurarse de que haya datos válidos en checkMate antes de hacer el request
+      console.log('estoy dentreo de updateCheckMate')
+      try {
         const response = await axios.put(`${baseUrl}/partida/user/update/${checkMate.userId}`, {
           name: checkMate?.name,
           opponentId: checkMate?.opponentId,
@@ -36,24 +23,35 @@ const CheckMateProvider = ({ children }) => {
           banderaOpponent: checkMate?.banderaOpponent,
           country: checkMate?.country,
           countryOpponent: checkMate?.countryOpponent,
-          time: checkMate?.time, 
-          game:  checkMate?.game, 
+          time: checkMate?.time,
+          game: checkMate?.game,
           elo: checkMate?.elo,
           eloUser: checkMate?.eloUser,
           eloOpponent: checkMate?.eloOpponent,
-          color: checkMate?.color
+          color: checkMate?.color,
         });
-  
-        if(response.error){
-           return setError(response.error);
-        }
-    }
 
-    result();
- },[checkMate.userId]);
+        if (response.error) {
+          console.log('Error en la respuesta: ', response.error);
+        }
+      } catch (err) {
+        console.log('Error de actualización de checkMate: ', err.message);
+      }
+    };
+
+    updateCheckMate();
+ },[checkMate]);
+
+ const saveCheckMate = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+ }
 
   return (
-    <CheckMateContext.Provider value={{ checkMate, setCheckMate }}>
+    <CheckMateContext.Provider value={{ checkMate, setCheckMate, saveCheckMate }}>
       {children}
     </CheckMateContext.Provider>
   );

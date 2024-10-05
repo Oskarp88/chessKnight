@@ -33,13 +33,7 @@ export default function ModalCheckMate({ infUser, time, frase }) {
   useEffect(() => {
     if (redirecting && countdown === 0) {
       if (auth?.user) {
-        setCheckMate((prevCheckMate) => ({
-          ...prevCheckMate,
-          userId: '',
-          time: '',
-          game: '',
-          elo: 0,
-        }));
+        setCheckMate(null);
         socket.emit('join-room', time);
         socket.emit('userAvailable', auth?.user?._id);
         socket.emit('deletePartida', { room: infUser?.time, roomPartida: room });
@@ -96,8 +90,8 @@ export default function ModalCheckMate({ infUser, time, frase }) {
           
           ) : (
             <div className={style.button}>
-              <button onClick={regresarHandle}>Regresar</button>
-              <button onClick={revanchaHandle}>Revancha</button>
+              <button onClick={regresarHandle}><p>Regresar</p></button>
+              <button onClick={revanchaHandle}><p>Revancha</p></button>
             </div>
           )}
         </div>

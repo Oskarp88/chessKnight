@@ -102,6 +102,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
 
   useEffect(() => {
     if(socket === null) return;
+     //reicibiendo el desafio
      const handleGetGame = (data) => {
       
       if(data?.senderId === auth?.user?._id){
@@ -118,9 +119,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
           fast: data?.fast,
           bandera: data?.bandera,
           country: data?.country,
-          photo: data?.photo
+          photo: data?.photo,
+          marco: data?.marco
         }));
         setRoomGame(data?.gameId);
+        localStorage.setItem('gameRoom', data?.gameId);
         localStorage.setItem('bandera', data?.bandera);
       }
     };
@@ -144,20 +147,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
     });
 
     socket.on('getGame', handleGetGame);
-    //datos recibidos de quien acepto el desafio
-    
+     
     socket.on('receivePlayGame',(data) => {
-      resetBoard();
+      //datos recibidos de quien acepto el desafio 
       setPieces(resetPieces);
       localStorage.setItem('bandera', data?.bandera);
-      setInfUser((prevInfUser) => ({
-        ...prevInfUser,
-          bandera: data?.bandera,
-          bullet: data?.ratingBullet,
-          blitz: data?.ratingBlitz,
-          fast: data?.ratingFast,
-          country: data?.country,
-      }));
       setRoomGame(data?.roomGame);
       socket.emit('joinRoomGamePlay', data?.roomGame); 
       socket.emit('partida', 
@@ -167,13 +161,13 @@ const Friends = ({ friends, onlineUsers, room }) => {
            roomPartida: data?.roomGame,
            room: infUser?.time,
            username: data?.username,
-           username2: userChess?.username,
+           username2: auth?.user?.username || auth?.user?.name,
         });
       if(data?.showModalOpponent){
         socket.emit('userBusy', auth?.user?._id); 
+        localStorage.setItem('infUser', JSON.stringify(infUser));
         navigate('/chess');
-      }
-      
+      }  
     });
 
     socket.on('receiveOffGame',(data) => {
@@ -202,7 +196,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
 
   
   //enviar desafio
-  const createGame = (firstId, secondId, username, photo, marco) =>{
+  const createGame = (firstId, userOpponent) =>{
+    resetBoard();
     let colorRamdon = Math.random() < 0.5 ? 'white' : 'black';
     if(socket === null) return;
      setAceptarDesafio(true);
@@ -211,12 +206,19 @@ const Friends = ({ friends, onlineUsers, room }) => {
      const uuid = uuidv4(); 
      socket.emit('joinRoomGamePlay', uuid);   
      setRoomGame(uuid);
+     localStorage.setItem('gameRoom', uuid);
      setInfUser((prevInfUser) => ({
       ...prevInfUser,
       color: colorRamdon,
-      idOpponent: secondId,
-      username: userModal.username,
-      photo
+      idOpponent: userOpponent._id,
+      username: userOpponent.username,
+      photo: userOpponent.photo,
+      bullet: userOpponent.eloBullet,
+      blitz: userOpponent.eloBlitz,
+      fast: userOpponent.eloFast,
+      bandera: userOpponent.imagenBandera,
+      country: userOpponent.country,
+      marco: userOpponent.marco
     }));
      socket.emit('sendGame', {
        color: colorRamdon,
@@ -224,7 +226,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
        gameId: uuid,
        Id: firstId,
        username: userChess?.username,
-       opponentId: secondId,
+       opponentId: userOpponent._id,
        time: infUser?.time,
        ratingBullet: userChess?.eloBullet,
        ratingBlitz: userChess?.eloBlitz,
@@ -244,17 +246,14 @@ const Friends = ({ friends, onlineUsers, room }) => {
     setShowModalOpponent(false);   
     if(socket === null) return;
      socket.emit('playGame', {
-      showModalOpponent, roomGame, 
+      showModalOpponent, 
+      roomGame, 
       idOpponent: auth?.user?._id,
-      username: userChess?.username, 
-      bandera: userChess?.imagenBandera,
-      ratingBullet: userChess?.eloBullet,
-      ratingBlitz: userChess?.eloBlitz,
-      ratingFast: userChess?.eloFast,
-      country: userChess?.country
+      username: auth?.user?.username || auth?.user?.name,
     });
      socket.emit('joinRoomGamePlay', roomGame); 
      socket.emit('userBusy', auth?.user?._id);
+     localStorage.setItem('infUser', JSON.stringify(infUser));
      navigate('/chess');    
   };
 
@@ -334,9 +333,8 @@ const Friends = ({ friends, onlineUsers, room }) => {
         {sortedUsers.length === 0 ?          
            <SpinnerDowloand text={`${language.Loading_Players} . . .`} color={'#fff'}/>         
         : sortedUsers.map((o, index) => (
-          <>
-              <li 
-                key={index} 
+          <React.Fragment key={index}>
+              <li               
                 className={`${style.frienditem} ${hoveredFriend === o._id ? `${style.frienditem} ${style.frienditemHovered}` : ''}`}              
                 onMouseEnter={() => setHoveredFriend(o._id)}
                 onMouseLeave={() => setHoveredFriend(null)}
@@ -378,7 +376,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
                   </div>
                 </div>              
               </li>
-              {showModal && (
+                {showModal && (
               <div className={`${style.modal} ${showModal ? style.show : ''}`}>
                 <div className={style.header}>
                    <div className={style.circle}>
@@ -427,10 +425,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
                         className={style.button} 
                         onClick={()=>createGame(
                            auth?.user?._id, 
-                           userModal?._id, 
-                           userModal?.username, 
-                           userModal?.photo,
-                           userModal?.marco
+                           userModal,
                           )}
                       >
                         {language.Challenge} 
@@ -455,7 +450,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
                 </div>
               </div>
                 )}
-                 {showModalOpponent && (
+                {showModalOpponent && (
               <div className={`${style.modal} ${showModalOpponent ? style.show : ''}`}>
                 <div className={style.header}>
                     <div className={style.circle}>
@@ -505,35 +500,35 @@ const Friends = ({ friends, onlineUsers, room }) => {
               </div>
                 )}
                  { 
-        showModalInf && 
-          <ModalProfile 
-            user={userInf}
-            nivel={`${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-            infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-            'fast' }`}
-            handleModalClose={handleModalCloseInf}
-            photo={photo}
-            elo={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.eloBullet :
-            infUser?.time === 180 || infUser?.time === 300 ? userInf.eloBlitz :
-            userInf.eloFast}`}
-            games={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesBullet :
-              infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesBlitz :
-              userInf.gamesFast}`}
-            gamesWon={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesWonBullet :
-              infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesWonBlitz :
-              userInf.gamesWonFast}`}
-            gamesTied={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesTiedBullet :
-              infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesTiedBlitz :
-              userInf.gamesTiedFast}`}
-            gamesLost={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesLostBullet :
-              infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesLostBlitz :
-              userInf.gamesLostFast}`}
-              racha={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.rachaBullet :
-                infUser?.time === 180 || infUser?.time === 300 ? userInf.rachaBlitz :
-                userInf.rachaFast}`}
-          /> 
-      } 
-          </>
+                    showModalInf && 
+                      <ModalProfile 
+                        user={userInf}
+                        nivel={`${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
+                        infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
+                        'fast' }`}
+                        handleModalClose={handleModalCloseInf}
+                        photo={photo}
+                        elo={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.eloBullet :
+                        infUser?.time === 180 || infUser?.time === 300 ? userInf.eloBlitz :
+                        userInf.eloFast}`}
+                        games={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesBullet :
+                          infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesBlitz :
+                          userInf.gamesFast}`}
+                        gamesWon={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesWonBullet :
+                          infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesWonBlitz :
+                          userInf.gamesWonFast}`}
+                        gamesTied={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesTiedBullet :
+                          infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesTiedBlitz :
+                          userInf.gamesTiedFast}`}
+                        gamesLost={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.gamesLostBullet :
+                          infUser?.time === 180 || infUser?.time === 300 ? userInf.gamesLostBlitz :
+                          userInf.gamesLostFast}`}
+                          racha={`${infUser?.time === 60 || infUser?.time === 120 ? userInf.rachaBullet :
+                            infUser?.time === 180 || infUser?.time === 300 ? userInf.rachaBlitz :
+                            userInf.rachaFast}`}
+                      /> 
+                  } 
+          </React.Fragment>
         ))}
          </div>     
     </div>

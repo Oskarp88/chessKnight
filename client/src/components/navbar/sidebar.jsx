@@ -92,12 +92,6 @@ useEffect(()=>{
   localStorage.setItem('languageNum', num)
   }
 
-  const CustomNavDropdown = styled(NavDropdown)`
-  .dropdown-menu {
-    background: ${chessColor?.navbar}; /* Cambia el color según tus necesidades */
-  } 
-`;
-
   const firstName = (auth?.user?.name || "").charAt(0).toUpperCase() + (auth?.user?.name || "").slice(1);
   const trimmedFirstName = firstName.substring(0, 8);
 
@@ -161,19 +155,29 @@ useEffect(()=>{
           </div>
           <div className={`${isOpen ? 'menu-item-open' : 'menu-item'}`}>
             <FaGlobe className='icon'/>
-            <CustomNavDropdown                   
+            <NavDropdown                   
               title={                
                   <span >{language?.Language}</span>            
               }
-              className='text'
+             
+              className={`text ${theme === 0 ? 'menu-dropdown' : 'menu-dropdown-dark'}`}
+              // style={{background: chessColor?.navbar}}
             >
-                <NavDropdown.Item className='text item'  onClick={() => handleLanguageChange(1)}>
+               <NavDropdown.Item 
+                 className='text item'  
+                 onClick={() => handleLanguageChange(1)}
+                 style={{fontWeight: 600}}
+              >
                   {language.english}
                 </NavDropdown.Item>
-                <NavDropdown.Item className='text item'  onClick={() => handleLanguageChange(0)}>
+                <NavDropdown.Item 
+                className='text item'  
+                onClick={() => handleLanguageChange(0)}
+                style={{fontWeight: 600}}
+                >
                   {language.spanish}
                 </NavDropdown.Item>
-            </CustomNavDropdown>
+            </NavDropdown>
           </div>
           {
             auth?.user && 

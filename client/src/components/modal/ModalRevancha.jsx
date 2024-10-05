@@ -8,21 +8,15 @@ import { GameContext } from '../../context/gameContext';
 
 const ModalRevancha = ({infUser}) => {
   const navigate = useNavigate();
-    const {auth} = useAuth();
-    const {socket, room} = useSocketContext();
+  const {auth} = useAuth();
+  const {socket, room} = useSocketContext();
   const {setCheckMate} = useCheckMateContext();
   const {AceptarRevancha} = useContext(GameContext);
 
   const regresarHandle = () => {
       if(socket === null) return;
       if (auth?.user) {  
-        setCheckMate(prevCheckMate => ({
-          ...prevCheckMate,
-          userId: '',
-          time: '',
-          game: '',
-          elo: 0
-        }));  
+        setCheckMate(null);  
          socket.emit('revanchaRechazada', infUser?.room);
          socket.emit('join-room', infUser?.time);
          socket.emit('userAvailable', auth?.user?._id);

@@ -10,8 +10,8 @@ export default function ModalAbandonar() {
         <div className={style.gameOverModal}>
           <h2>¿Estas seguro que quieres abandonar?</h2>
           <div className={style.button}>
-            <button onClick={yesHandle}>si</button>
-            <button onClick={notHandle}>no</button>
+            <button onClick={yesHandle}><p>Si</p></button>
+            <button onClick={notHandle}><p>No</p></button>
           </div>
         </div>
   </div>

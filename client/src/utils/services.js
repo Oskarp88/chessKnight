@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const baseUrl = 'https://chessknigth-22fe0ebf751e.herokuapp.com/api';
-// export const baseUrl = 'http://localhost:8080/api';
+// export const baseUrl = 'https://chessknigth-22fe0ebf751e.herokuapp.com/api';
+ export const baseUrl = 'http://localhost:8080/api';
 
 export const postRequest = async(url, body) => {
    const response = await fetch(url, {

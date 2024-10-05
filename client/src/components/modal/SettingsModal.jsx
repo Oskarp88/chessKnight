@@ -16,18 +16,15 @@ function SettingsModal({show, handleClose}) {
         setTemePiece
      } = useChessboardContext();
 
-   const handleColorChange = ( num, event) => {
-   
+   const handleColorChange = ( num) => {  
     setBoardColor(colorBoard[num]);
     localStorage.setItem('colorBoard', num);
    }
 
-   const handlePiecesChange = (num, event) => {
-    
+   const handlePiecesChange = (num) => { 
     setTemePiece(piecesTheme[num]);
     localStorage.setItem('pieceTheme', num);
    }
-  console.log(piecesTheme)
     
   return (
     <Modal show={show} onHide={handleClose} >
@@ -40,7 +37,7 @@ function SettingsModal({show, handleClose}) {
         <Accordion.Header>Tablero #1</Accordion.Header>
             <Accordion.Body style={{background: colorBoard.whiteRow}}>
                 <div eventKey="0" className={style.colorOptions} >
-                    {colorBoard?.map((c, index) => {        
+                    {colorBoard?.map((c) => {        
                             return (
                             <div 
                               key={c.id} className={`${style.colorOption} ${c.id === boardColor.id ? `${style.even}` : ''}`}
@@ -64,7 +61,7 @@ function SettingsModal({show, handleClose}) {
         <Accordion.Header>piezas #2</Accordion.Header>
             <Accordion.Body>
               <div className={style.colorOptions}>
-                    {piecesTheme.map((c, index) => {
+                    {piecesTheme.map((c) => {
                             return (
                             <div 
                               key={c.id} className={`${style.colorOptionPiece} ${c.id === themePiece.id ? `${style.evenPiece}` : ''}`}
@@ -104,4 +101,4 @@ function SettingsModal({show, handleClose}) {
   )
 }
 
-export default SettingsModal
+export default SettingsModal;

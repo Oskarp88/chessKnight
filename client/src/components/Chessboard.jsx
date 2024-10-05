@@ -6,8 +6,6 @@ import { useChessboardContext } from '../context/boardContext';
 import { 
   getCaptureFunction, 
   getMovesFunction, 
-  handleThreefoldRepetition, 
-  insufficientMaterial,
   isMoveValid, 
   isStalemate } from './referee/Referee';
 import { HORIZONTAL_AXIS, VERTICAL_AXIS, initPieces } from '../Constants';
@@ -39,7 +37,6 @@ import ChatChess from './ChatChess';
 import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
 import PromotionPiece from './board/PromotionPiece';
-import Toast from './toast/Toast';
 import { GameContext } from '../context/gameContext';
 
 function Chessboard() {
@@ -78,9 +75,6 @@ function Chessboard() {
     modalAbandonar, 
     tied, setTied,
     frase, setFrase,
-    showToast, setShowToast,
-    color, 
-    textToast, 
     modalTablasAceptada, setModalTablasAceptada,
     isCheckMate,
     handlePieceClick,
@@ -91,7 +85,7 @@ function Chessboard() {
     formatTime,
   } = useContext(GameContext);
   const {auth} = useAuth();
-  const {checkMate ,setCheckMate} = useCheckMateContext();
+  const {setCheckMate} = useCheckMateContext();
   const {
     boardColor,
     pieces, setPieces, 
@@ -124,7 +118,6 @@ function Chessboard() {
     const data = localStorage.getItem('chessboard');
     if (data) {
       const parseData = JSON.parse(data);
-      setInfUser(parseData.infUser);
       setRoom(parseData.room);
       setCheckMate(parseData.checkMate);
       setInfUser(parseData.infUser);
@@ -303,7 +296,6 @@ function Chessboard() {
          localStorage.setItem('chessboard',
           JSON.stringify({ 
             room,  
-            checkMate,
             userChess,
             infUser,
             currentTurn: currentTurn === 'white' ? 'black' : 'white'
@@ -438,9 +430,7 @@ function Chessboard() {
   //   socket.emit('aceptarRevancha', {revancha: true, room, color});
   //   resetBoard();
   // }
-
-
-        
+      
     const possibleMoves = getMovesFunction(
       selectedPiece && selectedPiece.type,
       selectedPiece,
@@ -597,19 +587,12 @@ function Chessboard() {
   return (
     <>
      <div className='display'>
-     <Toast 
-       text={textToast} 
-       show={showToast} 
-       color={color} 
-       setToastShow={setShowToast}
-     />
      <div className='profile-container-chess'>
       <div className='space1'>
         <PlayerInf2
             playerName={infUser?.username} 
             playerIcon={infUser?.photo}
             playerColor={infUser?.color}  
-            infUser={infUser} 
             playerTime={infUser?.color === 'black' ? formatTime(whiteTime) : formatTime(blackTime)} 
             currentTurn={ currentTurn === (infUser?.color === 'white' ? 'black' : 'white') ? infUser?.color === 'white' ? 'black' : 'white' : '' }
         />

@@ -128,65 +128,65 @@ function ModalProfile({
                    <div className={style.containerpartida}>
                       <div className={style.gameType}>
                          <div>
-                         {p.gameType === 'bullet' ? 
+                         {p?.gameType === 'bullet' ? 
                             <BulletSvg /> :
-                          p.gameType === 'blitz' ? 
+                          p?.gameType === 'blitz' ? 
                             <BlitzSvg /> :
                             <FastSvg />
                           }
                          </div>
                           <span>
-                            {p.gameType === 'bullet' ? 'Bullet' : 
-                             p.gameType === 'blitz' ? 'Blizt' : 'Fast'}
+                            {p?.gameType === 'bullet' ? 'Bullet' : 
+                             p?.gameType === 'blitz' ? 'Blizt' : 'Fast'}
                           </span>
                       </div>
                       <div>
                          {
-                          p.player.color === 'white' ?
+                          p?.player?.color === 'white' ?
                              <div className={style.datos}> 
-                               <p> {p.player.name}({p.player.elo})</p>
-                               <img  src={p.player.bandera} alt={`${p.player.country} flag`} />  
+                               <p> {p?.player?.name}({p?.player?.elo})</p>
+                               <img  src={p?.player?.bandera} alt={`${p?.player?.country} flag`} />  
                              </div>
                                  :
                             <div className={style.datos}>
-                                <p> {p.nameOpponent.name}({p.nameOpponent.elo})</p>
-                                <img  src={p.nameOpponent.bandera} alt={`${p.nameOpponent.country} flag`} />
+                                <p> {p?.nameOpponent?.name}({p?.nameOpponent?.elo})</p>
+                                <img  src={p?.nameOpponent?.bandera} alt={`${p?.nameOpponent?.country} flag`} />
                             </div>                        
                          }
                          {
-                           p.player.color === 'black' ?
+                           p?.player?.color === 'black' ?
                            <div className={style.datos}> 
-                             <p> {p.player.name}({p.player.elo})</p>
-                             <img  src={p.player.bandera} alt={`${p.player.country} flag`} />  
+                             <p> {p?.player?.name}({p?.player?.elo})</p>
+                             <img  src={p?.player?.bandera} alt={`${p?.player?.country} flag`} />  
                            </div>
                                :
                           <div className={style.datos}>
-                              <p> {p.nameOpponent.name}({p.nameOpponent.elo})</p>
-                              <img  src={p.nameOpponent.bandera} alt={`${p.nameOpponent.country} flag`} />
+                              <p> {p?.nameOpponent?.name}({p?.nameOpponent?.elo})</p>
+                              <img  src={p?.nameOpponent?.bandera} alt={`${p?.nameOpponent?.country} flag`} />
                           </div>  
                          }
                       </div>
                       <div className={style.result}>
                         <div className={style.valors}>
-                            <p>{p.player.color === 'white' ? 
-                                  p.player.estado === 'won' ? '1' : 
-                                  p.player.estado === 'lost' ? '0' : '1/2' :
-                                  p.nameOpponent.estado === 'won' ? '1' :
-                                  p.nameOpponent.estado === 'lost' ? '0' : '1/2'
+                            <p>{p?.player?.color === 'white' ? 
+                                  p?.player?.estado === 'won' ? '1' : 
+                                  p?.player?.estado === 'lost' ? '0' : '1/2' :
+                                  p?.nameOpponent?.estado === 'won' ? '1' :
+                                  p?.nameOpponent?.estado === 'lost' ? '0' : '1/2'
                                }
                             </p>
-                            <p>{p.player.color === 'black' ? 
-                                  p.player.estado === 'won' ? '1' : 
-                                  p.player.estado === 'lost' ? '0' : '1/2' :
-                                  p.nameOpponent.estado === 'won' ? '1' :
-                                  p.nameOpponent.estado === 'lost' ? '0' : '1/2'
+                            <p>{p?.player?.color === 'black' ? 
+                                  p?.player?.estado === 'won' ? '1' : 
+                                  p?.player?.estado === 'lost' ? '0' : '1/2' :
+                                  p?.nameOpponent?.estado === 'won' ? '1' :
+                                  p?.nameOpponent?.estado === 'lost' ? '0' : '1/2'
                                }
                             </p>
                         </div>
                         <div className={style.estado}>
                            {
-                            p.player.estado === 'won' ? <WonSvg/> :
-                            p.player.estado === 'lost' ? <LostSvg/> : <TiedSvg/>
+                            p?.player?.estado === 'won' ? <WonSvg/> :
+                            p?.player?.estado === 'lost' ? <LostSvg/> : <TiedSvg/>
                             }
                         </div>
                       </div>
