@@ -21,7 +21,11 @@ export const ChatContextProvider = ({children, user}) => {
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-      const newSocket = io.connect(/*'https://chessknigth-22fe0ebf751e.herokuapp.com'*/'http://localhost:8080');
+      const newSocket = io.connect(
+         process.env.REACT_APP_PRODUCTION === 'production'
+           ? 'https://chessknigth-22fe0ebf751e.herokuapp.com'
+           : 'http://localhost:5000'
+       );
     
         setSocket(newSocket);
 
