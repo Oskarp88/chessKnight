@@ -166,10 +166,6 @@
 
 
   @media (max-width: 1090px) {
-    .playerInfoContainer {
-      height: 4.5rem;
-    
-    }
   }
 
   @media (max-width: 850px){
@@ -182,10 +178,7 @@
   }
  
   @media (max-width: 724px){
-    .playerInfoContainer {     
-      width: 400px; 
-      padding-right: 0; 
-    }
+    
     .playerName{
       width: 60%;
     }
@@ -230,30 +223,19 @@
     }
   }
   @media (max-width: 450px){
-    .playerInfoContainer{
-      width: 380px;
-    }
+    
   }
   @media (max-width: 410px){
-    .playerInfoContainer{
-      width: 350px;
-    }
+   
   }
 
   
   @media (max-width: 380px){
-    .playerInfoContainer{
-      width: 300px;
-    }
     .playerTimer{
       font-size: 12px;
     }
   }
-  @media (max-width: 375px) {
-    .playerInfoContainer{
-      width: 300px;
-    }
-  
+  @media (max-width: 375px) {  
     .playerTimer{
       font-size: 12px;
     }
@@ -261,11 +243,7 @@
   }
 
   @media (max-width: 320px) {
-    .playerInfoContainer{
-      width: 280px;
-    }
-  
-    .playerTimer{
+     .playerTimer{
       font-size: 12px;
     }
    

@@ -639,7 +639,7 @@ function Chessboard() {
      </div>     
      <div  className='move-container'>
         <div className='register' style={{background: boardColor.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
-          <h5>Registro de jugadas</h5>       
+          <h5>{'Registro de jugadas'.toUpperCase()}</h5>       
         </div>
         <RecordPlays whiteMoveLog={whiteMoveLog} blackMoveLog={blackMoveLog}/>
         <ChatChess 

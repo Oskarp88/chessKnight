@@ -1,11 +1,9 @@
 .moveLogContainer {
+    width: 100%;
+    height: 30%;
     display: flex;
     justify-content: center;
-    margin-left: 10px;
-    background-color: #263849;
-    height: 14.4rem;
     color: #dcfff5;
-    border: 2px solid;
     overflow-y: scroll; /* Muestra barras de desplazamiento vertical */
     scroll-behavior: smooth; /* Agrega un suave desplazamiento */
     scroll-padding: 10px; /* Añade espacio para que el desplazamiento sea suave */

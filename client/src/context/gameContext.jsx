@@ -1326,11 +1326,7 @@ useEffect(()=>{
       };
 
       const AceptarRevancha = async() => {
-        localStorage.removeItem('pieces'); 
-        localStorage.removeItem('whiteTime');
-        localStorage.removeItem('blackTime');
-        localStorage.removeItem('destinationCell');
-        localStorage.removeItem('startCell');
+        resetBoard();
         const color = infUser?.color === 'white' ? 'black' : 'white';
         if(socket === null) return;
         setInfUser((prevInfUser) => ({
@@ -1342,7 +1338,6 @@ useEffect(()=>{
           color: color,
         }));
         socket.emit('aceptarRevancha', {revancha: true, room, color});
-        resetBoard();
       };
 
       const revanchaHandle = () => {

@@ -88,10 +88,7 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
           </>
         }</div>  
       </div>
-      </div>
-      
-     
-       
+      </div>     
       <div className={`${style.playerTimer} ${currentTurn ? currentTurn === 'white' ? style.turnWhite : style.turnBlack : ''}`} >
         <div className={style.clock} >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
