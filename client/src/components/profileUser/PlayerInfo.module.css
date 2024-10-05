@@ -164,11 +164,8 @@
     align-items: center; /* Puedes ajustar esto según sea necesario */
   }
 
-
-  @media (max-width: 1090px) {
-  }
-
   @media (max-width: 850px){
+    
     .playerName {     
       width: 50%;
     }
@@ -178,6 +175,14 @@
   }
  
   @media (max-width: 724px){
+    .userprofile2 {
+      width: 55px;
+      height: 55px;
+    }
+    .userprofile {
+      width: 55px;
+      height: 55px;  
+    }
     
     .playerName{
       width: 60%;
@@ -190,14 +195,6 @@
       height: 15px;
       margin-left: 5px;
     }
-    .playerIcon {
-      margin-left: 10px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-top: -5px;
-      border: solid 3px #f8f8f8;
-    }
     .playerStatusIcon {
       width: 15px;
       height: 15px;
@@ -206,20 +203,7 @@
       margin-top: -3.5px; 
     }
     .playerTimer {
-      display: flex;
-      justify-content: center;
-      font-size: 15px;
-      align-items: center;
-      font-weight: bold;
-      margin-bottom: 10px;
-      border: 1px solid #f8f8f8 ;
-      color: aliceblue;
-      border-radius: 5px;
-      width: 22%;
-      background-color: rgba(0, 0, 0, 0.3);
-      margin-left: 8px;
-      padding-right: 4px;
-      margin-right: 2px;
+      width: 24%;
     }
   }
   @media (max-width: 450px){

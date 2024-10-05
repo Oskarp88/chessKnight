@@ -26,6 +26,7 @@ import { LanguagesProvider } from "./context/languagesContext";
 import Sidebar from "./components/navbar/sidebar";
 import NotFound from "./pages/PageNotFound";
 import { GameContextProvider } from "./context/gameContext";
+import 'animate.css';
 
 function App() {
   const {auth} = useAuth();

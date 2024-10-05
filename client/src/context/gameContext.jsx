@@ -148,7 +148,8 @@ export const GameContextProvider = ({children, user}) => {
           }       
         });
   
-        socket.on('revanchaAceptada', async(data)=>{      
+        socket.on('revanchaAceptada', async(data)=>{  
+          resetBoard();    
           setInfUser((prevInfUser) => ({
             ...prevInfUser,
             color: data?.color === 'white' ? 'black' : 'white',
@@ -156,8 +157,7 @@ export const GameContextProvider = ({children, user}) => {
           setUser((prevInfUser) => ({
             ...prevInfUser,
             color: data?.color === 'white' ? 'black' : 'white',
-          }));
-            resetBoard();
+          }));            
         });
   
         socket.on('receiveRevanchaRechazada',(data) => {

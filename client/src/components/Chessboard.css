@@ -277,24 +277,40 @@ background:  rgb(244, 253, 0);
 }
 
 .start-cell {
-  background: rgb(186, 210, 3);
+  background: #f4d03f;
   color: #e6ede7;
   font-weight: bold;
 }
 
 .destination-cell {
-  background: rgb(243, 240, 76);
+  background: #ffee58;
   color: #e7ede8;
   font-weight: bold;
 }
 
 .initial-cell {
-  background: rgba(244, 253, 0, .9);}
+  background: #ffee58;}
 
-.king-check-cell {
-  background-color: rgb(249, 80, 80);
+.king-check-cell  {
+  background-color: #e53935;
   color: #e7ede8;
   font-weight: bold;
+}
+
+.king-check-cell .chess-piece {
+  animation: shake .5s;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0); /* Posición original */
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px); /* Mover hacia la izquierda */
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px); /* Mover hacia la derecha */
+  }
 }
 
 .possible-move::before {
@@ -516,18 +532,18 @@ background:  rgb(244, 253, 0);
     display: flex; 
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
   .profile-container-chess{ 
     width: 400px;
     height: auto;
-    background-color: #2E86C1;
   }
   .move-container{
+    display: flex;
+    flex-direction: column;
     width: 400px;
-    height: 50rem;
+    height: 100%;
     margin-top: 5px;
-    background-color: #810404;
   }
   .tile-content{
     font-size: 12px;
