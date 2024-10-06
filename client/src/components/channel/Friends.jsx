@@ -18,12 +18,15 @@ import Fast from '../../img/fast';
 import SettingsModal from '../modal/SettingsModal';
 import { useChessboardContext } from '../../context/boardContext';
 import { GameContext } from '../../context/gameContext';
+import { FaCog, FaSignOutAlt } from 'react-icons/fa';
+import JoinRoom from '../modal/JoinRoom';
 
-const Friends = ({ friends, onlineUsers, room }) => {
+const Friends = ({ friends, room }) => {
   const {setPieces, resetPieces} = useChessboardContext();
   const{resetBoard} = useContext(GameContext);
-  const { createChat, userChats, updateCurrentChat  } = useContext(ChatContext);
+  const { createChat, userChats, updateCurrentChat, onlineUsers} = useContext(ChatContext);
   const [showModalSettings, setShowSettings] = useState();
+  const [showModalRoom, setShowRoom] = useState();
   const [hoveredFriend, setHoveredFriend] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showModalInf, setShowModalInf] = useState(false);
@@ -41,7 +44,7 @@ const Friends = ({ friends, onlineUsers, room }) => {
   const {auth} = useAuth();
   const navigate = useNavigate();
 
-  const {socket, setRoom, setInfUser, infUser, userChess, postGames} = useSocketContext();
+  const {socket, setRoom, setInfUser, infUser, userChess, postGames, setOnline} = useSocketContext();
   const {language} = useLanguagesContext();
 
   // const desafiadoAudio = new Audio(desafiadoSound);
@@ -291,6 +294,11 @@ const Friends = ({ friends, onlineUsers, room }) => {
 
      navigate('/auth/chat');
   }
+
+  const handleSignOut = ()=>{
+    setOnline(onlineUsers);
+    setShowRoom(true);
+  }
   
   let count = 1;
   return (
@@ -298,35 +306,43 @@ const Friends = ({ friends, onlineUsers, room }) => {
       <div className={style.tercerdiv} > 
          <div className={style.container}>
             <div className={style.desafio}>
-            <div className={style.titleWithIcon}>
-              <img 
-                src={'/icon/userswhite.png'} 
-                style={{width: '40px', marginRight: '10px'}} 
-                alt="" 
-              />
-              <h5>
-                {language.Challenge_a_match} {infUser?.time === 60 
-                  ? '1' : infUser?.time === 120 
-                  ? '2' : infUser?.time === 180 
-                  ? '3' : infUser.time === 300 
-                  ? '5' : infUser?.time === 600 ? '10' : '20'
-                } mn
-              </h5>
-              {infUser?.time === 60  || infUser?.time === 120 
-                ? <BulletSvg/> 
-                : infUser?.time === 180 || infUser.time === 300 
-                ? <BlitzSvg/> 
-                : <div style={{width: '25px', height: '25px', marginTop: '-2px'}}>
-                      <Fast/>
-                  </div>
-                }
-            </div>
-            <div 
-              className={style.setting} 
-              title={language.settings}
-              onClick={()=>setShowSettings(true)}>
-              <SettingSvg/>
-            </div>
+              <div className={style.SignOut}>
+                <FaSignOutAlt 
+                  className={style.FaSignOutAlt}
+                  onClick={()=>handleSignOut()}
+                />
+              </div>
+              <div className={style.titleWithIcon}>          
+                <img 
+                  src={'/icon/userswhite.png'} 
+                  alt="" 
+                />
+                <h5>
+                  {language.Challenge_a_match} {infUser?.time === 60 
+                    ? '1' : infUser?.time === 120 
+                    ? '2' : infUser?.time === 180 
+                    ? '3' : infUser.time === 300 
+                    ? '5' : infUser?.time === 600 
+                    ? '10' : '20'
+                  } mn
+                </h5>
+                {infUser?.time === 60  || infUser?.time === 120 
+                  ? <BulletSvg/> 
+                  : infUser?.time === 180 || infUser.time === 300 
+                  ? <BlitzSvg/> 
+                  : <div className={style.fastContainer}>
+                      <div className={style.fast} >
+                        <Fast/>
+                      </div>
+                    </div>
+                  }
+              </div>
+              <div 
+                className={style.setting} 
+                title={language.settings}
+                onClick={()=>setShowSettings(true)}>
+                  <FaCog className={style.FaCog} />
+              </div>
             </div>       
             <div>  
             </div>      
@@ -533,9 +549,12 @@ const Friends = ({ friends, onlineUsers, room }) => {
          </div>     
     </div>
     <SettingsModal 
-    show={showModalSettings}
-    handleClose={()=> setShowSettings(false)}
-  />
+      show={showModalSettings}
+      handleClose={()=> setShowSettings(false)}
+    />
+    { showModalRoom &&
+        <JoinRoom setShowModalMin={setShowRoom}/>
+      }
    </>
   );
 };

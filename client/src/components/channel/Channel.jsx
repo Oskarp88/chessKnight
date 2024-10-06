@@ -145,7 +145,7 @@ const Channel = () => {
           />
         </Row>
         <Row className={style.div3} style={{backgroundImage: `url(/fondos/fondoFriend.jpg)`}}>
-          <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
+          <Friends friends={allUsers} room={room}/>
         </Row>
       </div>
       <div 
@@ -180,7 +180,7 @@ const Channel = () => {
                 />
              </div>
              <div className={toggle === 'Jugadores' ? `${style.activeContent}` : `${style.content}`}>
-               <Friends friends={allUsers} onlineUsers={onlineUsers} room={room}/>
+               <Friends friends={allUsers} room={room}/>
              </div>
           </div>
       </div>

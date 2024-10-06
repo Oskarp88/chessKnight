@@ -133,7 +133,7 @@ useEffect(() => {
       veinte: minVeinte.length,
     });
   }
-}, [online, setPlayersTotal]); // Escucha cambios en online
+}, [online, setPlayersTotal, infUser?.time]); // Escucha cambios en online
 
 
 useEffect(() => {

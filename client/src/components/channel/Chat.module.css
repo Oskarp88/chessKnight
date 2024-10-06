@@ -257,7 +257,24 @@
 	-ie-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
 	box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
 }
-
+@media (max-width: 1300px){
+  .chatBox{
+    height: 75%;
+    margin-top: 8rem;
+  }
+  .chatHeader{
+    height: 8%;
+  }
+  .chatHeader strong{
+   margin-top: 0;
+  }
+  .messages{
+    height: 82%;
+  }
+  .chatInput{
+    height: 10%;
+  }
+}
 @media (max-width: 950px){
   .chatBox {
     height: 95%;
