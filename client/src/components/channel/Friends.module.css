@@ -118,6 +118,7 @@
     color: #dafffe;
   }
   .SignOut{
+    position: relative;
     height: 100%;
     width: 3rem;
     display: flex;
@@ -133,6 +134,26 @@
     height: 25px;
     width: 25px;
     cursor: pointer;
+  }
+  .dropdown{
+    border: 1px solid #4e5883;
+    border-radius: .5rem;
+    position: absolute;
+    margin-top: 6.5rem;
+    margin-left: 6rem;
+    z-index: 15;
+    width: 8rem;
+    background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
+    display: flex;
+    flex-direction: column;
+  }
+  .dropdown p {
+    width: 100%;
+    margin: auto;
+    padding: 5px;
+  }
+  .dropdown p:hover{
+    background-color: rgba(0, 0, 0, 0.15);
   }
   .fastContainer{
     display: flex;

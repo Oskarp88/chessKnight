@@ -22,7 +22,6 @@
   }
 
   .icon {
-    margin-top: 6px;
     margin-right: 10px;
     display: flex;
     justify-content: center;
@@ -46,6 +45,8 @@
     border-radius: 4px 4px 0 0;
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 2.5rem;
     text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
     font-size: 18px;
     font-weight: 800;
@@ -56,13 +57,34 @@
     box-shadow: 0px 0px 0px 1px #4e8381 inset, 0px 0px 0px 2px #74b6b4 inset, 0px 4px 0px 0px #4a7c7b, 0px 5px 0px 0px #355655, 0px 8px 0px 0px rgba(0,0,0,.15);
   }
 
+  .title h4{
+    margin-top: auto;
+  }
+
+  .item {
+    background: radial-gradient(circle at 74.2% 50.9%, rgb(55, 174, 138) 5.2%, rgb(3, 65, 22) 75.3%);    
+    display: flex;
+    align-items: center; /* Alinea los elementos verticalmente */
+    width: 99%;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 2px;
+    padding: 10px;
+    cursor: pointer;
+    height: 12px;
+    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
   .itemContainer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;  
-    max-height: 25rem;
+    max-height: 21.5rem;
     overflow-y: auto;
   }
 
@@ -83,22 +105,7 @@
 .itemContainer::-webkit-scrollbar-thumb:hover {
   background-color: #0b5345; /* Color del thumb al hacer hover */
 }
-  .item {
-    background: radial-gradient(circle at 74.2% 50.9%, rgb(55, 174, 138) 5.2%, rgb(3, 65, 22) 75.3%);    
-    display: flex;
-    align-items: center; /* Alinea los elementos verticalmente */
-    width: 99%;
-    justify-content: space-between;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    cursor: pointer;
-    height: 12px;
-    text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
+  
   .friendName{
     width: 100%;
     display: flex;
@@ -127,6 +134,23 @@
     box-shadow: 0px -3px 0px 0px rgba(0,0,0,.3) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
     
   } 
+  .viewport{
+    background: linear-gradient(to top, #85c1e9  0%, #154360  100%);
+  }
+
+  .itemUser{
+    height: auto;
+    width: 99.6%;
+    background: linear-gradient(to top, #85c1e9  0%, #154360  100%);
+    display: flex;
+    align-items: center; /* Alinea los elementos verticalmente */
+    justify-content: space-between;
+    padding: 2px 10px 6px 10px;
+    margin-left: 1px;
+    border-radius: 1rem 1rem 0 0;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
   
   .frienditem:hover {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);

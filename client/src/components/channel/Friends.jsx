@@ -20,6 +20,7 @@ import { useChessboardContext } from '../../context/boardContext';
 import { GameContext } from '../../context/gameContext';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
 import JoinRoom from '../modal/JoinRoom';
+import { Nav } from 'react-bootstrap';
 
 const Friends = ({ friends, room }) => {
   const {setPieces, resetPieces} = useChessboardContext();
@@ -31,6 +32,7 @@ const Friends = ({ friends, room }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalInf, setShowModalInf] = useState(false);
   const [showModalMin, setShowModalMin] = useState(false);
+  const [showModalSign, setShowModalSign] = useState(false);
   const [showModalOpponent, setShowModalOpponent] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [aceptarDesafio, setAceptarDesafio] = useState(false)
@@ -309,8 +311,14 @@ const Friends = ({ friends, room }) => {
               <div className={style.SignOut}>
                 <FaSignOutAlt 
                   className={style.FaSignOutAlt}
-                  onClick={()=>handleSignOut()}
+                  onClick={()=>setShowModalSign(!showModalSign)}
                 />
+                {showModalSign && 
+                  <div className={style.dropdown}>
+                    <p onClick={()=>handleSignOut()}>Cambiar de sala</p>
+                    <p><Nav.Link href="/">Salir</Nav.Link></p>
+                  </div>
+                }
               </div>
               <div className={style.titleWithIcon}>          
                 <img 
