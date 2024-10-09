@@ -41,5 +41,17 @@ export const initPieces = [
     { image: `assets/images/bp.png`, x: 7, y: 6, color: 'black', hasMoved: false, type: PieceType.PAWN  }
 ];
 
-
+export const valors = [
+    {id: 1, moneda: 500, valor: '500'},
+    {id: 2, moneda: 1000, valor: '1K'},
+    {id: 3, moneda: 2000, valor: '2K'},
+    {id: 4, moneda: 5000, valor: '5K'},
+    {id: 5, moneda: 10000, valor: '10K'},
+    {id: 6, moneda: 20000, valor: '20K'},
+    {id: 7, moneda: 50000, valor: '50K'},
+    {id: 8, moneda: 100000, valor: '100K'},
+    {id: 9, moneda: 250000, valor: '250K'},
+    {id: 10, moneda: 500000, valor: '500K'},
+    {id: 11, moneda: 1000000, valor: '1M'},
+]
 

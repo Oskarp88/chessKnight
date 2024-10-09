@@ -168,9 +168,10 @@ io.on("connection", (socket) => {
          bandera: game.bandera,
          country: game.country,
          photo: game.photo,
-         marco: game.marco
-       });
-       
+         marco: game.marco,
+         moneda: game?.moneda,
+         valor: game?.valor
+       });     
      }
    );
   socket.on("send_move", (data) => {

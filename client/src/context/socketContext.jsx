@@ -70,7 +70,9 @@ export const SocketProvider = ({ children, user }) => {
     bandera: '',
     country: '',
     photo: '',
-    marco: ''
+    marco: '',
+    moneda: 500,
+    valor: '500'
   });
   const [partidas, setPartidas] = useState([]);
   const [games, setGames] = useState(null);

@@ -21,6 +21,8 @@ import { GameContext } from '../../context/gameContext';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
 import JoinRoom from '../modal/JoinRoom';
 import { Nav } from 'react-bootstrap';
+import { TiArrowLeft } from 'react-icons/ti';
+import { valors } from '../../Constants';
 
 const Friends = ({ friends, room }) => {
   const {setPieces, resetPieces} = useChessboardContext();
@@ -40,6 +42,7 @@ const Friends = ({ friends, room }) => {
   const [userOpponentModal, setUserOpponentModal] = useState(null);
   const [roomGame, setRoomGame] = useState(null);
   const [isOffGame, setOffGame] = useState(false);
+  const [next, setNext] = useState(parseInt(localStorage.getItem('next')) || 1);
   const [idUser, setIdUser] = useState(null);
   const [photo, setPhoto] = useState('');
   const [userInf, setUserInf] = useState({});
@@ -125,7 +128,9 @@ const Friends = ({ friends, room }) => {
           bandera: data?.bandera,
           country: data?.country,
           photo: data?.photo,
-          marco: data?.marco
+          marco: data?.marco,
+          moneda: data?.moneda,
+          valor: data?.valor
         }));
         setRoomGame(data?.gameId);
         localStorage.setItem('gameRoom', data?.gameId);
@@ -223,7 +228,8 @@ const Friends = ({ friends, room }) => {
       fast: userOpponent.eloFast,
       bandera: userOpponent.imagenBandera,
       country: userOpponent.country,
-      marco: userOpponent.marco
+      marco: userOpponent.marco,
+      moneda: parseInt(valors[next].moneda)
     }));
      socket.emit('sendGame', {
        color: colorRamdon,
@@ -239,7 +245,9 @@ const Friends = ({ friends, room }) => {
        bandera: userChess?.imagenBandera,
        country: userChess?.country,
        photo: auth?.user?.photo,
-       marco: auth?.user?.marco
+       marco: auth?.user?.marco,
+       moneda: parseInt(valors[next].moneda),
+       valor: valors[next].valor
      });   
   }
   
@@ -297,9 +305,27 @@ const Friends = ({ friends, room }) => {
      navigate('/auth/chat');
   }
 
-  const handleSignOut = ()=>{
+  const handleSignOut = (e)=>{
     setOnline(onlineUsers);
     setShowRoom(true);
+  }
+
+  console.log('next', next)
+  const handlePreviou = (e) =>{
+     e.preventDefault()
+
+    if(next > 0) {
+      setNext(next - 1);
+      localStorage.setItem('next', next - 1)
+    }
+  }
+
+  const handleNext = (e) =>{
+    e.preventDefault()
+    if(next < 10){ 
+      setNext(next + 1)
+      localStorage.setItem('next', next - 1)
+    }
   }
   
   let count = 1;
@@ -442,7 +468,32 @@ const Friends = ({ friends, room }) => {
                       </> 
                     }
                     {!aceptarDesafio && isOffGame && <h3>{language.Challenge_rejected}</h3>}
-                </div>                                    
+                </div>     
+                 { auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin &&
+                    <div className={style.valor} >
+                       {next > 0 && 
+                       <button 
+                          className={style.polygon} 
+                          onClick={(e)=>handlePreviou(e)}
+                          
+                        >
+                        <svg  viewBox="0 0 24 24">
+                          <polygon points="14,2 14,22 4,12" fill="#154360" />
+                        </svg>
+                      </button>}
+                      <div className={style.moneda}
+                        style={next === 0 ? {marginLeft: '40px'} : next === 10 ? {marginRight: '40px'} : {}}
+                      >
+                         <img src="/icon/moneda.png" alt="" />
+                          <span>{valors[next]?.valor}</span>
+                      </div>
+                      {next !== 10 && <button className={style.polygon} onClick={(e)=>handleNext(e)}  >
+                      <svg viewBox="0 0 24 24">
+                        <polygon points="10,2 10,22 20,12" fill="#154360 " />
+                      </svg>
+                      </button>}
+                    </div>
+                            }                    
                   <div className={style.modalButtons}>
                     {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin && <>
                       <button 
@@ -511,7 +562,15 @@ const Friends = ({ friends, room }) => {
                                .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} 
                       </span>
                       <Spinner animation="grow" style={{color: '#154360'}}/>
-                  </div>                                    
+                  </div>  
+                    <div className={style.valor}>
+                     <div className={style.moneda}
+                        style={next === 0 ? {marginLeft: '40px'} : next === 10 ? {marginRight: '40px'} : {}}
+                      >
+                         <img src="/icon/moneda.png" alt="" />
+                          <span>{infUser?.valor}</span>
+                      </div>  
+                    </div>                                
                   <div className={style.modalButtons}>
                     <button className={style.button} onClick={playGame}>
                       {language.Accept}

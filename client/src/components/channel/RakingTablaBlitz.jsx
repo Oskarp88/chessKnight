@@ -56,7 +56,7 @@ export const RankingTableBlitz = () => {
   useEffect(() => {
     const getUsersElo = async() =>{
        
-        if(auth){
+        if(auth?.user){
           const response = await getRequest(`${baseUrl}/users/${auth.user._id}/elo`);
         
            if(response.error){
