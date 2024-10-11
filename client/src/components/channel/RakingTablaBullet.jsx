@@ -56,7 +56,7 @@ export const RankingTableBullet = () => {
     const getUsersElo = async() =>{
        
         if(auth?.user){
-          const response = await getRequest(`${baseUrl}/users/${auth.user._id}/elo`);
+          const response = await getRequest(`${baseUrl}/users/${auth?.user?._id}/elo`);
         
            if(response.error){
               return console.log('Error fetching users', response);
@@ -109,14 +109,14 @@ export const RankingTableBullet = () => {
               <SpinnerDowloand text={'Cargando rating....'}/>
             </div>
         : users?.map((o, index) => {
-            if (o._id === auth.user._id) {
+            if (auth?.user && o._id === auth.user._id) {
               userPosition = count;
             }
             return(        
                <li 
                 key={index} 
-                ref={o._id === auth.user._id ? userPositionRef : null} // Asigna el ref solo a tu posición
-                className={o._id === auth.user._id ? ` ${style.frienditem} ${style.viewport}` : `${style.frienditem}`}              
+                ref={auth?.user && o._id === auth.user._id ? userPositionRef : null} // Asigna el ref solo a tu posición
+                className={auth?.user && o._id === auth.user._id ? ` ${style.frienditem} ${style.viewport}` : `${style.frienditem}`}              
                  title={o?.username}
                  onClick={() => handleModalOpen(o?._id)}
               > 
@@ -164,7 +164,7 @@ export const RankingTableBullet = () => {
            )})
         }
       </div>
-      {!isVisible && <li  
+      {!isVisible && auth?.user && <li  
         className={`${style.itemUser}`}              
         title={auth?.user?.username}
         onClick={() => handleModalOpen(auth?.user?._id)}

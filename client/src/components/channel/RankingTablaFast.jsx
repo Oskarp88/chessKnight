@@ -56,7 +56,7 @@ export const RankingTable = () => {
     const getUsersElo = async() =>{
        
         if(auth?.user){
-          const response = await getRequest(`${baseUrl}/users/${auth.user._id}/elo`);
+          const response = await getRequest(`${baseUrl}/users/${auth?.user?._id}/elo`);
         
            if(response.error){
               return console.log('Error fetching users', response);
@@ -103,15 +103,15 @@ export const RankingTable = () => {
         {
         users.length !== 0 ?  
         users.map((o, index) => {
-          if (o._id === auth.user._id) {
+          if (auth?.user && o._id === auth.user._id) {
             userPosition = count;
           }
           return(
           <>
                <li 
-                ref={o._id === auth.user._id ? userPositionRef : null}
+                ref={auth?.user && o._id === auth.user._id ? userPositionRef : null}
                 key={index} 
-                className={o._id === auth.user._id ? ` ${style.frienditem} ${style.viewport}` : `${style.frienditem}`}                           
+                className={auth?.user && o._id === auth.user._id ? ` ${style.frienditem} ${style.viewport}` : `${style.frienditem}`}                           
                 onClick={() => handleModalOpen(o?._id)}
                 title={o?.username}
               > 
@@ -164,7 +164,7 @@ export const RankingTable = () => {
           </div>
         }
       </div>
-      {!isVisible && <li  
+      {!isVisible && auth?.user && <li  
                 className={`${style.itemUser}`}              
                 title={auth?.user?.username}
                 onClick={() => handleModalOpen(auth?.user?._id)}
