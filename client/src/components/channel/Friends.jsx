@@ -42,16 +42,15 @@ const Friends = ({ friends, room }) => {
   const [userOpponentModal, setUserOpponentModal] = useState(null);
   const [roomGame, setRoomGame] = useState(null);
   const [isOffGame, setOffGame] = useState(false);
-  const [next, setNext] = useState(parseInt(localStorage.getItem('next')) || 1);
+  const [next, setNext] = useState(0);
   const [idUser, setIdUser] = useState(null);
   const [photo, setPhoto] = useState('');
   const [userInf, setUserInf] = useState({});
-  const {auth} = useAuth();
+  const {auth, user} = useAuth();
   const navigate = useNavigate();
 
   const {socket, setRoom, setInfUser, infUser, userChess, postGames, setOnline} = useSocketContext();
   const {language} = useLanguagesContext();
-
   // const desafiadoAudio = new Audio(desafiadoSound);
   // desafiadoAudio.volume = 0.1;
   // const rechazadoAudio = new Audio(rechazadoSound);
@@ -324,7 +323,7 @@ const Friends = ({ friends, room }) => {
     e.preventDefault()
     if(next < 10){ 
       setNext(next + 1)
-      localStorage.setItem('next', next - 1)
+      localStorage.setItem('next', next + 1)
     }
   }
   
@@ -487,11 +486,16 @@ const Friends = ({ friends, room }) => {
                          <img src="/icon/moneda.png" alt="" />
                           <span>{valors[next]?.valor}</span>
                       </div>
-                      {next !== 10 && <button className={style.polygon} onClick={(e)=>handleNext(e)}  >
-                      <svg viewBox="0 0 24 24">
-                        <polygon points="10,2 10,22 20,12" fill="#154360 " />
-                      </svg>
-                      </button>}
+                      {(next !== 10 
+                          && parseInt(userModal?.score) > valors[next]?.moneda 
+                          && user?.score >  valors[next]?.moneda )  
+                          && 
+                        <button className={style.polygon} onClick={(e)=>handleNext(e)}  >
+                          <svg viewBox="0 0 24 24">
+                            <polygon points="10,2 10,22 20,12" fill="#154360 " />
+                          </svg>
+                        </button>
+                      }
                     </div>
                             }                    
                   <div className={style.modalButtons}>

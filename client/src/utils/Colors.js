@@ -5,7 +5,7 @@ export const colorChess = [
       boxShadow: '0 5px 15px rgba(7, 7, 235, 0.2), -5px 0 20px rgba(1, 36, 141, 0.2)',
       border: 'solid 2px #fff',
       border2: 'solid 1px #1565C0',
-      fondo: 'linear-gradient(181.2deg, rgb(181, 239, 249) 10.5%, rgb(254, 254, 254) 86.8%)',
+      fondo: 'radial-gradient(circle at 48.7% 44.3%, rgb(214, 234, 248 ) 0%, rgb(133, 193, 233) 22.9%, rgb(31, 97, 141) 76.7%, rgb(21, 67, 96) 100.2%)',
       fondo2: '#d6eaf8 ',
       fondo_3: 'linear-gradient(178deg, rgba(201, 234, 252, 0.51) 14.9%, rgba(139, 192, 216, 0.73) 80%',
       fondo4: '#d6eaf8 ',
@@ -19,7 +19,8 @@ export const colorChess = [
       fondoChat01: '/fondos/fondo_chat01.jpg',
       fondoUsers: '/icon/userslight.png',
       colorInvertido: '#0066CC',
-      fondoModal: 'radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%)'
+      fondoModal: 'radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%)',
+      fast: '#0e6251',
     },
     { 
       id: 2, 
@@ -42,6 +43,7 @@ export const colorChess = [
       fondoUsers: '/icon/userswhite.png',
       colorInvertido: '#fff',
       fondoModal: 'linear-gradient(to right, #d7d2cc 0%, #304352 100%);',
+      fast: '#52be80'
     }
   ]
 

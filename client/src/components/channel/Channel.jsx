@@ -132,11 +132,11 @@ const Channel = () => {
        setToggle(text)
     }
   return (
-    <div className={style.contenedor}>     
+    <div className={style.contenedor} style={{background: chessColor?.fondo}}>     
       <div className={style.flex}>
         <Row 
           className={style.div2} 
-          style={{backgroundImage: `url(${chessColor.fondoChat01})`}}      
+          style={{backgroundImage: `url(/fondos/fondoChat.png)`}}      
         >
           <Chat 
             room={room}
@@ -144,13 +144,13 @@ const Channel = () => {
             socket={socket}         
           />
         </Row>
-        <Row className={style.div3} style={{backgroundImage: `url(/fondos/fondoFriend.jpg)`}}>
+        <Row className={style.div3} style={{backgroundImage: `url(/fondos/fondoFriends.png)`}}>
           <Friends friends={allUsers} room={room}/>
         </Row>
       </div>
       <div 
         className={style.tabsContainer}
-        style={toggle === 'Jugadores' ? {backgroundImage: `url(/fondos/fondoFriend01.jpg)`} : {backgroundImage: `url(${chessColor.fondoChat})`}}
+        style={toggle === 'Jugadores' ? {backgroundImage: `url(/fondos/fondoFriends01.png)`} : {backgroundImage: `url(/fondos/fondoChat1.png)`}}
       >
           <div className={style.blocTabs}>
              <div 

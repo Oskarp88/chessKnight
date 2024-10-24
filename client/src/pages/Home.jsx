@@ -166,7 +166,6 @@ export function Home() {
             <div className={style.containerWelcome}>
               <h1 
                 className={style.titulo} 
-                style={{color: chessColor?.titulo}}
               >           
                 {language.welcome_to} 
                 {' '}
@@ -241,7 +240,7 @@ export function Home() {
       auth?.user  && 
       <div className={style.fondoDatos} >
         <div className={style.containerStats}>
-          <h5 style={{color: chessColor?.titulo}}>
+          <h5>
             {language.statistics_of} {auth?.user?.name 
               ? `${auth.user.name} ${auth.user.lastName}`
               : `${auth?.user?.username}`}
@@ -412,7 +411,7 @@ export function Home() {
         </div>
         </div>
         <div className={style.scrollableContainer}>
-          <h3 style={{color: chessColor?.titulo}}>
+          <h3>
             {language?.game_history.toUpperCase()}
           </h3>
           <div>
@@ -434,15 +433,20 @@ export function Home() {
                                   <BulletSvg /> :
                                 p?.gameType === 'blitz' ? 
                                   <BlitzSvg /> :
-                                  <FastSvg />
-                              }
+                                  <div style={{width: '25px'}}>
+                                    <Fast />
+                                  </div>
+                                  }
                             </div>
-                              <span style={{color: chessColor?.titulo}}>
-                                {
-                                  p?.gameType === 'bullet' ? 'Bullet' : 
-                                  p?.gameType === 'blitz' ? 'Blizt' : 'Fast'
-                                }
-                              </span>
+                              {
+                                
+                                  p?.gameType === 'bullet' ? 
+                                     <span style={{color: '#dc7633'}}>Bullet  </span> : 
+                                  p?.gameType === 'blitz' ? 
+                                     <span style={{color: '#f1c40f '}}>Blizt</span> : 
+                                     <span style={{color: chessColor?.fast}}>Fast</span>
+                                
+                             }
                           </div>
                           <div>
                             {
