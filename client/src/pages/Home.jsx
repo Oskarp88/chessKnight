@@ -41,7 +41,6 @@ const useInterval = (callback, delay) => {
 export function Home() {
   const {chessColor} = useChessboardContext();
   const [showModalMin, setShowModalMin] = useState(false);
-  const navigate = useNavigate();
   const [paginate, setPaginate] = useState(1);
   const [autoPaginate, setAutoPaginate] = useState(true);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 400);
@@ -50,8 +49,7 @@ export function Home() {
   const [stast, setStats] = useState('fast');
   const { onlineUsers} = useContext(ChatContext);
   const {auth} = useAuth();
-  const {socket, setInfUser, playersTotal, setOnline} = useSocketContext();
-  const {setCheckMate} = useCheckMateContext();
+  const {socket, setOnline} = useSocketContext();
   const {language} = useLanguagesContext();
 
   const miContaineHistorial = useRef(null);

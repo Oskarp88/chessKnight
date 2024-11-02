@@ -7,6 +7,7 @@ import { useCheckMateContext } from '../../context/checkMateContext';
 import FastSvg from '../../svg/fastSvg';
 import { BlitzSvg, BulletSvg } from '../../svg';
 import { GameContext } from '../../context/gameContext';
+import { Spinner } from 'react-bootstrap';
 
 export default function ModalCheckMate({ infUser, time, frase }) {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ export default function ModalCheckMate({ infUser, time, frase }) {
           </div>
           {redirecting ? (
             <div className={style.redirecting}>
-              <div className={style.spinner}></div>
+              <Spinner animation="border" variant="primary" />
               <p className={style.dirigiendo}>Dirigiendo a sala de juego en {countdown} segundos...</p>
             </div>
           

@@ -7,9 +7,8 @@ const CheckMateProvider = ({ children }) => {
 
   const [error, setError] = useState(null);
   const [checkMate, setCheckMate] = useState(null);
-
+  
   useEffect(() => {
-    console.log('checkmate',checkMate)
     const updateCheckMate = async () => {
       
       if (!checkMate) return; // Asegurarse de que haya datos válidos en checkMate antes de hacer el request
@@ -29,6 +28,7 @@ const CheckMateProvider = ({ children }) => {
           eloUser: checkMate?.eloUser,
           eloOpponent: checkMate?.eloOpponent,
           color: checkMate?.color,
+          score: checkMate?.score
         });
 
         if (response.error) {

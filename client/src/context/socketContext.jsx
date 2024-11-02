@@ -58,25 +58,8 @@ export const SocketProvider = ({ children, user }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [onlineUsersGame, setOnlineUsersGame] = useState([]);
   const [online, setOnline] = useState(null);
-  const [infUser, setInfUser] = useState({
-    idOpponent: null,
-    color: '',
-    username: '',
-    room: 0,
-    time: 1,
-    bullet: 0,
-    blitz: 0,
-    fast: 0,
-    bandera: '',
-    country: '',
-    photo: '',
-    marco: '',
-    moneda: 500,
-    valor: '500'
-  });
   const [partidas, setPartidas] = useState([]);
-  const [games, setGames] = useState(null);
- console.log('roomgame', room);
+  
   useEffect(() => {
     const newSocket = io.connect(
       process.env.REACT_APP_PRODUCTION === 'production'
@@ -105,16 +88,7 @@ useEffect(() => {
   if(gameRoom){
     setRoom(gameRoom)
   }
-},[])
-
-useEffect(() => {
-  localStorage.setItem('infUser', JSON.stringify(infUser));
-  const gamesData = localStorage.getItem('games');
-    if(gamesData){
-      const parseData = JSON.parse(gamesData);
-      setGames(parseData);
-    }
-},[infUser]);
+},[]);
 
 useEffect(() => {
   if (online) {  // Asegúrate de que online está definido
@@ -135,63 +109,14 @@ useEffect(() => {
       veinte: minVeinte.length,
     });
   }
-}, [online, setPlayersTotal, infUser?.time]); // Escucha cambios en online
+}, [online, setPlayersTotal]); // Escucha cambios en online
 
-
-useEffect(() => {
- const getGame = async()=>{
-    try {
-      const response = await axios.get(`${baseUrl}/partida/user/games/${room}`);
-      setGames(response.data);
-      localStorage.setItem('games', JSON.stringify(response.data));
-      console.log('response game', response.data)
-    } catch (error) {
-      console.log('error getGame',error)
-    }
- }
- if(room) getGame();
-},[infUser?.color]);
-
-const postGames = useCallback(async (roomGame, resetPieces) => {
-  try {
-      const response = await postRequest(`${baseUrl}/partida/user/games/create`, 
-       JSON.stringify({
-          gamesId: roomGame,
-          pieces: resetPieces,
-          piece: {},
-          x: 0,
-          y: 0,
-          turn: 'white'
-        })
-      );
-     console.log(response); // Devuelve la respuesta si es necesario
-  } catch (error) {
-      console.error('Error posting game:', error);
-  }
-},[]);
-
-const gamesUpdate = useCallback(async (roomGame, pieces, piece, x, y, turn) => {
-    try {
-     
-     await axios.put(`${baseUrl}/partida/user/games/update/${roomGame}`, {
-        pieces,
-        piece,
-        x,
-        y,
-        turn,
-      });
-    } catch (error) {
-      console.log('error', error);
-    }
-},[]);
   return (
     <SocketContext.Provider value={{ 
       socket, 
       setSocket,
       room,
       setRoom,
-      infUser,
-      setInfUser,
       allUsers,
       setAllUsers,
       onlineUsersGame,
@@ -208,9 +133,6 @@ const gamesUpdate = useCallback(async (roomGame, pieces, piece, x, y, turn) => {
       setPlayersTotal,
       online,
       setOnline,
-      postGames,
-      gamesUpdate,
-      games,
     }}>
       {children}
     </SocketContext.Provider>

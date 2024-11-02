@@ -8,7 +8,7 @@ import {
   getMovesFunction, 
   isMoveValid, 
   isStalemate } from './referee/Referee';
-import { HORIZONTAL_AXIS, VERTICAL_AXIS, initPieces } from '../Constants';
+import { HORIZONTAL_AXIS, VERTICAL_AXIS, initPieces, valors } from '../Constants';
 import toqueSound from '../path/to/tocar.mp3';
 import soltarSound from '../path/to/soltar.mp3';
 import victorySound from '../path/to/VICTORIA.mp3';
@@ -44,15 +44,13 @@ function Chessboard() {
   const {
      socket, 
      room, 
-     setRoom, 
-     infUser, 
-     userChess, 
-     setInfUser, 
+     setRoom,    
+     userChess,    
      setUser,
-     gamesUpdate,
-     games
     } = useSocketContext();
   const {
+    infUser, 
+    setInfUser, 
     whiteMoveLog, 
     blackMoveLog, 
     currentTurn, setCurrentTurn,
@@ -64,8 +62,8 @@ function Chessboard() {
     kingCheckCell, setKingCheckCell,
     enPassantTarget, setEnPassantTarget,
     userWon, setUserWon,
-    promotionModalOpen, setPromotionModalOpen,
-    modaltime,
+    isPromotionModalOpen, setPromotionModalOpen,
+    isModaltime,
     isGameOver, setGameOver,
     whiteTime, setWhiteTime,
     blackTime, setBlackTime,
@@ -83,6 +81,9 @@ function Chessboard() {
     ofrecerTablas,
     abandonarHandle,
     formatTime,
+    setWhiteTimeEnd,
+    setBlackTimeEnd, 
+    resetBoard
   } = useContext(GameContext);
   const {auth} = useAuth();
   const {setCheckMate} = useCheckMateContext();
@@ -99,9 +100,31 @@ function Chessboard() {
   // const derrotaAudio = new Audio(derrotaSound);
   // const jakeAudio = new Audio(jakeSound);
   // const jakeMateAudio = new Audio(jakeMateSound);
- 
+  const navigate = useNavigate();
   const ref = useRef();
   const chessboardRef = useRef(null);
+
+  useEffect(()=>{
+    if(!socket) return;
+    socket.on('revanchaAceptada',  (data) => {
+          
+      if (!data) return; // Check if data exists
+      const time = parseInt(localStorage.getItem('time')) || infUser?.time;
+      socket.emit('initPlay', {gameId: room, time});
+      setInfUser((prevInfUser) => ({
+        ...prevInfUser,
+        color: data.color === 'white' ? 'black' : 'white',
+      }));
+      setUser((prevInfUser) => ({
+        ...prevInfUser,
+        color: data.color === 'white' ? 'black' : 'white',
+      }));
+      localStorage.setItem('infUser', JSON.stringify(infUser));
+      resetBoard(); // Add a log inside resetBoard to verify
+      navigate('/chess')
+    });
+
+  },[socket])
 
   useEffect(() => {
     const dataCellStart = localStorage.getItem('startCell');
@@ -120,7 +143,6 @@ function Chessboard() {
       const parseData = JSON.parse(data);
       setRoom(parseData.room);
       setCheckMate(parseData.checkMate);
-      setInfUser(parseData.infUser);
       setUser(parseData.userChess);
       setCurrentTurn(parseData.currentTurn);
     }
@@ -134,11 +156,7 @@ function Chessboard() {
       const parseData = JSON.parse(userData);
       setUser(parseData);
     }
-    const userOpponent = localStorage.getItem('infUser');
-    if(userOpponent) {
-      const parseData = JSON.parse(userOpponent);
-      setInfUser(parseData);
-    }
+    
     const dataTimeWhite = localStorage.getItem('whiteTime');
     
     if(!isNaN(dataTimeWhite) && dataTimeWhite) {
@@ -148,6 +166,16 @@ function Chessboard() {
     
     if(!isNaN(dataTimeBlack) && dataTimeBlack) {
       setBlackTime(parseInt(dataTimeBlack));
+    }
+    const dataTimeWhiteEnd = localStorage.getItem('whiteTimeEnd');
+    
+    if(!isNaN(dataTimeWhiteEnd ) && dataTimeWhiteEnd) {
+      setWhiteTimeEnd(parseInt(dataTimeWhiteEnd));
+    }
+    const dataTimeBlackEnd = localStorage.getItem('blackTimeEnd');
+    
+    if(!isNaN(dataTimeBlackEnd) && dataTimeBlackEnd) {
+      setBlackTimeEnd(parseInt(dataTimeBlackEnd));
     }
   },[]);
 
@@ -297,10 +325,9 @@ function Chessboard() {
           JSON.stringify({ 
             room,  
             userChess,
-            infUser,
             currentTurn: currentTurn === 'white' ? 'black' : 'white'
         }));
-        
+        localStorage.setItem('infUser', JSON.stringify(infUser));       
         
         if (piece.type === PieceType.PAWN && (y === 0 || y === 7)) {
           // Abrir el modal de promoción
@@ -333,103 +360,25 @@ function Chessboard() {
     
   };
 
-  // const moveNomenclatura = (piece, captureOccurred,x,y) => {
-  //   const move = piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 6 && y === 0 
-  //   ? '0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 6 && y === 7 
-  //   ? '0-0' : piece?.color === 'white' && piece?.x === 4 && piece?.y === 0 && x === 2 && y === 0 
-  //   ? '0-0-0' : piece?.color === 'black' && piece?.x === 4 && piece?.y === 7 && x === 2 && y === 7 
-  //   ? '0-0-0' :`${ piece?.type?.charAt(0) === 'p'
-  //   ?  `${captureOccurred ? HORIZONTAL_AXIS[x] : ''}` 
-  //   : (piece?.type === 'knight') ? 'N' : (piece?.type?.charAt(0).toLocaleUpperCase()) || ''
-  // }${captureOccurred ? 'x' : ''}${HORIZONTAL_AXIS[x]}${VERTICAL_AXIS[y]}`;
-  //  if (piece && piece.color === "white") {
-  //    setWhiteMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-  //    setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-  //  } else if (piece && piece.color === 'black'){
-  //    setBlackMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-  //    setMoveLog((prevMoveLog) => [...prevMoveLog, move]);
-  //  }
-  // }
+  const AceptarRevancha = async() => {
+    resetBoard();
+    const color = infUser?.color === 'white' ? 'black' : 'white';
+    if(socket === null) return;
+    setInfUser((prevInfUser) => ({
+      ...prevInfUser,
+      color: color,
+    }));
+    setUser((prevInfUser) => ({
+      ...prevInfUser,
+      color: color,
+    }));
+    socket.emit('aceptarRevancha', {revancha: true, room, color});
+    const time = parseInt(localStorage.getItem('time')) || infUser?.time;
+    socket.emit('initPlay', {gameId: room, time}); 
+    localStorage.setItem('infUser', JSON.stringify(infUser));
+    navigate('/chess');
+  };
 
-  // const isCheckMate = (game) => {
-  //   setCheckMate(prevCheckMate => ({
-  //     ...prevCheckMate,
-  //     userId: auth?.user?._id,
-  //     opponentId: infUser?.idOpponent,
-  //     name: auth?.user?.username,
-  //     nameOpponent: infUser?.username,
-  //     bandera: auth?.user?.imagenBandera,
-  //     banderaOpponent: infUser?.bandera,
-  //     country: auth?.user?.country,
-  //     countryOpponent: infUser?.country,
-  //     time: `${infUser?.time === 60 || infUser?.time === 120 ? 'bullet' :
-  //              infUser?.time === 180 || infUser?.time === 300 ? 'blitz' :
-  //              'fast' }`,
-  //     game,
-  //     eloUser: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) :
-  //       infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) :
-  //       parseInt(userChess?.eloFast)}`,
-  //     eloOpponent: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(infUser?.bullet) :
-  //       infUser?.time === 180 || infUser?.time === 300 ?  parseInt(infUser?.blitz) :
-  //       parseInt(infUser?.fast)}`,
-  //     elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
-  //       infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
-  //       parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-  //     color: infUser?.color
-  //   }));
-  // }
-  
-  // const resetBoard = () => {
-  //   localStorage.removeItem('destinationCell');
-  //   localStorage.removeItem('startCell');
-  //   setPieces(resetPieces);
-  //   setFrase(null);
-  //   setModalTiedRepetition(false);
-  //   setTied(false);
-  //   setModalTablasAceptada(false);
-  //   setGameOver(false);
-  //   setDestinationCell(null);
-  //   setStartCell(null);
-  //   setKingCheckCell(null);
-  //   setSelectedPiece(null);
-  //   setCurrentTurn('white');
-  //   setBlackMoveLog([]);
-  //   setWhiteMoveLog([]);
-  //   setMoveLog([]);
-  //   setAceptarRevancha(false);
-  //   setModalTime(false);
-  //   setWhiteTime(infUser?.time || 0);
-  //   setBlackTime(infUser?.time || 0);
-  //   setModalRendicion(false);
-  //   setCheckMate(prevCheckMate => ({
-  //     ...prevCheckMate,
-  //     userId: '',
-  //     time: '',
-  //     game: '',
-  //     elo: 0
-  //   }));
-  //   // Agrega cualquier lógica adicional que necesites para reiniciar el juego.
-  // };
-
-  // const AceptarRevancha = async() => {
-  //   localStorage.removeItem('pieces'); 
-  //   localStorage.removeItem('whiteTime');
-  //   localStorage.removeItem('blackTime');
-  //   localStorage.removeItem('destinationCell');
-  //   localStorage.removeItem('startCell');
-  //   const color = infUser?.color === 'white' ? 'black' : 'white';
-  //   if(socket === null) return;
-  //   setInfUser((prevInfUser) => ({
-  //     ...prevInfUser,
-  //     color: color,
-  //   }));
-  //   setUser((prevInfUser) => ({
-  //     ...prevInfUser,
-  //     color: color,
-  //   }));
-  //   socket.emit('aceptarRevancha', {revancha: true, room, color});
-  //   resetBoard();
-  // }
       
     const possibleMoves = getMovesFunction(
       selectedPiece && selectedPiece.type,
@@ -603,13 +552,14 @@ function Chessboard() {
                       infUser={userWon} 
                       time={infUser?.time}  
                       frase={frase}/> : null}
-      {modaltime && <Modal 
+      {isModaltime && <Modal 
                       infUser={infUser} 
                       user={auth?.user} 
                     />
       }
       {aceptarRevancha && <ModalRevancha 
                             infUser={infUser} 
+                            AceptarRevancha={AceptarRevancha}
                           />
       }
       {modalAbandonar && <ModalAbandonar />}
@@ -623,14 +573,13 @@ function Chessboard() {
       {modalSendTablas && <ModalSendTablas 
                               infUser={infUser} 
                           />}
-      {promotionModalOpen && <PromotionPiece/>}
+      {isPromotionModalOpen && <PromotionPiece/>}
       </div>
       <div className='space'>
         <PlayerInfo        
-          playerName={auth?.user?.username} 
           playerIcon={auth?.user?.photo}  
           playerColor={infUser?.color === 'white' ? 'black' : 'white'}
-          infUser={userChess}
+          userChess={userChess}
           time={infUser?.time} 
           playerTime={infUser?.color === 'black' ? formatTime(blackTime) : formatTime(whiteTime)} 
           currentTurn={currentTurn === infUser?.color ? infUser?.color : ''}
@@ -639,7 +588,11 @@ function Chessboard() {
      </div>     
      <div  className='move-container'>
         <div className='register' style={{background: boardColor.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
-          <h5>{'Registro de jugadas'.toUpperCase()}</h5>       
+          <h5>{'Registro de jugadas'.toUpperCase()}</h5>
+          <div>
+            <img src="/icon/moneda.png" alt="" />
+            <span>{infUser?.valor}</span> 
+          </div>              
         </div>
         <RecordPlays whiteMoveLog={whiteMoveLog} blackMoveLog={blackMoveLog}/>
         <ChatChess 

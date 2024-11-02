@@ -26,7 +26,7 @@ import { valors } from '../../Constants';
 
 const Friends = ({ friends, room }) => {
   const {setPieces, resetPieces} = useChessboardContext();
-  const{resetBoard} = useContext(GameContext);
+  const{resetBoard, setInfUser, infUser, postGames,} = useContext(GameContext);
   const { createChat, userChats, updateCurrentChat, onlineUsers} = useContext(ChatContext);
   const [showModalSettings, setShowSettings] = useState();
   const [showModalRoom, setShowRoom] = useState();
@@ -49,7 +49,7 @@ const Friends = ({ friends, room }) => {
   const {auth, user} = useAuth();
   const navigate = useNavigate();
 
-  const {socket, setRoom, setInfUser, infUser, userChess, postGames, setOnline} = useSocketContext();
+  const {socket, setRoom, userChess,  setOnline} = useSocketContext();
   const {language} = useLanguagesContext();
   // const desafiadoAudio = new Audio(desafiadoSound);
   // desafiadoAudio.volume = 0.1;
@@ -161,8 +161,10 @@ const Friends = ({ friends, room }) => {
       //datos recibidos de quien acepto el desafio 
       setPieces(resetPieces);
       localStorage.setItem('bandera', data?.bandera);
-      setRoomGame(data?.roomGame);
-      socket.emit('joinRoomGamePlay', data?.roomGame); 
+      setRoom(data?.roomGame);
+      socket.emit('joinRoomGamePlay', data?.roomGame);
+      const time = parseInt(localStorage.getItem('time')) || infUser?.time; 
+      socket.emit('initPlay', {gameId: data?.roomGame, time}); 
       socket.emit('partida', 
         {
            idUser: auth?.user?._id,
@@ -214,7 +216,6 @@ const Friends = ({ friends, room }) => {
      setShowModalMin(false);
      const uuid = uuidv4(); 
      socket.emit('joinRoomGamePlay', uuid);   
-     setRoomGame(uuid);
      localStorage.setItem('gameRoom', uuid);
      setInfUser((prevInfUser) => ({
       ...prevInfUser,
@@ -253,19 +254,24 @@ const Friends = ({ friends, room }) => {
   //cuando el desafiado acepta
   const playGame = () => {
     resetBoard();
-    postGames(roomGame,resetPieces);
+    const gameId = localStorage.getItem('gameRoom') ||  roomGame;
+    postGames(gameId,resetPieces);
     setPieces(resetPieces);
     setShowModalOpponent(false);   
     if(socket === null) return;
      socket.emit('playGame', {
       showModalOpponent, 
-      roomGame, 
+      roomGame: gameId, 
       idOpponent: auth?.user?._id,
       username: auth?.user?.username || auth?.user?.name,
+      time: infUser?.time
     });
-     socket.emit('joinRoomGamePlay', roomGame); 
+     socket.emit('joinRoomGamePlay', gameId);
+     const time = parseInt(localStorage.getItem('time')) || infUser?.time;
+     socket.emit('initPlay', {gameId: roomGame, time}); 
      socket.emit('userBusy', auth?.user?._id);
      localStorage.setItem('infUser', JSON.stringify(infUser));
+     setRoom(gameId);
      navigate('/chess');    
   };
 
@@ -330,13 +336,13 @@ const Friends = ({ friends, room }) => {
   let count = 1;
   return (
    <>
-      <div className={style.tercerdiv} > 
+      <div className={style.tercerdiv}> 
          <div className={style.container}>
             <div className={style.desafio}>
-              <div className={style.SignOut}>
+              <div className={style.SignOut} onMouseLeave={()=>setShowModalSign(false)}>
                 <FaSignOutAlt 
                   className={style.FaSignOutAlt}
-                  onClick={()=>setShowModalSign(!showModalSign)}
+                  onMouseEnter={()=>setShowModalSign(true)}               
                 />
                 {showModalSign && 
                   <div className={style.dropdown}>

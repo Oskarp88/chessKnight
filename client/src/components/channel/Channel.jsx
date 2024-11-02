@@ -8,14 +8,17 @@ import { useAuth } from '../../context/authContext';
 import { baseUrl, getRequest } from '../../utils/services';
 import Row from 'react-bootstrap/Row';
 import { useChessboardContext } from '../../context/boardContext';
+import { Alert } from 'react-bootstrap';
+import { GameContext } from '../../context/gameContext';
 
 const Channel = () => {
 
     const {auth} = useAuth();
-    const {socket, infUser, setAllUsers, setUser, allUsers, setInfUser} = useSocketContext(); 
+    const {socket,  setAllUsers, setUser, allUsers} = useSocketContext(); 
     const [isRoom, setIsRoom] = useState(0);
     const [toggle, setToggle] = useState('Jugadores');
     const {chessColor} = useChessboardContext();
+    const {infUser,setInfUser} = useContext(GameContext)
 
     let room = infUser.time ? parseInt(infUser.time) : isRoom;
    
@@ -132,7 +135,12 @@ const Channel = () => {
        setToggle(text)
     }
   return (
-    <div className={style.contenedor} style={{background: chessColor?.fondo}}>     
+    <div className={style.contenedor} style={{background: chessColor?.fondo}}> 
+        {!socket && <div>
+        <Alert variant='warning'>
+          has perdido la conexion, !vuelve a recargar la pagina!
+        </Alert> 
+        </div>}   
       <div className={style.flex}>
         <Row 
           className={style.div2} 

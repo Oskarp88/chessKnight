@@ -1,12 +1,14 @@
+import { useContext } from 'react';
 import { useAuth } from '../../context/authContext';
 import { useChessboardContext } from '../../context/boardContext';
 import { useLanguagesContext } from '../../context/languagesContext';
 import { useSocketContext } from '../../context/socketContext';
 import style from './BoardInfo.module.css';
+import { GameContext } from '../../context/gameContext';
 
 function BoardInfo({ofrecerTablas, abandonarHandle}) {
     const {auth} = useAuth();
-    const {infUser} = useSocketContext();
+    const {infUser} = useContext(GameContext);
     const {boardColor} = useChessboardContext();
     const {language} = useLanguagesContext();
 

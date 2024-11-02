@@ -7,14 +7,33 @@ import { PieceType } from "../Types";
 import { useAuth } from "./authContext";
 import { useCheckMateContext } from "./checkMateContext";
 import { handleThreefoldRepetition, insufficientMaterial, isMoveValid, isStalemate } from "../components/referee/Referee";
+import { baseUrl, postRequest } from "../utils/services";
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 export const GameContext = createContext();
 
 export const GameContextProvider = ({children, user}) => {
     const {auth} = useAuth();
     const {pieces,setPieces, resetPieces} = useChessboardContext();
-    const {checkMate ,setCheckMate} = useCheckMateContext();
-    const {room, setRoom, userChess, infUser, setInfUser, setUser, gamesUpdate, socket} = useSocketContext();
+    const {setCheckMate} = useCheckMateContext();
+    const {room, setRoom, userChess, setUser, socket} = useSocketContext();
+    const [infUser, setInfUser] = useState(JSON.parse(localStorage.getItem('infUser')) || {
+      idOpponent: null,
+      color: '',
+      username: '',
+      room: 0,
+      time: 1,
+      bullet: 0,
+      blitz: 0,
+      fast: 0,
+      bandera: '',
+      country: '',
+      photo: '',
+      marco: '',
+      moneda: 500,
+      valor: '500'
+    });
     const [whiteMoveLog, setWhiteMoveLog] = useState([]);
     const [blackMoveLog, setBlackMoveLog] = useState([]);
     const [moveLog, setMoveLog] = useState([]);
@@ -29,14 +48,17 @@ export const GameContextProvider = ({children, user}) => {
     const [enPassantTarget, setEnPassantTarget] = useState(null);
     const [pieceAux, setPieceAux] = useState(null);
     const [userWon, setUserWon] = useState(null);
-    const [promotionModalOpen, setPromotionModalOpen] = useState(false);
+    const [isPromotionModalOpen, setPromotionModalOpen] = useState(false);
     const [isPromotionComplete, setPromotionComplete] = useState(false);
-    const [modaltime, setModalTime] = useState(false);
+    const [isModaltime, setModalTime] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
-   
+    const [isTimeEnd, setIsTimeEnd] = useState(false);
     const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
     const [blackTime, setBlackTime] = useState(parseInt(infUser.time));
+    const [whiteTimeEnd, setWhiteTimeEnd] = useState(parseInt(infUser.time));
+    const [blackTimeEnd, setBlackTimeEnd] = useState(parseInt(infUser.time));
     const [isWhiteTime, setIsWhiteTime] = useState('');
+    const [isRedTime, setIsReadTime] = useState(false);
     const [loadingTablas, setLoadingTablas] = useState(false);
     const [modalTablas, setModalTablas] = useState(false);
     const [modalSendTablas, setSendTablas] = useState(false);
@@ -55,6 +77,16 @@ export const GameContextProvider = ({children, user}) => {
     const [isConnected, setIsConnected] = useState(null);
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
+    const [games, setGames] = useState(null);
+    const intervalRef = useRef(null);
+
+    useEffect(() => {
+      const gamesData = localStorage.getItem('games');
+        if(gamesData){
+          const parseData = JSON.parse(gamesData);
+          setGames(parseData);
+        }
+    },[infUser && infUser]);
 
     useEffect(() => {
         if(socket === null) return;
@@ -134,31 +166,55 @@ export const GameContextProvider = ({children, user}) => {
         });
   
         socket.on('receiveStalemate', (data) => {
+          socket.emit('gameEnd', room);
           setFrase('por Rey ahogado');
           setModalTablasAceptada(data.state);
           setTied(true);
           isCheckMate('empate');
         })
   
-        socket.on('receiveTiempo', (data) => {
-          if (data?.turno === 'white') {
-              setWhiteTime(parseInt(data?.whiteTime));                 
-          } else {
-            setBlackTime(parseInt(data?.blackTime));       
-          }       
-        });
-  
-        socket.on('revanchaAceptada', async(data)=>{  
-          resetBoard();    
-          setInfUser((prevInfUser) => ({
-            ...prevInfUser,
-            color: data?.color === 'white' ? 'black' : 'white',
-          }));
-          setUser((prevInfUser) => ({
-            ...prevInfUser,
-            color: data?.color === 'white' ? 'black' : 'white',
-          }));            
-        });
+        // const handleReceiveTiempo = (data) => {
+        //   if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0) {                 
+        //     if (data?.res.turno === 'white') {
+        //       setWhiteTime(parseInt(data?.white));
+        //       setWhiteTimeEnd(parseInt(data?.white));                
+        //   } else {
+        //       setBlackTime(parseInt(data?.black));
+        //       setBlackTimeEnd(parseInt(data?.black));      
+        //   }  
+        //     socket.emit('sendTiempo', data);
+        //   }
+        // };
+      
+        // const handleReceiveTiempoTurn = (data) => {
+        //   if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0) {
+        //     if (data?.res.turno === 'white') {
+        //       setWhiteTime(parseInt(data?.white));
+        //       setWhiteTimeEnd(parseInt(data?.white));                
+        //   } else {
+        //       setBlackTime(parseInt(data?.black));
+        //       setBlackTimeEnd(parseInt(data?.black));      
+        //   }  
+        //   }
+        // };
+        // socket.on('receiveTiempo', handleReceiveTiempo);
+        // socket.on('receiveTiempoTurn', handleReceiveTiempoTurn);
+        // socket.on('revanchaAceptada',  (data) => {
+          
+        //   if (!data) return; // Check if data exists
+        //   const time = parseInt(localStorage.getItem('time')) || infUser?.time;
+        //   socket.emit('initPlay', {gameId: room, time});
+        //   setInfUser((prevInfUser) => ({
+        //     ...prevInfUser,
+        //     color: data.color === 'white' ? 'black' : 'white',
+        //   }));
+        //   setUser((prevInfUser) => ({
+        //     ...prevInfUser,
+        //     color: data.color === 'white' ? 'black' : 'white',
+        //   }));
+        //   localStorage.setItem('infUser', JSON.stringify(infUser));
+        //   resetBoard(); // Add a log inside resetBoard to verify
+        // });
   
         socket.on('receiveRevanchaRechazada',(data) => {
           setRevanchaRechazada(true);
@@ -179,6 +235,7 @@ export const GameContextProvider = ({children, user}) => {
         socket.on('receiveAceptarTablas', () => {
           localStorage.removeItem('whiteTime');
           localStorage.removeItem('blackTime'); 
+          socket.emit('gameEnd', room);
           setModalTablas(false);
           setSendTablas(false);
           setModalTablasAceptada(true);
@@ -186,6 +243,7 @@ export const GameContextProvider = ({children, user}) => {
         })
         socket.on('receiveCheckMate',(data) => {
           // derrotaAudio.play();
+          socket.emit('gameEnd', room);
           isCheckMate('derrota');
           setUserWon(prev => ({
             ...prev, 
@@ -204,6 +262,7 @@ export const GameContextProvider = ({children, user}) => {
         socket.on('receiveAbandonar',(data) => {
           localStorage.removeItem('whiteTime');
           localStorage.removeItem('blackTime');
+          socket.emit('gameEnd', room);
           // victoryAudio.play();
           isCheckMate('victoria');
           setUserWon(prev => ({
@@ -228,6 +287,8 @@ export const GameContextProvider = ({children, user}) => {
             socket.off('connect');
             socket.off('disconnect');
             socket.off('playerDisconnected');
+            // socket.off('receiveTiempo', handleReceiveTiempo);
+            // socket.off('receiveTiempoTurn', handleReceiveTiempoTurn);
             clearTimeout(reconnectionTimeout);    
         };
     }, [socket, reconnectionTimeout] );
@@ -245,10 +306,6 @@ export const GameContextProvider = ({children, user}) => {
           setBlackMoveLog(parseData.blackMoveLog);
           setWhiteMoveLog(parseData.whiteMoveLog);
           setMoveLog(parseData.moveLog);
-        }
-        const dataInfUser = localStorage.getItem('infUser');
-        if(dataInfUser){
-          setInfUser(JSON.parse(dataInfUser));
         }
         const gameRoom = localStorage.getItem('gameRoom');
         if(gameRoom){
@@ -270,9 +327,16 @@ export const GameContextProvider = ({children, user}) => {
         setWhiteMoveLog(parseData.whiteMoveLog);
         setMoveLog(parseData.moveLog);
       }
-      const dataInfUser = localStorage.getItem('infUser');
-        if(dataInfUser){
-          setInfUser(JSON.parse(dataInfUser));
+      
+        const dataTimeWhiteEnd = localStorage.getItem('whiteTimeEnd');
+    
+        if(!isNaN(dataTimeWhiteEnd ) && dataTimeWhiteEnd) {
+          setWhiteTimeEnd(parseInt(dataTimeWhiteEnd));
+        }
+        const dataTimeBlackEnd = localStorage.getItem('blackTimeEnd');
+        
+        if(!isNaN(dataTimeBlackEnd) && dataTimeBlackEnd) {
+          setBlackTimeEnd(parseInt(dataTimeBlackEnd));
         }
   },[])
 
@@ -313,6 +377,7 @@ export const GameContextProvider = ({children, user}) => {
   useEffect(()=>{
     
     if(countNoCapture === 100) {
+      socket.emit('gameEnd', room);
       console.log('empate por inactividad de captura');
       setFrase('por inactividad de captura');
       setModalTablasAceptada(true);
@@ -325,6 +390,7 @@ export const GameContextProvider = ({children, user}) => {
     const  isInsufficientMaterial = insufficientMaterial(pieces);
 
     if(isInsufficientMaterial){
+        socket.emit('gameEnd', room);
         setFrase('Empate por material insuficiente');
         setTied(true);
         setModalTablasAceptada(true);
@@ -336,6 +402,7 @@ useEffect(()=>{
   const tiedRepetition = handleThreefoldRepetition(moveLog);
   
   if(tiedRepetition){
+    socket.emit('gameEnd', room);
     setFrase('Tablas por repetición');
     setTied(true);
     setModalTablasAceptada(true);
@@ -344,48 +411,43 @@ useEffect(()=>{
  },[moveLog]);
   
   useEffect(() => {
-     let timer = null;
      localStorage.setItem('whiteTime', whiteTime);
      localStorage.setItem('blackTime', blackTime);
+     localStorage.setItem('whiteTimeEnd', whiteTimeEnd);
+     localStorage.setItem('blackTimeEnd', blackTimeEnd);
 
-     if(socket){
-      if(infUser?.color === currentTurn){
-        socket.emit('tiempo', {room, whiteTime, blackTime ,turno: currentTurn});
+     if( !isGameOver && !tied && whiteTime > 0 && blackTime > 0){
+         if(socket) {
+          
+          socket.on('timerUpdate', (updateGame)=>{
+             console.log('timerUpdate',updateGame)
+             if(updateGame.currenTurn === 'white'){
+                console.log('white',updateGame.timers.white)
+                setWhiteTime(updateGame.timers.white);
+                setWhiteTimeEnd(updateGame.timers.white);
+             }else{
+              console.log('balck',updateGame.timers.black)
+                setBlackTime(updateGame.timers.black);
+                setBlackTimeEnd(updateGame.timers.black)
+             }
+          })
+         }
       }
-     }
-     if (whiteTime === 0 || blackTime === 0) {
+     if (whiteTimeEnd === 0 || blackTimeEnd === 0) {
         setIsWhiteTime(whiteTime === 0 ? 'white' : 'black');
-        setModalTime(true);
-      
-     }
-    
-    if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0 ) {
-      // Cambiar de turno y actualizar el tiempo restante
-      if (currentTurn === 'white') {
-        if(infUser?.color === 'white') {
-          timer = setTimeout(() => {
-            setWhiteTime((prevTime) => prevTime - 1);           
-          }, 1000);
-        }
-         
-        
-      } else {
-        if(infUser?.color === 'black'){
-        timer = setTimeout(() => {
-          setBlackTime((prevTime) => prevTime - 1);
-        }, 1000);}
-      }
-    }
-  
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [currentTurn, whiteTime, blackTime, isWhiteTime]);
+        setModalTime(true);  
+       }
+    },[currentTurn, whiteTime, blackTime, isWhiteTime, socket]);
   
   useEffect(() => {
-    if (whiteTime === 0 || blackTime === 0) {
+    if (whiteTimeEnd === 0 || blackTimeEnd === 0) {
+      if(socket){
+        socket.emit('gameEnd', room);
+      }
+      localStorage.removeItem('whiteTimeEnd');
+      localStorage.removeItem('blackTimeEnd');
+      setWhiteTimeEnd(infUser.time);
+      setBlackTimeEnd(infUser.time);
       if (isWhiteTime === infUser?.color) {
         isCheckMate('derrota');
       } else {
@@ -393,197 +455,11 @@ useEffect(()=>{
       }
     }
   }, [whiteTime, blackTime]);
-  //     const handleConnect = () => {
-  //       console.log("Conexión al servidor establecida.");
-  //       setTextToast("Conexión al servidor establecida.");
-  //       setColor('#58d68d');
-  //       setShowToast(true);
-    
-  //       // Emite los eventos necesarios al conectar
-  //       socket.emit('requestLatestGameState', room);
-  //       socket.emit('joinRoomGamePlay', room);
-    
-  //       // Oculta el toast después de 5 segundos
-  //       setTimeout(() => {
-  //         setShowToast(false);
-  //       }, 5000);
-  //     };
-  //      // Manejar el evento "connect" para detectar la conexión exitosa
-  //     socket.on("connect", handleConnect);
-  //     // Manejar el evento "disconnect" para detectar desconexiones
-  //     socket.on("disconnect", (reason) => {
-  //       console.log("Desconectado. Razón:", reason);
-  //       setTextToast("Desconectado. Razón:", reason);
-  //       setIsConnected(false);
-  //       // Iniciar un temporizador de reconexión
-  //       const timeout = setTimeout(() => {
-  //         if (!isConnected) {
-  //           socket.emit('playerLeft', { playerId: socket.id, gameId: room });
-  //           console.log('Se ha perdido la conexión por más de 30 segundos');
-  //           setGameOver(true);
-  //         }
-  //       }, 30000); // 30 segundos para intentar reconectar
 
-  //         setReconnectionTimeout(timeout);        
-  //         socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room, timeout });
-  //     });
-
-  //      // Escuchar si el otro jugador se desconectó
-  //     socket.on('playerDisconnected', (data) => {
-  //       setTextToast(`El jugador con ID ${data.playerId} se ha desconectado: ${data.reason}`);
-  //       setPlayerDisconnected(true);
-  //     });
-  //     socket.on("reconnect", (attemptNumber) => {
-  //       setTextToast(`Reconectado en el intento ${attemptNumber}`);
-  //       setColor('#58d68d');
-  //       setShowToast(true);
-  //       // Realiza cualquier lógica adicional que necesites después de la reconexión
-  //       socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
-  //       socket.emit('joinRoomGamePlay', room); 
-  //     });
-  //     socket.on("reconnect_error", (error) => {
-  //       console.log("Error al intentar reconectar:", error);
-  //       // Puedes implementar una lógica de manejo de errores personalizada aquí
-  //     });
-
-  //     socket.on("reconnect_failed", () => {
-  //       console.log("Fallo al reconectar. No se pudo restablecer la conexión.");
-  //       socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
-  //     });
-
-  //     socket.on('latestGameState', (latestGameState) => {
-  //       // Actualiza el contexto de 'games' con el estado más reciente de la partida
-  //      socket.emit('sendGameState', {latestGameState, room}) // Maneja el movimiento del oponente con la nueva data
-  //     });
-  //     socket.on('receiveGameState',(data)=>{
-  //       console.log('receiveGameState', data)
-  //     })
-  //     socket.on("pawn_promotion", (data)=>{
-
-  //       setPieces(data.pieces)
-  //       setCurrentTurn(data.currentTurn);
-  //       setDestinationCell({x: data.destinationCell.x, y: data.destinationCell.y});
-  //       setSelectedPiece(null);
-  //       setStartCell(null);
-
-  //       const updatedPieces = data.pieces.map((p) => {
-  //         if (p.x === data.destinationCell.x && p.y === data.destinationCell.y && p.type === PieceType.PAWN) {
-  //               return { ...data.promotionPiece, x: p.x, y: p.y, color: data.currentTurn === 'white' ? 'black' : 'white' };
-  //         }
-  //         return p;
-  //       });
-
-  //       setPieces(updatedPieces);
-  //     });
-   
-  //     socket.on('receiveRevancha', (data) => {
-  //       setModalTablasAceptada(false);
-  //       setModalRendicion(false);
-  //       setModalTiedRepetition(false);
-  //       setAceptarRevancha(data?.revancha);    
-  //     });
-
-  //     socket.on('receiveStalemate', (data) => {
-  //       setFrase('por Rey ahogado');
-  //       setModalTablasAceptada(data.state);
-  //       setTied(true);
-  //       isCheckMate('empate');
-  //     })
-
-  //     socket.on('receiveTiempo', (data) => {
-  //       if (data?.turno === 'white') {
-  //           setWhiteTime(parseInt(data?.whiteTime));                 
-  //       } else {
-  //         setBlackTime(parseInt(data?.blackTime));       
-  //       }       
-  //     });
-
-  //     socket.on('revanchaAceptada', async(data)=>{ 
-  //       localStorage.removeItem('pieces'); 
-  //       localStorage.removeItem('whiteTime');
-  //       localStorage.removeItem('blackTime');
-  //       localStorage.removeItem('destinationCell');
-  //       localStorage.removeItem('startCell');      
-  //       setInfUser((prevInfUser) => ({
-  //         ...prevInfUser,
-  //         color: data?.color === 'white' ? 'black' : 'white',
-  //       }));
-  //       setUser((prevInfUser) => ({
-  //         ...prevInfUser,
-  //         color: data?.color === 'white' ? 'black' : 'white',
-  //       }));
-  //         resetBoard();
-  //     });
-
-  //     socket.on('receiveRevanchaRechazada',(data) => {
-  //       setRevanchaRechazada(true);
-  //       setSendRevancha(false);
-  //     })
-
-  //     socket.on('receiveTablas',(data) => {     
-  //          setSendTablas(true);      
-  //     });
-  //     socket.on('receiveCancelarTablas', (data) => {
-  //        setSendTablas(false);
-  //     })
-  //     socket.on('receiveRechazarTablas', () => {
-  //       setModalTablas(false);
-  //     })
-  //     socket.on('receiveAceptarTablas', () => {
-  //       localStorage.removeItem('whiteTime');
-  //       localStorage.removeItem('blackTime'); 
-  //       setModalTablas(false);
-  //       setSendTablas(false);
-  //       setModalTablasAceptada(true);
-  //       isCheckMate('empate');
-  //     })
-  //     socket.on('receiveCheckMate',(data) => {
-  //       // derrotaAudio.play();
-  //       isCheckMate('derrota');
-  //       setUserWon(prev => ({
-  //         ...prev, 
-  //         username: auth?.user?.username, 
-  //         nameOpponent: data?.username, 
-  //         idUser: auth?.user?._id,
-  //         idOpponent: data?.idUser,
-  //         turn: data?.color,
-  //         status: '0',
-  //         color: infUser?.color === 'white' ? 'black' : 'white',
-  //         photo: infUser?.photo
-  //       }));
-  //       setFrase('por !!Jaque Mate!!');
-  //       setGameOver(true);
-  //     })
-  //     socket.on('receiveAbandonar',(data) => {
-  //       localStorage.removeItem('whiteTime');
-  //       localStorage.removeItem('blackTime');
-  //       // victoryAudio.play();
-  //       isCheckMate('victoria');
-  //       setUserWon(prev => ({
-  //         ...prev, 
-  //         username: auth?.user?.username, 
-  //         nameOpponent: data?.username, 
-  //         idUser: auth?.user?._id,
-  //         idOpponent: data?.idUser,
-  //         turn: data?.color === 'white' ? 'black' : 'white',
-  //         status: '1',
-  //         color: infUser?.color === 'white' ? 'black' : 'white',
-  //         photo: infUser?.photo
-  //       }));
-  //       setFrase(`por abandono de las ${data?.color === 'white' ? 'negras' : 'blancas'}`);
-  //       setGameOver(true);
-  //     })
-  //     // socket.on("opponentMove", handleOpponentMove);
-
-  //     return () => {   
-  //         socket.off("connect", handleConnect);   
-  //         // socket.off("opponentMove", handleOpponentMove);
-  //         socket.off('connect');
-  //         socket.off('disconnect');
-  //         socket.off('playerDisconnected');
-  //         clearTimeout(reconnectionTimeout);    
-  //     };
-  // }, [socket, reconnectionTimeout] );
+  useEffect(()=>{
+    if(!socket) return;
+    socket.emit('changeTurn', {gameId: room, turn: currentTurn});
+  },[currentTurn, room])
 
   useEffect(() => {
     if (isPromotionComplete) {
@@ -1016,7 +892,6 @@ useEffect(()=>{
             JSON.stringify({
               room,  
               userChess,
-              infUser,
               currentTurn: turn
           }));
          
@@ -1069,7 +944,8 @@ useEffect(()=>{
       
       };
 
-      const isCheckMate = (game) => {
+      const isCheckMate = async(game) => {
+        // console.log('llegue a isCheckMate', game);
         setCheckMate({
           userId: auth?.user?._id,
           opponentId: infUser?.idOpponent,
@@ -1092,7 +968,8 @@ useEffect(()=>{
           elo: `${infUser?.time === 60 || infUser?.time === 120 ? parseInt(userChess?.eloBullet) - parseInt(infUser?.bullet) :
             infUser?.time === 180 || infUser?.time === 300 ? parseInt(userChess?.eloBlitz) - parseInt(infUser?.blitz) :
             parseInt(userChess?.eloFast) - parseInt(infUser?.fast)}`,
-          color: infUser?.color
+          color: infUser?.color,
+          score: infUser?.moneda,
         });
       };
 
@@ -1100,8 +977,13 @@ useEffect(()=>{
         localStorage.removeItem('pieces'); 
         localStorage.removeItem('whiteTime');
         localStorage.removeItem('blackTime');
+        localStorage.removeItem('whiteTimeEnd');
+        localStorage.removeItem('blackTimeEnd');
         localStorage.removeItem('destinationCell');
-        localStorage.removeItem('startCell'); 
+        localStorage.removeItem('startCell');
+        localStorage.removeItem('chessboard');
+        localStorage.removeItem('send_move');
+
         setPieces(resetPieces);
         setFrase(null);
         setModalTiedRepetition(false);
@@ -1118,13 +1000,15 @@ useEffect(()=>{
         setMoveLog([]);
         setAceptarRevancha(false);
         setModalTime(false);
-        setWhiteTime(infUser.time);
-        setBlackTime(infUser.time);
+        setWhiteTime(infUser?.time);
+        setBlackTime(infUser?.time);
+        setWhiteTimeEnd(infUser?.time);
+        setBlackTimeEnd(infUser?.time);
         setModalRendicion(false);
+        setIsReadTime(false);
         setCheckMate(null);
         setDestinationCellRival(null);
         setStartCellRival(null);
-        // Agrega cualquier lógica adicional que necesites para reiniciar el juego.
       };
 
       const handlePromotionSelection = async(promotionPiece) => {
@@ -1225,14 +1109,14 @@ useEffect(()=>{
                 photo: infUser?.photo
               }));
             
-             if(socket ===null) return; 
               isCheckMate('victoria');
               setFrase('por !!Jaque Mate!!');
               setGameOver(prevIsGameOver => {
                 console.log("isGameOver:", !prevIsGameOver);
                 return true;
               });
-              if(socket ===null) return; 
+              if(socket === null) return; 
+              socket.emit('gameEnd', room);
               socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
             }
             
@@ -1260,10 +1144,8 @@ useEffect(()=>{
             JSON.stringify({ 
               room,  
               userChess,
-              infUser,
               currentTurn: currentTurn === 'white' ? 'black' : 'white'
           }));
-          
           
           if (selectedPiece.type === PieceType.PAWN && (y === 0 || y === 7)) {
             // Abrir el modal de promoción
@@ -1275,9 +1157,9 @@ useEffect(()=>{
           gamesUpdate(room, pieces, selectedPiece, x, y, currentTurn === 'white' ? 'black' : 'white');
           
           const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
-          console.log('king', king1.color);
         if (!isCheck && isStalemate(king1, pieces, selectedPiece, x, y)) {
           socket.emit('stalemate', {room, state : true});
+          socket.emit('gameEnd', room);
           setModalTablasAceptada(true);
           setTied(true);
           setFrase('por Rey ahogado');
@@ -1325,20 +1207,23 @@ useEffect(()=>{
         }
       };
 
-      const AceptarRevancha = async() => {
-        resetBoard();
-        const color = infUser?.color === 'white' ? 'black' : 'white';
-        if(socket === null) return;
-        setInfUser((prevInfUser) => ({
-          ...prevInfUser,
-          color: color,
-        }));
-        setUser((prevInfUser) => ({
-          ...prevInfUser,
-          color: color,
-        }));
-        socket.emit('aceptarRevancha', {revancha: true, room, color});
-      };
+      // const AceptarRevancha = async() => {
+      //   resetBoard();
+      //   const color = infUser?.color === 'white' ? 'black' : 'white';
+      //   if(socket === null) return;
+      //   setInfUser((prevInfUser) => ({
+      //     ...prevInfUser,
+      //     color: color,
+      //   }));
+      //   setUser((prevInfUser) => ({
+      //     ...prevInfUser,
+      //     color: color,
+      //   }));
+      //   socket.emit('aceptarRevancha', {revancha: true, room, color});
+      //   const time = parseInt(localStorage.getItem('time')) || infUser?.time;
+      //   socket.emit('initPlay', {gameId: room, time}); 
+      //   localStorage.setItem('infUser', JSON.stringify(infUser));
+      // };
 
       const revanchaHandle = () => {
         if(socket === null) return;
@@ -1350,8 +1235,6 @@ useEffect(()=>{
       }
 
       const yesHandle = () => {
-        localStorage.removeItem('whiteTime');
-        localStorage.removeItem('blackTime');
         if(socket === null) return;
         setModalAbandonar(false);
         setGameOver(true)
@@ -1369,6 +1252,7 @@ useEffect(()=>{
         }));
         setFrase(`por abandono de las ${infUser?.color === 'white' ? 'blancas' : 'negras'}`);
         socket.emit('sendAbandonar', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
+        socket.emit('gameEnd', room);
       }
 
       const ofrecerTablas = () => {
@@ -1381,11 +1265,14 @@ useEffect(()=>{
      const aceptarTablas = () => {
        localStorage.removeItem('whiteTime');
        localStorage.removeItem('blackTime');
-       setFrase('por tablas aceptada')
+       localStorage.removeItem('whiteTimeEnd');
+       localStorage.removeItem('blackTimeEnd');
+       setFrase('por tablas aceptada');
        if(socket === null) return;
        socket.emit('aceptarTablas', 
          room,
        );
+       socket.emit('gameEnd', room);
        isCheckMate('empate');
        setModalTablas(false);
        setSendTablas(false);
@@ -1412,6 +1299,38 @@ useEffect(()=>{
       const notHandle = () => {
         setModalAbandonar(false);
       }
+
+      const postGames = useCallback(async (roomGame, resetPieces) => {
+        try {
+            await postRequest(`${baseUrl}/partida/user/games/create`, 
+             JSON.stringify({
+                gamesId: roomGame,
+                pieces: resetPieces,
+                piece: {},
+                x: 0,
+                y: 0,
+                turn: 'white'
+              })
+            );
+        } catch (error) {
+            console.error('Error posting game:', error);
+        }
+      },[]);
+      
+      const gamesUpdate = useCallback(async (roomGame, pieces, piece, x, y, turn) => {
+          try {
+           
+           await axios.put(`${baseUrl}/partida/user/games/update/${roomGame}`, {
+              pieces,
+              piece,
+              x,
+              y,
+              turn,
+            });
+          } catch (error) {
+            console.log('error', error);
+          }
+      },[]);
       
     return <GameContext.Provider 
          value={{
@@ -1430,9 +1349,9 @@ useEffect(()=>{
             enPassantTarget, setEnPassantTarget,
             pieceAux, setPieceAux,
             userWon, setUserWon,
-            promotionModalOpen, setPromotionModalOpen,
+            isPromotionModalOpen, setPromotionModalOpen,
             isPromotionComplete, setPromotionComplete,
-            modaltime, setModalTime,
+            isModaltime, setModalTime,
             isGameOver, setGameOver,
             whiteTime, setWhiteTime,
             blackTime, setBlackTime,
@@ -1455,12 +1374,13 @@ useEffect(()=>{
             reconnectionTimeout, setReconnectionTimeout,
             modalTablasAceptada, setModalTablasAceptada,
             loadingTablas, setLoadingTablas,
+            isRedTime, setIsReadTime,
             isCheckMate,
             resetBoard,
             handlePromotionSelection,
             handlePieceClick,
             handleTileClick,
-            AceptarRevancha,
+            // AceptarRevancha,
             revanchaHandle,
             yesHandle,
             movePiece,
@@ -1470,7 +1390,15 @@ useEffect(()=>{
             rechazarTablas,
             abandonarHandle,
             notHandle,
-            formatTime
+            formatTime,
+            setWhiteTimeEnd,
+            setBlackTimeEnd,
+            postGames,
+            gamesUpdate,
+            infUser,
+            setInfUser,
+            games,
+            resetBoard
          }}
       >
          {children}

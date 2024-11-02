@@ -92,7 +92,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Asegura que la superposición esté sobre el contenido */
+    z-index: 1000; /* Asegura que la superposición esté sobre el contenido */
   }
 
   /* CSS para el spinner */
@@ -113,5 +113,6 @@
 }
 
 .dirigiendo{
-  color: #330867;
+  font-weight: bold;
+  color: #1976d2;
 }

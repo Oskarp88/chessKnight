@@ -72,7 +72,8 @@ exports.updatePartidas = async(req, res) => {
        eloUser, 
        eloOpponent, 
        elo, 
-       color } = req.body;
+       color,
+       score } = req.body;
   
       try{
 
@@ -172,6 +173,9 @@ exports.updatePartidas = async(req, res) => {
                 gamesTiedBullet: game === 'empate' && parseInt(user.gamesTiedBullet) + 1 || user.gamesTiedBullet,
                 
                 rachaBullet: game === 'victoria' ? parseInt(user.rachaBullet) + 1 : 0 ,
+                score: game === 'victoria' ? 
+                    parseInt(user.score) + parseInt(score) : game === 'derrota' ?
+                    parseInt(user.score) - parseInt(score) : parseInt(user.score),
                 eloBullet: parseInt(user.eloBullet) + eloChange,
                 $push: {
                     partida: {
@@ -227,6 +231,9 @@ exports.updatePartidas = async(req, res) => {
                 gamesLostBlitz: game === 'derrota' ? parseInt(user.gamesLostBlitz) + 1 : user.gamesLostBlitz,
                 gamesTiedBlitz: game === 'empate' ? parseInt(user.gamesTiedBlitz) + 1 : user.gamesTiedBlitz,
                 rachaBlitz: game === 'victoria' ? parseInt(user.rachaBlitz) + 1 : 0 ,
+                score: game === 'victoria' ? 
+                    parseInt(user.score) + parseInt(score) : game === 'derrota' ?
+                    parseInt(user.score) - parseInt(score) : parseInt(user.score),
                 eloBlitz: parseInt(user.eloBlitz) + eloChange,
                 $push: {
                     partida: {
@@ -274,14 +281,17 @@ exports.updatePartidas = async(req, res) => {
          }
             const userUpdate = await User.findByIdAndUpdate(userId,{
                games: parseInt(user.games) + 1,
-               gamesWon: game === 'victoria' && parseInt(user.gamesWon) + 1 || user.gamesWon,
-               gamesLost: game === 'derrota' && parseInt(user.gamesLost) + 1 || user.gamesLost,
-               gamesTied: game === 'empate' && parseInt(user.gamesTied) + 1 || user.gamesTied,
+               gamesWon: game === 'victoria' ? parseInt(user.gamesWon) + 1 : user.gamesWon,
+               gamesLost: game === 'derrota' ? parseInt(user.gamesLost) + 1 : user.gamesLost,
+               gamesTied: game === 'empate' ? parseInt(user.gamesTied) + 1 : user.gamesTied,
                gamesFast: parseInt(user.gamesFast) + 1,
-               gamesWonFast: game === 'victoria' && parseInt(user.gamesWonFast) + 1 || user.gamesWonFast,
-               gamesLostFast: game === 'derrota' && parseInt(user.gamesLostFast) + 1 || user.gamesLostFast,
-               gamesTiedFast: game === 'empate' && parseInt(user.gamesTiedFast) + 1 || user.gamesTiedFast,
+               gamesWonFast: game === 'victoria' ? parseInt(user.gamesWonFast) + 1 : user.gamesWonFast,
+               gamesLostFast: game === 'derrota' ? parseInt(user.gamesLostFast) + 1 : user.gamesLostFast,
+               gamesTiedFast: game === 'empate' ? parseInt(user.gamesTiedFast) + 1 : user.gamesTiedFast,
                rachaFast: game === 'victoria' ? parseInt(user.rachaFast) + 1 : 0 ,
+               score: game === 'victoria' ? 
+                       parseInt(user.score) + parseInt(score) : game === 'derrota' ?
+                       parseInt(user.score) - parseInt(score) : parseInt(user.score),
                eloFast:  parseInt(user.eloFast) + eloChange,
                $push: {
                 partida: {

@@ -443,7 +443,7 @@ background:  rgb(244, 253, 0);
 .register{
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-size: 15px;
   background-color: #263849;
@@ -453,8 +453,22 @@ background:  rgb(244, 253, 0);
   z-index: 1;
   border-radius: .5rem .5rem 0 0;
 }
+.register div{ 
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: large;
+  border-left: 1px solid #fff;
+}
+.register div img{
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
 .register h5{
-  margin: auto;
+ 
 }
 
 /* @media (max-width: 1491px){
@@ -541,6 +555,7 @@ background:  rgb(244, 253, 0);
   }
 .register{
   height: 3rem;
+  
 }
     
   .move-container{

@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useAuth } from '../../context/authContext';
 import style from '../../pages/Home.module.css';
 import { useSocketContext } from '../../context/socketContext';
 import Fast from '../../img/fast';
 import { useNavigate } from 'react-router-dom';
 import { useCheckMateContext } from '../../context/checkMateContext';
+import { GameContext } from '../../context/gameContext';
 
 function JoinRoom({setShowModalMin}) {
     const {auth} = useAuth();
-    const {socket,playersTotal, setInfUser} = useSocketContext();
+    const {socket,playersTotal, } = useSocketContext();
+    const {setInfUser} = useContext(GameContext);
     const {setCheckMate} = useCheckMateContext();
     const navigate = useNavigate();
 

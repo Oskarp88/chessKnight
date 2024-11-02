@@ -14,11 +14,13 @@ const AuthProvider = ({ children }) => {
   useEffect(()=>{
     
     const User = async() => {
+      if(auth && auth.user) {
       const response = await getRequest(`${baseUrl}/user/${auth?.user?._id}`);
       if(response.error){
          return console.log('Error fetching users', response);
       }
        setUser(response);
+      }
     }   
     User();
   },[auth]);

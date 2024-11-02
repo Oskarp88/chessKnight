@@ -1,30 +1,31 @@
 // Archivo: PlayerInfo.js
 
-import React, {useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import style from './PlayerInfo.module.css';
 import { useChessboardContext } from '../../context/boardContext';
 import { baseUrl, getRequest } from '../../utils/services';
 import { useSocketContext } from '../../context/socketContext';
 import Fast from '../../img/fast';
+import { GameContext } from '../../context/gameContext';
 
 const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTurn }) => {
   const {boardColor, themePiece} = useChessboardContext();
   const [elo, setElo] = useState(10);
   const [id, setId] = useState(null);
-  const {infUser} = useSocketContext();
+  const {infUser} = useContext(GameContext);
   
  useEffect(()=>{
-  const data = localStorage.getItem('chessboard');
+  const data = localStorage.getItem('infUser');
   if (data) {
     const parseData = JSON.parse(data);
-    setId(parseData.infUser.idOpponent);
+    setId(parseData.idOpponent);
   }
  },[]);
   useEffect(() => {
     const getUsersElo = async() =>{
       
-     if(infUser.idOpponent || id ) {
-      const response = await getRequest(`${baseUrl}/users/${infUser.idOpponent ? infUser.idOpponent : id}/elo`);
+     if(infUser?.idOpponent || id ) {
+      const response = await getRequest(`${baseUrl}/users/${infUser?.idOpponent ? infUser?.idOpponent : id}/elo`);
      
       if(response.error){
          return console.log('Error fetching users', response);
@@ -90,7 +91,14 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
       </div>
       </div>     
       <div className={style.timerContainer}>
-        <div className={`${style.playerTimer} ${currentTurn ? currentTurn === 'white' ? style.turnWhite : style.turnBlack : ''}`} >
+        <div  
+           className={
+            `${style.playerTimer} 
+             ${currentTurn ? currentTurn === 'white' ? 
+               style.turnWhite : style.turnBlack : ''
+              }`
+          } 
+        >
           <div className={style.clock} >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clock" viewBox="0 0 16 16">
               <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>

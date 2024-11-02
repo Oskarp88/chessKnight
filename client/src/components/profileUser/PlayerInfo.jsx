@@ -1,18 +1,23 @@
 // Archivo: PlayerInfo.js
 
-import React, {useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState } from 'react';
 import style from './PlayerInfo.module.css';
 import { useChessboardContext } from '../../context/boardContext';
 import { baseUrl, getRequest } from '../../utils/services';
 import { useAuth } from '../../context/authContext';
 import Fast from '../../img/fast';
+import { GameContext } from '../../context/gameContext';
+import { useSocketContext } from '../../context/socketContext';
 
 
-const PlayerInfo = ({ playerName, playerIcon, playerColor,time, infUser, playerTime, currentTurn }) => {
+const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) => {
   const {boardColor, themePiece} = useChessboardContext();
+  const {whiteTime, blackTime, isRedTime, setIsReadTime} = useContext(GameContext);
   const [elo, setElo] = useState(10);
   const {auth} = useAuth();
+  const {infUser} = useContext(GameContext);
   const [id, setId] = useState(null);
+
   
   useEffect(()=>{
    const data = localStorage.getItem('chessboard');
@@ -22,12 +27,21 @@ const PlayerInfo = ({ playerName, playerIcon, playerColor,time, infUser, playerT
    }
   },[])
 
+  useEffect(()=>{
+    if(infUser.time !== 60 && whiteTime === 60 && infUser.color === 'white'){
+      setIsReadTime(true);
+   }
+   if(infUser.time !== 60 && blackTime === 60 && infUser.color === 'black'){
+     setIsReadTime(true);
+  }
+  },[playerTime]);
+
   useEffect(() => {
     const getUsersElo = async() =>{
        
-        if(infUser._id || id){
-          const response = await getRequest(`${baseUrl}/users/${infUser._id ? infUser._id : id}/elo`);
-          console.log(`id ${baseUrl}/users/${infUser._id ? infUser._id : id}/elo`)
+        if(userChess._id || id){
+          const response = await getRequest(`${baseUrl}/users/${userChess._id ? userChess._id : id}/elo`);
+          // console.log(`id ${baseUrl}/users/${infUser._id ? infUser._id : id}/elo`)
         
            if(response.error){
               return console.log('Error fetching users', response);
@@ -38,7 +52,7 @@ const PlayerInfo = ({ playerName, playerIcon, playerColor,time, infUser, playerT
      }
   
     getUsersElo();
-  },[infUser]);
+  },[userChess]);
 
   const truncateText = (text) => {
     if (typeof text !== 'string') {
@@ -61,14 +75,14 @@ const PlayerInfo = ({ playerName, playerIcon, playerColor,time, infUser, playerT
       <div className={style.playerDetails}>
         <div className={style.userprofile}>
            <div className={style.imageContainer}>
-              <img className={style.playerIcon} src={playerIcon} alt="User Photo" />
+              <img className={style.playerIcon} src={auth?.user?.photo} alt="User Photo" />
               <img className={style.marco} src={auth?.user?.marco} alt="Marco" />
             </div>
         </div>
         <div className={style.playerName}>
           <div className={style.status}>
             <img className={style.playerStatusIcon} src={`${playerColor === 'black' ? `assets/${themePiece.images}/wk.png` : `assets/${themePiece.images}/bk.png`}`} alt="Player Status Icon" />
-            <span>{truncateText(capitalizeFirstLetter(playerName))}</span>
+            <span>{truncateText(capitalizeFirstLetter(auth?.user?.username))}</span>
             <img className={style.bandera} src={auth?.user?.imagenBandera} alt={`flag`} />
           </div>
           <div className={style.playerRating}>
@@ -95,7 +109,15 @@ const PlayerInfo = ({ playerName, playerIcon, playerColor,time, infUser, playerT
         </div>
       </div>      
       <div className={style.timerContainer}>
-        <div className={`${style.playerTimer} ${currentTurn ? currentTurn === 'white' ? style.turnWhite : style.turnBlack : ''}`} >
+        <div 
+          className={
+            `${style.playerTimer} 
+             ${currentTurn ? isRedTime ?
+              style.turnRed : currentTurn === 'white' ? 
+               style.turnWhite : style.turnBlack : ''
+              }`
+          } 
+        >
           <div className={style.clock} >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clock" viewBox="0 0 16 16">
               <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
