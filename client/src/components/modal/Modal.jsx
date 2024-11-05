@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import style from './Modal.module.css'; // Asegúrate de importar correctamente el archivo CSS
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
@@ -6,6 +6,7 @@ import { useSocketContext } from '../../context/socketContext';
 import { useCheckMateContext } from '../../context/checkMateContext';
 import { BlitzSvg, BulletSvg, FastSvg } from '../../svg';
 import { GameContext } from '../../context/gameContext';
+import { Spinner } from 'react-bootstrap';
 
 const Modal = ({infUser, user}) => {
   const navigate = useNavigate();
@@ -14,17 +15,40 @@ const Modal = ({infUser, user}) => {
   const {setCheckMate} = useCheckMateContext();
   const {isWhiteTime, revanchaHandle} = useContext(GameContext);
 
-  const regresarHandle = () => {
-    if(socket === null) return;  
-    if (auth?.user) {  
-      setCheckMate(null);   
-       socket.emit('join-room', infUser?.time);
-       socket.emit('userAvailable', auth?.user?._id);
-       socket.emit('deletePartida', {room: infUser?.time, roomPartida: room});
-      navigate('/auth/channel');
-    }else{
-      navigate('/login');
+  const [redirecting, setRedirecting] = useState(false);
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    let interval;
+    if (redirecting) {
+      interval = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
     }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [redirecting]);
+
+  useEffect(() => {
+    if (redirecting && countdown === 0) {
+      if (auth?.user) {
+        setCheckMate(null); 
+        if(socket){  
+          socket.emit('join-room', infUser?.time);
+          socket.emit('userAvailable', auth?.user?._id);
+          socket.emit('deletePartida', {room: infUser?.time, roomPartida: room});
+        }
+        navigate('/auth/channel');
+      } else {
+        navigate('/login');
+      }
+    }
+  }, [redirecting, countdown]);
+
+  const regresarHandle = () => {
+   setRedirecting(true)
   }
 
   return (
@@ -72,10 +96,19 @@ const Modal = ({infUser, user}) => {
                  `${isWhiteTime === 'white' ? '1 |' : '0 |'} ${user?.username} `: 
                  `- ${isWhiteTime !== 'white' ? '0 |': '1 |'} ${infUser?.username}`}
               `} 
-          </div>          <div className={style.button}>
-            <button onClick={regresarHandle}>Regresar</button>
-            <button onClick={revanchaHandle}>Revancha</button>
-          </div>
+          </div> 
+          {redirecting ? (
+            <div className={style.redirecting}>
+              <Spinner animation="border" variant="primary" />
+              <p className={style.dirigiendo}>Dirigiendo a sala de juego en {countdown} segundos...</p>
+            </div>
+          
+          ) : (
+            <div className={style.button}>
+              <button onClick={regresarHandle}><p>Regresar</p></button>
+              <button onClick={revanchaHandle}><p>Revancha</p></button>
+            </div>
+          )}        
        </div>
       </div>
     </div>

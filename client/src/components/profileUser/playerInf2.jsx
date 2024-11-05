@@ -12,7 +12,7 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
   const {boardColor, themePiece} = useChessboardContext();
   const [elo, setElo] = useState(10);
   const [id, setId] = useState(null);
-  const {infUser} = useContext(GameContext);
+  const {infUser, setInfUser} = useContext(GameContext);
   
  useEffect(()=>{
   const data = localStorage.getItem('infUser');
@@ -32,11 +32,18 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
       }
        setElo(infUser?.time === 60 || infUser?.time === 120? response.eloBullet :
               infUser?.time === 180 || infUser?.time === 300 ? response.eloBlitz : response.eloFast);
-    }
+              setInfUser((prevInfUser) => ({
+                ...prevInfUser,           
+                bullet:  response.eloBullet,
+                blitz: response.eloBlitz,
+                fast: response.eloFast,
+              }));
+        localStorage.setItem('infUser', JSON.stringify(infUser));
+        }
      }
   
     getUsersElo();
-  },[infUser]);
+  },[infUser.color]);
 
   const truncateText = (text) => {
     if (typeof text !== 'string') {

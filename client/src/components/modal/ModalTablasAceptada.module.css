@@ -82,3 +82,8 @@
     background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
     z-index: 1000; /* Asegura que la superposición esté sobre el contenido */
   }
+
+  .dirigiendo{
+    font-weight: bold;
+    color: #1976d2;
+  }

@@ -14,9 +14,9 @@ export default function ModalCheckMate({ infUser, time, frase }) {
   const { auth } = useAuth();
   const { socket, room } = useSocketContext();
   const { setCheckMate } = useCheckMateContext();
+  const {revanchaHandle} = useContext(GameContext);
   const [redirecting, setRedirecting] = useState(false);
   const [countdown, setCountdown] = useState(5);
-  const {revanchaHandle} = useContext(GameContext);
 
   useEffect(() => {
     let interval;

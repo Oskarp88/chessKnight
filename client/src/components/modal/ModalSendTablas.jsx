@@ -8,7 +8,7 @@ const ModalSendTablas = ({infUser}) => {
     <div className={style.overlay}>
       <div className={style.gameOverModal}>
         <div className={style.header}>
-          <h2>Ofreciendo tablas</h2> 
+          <h2>TABLAS</h2> 
         </div> 
         <div className={style.body}>
           <img className={style.profileChekMate} src={infUser?.photo} alt='assets/avatar/user.png'  />

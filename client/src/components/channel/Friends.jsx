@@ -45,6 +45,9 @@ const Friends = ({ friends, room }) => {
   const [next, setNext] = useState(0);
   const [idUser, setIdUser] = useState(null);
   const [photo, setPhoto] = useState('');
+  const [busy, setBusy] = useState([]);
+  const [isBusy, setIsBusy] = useState(false);
+  console.log('busy',isBusy)
   const [userInf, setUserInf] = useState({});
   const {auth, user} = useAuth();
   const navigate = useNavigate();
@@ -81,7 +84,8 @@ const Friends = ({ friends, room }) => {
     setAceptarDesafio(false);
     setShowModalMin(false);
     if(socket === null) return;
-    socket.emit('modalClose', {off: true, room, friendId :userModal?._id} );
+    !isBusy && socket.emit('modalClose', {off: true, room, friendId :userModal?._id} );
+    socket.emit('yesAvailable', auth?.user?._id);
     setUserModal(null);
   };
 
@@ -95,12 +99,14 @@ const Friends = ({ friends, room }) => {
     setUserOpponentModal(null);
     if(socket === null) return;
      socket.emit('offGame', {off: true, roomGame});
+     socket.emit('yesAvailable', auth?.user?._id);
   };
 
   const offGame = () => {
     setShowModalOpponent(false);
     if(socket === null) return;
-     socket.emit('offGame', {off: true, roomGame});  
+     socket.emit('offGame', {off: true, roomGame}); 
+     socket.emit('yesAvailable', auth?.user?._id); 
   };
 
   useEffect(() => {
@@ -113,6 +119,7 @@ const Friends = ({ friends, room }) => {
      const handleGetGame = (data) => {
       
       if(data?.senderId === auth?.user?._id){
+        socket.emit('notAvailable', auth?.user?._id);
          handleModalOpponentOpen(data);
         //  desafiadoAudio.play();
          setInfUser((prevInfUser) => ({
@@ -163,6 +170,7 @@ const Friends = ({ friends, room }) => {
       localStorage.setItem('bandera', data?.bandera);
       setRoom(data?.roomGame);
       socket.emit('joinRoomGamePlay', data?.roomGame);
+      socket.emit('oponnetConnect', {gameId: data?.roomGame, idUser: auth?.user?._id, idOponnent: data?.idOponnent});
       const time = parseInt(localStorage.getItem('time')) || infUser?.time; 
       socket.emit('initPlay', {gameId: data?.roomGame, time}); 
       socket.emit('partida', 
@@ -186,6 +194,7 @@ const Friends = ({ friends, room }) => {
         //  rechazadoAudio.play();
          setOffGame(data?.off);
          setAceptarDesafio(false);
+         socket.emit('yesAvailable', auth?.user?._id);
       }    
     });
 
@@ -194,9 +203,23 @@ const Friends = ({ friends, room }) => {
       if(data?.off){
         if(data.friendId === auth?.user?._id){
            setShowModalOpponent(false);
+           socket.emit('yesAvailable', auth?.user?._id);
         }
       }
     });
+    socket.on('isBusy',(userId)=>{
+      setBusy((prevBusy) => {
+        if (!prevBusy.some(user => user === userId)) {
+          // Si el usuario no está en la lista, lo agrega y devuelve el nuevo array
+          return [...prevBusy, userId];
+        }
+        // Si el usuario ya está en la lista, devuelve el array sin cambios
+        return prevBusy;
+      });
+    });
+    socket.on('notBusy',(userId) => {
+      setBusy((prevBusy) => prevBusy.filter(user => user !== userId));
+    })
      
     return () => {
       if (socket === null) return;
@@ -205,7 +228,16 @@ const Friends = ({ friends, room }) => {
     
   }, [socket, roomGame, isOffGame, aceptarDesafio, setIdUser, auth.user]);
 
-  
+  useEffect(()=>{
+    if(!userModal) return;
+    const userIndex = busy.findIndex(id => id === userModal._id);
+    if(userIndex !== -1){
+      setIsBusy(true);
+    }else{
+      setIsBusy(false);
+    }
+  },[userModal]);
+
   //enviar desafio
   const createGame = (firstId, userOpponent) =>{
     resetBoard();
@@ -215,6 +247,7 @@ const Friends = ({ friends, room }) => {
      setOffGame(false);
      setShowModalMin(false);
      const uuid = uuidv4(); 
+     socket.emit('notAvailable', auth?.user?._id);
      socket.emit('joinRoomGamePlay', uuid);   
      localStorage.setItem('gameRoom', uuid);
      setInfUser((prevInfUser) => ({
@@ -257,7 +290,8 @@ const Friends = ({ friends, room }) => {
     const gameId = localStorage.getItem('gameRoom') ||  roomGame;
     postGames(gameId,resetPieces);
     setPieces(resetPieces);
-    setShowModalOpponent(false);   
+    setShowModalOpponent(false); 
+    // socket.emit('userAvailable', auth?.user?._id);  
     if(socket === null) return;
      socket.emit('playGame', {
       showModalOpponent, 
@@ -267,6 +301,7 @@ const Friends = ({ friends, room }) => {
       time: infUser?.time
     });
      socket.emit('joinRoomGamePlay', gameId);
+     
      const time = parseInt(localStorage.getItem('time')) || infUser?.time;
      socket.emit('initPlay', {gameId: roomGame, time}); 
      socket.emit('userBusy', auth?.user?._id);
@@ -454,6 +489,20 @@ const Friends = ({ friends, room }) => {
                          {userModal.username.charAt(0).toUpperCase()}{userModal.username.slice(1)}
                        </span>
                     </div>
+                    <div className={style.containerMoneda}>                
+                      <img src="/icon/moneda.png" alt="" />
+                      <div className={style.dinero}>
+                        {userModal?.score
+                            ?  
+                            <span>{userModal?.score}</span>
+                            :
+                            <div className='text-white'>
+                                <Spinner animation="grow" size="sm" />
+                                <Spinner animation="grow" />
+                            </div>
+                        }
+                      </div>               
+                     </div>
                  
                   </div>
                 <div className={style.modalContent}>
@@ -469,12 +518,19 @@ const Friends = ({ friends, room }) => {
                         <span className={style.text}>
                           {userModal?.username && `${language?.You_have_sent_a_challenge}`}
                         </span>
-                        <Spinner animation="grow" style={{color: '#154360'}}/>;
+                        <Spinner animation="grow" style={{color: '#154360'}}/>
                       </> 
                     }
                     {!aceptarDesafio && isOffGame && <h3>{language.Challenge_rejected}</h3>}
-                </div>     
+                </div>  
+                  {
+                    isBusy &&
+                    <><Spinner animation="grow" style={{color: '#154360'}}/>
+                    <p>esta ocupado</p></>
+                    
+                  }   
                  { auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin &&
+                    !isBusy &&
                     <div className={style.valor} >
                        {next > 0 && 
                        <button 
@@ -487,14 +543,18 @@ const Friends = ({ friends, room }) => {
                         </svg>
                       </button>}
                       <div className={style.moneda}
-                        style={next === 0 ? {marginLeft: '40px'} : next === 10 ? {marginRight: '40px'} : {}}
+                        style={next === 0 ?
+                           {marginLeft: '40px'} : 
+                              next === 10 || parseInt(userModal?.score) < valors[next+1]?.moneda 
+                              || user?.score < valors[next+1]?.moneda
+                            ? {marginRight: '40px'} : {}}
                       >
                          <img src="/icon/moneda.png" alt="" />
                           <span>{valors[next]?.valor}</span>
                       </div>
                       {(next !== 10 
-                          && parseInt(userModal?.score) > valors[next]?.moneda 
-                          && user?.score >  valors[next]?.moneda )  
+                          && valors[next+1]?.moneda < parseInt(userModal?.score) 
+                          && valors[next+1]?.moneda < user?.score ) 
                           && 
                         <button className={style.polygon} onClick={(e)=>handleNext(e)}  >
                           <svg viewBox="0 0 24 24">
@@ -505,7 +565,10 @@ const Friends = ({ friends, room }) => {
                     </div>
                             }                    
                   <div className={style.modalButtons}>
-                    {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin && <>
+                    {auth?.user?._id  !== userModal?._id && !aceptarDesafio && !showModalMin &&
+                     !isBusy &&
+                    
+                    <>
                       <button 
                         className={style.button} 
                         onClick={()=>createGame(
@@ -536,61 +599,61 @@ const Friends = ({ friends, room }) => {
               </div>
                 )}
                 {showModalOpponent && (
-              <div className={`${style.modal} ${showModalOpponent ? style.show : ''}`}>
-                <div className={style.header}>
-                    <div className={style.circle}>
-                      <a 
-                        className={style.inf} 
-                        title={language.information}
-                        onClick={() => handleModalInf(userModal?._id)}
-                      >
-                        <CircleInf />
-                      </a>
-                      <a  className={style.close} onClick={handleModalOpponentClose}>
-                        <CircleClose/>
-                      </a>
+                  <div className={`${style.modal} ${showModalOpponent ? style.show : ''}`}>
+                    <div className={style.header}>
+                        <div className={style.circle}>
+                          <a 
+                            className={style.inf} 
+                            title={language.information}
+                            onClick={() => handleModalInf(userModal?._id)}
+                          >
+                            <CircleInf />
+                          </a>
+                          <a  className={style.close} onClick={handleModalOpponentClose}>
+                            <CircleClose/>
+                          </a>
+                        </div>
+                        <div className={style.username}>
+                          <span>
+                            { `${language.game_of} ${infUser?.time === 60 ? '1 mn' : 
+                                infUser?.time === 120 ?  '2 mn' : 
+                                infUser?.time === 180 ? '3 mn' : 
+                                infUser?.time === 300 ? '5 mn' : 
+                                infUser.time === 600 ? '10 mn' : '20 mn'}`
+                            }
+                          </span>
+                        </div>
                     </div>
-                    <div className={style.username}>
-                       <span>
-                        { `${language.game_of} ${infUser?.time === 60 ? '1 mn' : 
-                            infUser?.time === 120 ?  '2 mn' : 
-                            infUser?.time === 180 ? '3 mn' : 
-                            infUser?.time === 300 ? '5 mn' : 
-                            infUser.time === 600 ? '10 mn' : '20 mn'}`
-                        }
-                       </span>
-                    </div>
-                </div>
-                <div className={style.modalContent}>                  
-                  <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
-                      <div className={style.imageContainerModal} >
-                        <img className={style.photoImage} src={userOpponentModal?.photo} alt="User Photo" />                  
-                        <img className={style.marco} src={userOpponentModal?.marco} alt="Marco"/>
-                      </div>                   
-                      <span className={style.text}>{userOpponentModal?.username && 
-                            `${userOpponentModal.username.charAt(0)
-                               .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} 
-                      </span>
-                      <Spinner animation="grow" style={{color: '#154360'}}/>
-                  </div>  
-                    <div className={style.valor}>
-                     <div className={style.moneda}
-                        style={next === 0 ? {marginLeft: '40px'} : next === 10 ? {marginRight: '40px'} : {}}
-                      >
-                         <img src="/icon/moneda.png" alt="" />
-                          <span>{infUser?.valor}</span>
+                    <div className={style.modalContent}>                  
+                      <div className={`${modalLoading ? `${style.userprofileLoading}` : `${style.userprofile}`}`}>
+                          <div className={style.imageContainerModal} >
+                            <img className={style.photoImage} src={userOpponentModal?.photo} alt="User Photo" />                  
+                            <img className={style.marco} src={userOpponentModal?.marco} alt="Marco"/>
+                          </div>                   
+                          <span className={style.text}>{userOpponentModal?.username && 
+                                `${userOpponentModal.username.charAt(0)
+                                  .toUpperCase()}${userOpponentModal.username.slice(1)} ${language.has_challenged_you}`} 
+                          </span>
+                          <Spinner animation="grow" style={{color: '#154360'}}/>
                       </div>  
-                    </div>                                
-                  <div className={style.modalButtons}>
-                    <button className={style.button} onClick={playGame}>
-                      {language.Accept}
-                    </button>
-                    <button className={style.button} onClick={offGame}>
-                      {language.Cancel}
-                    </button>
+                        <div className={style.valor}>
+                        <div className={style.moneda}
+                            style={next === 0 ? {marginLeft: '40px'} : next === 10 ? {marginRight: '40px'} : {}}
+                          >
+                            <img src="/icon/moneda.png" alt="" />
+                              <span>{infUser?.valor}</span>
+                          </div>  
+                        </div>                                
+                      <div className={style.modalButtons}>
+                        <button className={style.button} onClick={playGame}>
+                          {language.Accept}
+                        </button>
+                        <button className={style.button} onClick={offGame}>
+                          {language.Cancel}
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
                 )}
                  { 
                     showModalInf && 

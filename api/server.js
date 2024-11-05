@@ -38,6 +38,14 @@ let onlineUser = [];
 let onlineUserGame = [];
 let partidas = [];
 let games = {};
+let userDisconnect={}
+
+function DisconnectUser(gameId){
+   userDisconnect[gameId]={
+      user: false,
+      userOpponent: false,
+   }
+}
 
 function createGames(gameId, time) {
   games[gameId] = {
@@ -97,9 +105,9 @@ io.on("connection", (socket) => {
        userId,
        socketId: socket.id,
        busy: false,
+       notAvailable: false,
        time: 0
      });
-
      // console.log('userOnline' , onlineUser);
      io.emit('getOnlineUsers', onlineUser);
   });
@@ -126,7 +134,21 @@ io.on("connection", (socket) => {
      onlineUser[userIndex].busy = false;
      io.emit('getOnlineUsers', onlineUser);
    }
- })
+ });
+
+ socket.on('notAvailable', (userId) => {
+  const userIndex = onlineUser.findIndex(user => user.userId === userId);
+  if (userIndex !== -1) {
+    io.emit('isBusy', userId);
+  }
+});
+
+socket.on('yesAvailable', (userId) => {
+  const userIndex = onlineUser.findIndex(user => user.userId === userId);
+  if (userIndex !== -1) {
+    io.emit('notBusy', userId);
+  }
+})
 
   socket.on('addNewUserGame', (data) => {
   
@@ -199,7 +221,33 @@ io.on("connection", (socket) => {
  })
  socket.on('gameEnd',(gameId)=>{
   delete games[gameId];
+  delete userDisconnect[gameId];
  })
+
+ socket.on('oponnetConnect', (data)=>{
+
+  if(!userDisconnect[data.gameId]){
+    DisconnectUser(data.gameId);
+  }
+  
+  const userIndexUser = onlineUser.findIndex(user => user.userId === data.idUser);
+  if (userIndexUser === -1) {  
+     userDisconnect.user = true;
+     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: true });
+  }else if(userIndexUser !== -1 && userDisconnect.user){
+     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: false });
+     userDisconnect.user = false;
+  }
+  const userIndexOpponent = onlineUser.findIndex(user => user.userId === data.idOpponent);
+   if(userIndexOpponent === -1){
+    userDisconnect.userOpponent = true;
+     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idOpponent, disconnect: true});
+   }else if(userIndexOpponent !== -1 && userDisconnect.userOpponent){
+     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: false });
+     userDisconnect.userOpponent === false;
+   }
+  
+ });
 
   socket.on("send_message", (data) => {
    socket.to(data.room).emit("receive_message", data);

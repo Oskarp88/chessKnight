@@ -7,7 +7,7 @@
   
   .close{
     cursor: pointer;
-    margin-left: 90%;
+    margin-left: 0;
     color: #aed6f1;
   }
   
@@ -15,6 +15,41 @@
     color:#3498db;
   }
 
+  .header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .containerMoneda{
+    background: rgba(0,0,0,.3);
+    box-shadow: 0px -3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+    width: 80%;
+    height: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+    border-radius: .4rem .4rem .4rem .4rem;
+  }
+  .containerMoneda img{
+    width: 30px;
+    height: 30px;
+  }
+  .dinero{
+    width: 100%;
+    padding: 3px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: .2rem;
+  }
+  .dinero span{
+    margin-right: 5px;
+    color: #fff;
+    text-shadow: rgba(0,0,0,.7) 0px -1px 0px;
+    font-size: 16px;
+    font-weight: 700;
+  }
   .imageContainerModal {
     position: relative;
     width: 6rem; /* Asegúrate de que ambos elementos ocupen todo el contenedor */

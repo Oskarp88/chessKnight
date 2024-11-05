@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { baseUrl, putRequest } from '../utils/services';
 import axios from 'axios';
+import { useAuth } from './authContext';
 
 const CheckMateContext = createContext();
 const CheckMateProvider = ({ children }) => {
-
+  const {isScore, setScore} = useAuth();
   const [error, setError] = useState(null);
   const [checkMate, setCheckMate] = useState(null);
   
@@ -30,7 +31,7 @@ const CheckMateProvider = ({ children }) => {
           color: checkMate?.color,
           score: checkMate?.score
         });
-
+         setScore(!isScore);
         if (response.error) {
           console.log('Error en la respuesta: ', response.error);
         }

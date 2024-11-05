@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
     token: ''
   });
   const [user, setUser] = useState(null);
+  const [isScore, setScore] = useState(false);
 
   useEffect(()=>{
     
@@ -23,7 +24,7 @@ const AuthProvider = ({ children }) => {
       }
     }   
     User();
-  },[auth]);
+  },[auth, isScore]);
 
   // default axios
   axios.defaults.headers.common['Authorization'] = auth?.token;
@@ -41,7 +42,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, user }}>
+    <AuthContext.Provider value={{ auth, setAuth, user, isScore, setScore }}>
       {children}
     </AuthContext.Provider>
   );

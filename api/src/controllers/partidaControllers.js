@@ -157,8 +157,9 @@ exports.updatePartidas = async(req, res) => {
         
             if (game === 'victoria') {
                 eloChange = eloWinner;
-            } else if (game === 'derrota' && user.eloBullet > 10) {
-                eloChange = eloLoser;
+            } else if (game === 'derrota') {
+                eloChange = parseInt(user.eloBullet) - eloLoser <= 0 ? 
+                             -(parseInt(user.eloBullet)) : eloLoser;
             } else if (game === 'empate') {
                 eloChange = eloTie;
             }
@@ -175,7 +176,8 @@ exports.updatePartidas = async(req, res) => {
                 rachaBullet: game === 'victoria' ? parseInt(user.rachaBullet) + 1 : 0 ,
                 score: game === 'victoria' ? 
                     parseInt(user.score) + parseInt(score) : game === 'derrota' ?
-                    parseInt(user.score) - parseInt(score) : parseInt(user.score),
+                    (parseInt(user.score) - parseInt(score)) <= 500 ? 
+                       500 : parseInt(user.score) - parseInt(score) : parseInt(user.score),
                 eloBullet: parseInt(user.eloBullet) + eloChange,
                 $push: {
                     partida: {
@@ -216,7 +218,8 @@ exports.updatePartidas = async(req, res) => {
             if (game === 'victoria') {
                 eloChange = eloWinner;
             } else if (game === 'derrota' && user.eloBlitz > 10) {
-                eloChange = eloLoser;
+                eloChange = parseInt(user.eloBlitz) - eloLoser <= 0 ? 
+                -(parseInt(user.eloBlitz)) : eloLoser;;
             } else if (game === 'empate') {
                 eloChange = eloTie;
             }
@@ -233,7 +236,8 @@ exports.updatePartidas = async(req, res) => {
                 rachaBlitz: game === 'victoria' ? parseInt(user.rachaBlitz) + 1 : 0 ,
                 score: game === 'victoria' ? 
                     parseInt(user.score) + parseInt(score) : game === 'derrota' ?
-                    parseInt(user.score) - parseInt(score) : parseInt(user.score),
+                    (parseInt(user.score) - parseInt(score)) <= 500 ? 
+                       500 : parseInt(user.score) - parseInt(score) : parseInt(user.score),
                 eloBlitz: parseInt(user.eloBlitz) + eloChange,
                 $push: {
                     partida: {
@@ -274,8 +278,9 @@ exports.updatePartidas = async(req, res) => {
         
          if (game === 'victoria') {
              eloChange = eloWinner;
-         } else if (game === 'derrota' && user.eloFast > 10) {
-             eloChange = eloLoser;
+         } else if (game === 'derrota') {
+             eloChange = parseInt(user.eloFast) - eloLoser <= 0 ? 
+             -(parseInt(user.eloFast)) : eloLoser;
          } else if (game === 'empate') {
              eloChange = eloTie;
          }
@@ -290,8 +295,9 @@ exports.updatePartidas = async(req, res) => {
                gamesTiedFast: game === 'empate' ? parseInt(user.gamesTiedFast) + 1 : user.gamesTiedFast,
                rachaFast: game === 'victoria' ? parseInt(user.rachaFast) + 1 : 0 ,
                score: game === 'victoria' ? 
-                       parseInt(user.score) + parseInt(score) : game === 'derrota' ?
-                       parseInt(user.score) - parseInt(score) : parseInt(user.score),
+                       parseInt(user.score) + parseInt(score) : game === 'derrota' ? 
+                       (parseInt(user.score) - parseInt(score)) < 500 ? 
+                       500 : parseInt(user.score) - parseInt(score) : parseInt(user.score),
                eloFast:  parseInt(user.eloFast) + eloChange,
                $push: {
                 partida: {
