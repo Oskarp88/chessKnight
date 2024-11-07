@@ -580,20 +580,10 @@ background:  rgb(244, 253, 0);
   }
 }
 
-@media (max-width: 420px){
-  .profile-container-chess{
-    width: 380px;
-  }
-  #chessboard {
-    width: 380px;
-    height: 380px;
-  }
-}
-
-@media (max-width: 400px){
+@media (max-width: 450px){
   .display{
     padding: 0;
-    
+
   }
   .profile-container-chess{
     width: 100%;

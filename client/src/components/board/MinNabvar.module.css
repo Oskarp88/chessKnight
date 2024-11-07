@@ -2,7 +2,7 @@
    display: none;
 }
 
-@media(max-width: 400px){
+@media(max-width: 450px){
     .navbar{
         display: flex;
         align-items: center;
@@ -10,7 +10,7 @@
         height: 10%;
         justify-content: space-between;
     }
-    
+
     .faBars{
         width: 40px;
         height: 40px;

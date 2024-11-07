@@ -64,11 +64,11 @@
   }
 
   
-  @media (max-width: 400px){
+  @media (max-width: 450px){
     .moveLogContainer{
       display: none;
     }
-    
+
     .recordPlay{
       display: flex;
       justify-content: center;
