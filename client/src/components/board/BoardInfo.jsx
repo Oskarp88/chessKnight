@@ -6,9 +6,9 @@ import { useSocketContext } from '../../context/socketContext';
 import style from './BoardInfo.module.css';
 import { GameContext } from '../../context/gameContext';
 
-function BoardInfo({ofrecerTablas, abandonarHandle}) {
+function BoardInfo() {
     const {auth} = useAuth();
-    const {infUser} = useContext(GameContext);
+    const {infUser, ofrecerTablas, abandonarHandle} = useContext(GameContext);
     const {boardColor} = useChessboardContext();
     const {language} = useLanguagesContext();
 

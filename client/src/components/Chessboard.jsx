@@ -38,6 +38,7 @@ import BoardInfo from './board/BoardInfo';
 import RecordPlays from './board/RecordPlays';
 import PromotionPiece from './board/PromotionPiece';
 import { GameContext } from '../context/gameContext';
+import MinNabvar from './board/MinNabvar';
 
 function Chessboard() {
 
@@ -78,8 +79,6 @@ function Chessboard() {
     handlePieceClick,
     handleTileClick,
     movePiece,
-    ofrecerTablas,
-    abandonarHandle,
     formatTime,
     setWhiteTimeEnd,
     setBlackTimeEnd, 
@@ -537,6 +536,9 @@ function Chessboard() {
     <>
      <div className='display'>
      <div className='profile-container-chess'>
+      <div className={'recordPlay'}>
+        <RecordPlays whiteMoveLog={whiteMoveLog} blackMoveLog={blackMoveLog}/>
+      </div>
       <div className='space1'>
         <PlayerInf2
             playerName={infUser?.username} 
@@ -587,7 +589,7 @@ function Chessboard() {
       </div>
      </div>     
      <div  className='move-container'>
-        <div className='register' style={{background: boardColor.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
+        <div className='register' style={{background: boardColor?.register || 'linear-gradient(89deg, rgb(21, 74, 189) 0.1%, rgb(26, 138, 211) 51.5%, rgb(72, 177, 234) 100.2%)' }}>
           <h5>{'Registro de jugadas'.toUpperCase()}</h5>
           <div>
             <img src="/icon/moneda.png" alt="" />
@@ -595,15 +597,22 @@ function Chessboard() {
           </div>              
         </div>
         <RecordPlays whiteMoveLog={whiteMoveLog} blackMoveLog={blackMoveLog}/>
-        <ChatChess 
-           room={room}
-           username={auth?.user?.username}
-           socket={socket}
-         />
-         <BoardInfo ofrecerTablas={ofrecerTablas} abandonarHandle={abandonarHandle}/>
+        <div className='chat'>
+          <ChatChess 
+            room={room}
+            username={auth?.user?.username}
+            socket={socket}
+          />
+        </div>
+         <BoardInfo />
     </div>
+   
+    <MinNabvar/>
+    
      </div>
-     
+
+        
+    
     </>
   );
 }

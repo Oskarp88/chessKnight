@@ -79,5 +79,11 @@
     }
    }
 
+   @media (max-width: 400px){
+    .containerInf{
+    display: none;
+    }
+   }
+
 
     

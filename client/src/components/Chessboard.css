@@ -26,7 +26,7 @@
 
 #chessboard .tile {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   position: relative;
 }
 
@@ -300,7 +300,13 @@ background:  rgb(244, 253, 0);
 .king-check-cell .chess-piece {
   animation: shake .5s;
 }
-
+.chat{
+  height: 40%;
+  width: 100%;
+}
+.recordPlay{
+  display: none;
+}
 @keyframes shake {
   0%, 100% {
     transform: translateX(0); /* Posición original */
@@ -547,7 +553,6 @@ background:  rgb(244, 253, 0);
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background-color: #810404;
   }
   .profile-container-chess{ 
     width: 400px;
@@ -570,9 +575,12 @@ background:  rgb(244, 253, 0);
   .tile-content-num{
     font-size: 12px;
   }
+  .chat{
+    height: 18rem;
+  }
 }
 
- @media (max-width: 420px){
+@media (max-width: 420px){
   .profile-container-chess{
     width: 380px;
   }
@@ -580,45 +588,62 @@ background:  rgb(244, 253, 0);
     width: 380px;
     height: 380px;
   }
-  .move-container{  
-    width: 380px;
-  }
-}
-@media (max-width: 400px){
-  .profile-container-chess{
-    width: 370px;
-  }
-  #chessboard {
-    width: 370px;
-    height: 370px;
-  }
-  .move-container{  
-    width: 370px;
-  }
 }
 
-@media (max-width: 380px){
+@media (max-width: 400px){
+  .display{
+    padding: 0;
+  }
   .profile-container-chess{
-    width: 360px;
+    width: 100%;
+    height: 90%;
+    justify-content: center;
   }
   #chessboard {
+    margin: 0;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Mantiene el mismo alto y ancho */
+  }
+  .register{
+    display: none;
+  }
+  .tile-content{
+    font-size: 9px;
+  }
+  .tile-content-num{
+    font-size: 9px;
+  }
+  .move-container{
+    display: none;
+  }
+  .chat{
+    display: none;
+  }
+  .recordPlay{
+    display: flex;
+    width: 100%;
+    height: 5%;
+  }
+ }
+
+
+
+
+
+
+/* @media (max-width: 380px){
+ 
+  /* #chessboard {
     width: 360px;
     height: 360px;
-  }
-  .move-container{  
-    width: 360px;
-  }
-}
-@media (max-width: 365px){
+  } */
+/* @media (max-width: 365px){
   .profile-container-chess{
     width: 340px;
   }
   #chessboard {
     width: 340px;
     height: 340px;
-  }
-  .move-container{  
-    width: 340px;
   }
 }
 
@@ -630,23 +655,15 @@ background:  rgb(244, 253, 0);
     width: 320px;
     height: 320px;
   }
-  .move-container{  
-    width: 320px;
-  }
 }
 
 @media (max-width: 330px){
-  .profile-container-chess{
-    width: 300px;
-  }
+  
   #chessboard {
     width: 300px;
     height: 300px;
   }
-  .move-container{  
-    width: 300px;
-  }
-}
+} */
 
 /*@media (max-width: 410px){
   #chessboard {

@@ -61,7 +61,7 @@ export default function ModalCheckMate({ infUser, time, frase }) {
           <div className={style.image}>
           <img 
              className={style.profileChekMate}
-             style={ infUser.color === 'white' ? infUser?.status === '1' ? {border: 'solid 7px #D32F2F'} : {border: 'solid 7px #388E3C '} :  infUser?.status === '1' ?  {border: 'solid 7px #388E3C '} : {border: 'solid 7px #D32F2F'} } 
+             style={ infUser?.color === 'white' ? infUser?.status === '1' ? {border: 'solid 7px #D32F2F'} : {border: 'solid 7px #388E3C '} :  infUser?.status === '1' ?  {border: 'solid 7px #388E3C '} : {border: 'solid 7px #D32F2F'} } 
              src={infUser?.color === 'white' ?  infUser?.photo : auth?.user?.photo}
              alt='' />
           <div className={style.time}>
@@ -69,13 +69,13 @@ export default function ModalCheckMate({ infUser, time, frase }) {
           </div>
           <img 
              className={style.profileChekMate} 
-             style={ infUser.color === 'black' ? infUser?.status === '1' ? {border: 'solid 7px #D32F2F'} : {border: 'solid 7px #388E3C '} :  infUser?.status === '1' ?  {border: 'solid 7px #388E3C '} : {border: 'solid 7px #D32F2F'} } 
+             style={ infUser?.color === 'black' ? infUser?.status === '1' ? {border: 'solid 7px #D32F2F'} : {border: 'solid 7px #388E3C '} :  infUser?.status === '1' ?  {border: 'solid 7px #388E3C '} : {border: 'solid 7px #D32F2F'} } 
 
              src={ infUser?.color === 'black' ? infUser?.photo : auth?.user?.photo} 
             alt='' />
           </div>
           <div className={style.tittle}> 
-            {`${infUser.color === 'white' ? 
+            {`${infUser?.color === 'white' ? 
                  `${infUser?.nameOpponent} ${infUser?.status === '1' ? '| 0' : '| 1'}`: 
                  `${infUser?.username} ${infUser?.status === '1' ? '| 1' : '| 0'} -`} 
               ${infUser.color === 'black' ? 

@@ -108,7 +108,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
           </div>  
         </div>
       </div>      
-      <div className={style.timerContainer}>
+      <div className={style.timerContainer1}>
         <div 
           className={
             `${style.playerTimer} 

@@ -1,0 +1,80 @@
+import React, { useContext, useState } from 'react';
+import { FaBars } from 'react-icons/fa';
+import style from './MinNabvar.module.css';
+import { useChessboardContext } from '../../context/boardContext';
+import { GameContext } from '../../context/gameContext';
+import ChatChess from '../ChatChess';
+import { FaTimes } from 'react-icons/fa';
+import { useSocketContext } from '../../context/socketContext';
+import { useAuth } from '../../context/authContext';
+
+
+function MinNabvar() {
+    const {auth} = useAuth();
+    const {boardColor} = useChessboardContext();
+    const {socket,room} = useSocketContext();
+    const [isShowModal, setIsShowModal] = useState(false);
+    const {infUser, ofrecerTablas, abandonarHandle} = useContext(GameContext);
+    const [isChat, setIsChat] = useState(false);
+
+    const sendTied = () => {
+        setIsShowModal(false);
+       ofrecerTablas();
+    }
+
+    const sendAbandon = () => {
+        setIsShowModal(false);
+        abandonarHandle();
+    }
+
+    const handleChat = () => {
+        setIsShowModal(false);
+        setIsChat(true);
+    }
+
+  return (
+    <>
+       <div className={style.navbar} style={{background: boardColor?.register}}>
+        <FaBars 
+         className={style.faBars} 
+         color={boardColor?.whiteRow} 
+         onClick={()=>setIsShowModal(!isShowModal)}
+        /> 
+        <img src={'/icon/chatChess.png'} alt="" onClick={handleChat}/>
+       </div>
+       {
+        isShowModal && 
+          <div className={style.modal} style={{background: boardColor?.register}}>
+             <div className={style.faTimes}>  
+                <FaTimes 
+                  size={24} 
+                  color={boardColor?.whiteRow} 
+                  className={style.fa}
+                  onClick={()=>setIsShowModal(false)}
+                />
+            </div>
+             <span onClick={sendTied}>Ofrecer tablas</span>
+             <span onClick={sendAbandon}>Rendirse</span>
+          </div>
+       }
+       {
+        isChat && 
+         <div className={style.chat}>
+              <FaTimes 
+                  size={24} 
+                  color={boardColor?.whiteRow} 
+                  className={style.faChat}
+                  onClick={()=>setIsChat(false)}
+                />
+            <ChatChess 
+              room={room}
+              username={auth?.user?.username}
+              socket={socket}
+            />
+         </div>        
+       }
+    </>
+  )
+}
+
+export default MinNabvar;
