@@ -7,6 +7,7 @@ import style from './BoardInfo.module.css';
 import { GameContext } from '../../context/gameContext';
 
 function BoardInfo() {
+  
     const {auth} = useAuth();
     const {infUser, ofrecerTablas, abandonarHandle} = useContext(GameContext);
     const {boardColor} = useChessboardContext();

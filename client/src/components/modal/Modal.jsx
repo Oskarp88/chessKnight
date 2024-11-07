@@ -19,6 +19,7 @@ const Modal = ({infUser, user}) => {
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
+    
     let interval;
     if (redirecting) {
       interval = setInterval(() => {

@@ -4,6 +4,7 @@ import { GameContext } from '../../context/gameContext';
 
 const ModalTablas = ({infUser}) => {
   const {cancelarTablas} = useContext(GameContext);
+  
   return (
     <div className={style.overlay}>
       <div className={style.gameOverModal}>

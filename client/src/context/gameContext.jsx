@@ -1330,8 +1330,7 @@ useEffect(()=>{
           } catch (error) {
             console.log('error', error);
           }
-      },[]);
-      
+      },[]);     
     return <GameContext.Provider 
          value={{
             moveNomenclatura,

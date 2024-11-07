@@ -3,6 +3,7 @@ import style from './ModalAbandonar.module.css';
 import { GameContext } from '../../context/gameContext';
 
 export default function ModalAbandonar() {
+  
   const{yesHandle, notHandle} = useContext(GameContext);
 
   return (

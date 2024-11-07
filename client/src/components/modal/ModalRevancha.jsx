@@ -70,8 +70,7 @@ const ModalRevancha = ({infUser, AceptarRevancha}) => {
               <button onClick={AceptarRevancha}><p>Aceptar</p></button>
               <button onClick={regresarHandle}><p>Cancelar</p></button>
             </div>
-          )}
-          
+          )}         
         </div>
       </div>
     </div>

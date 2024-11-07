@@ -66,8 +66,7 @@
     background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
     z-index: 1000; /* Asegura que la superposición esté sobre el contenido */
   }
-
-  .ldsring {
+ .ldsring {
     display: flex;
     position: relative;
     width: 60px;

@@ -9,7 +9,6 @@ import { GameContext } from '../../context/gameContext';
 import { Spinner } from 'react-bootstrap';
 
 export default function ModalTablasAceptada({infUser, frase}) {
-
     const navigate = useNavigate();
     const {auth} = useAuth();
     const {socket, room} = useSocketContext();

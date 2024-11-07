@@ -609,10 +609,7 @@ function Chessboard() {
    
     <MinNabvar/>
     
-     </div>
-
-        
-    
+     </div>  
     </>
   );
 }

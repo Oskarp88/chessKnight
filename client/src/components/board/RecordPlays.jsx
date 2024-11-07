@@ -4,6 +4,7 @@ import style from './RecordPlay.module.css';
 import { GameContext } from '../../context/gameContext';
 
 function RecordPlays({ whiteMoveLog, blackMoveLog}) {
+  
     const {boardColor,themePiece} = useChessboardContext();
     const {moveLog} = useContext(GameContext);
     const moveLogContainerRef = useRef(null);

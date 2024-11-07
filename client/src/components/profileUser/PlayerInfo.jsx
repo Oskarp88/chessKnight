@@ -17,8 +17,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
   const {auth} = useAuth();
   const {infUser} = useContext(GameContext);
   const [id, setId] = useState(null);
-
-  
+ 
   useEffect(()=>{
    const data = localStorage.getItem('chessboard');
    if (data) {

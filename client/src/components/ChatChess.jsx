@@ -59,8 +59,7 @@ function ChatChess({ socket, username, room }) {
       });
       chatAudio.play();
       console.log("receive_message", response);
-    });
-  
+    });  
     // Limpiar el evento al desmontar el componente
     return () => {
       if (socket) {

@@ -56,7 +56,6 @@
     height: 2.8rem;
     background: linear-gradient(to top, #30cfd0 0%, #330867 100%);
   }
-  
   /* Agrega esta clase para la superposición de fondo detrás del modal */
   .overlay {
     position: fixed;

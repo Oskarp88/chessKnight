@@ -57,6 +57,7 @@ function MinNabvar() {
              <span onClick={sendAbandon}>Rendirse</span>
           </div>
        }
+       
        {
         isChat && 
          <div className={style.chat}>

@@ -593,6 +593,7 @@ background:  rgb(244, 253, 0);
 @media (max-width: 400px){
   .display{
     padding: 0;
+    
   }
   .profile-container-chess{
     width: 100%;

@@ -25,6 +25,7 @@ import { TiArrowLeft } from 'react-icons/ti';
 import { valors } from '../../Constants';
 
 const Friends = ({ friends, room }) => {
+  
   const {setPieces, resetPieces} = useChessboardContext();
   const{resetBoard, setInfUser, infUser, postGames,} = useContext(GameContext);
   const { createChat, userChats, updateCurrentChat, onlineUsers} = useContext(ChatContext);
