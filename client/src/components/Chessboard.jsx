@@ -9,13 +9,6 @@ import {
   isMoveValid, 
   isStalemate } from './referee/Referee';
 import { HORIZONTAL_AXIS, VERTICAL_AXIS, initPieces, valors } from '../Constants';
-import toqueSound from '../path/to/tocar.mp3';
-import soltarSound from '../path/to/soltar.mp3';
-import victorySound from '../path/to/VICTORIA.mp3';
-import derrotaSound from '../path/to/derrota.mp3';
-import jakeMateSound from '../path/to/jakemate.mp3';
-import jakeSound from '../path/to/jake.mp3';
-import capturedSound from '../path/to/captured.mp3';
 import {
   isCheckmateAfterMove,  
   isSimulatedMoveCausingCheck, 
@@ -92,13 +85,13 @@ function Chessboard() {
   } = useChessboardContext();  
  
 
-  // const toqueAudio = new Audio(toqueSound);
-  // const soltarAudio = new Audio(soltarSound);
-  // const capturedAudio = new Audio(capturedSound);
-  // const victoryAudio = new Audio(victorySound);
-  // const derrotaAudio = new Audio(derrotaSound);
-  // const jakeAudio = new Audio(jakeSound);
-  // const jakeMateAudio = new Audio(jakeMateSound);
+  const toqueAudio = new Audio('/to/tocar.mp3');
+  const soltarAudio = new Audio('/to/soltar.mp3');
+  const capturedAudio = new Audio('/to/captured.mp3');
+  const victoryAudio = new Audio('/to/VICTORIA.mp3');
+  const derrotaAudio = new Audio('/to/derrota.mp3');
+  const jakeAudio = new Audio('/to/jake.mp3');
+  const jakeMateAudio = new Audio('/to/jakemate.mp3');
   const navigate = useNavigate();
   const ref = useRef();
   const chessboardRef = useRef(null);

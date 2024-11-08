@@ -1,38 +1,37 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './ChatChess.module.css';
 import Picker from 'emoji-picker-react';
-import soundChat from '../path/to/sonicChat.mp3';
 import {Container, Stack} from 'react-bootstrap';
 import { useChessboardContext } from '../context/boardContext';
 import { useSocketContext } from '../context/socketContext';
 import { useAuth } from '../context/authContext';
 
 function ChatChess({ socket, username, room }) {
-  const {currentMessage, setCurrentMessage, messageList, setMessageList} = useSocketContext();
+  const {currentMessageChess, setCurrentMessageChess, messageListChess, setMessageListChess, setCountMessage} = useSocketContext();
   const [showEmoji, setShowEmoji] = useState(false);
   const {chessColor, boardColor} = useChessboardContext();
   const {auth} = useAuth();
-  const chatAudio = new Audio(soundChat);
+  const chatAudio = new Audio('/to/sonicChat.mp3');
   const scroll = useRef();
 
   useEffect(()=>{
     scroll?.current?.scrollIntoView({behavior: 'smooth'})
-  },[currentMessage]);
+  },[currentMessageChess]);
   
   const sendMessage = async () => {
     if(socket === null) return;
-    if (currentMessage !== '' ) {
+    if (currentMessageChess !== '' ) {
       const messageData = {
         room,
         author: username,
-        message: currentMessage,
+        message: currentMessageChess,
         photo: auth?.user?.photo,
         times: new Date().getTime(),
         time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
       };
-      await socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
-      setCurrentMessage("");
+      await socket.emit("send_messageChess", messageData);
+      setMessageListChess((list) => [...list, messageData]);
+      setCurrentMessageChess("");
     }
   };
 
@@ -40,8 +39,8 @@ function ChatChess({ socket, username, room }) {
   useEffect(() => {
     if (socket === null) return;
   
-    socket.on("receive_message", (response) => {
-      setMessageList((list) => {
+    socket.on("receive_messageChess", (response) => {
+      setMessageListChess((list) => {
         // Verificar si el mensaje ya existe en la lista
         const messageExists = list.some(
           (msg) =>
@@ -52,18 +51,21 @@ function ChatChess({ socket, username, room }) {
   
         // Solo añadir el mensaje si no existe
         if (!messageExists) {
+          setCountMessage(prev => prev + 1);
+          try {
+            chatAudio.play();
+          } catch (error) {
+            console.log("Error al reproducir el audio:", error);
+          }
           return [...list, response];
         }
-  
         return list;
       });
-      chatAudio.play();
-      console.log("receive_message", response);
     });  
     // Limpiar el evento al desmontar el componente
     return () => {
       if (socket) {
-        socket.off("receive_message");
+        socket.off("receive_messageChess");
       }
     };
   }, [socket]);
@@ -81,7 +83,7 @@ function ChatChess({ socket, username, room }) {
       <div
         className={style.messages} 
       >
-          {messageList.map((messageContent, index) => {
+          {messageListChess.map((messageContent, index) => {
             return (
               <div
                 className={style.message}
@@ -133,10 +135,10 @@ function ChatChess({ socket, username, room }) {
         <input
           className={style.inputMessage} 
           type="text"
-          value={currentMessage}
+          value={currentMessageChess}
           placeholder="Message..."
           onChange={(event) => {
-            setCurrentMessage(event.target.value);
+            setCurrentMessageChess(event.target.value);
             
           }}
           onKeyPress={(event) => {
@@ -155,7 +157,7 @@ function ChatChess({ socket, username, room }) {
      { showEmoji && 
        <div className={style.emojipicker }>
            <Picker onEmojiClick={(emojiObject,event ) => {
-            setCurrentMessage(prev =>  prev + emojiObject.emoji);
+            setCurrentMessageChess(prev =>  prev + emojiObject.emoji);
             setShowEmoji(false);
           }} />
        </div>

@@ -9,7 +9,10 @@ import { useCheckMateContext } from "./checkMateContext";
 import { handleThreefoldRepetition, insufficientMaterial, isMoveValid, isStalemate } from "../components/referee/Referee";
 import { baseUrl, postRequest } from "../utils/services";
 import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
+import soundToque from '../path/to/tocar.wav';
+import soundSoltar from '../path/to/soltar.wav';
+import soundCaptured from '../path/to/captured.wav';
+
 
 export const GameContext = createContext();
 
@@ -78,7 +81,14 @@ export const GameContextProvider = ({children, user}) => {
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
-    const intervalRef = useRef(null);
+   
+    const toqueAudio = new Audio(soundToque);
+    const soltarAudio = new Audio(soundSoltar);
+    const capturedAudio = new Audio(soundCaptured);
+    const victoryAudio = new Audio('/to/VICTORIA.mp3');
+    const derrotaAudio = new Audio('/to/derrota.mp3');
+    const jakeAudio = new Audio('/to/jake.mp3');
+    const jakeMateAudio = new Audio('/to/jakemate.mp3');
 
     useEffect(() => {
       const gamesData = localStorage.getItem('games');
@@ -172,50 +182,7 @@ export const GameContextProvider = ({children, user}) => {
           setTied(true);
           isCheckMate('empate');
         })
-  
-        // const handleReceiveTiempo = (data) => {
-        //   if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0) {                 
-        //     if (data?.res.turno === 'white') {
-        //       setWhiteTime(parseInt(data?.white));
-        //       setWhiteTimeEnd(parseInt(data?.white));                
-        //   } else {
-        //       setBlackTime(parseInt(data?.black));
-        //       setBlackTimeEnd(parseInt(data?.black));      
-        //   }  
-        //     socket.emit('sendTiempo', data);
-        //   }
-        // };
-      
-        // const handleReceiveTiempoTurn = (data) => {
-        //   if (!isGameOver && !tied && whiteTime > 0 && blackTime > 0) {
-        //     if (data?.res.turno === 'white') {
-        //       setWhiteTime(parseInt(data?.white));
-        //       setWhiteTimeEnd(parseInt(data?.white));                
-        //   } else {
-        //       setBlackTime(parseInt(data?.black));
-        //       setBlackTimeEnd(parseInt(data?.black));      
-        //   }  
-        //   }
-        // };
-        // socket.on('receiveTiempo', handleReceiveTiempo);
-        // socket.on('receiveTiempoTurn', handleReceiveTiempoTurn);
-        // socket.on('revanchaAceptada',  (data) => {
-          
-        //   if (!data) return; // Check if data exists
-        //   const time = parseInt(localStorage.getItem('time')) || infUser?.time;
-        //   socket.emit('initPlay', {gameId: room, time});
-        //   setInfUser((prevInfUser) => ({
-        //     ...prevInfUser,
-        //     color: data.color === 'white' ? 'black' : 'white',
-        //   }));
-        //   setUser((prevInfUser) => ({
-        //     ...prevInfUser,
-        //     color: data.color === 'white' ? 'black' : 'white',
-        //   }));
-        //   localStorage.setItem('infUser', JSON.stringify(infUser));
-        //   resetBoard(); // Add a log inside resetBoard to verify
-        // });
-  
+
         socket.on('receiveRevanchaRechazada',(data) => {
           setRevanchaRechazada(true);
           setSendRevancha(false);
@@ -420,13 +387,10 @@ useEffect(()=>{
          if(socket) {
           
           socket.on('timerUpdate', (updateGame)=>{
-             console.log('timerUpdate',updateGame)
              if(updateGame.currenTurn === 'white'){
-                console.log('white',updateGame.timers.white)
                 setWhiteTime(updateGame.timers.white);
                 setWhiteTimeEnd(updateGame.timers.white);
              }else{
-              console.log('balck',updateGame.timers.black)
                 setBlackTime(updateGame.timers.black);
                 setBlackTimeEnd(updateGame.timers.black)
              }
@@ -1044,6 +1008,11 @@ useEffect(()=>{
             setDestinationCell(null);
           } else {
             // toqueAudio.play(); 
+            try {
+              toqueAudio.play();
+            } catch (error) {
+              console.log("Error al reproducir el audio:", error);
+            }
             setSelectedPiece(piece);
             setPieceAux(piece);
             setStartCell({ x, y }); // Establece la casilla de inicio     
@@ -1189,7 +1158,19 @@ useEffect(()=>{
               }
             }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
             
-            // captureOccurred ? capturedAudio.play() : soltarAudio.play();
+             if(captureOccurred) { 
+              try {
+                capturedAudio.play();
+              } catch (error) {
+                console.log("Error al reproducir el audio:", error);
+              }
+              }else{ 
+                try {
+                  soltarAudio.play();
+                } catch (error) {
+                  console.log("Error al reproducir el audio:", error);
+                }
+              }
             // Solo actualizar el registro de movimientos una vez
             if (piece) {
               moveNomenclatura(piece, captureOccurred, x, y);

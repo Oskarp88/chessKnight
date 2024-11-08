@@ -3,7 +3,6 @@ import style from './Chat.module.css';
 import { useChessboardContext } from '../../context/boardContext';
 import Picker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
-import soundChat from '../../path/to/sonicChat.mp3'
 import {Container, Stack} from 'react-bootstrap';
 import { useSocketContext } from '../../context/socketContext';
 
@@ -12,7 +11,7 @@ function Chat({ socket, username, room }) {
   const [showEmoji, setShowEmoji] = useState(false);
   const {chessColor} = useChessboardContext();
   const {auth} = useAuth();
-  const chatAudio = new Audio(soundChat);
+  const chatAudio = new Audio('/to/sonicChat.mp3');
   const scroll = useRef();
 
   useEffect(()=>{

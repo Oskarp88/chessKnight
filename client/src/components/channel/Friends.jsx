@@ -8,8 +8,6 @@ import { baseUrl, getRequest } from '../../utils/services';
 import ModalProfile from './ModalProfile';
 import { BlitzSvg, BulletSvg, CircleClose, CircleInf, FastSvg, SettingSvg } from '../../svg';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
-import desafiadoSound from '../../path/to/ding.mp3';
-import rechazadoSound from '../../path/to/Splat.mp3';
 import { ChatContext } from '../../context/ChatContext';
 import { useLanguagesContext } from '../../context/languagesContext';
 import Spinner from 'react-bootstrap/Spinner';
@@ -55,9 +53,9 @@ const Friends = ({ friends, room }) => {
 
   const {socket, setRoom, userChess,  setOnline} = useSocketContext();
   const {language} = useLanguagesContext();
-  // const desafiadoAudio = new Audio(desafiadoSound);
+  // const desafiadoAudio = new Audio('/to/ding.mp3'');
   // desafiadoAudio.volume = 0.1;
-  // const rechazadoAudio = new Audio(rechazadoSound);
+  // const rechazadoAudio = new Audio('/path/to/Splat.mp3');
   // rechazadoAudio.volume = 0.1;
 
 

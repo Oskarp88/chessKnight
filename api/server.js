@@ -251,7 +251,11 @@ socket.on('yesAvailable', (userId) => {
 
   socket.on("send_message", (data) => {
    socket.to(data.room).emit("receive_message", data);
-  })
+  });
+
+  socket.on("send_messageChess", (data) => {
+    socket.to(data.room).emit("receive_messageChess", data);
+   });
 
   socket.on('requestLatestGameState', async (room) => {
      try {

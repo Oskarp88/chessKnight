@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import style from './MinNabvar.module.css';
 import { useChessboardContext } from '../../context/boardContext';
@@ -12,10 +12,15 @@ import { useAuth } from '../../context/authContext';
 function MinNabvar() {
     const {auth} = useAuth();
     const {boardColor} = useChessboardContext();
-    const {socket,room} = useSocketContext();
+    const {socket,room, countMessage, setCountMessage} = useSocketContext();
+
     const [isShowModal, setIsShowModal] = useState(false);
     const {infUser, ofrecerTablas, abandonarHandle} = useContext(GameContext);
     const [isChat, setIsChat] = useState(false);
+
+    // useEffect(()=>{
+    //   if(isChat) setCountMessage(0);
+    // },[isChat])
 
     const sendTied = () => {
         setIsShowModal(false);
@@ -40,7 +45,12 @@ function MinNabvar() {
          color={boardColor?.whiteRow} 
          onClick={()=>setIsShowModal(!isShowModal)}
         /> 
-        <img src={'/icon/chatChess.png'} alt="" onClick={handleChat}/>
+        <div>
+          { countMessage !== 0 &&
+             <div className={style.notificacion}><p>{countMessage}</p></div>
+          }
+          <img src={'/icon/chatChess.png'} alt="" onClick={handleChat}/>
+        </div>
        </div>
        {
         isShowModal && 
@@ -57,7 +67,7 @@ function MinNabvar() {
              <span onClick={sendAbandon}>Rendirse</span>
           </div>
        }
-       
+
        {
         isChat && 
          <div className={style.chat}>
