@@ -61,31 +61,37 @@ export const ChessboardProvider = ({ children }) => {
     setResetPieces(updatedPieces)
   }, [themePiece]);
 
-  useEffect(()=>{
+  useEffect(() => {
+    // Recuperar el tema de color para el tablero
     const themeLocal = localStorage.getItem('theme');
-    
-    if(!isNaN(themeLocal) && themeLocal) {
-      setChessColor(colorChess[parseInt(themeLocal)]);
+    if (themeLocal) {
+      const themeIndex = parseInt(themeLocal);
+      if (!isNaN(themeIndex)) {
+        setChessColor(colorChess[themeIndex]);
+      }
     }
-
+  
+    // Recuperar el color del tablero
     const board = localStorage.getItem('colorBoard');
-    
-    if(!isNaN(board) && board) {
-      setBoardColor(colorBoard[parseInt(board)]);
+    if (board) {
+      const boardIndex = parseInt(board);
+      if (!isNaN(boardIndex)) {
+        setBoardColor(colorBoard[boardIndex]);
+      }
     }
-    
+  
+    // Recuperar el tema de las piezas
     const themePieza = localStorage.getItem('pieceTheme');
+    if (themePieza) {
+      const pieceThemeIndex = parseInt(themePieza);
+      if (!isNaN(pieceThemeIndex)) {
+        setTemePiece(piecesTheme[pieceThemeIndex]);
+      }
+    }
+  
     
-    if(!isNaN(themePieza) && themePieza) {
-      setTemePiece(piecesTheme[parseInt(themePieza)]);
-    }
-
-    const piecesData = localStorage.getItem('pieces');
-    if(piecesData){
-      const parseData = JSON.parse(piecesData);
-      setPieces(parseData);
-    }
-  },[pieces]);
+  }, []);
+  
 
   return (
     <ChessboardContext.Provider value={{ 

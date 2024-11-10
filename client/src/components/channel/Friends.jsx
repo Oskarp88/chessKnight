@@ -46,7 +46,6 @@ const Friends = ({ friends, room }) => {
   const [photo, setPhoto] = useState('');
   const [busy, setBusy] = useState([]);
   const [isBusy, setIsBusy] = useState(false);
-  console.log('busy',isBusy)
   const [userInf, setUserInf] = useState({});
   const {auth, user} = useAuth();
   const navigate = useNavigate();
@@ -349,7 +348,6 @@ const Friends = ({ friends, room }) => {
     setShowRoom(true);
   }
 
-  console.log('next', next)
   const handlePreviou = (e) =>{
      e.preventDefault()
 

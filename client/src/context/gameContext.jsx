@@ -9,10 +9,14 @@ import { useCheckMateContext } from "./checkMateContext";
 import { handleThreefoldRepetition, insufficientMaterial, isMoveValid, isStalemate } from "../components/referee/Referee";
 import { baseUrl, postRequest } from "../utils/services";
 import axios from "axios";
-import soundToque from '../path/to/tocar.wav';
-import soundSoltar from '../path/to/soltar.wav';
-import soundCaptured from '../path/to/captured.wav';
-
+import soundToque from '../path/to/tocar.mp3';
+import soundSoltar from '../path/to/soltar.mp3';
+import soundCaptured from '../path/to/captured.mp3';
+import soundVictory from '../path/to/VICTORIA.mp3';
+import soundDerrota from '../path/to/derrota.mp3';
+import soundJake from '../path/to/jake.mp3';
+import soundJakeMate from '../path/to/jakemate.mp3';
+import useSound from 'use-sound';
 
 export const GameContext = createContext();
 
@@ -81,14 +85,15 @@ export const GameContextProvider = ({children, user}) => {
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
-   
-    const toqueAudio = new Audio(soundToque);
-    const soltarAudio = new Audio(soundSoltar);
-    const capturedAudio = new Audio(soundCaptured);
-    const victoryAudio = new Audio('/to/VICTORIA.mp3');
-    const derrotaAudio = new Audio('/to/derrota.mp3');
-    const jakeAudio = new Audio('/to/jake.mp3');
-    const jakeMateAudio = new Audio('/to/jakemate.mp3');
+    
+    
+    const [toqueAudio] = useSound(soundToque);
+    const [soltarAudio] = useSound(soundSoltar);
+    const [capturedAudio] = useSound(soundCaptured);
+    const [victoryAudio] = useSound(soundVictory);
+    const [derrotaAudio] = useSound(soundDerrota);
+    const [jakeAudio] = useSound(soundJake);
+    const [jakeMateAudio] = useSound(soundJakeMate);
 
     useEffect(() => {
       const gamesData = localStorage.getItem('games');
@@ -117,19 +122,19 @@ export const GameContextProvider = ({children, user}) => {
           // Iniciar un temporizador de reconexión
           const timeout = setTimeout(() => {
             if (!isConnected) {
-              socket.emit('playerLeft', { playerId: socket.id, gameId: room });
               console.log('Se ha perdido la conexión por más de 30 segundos');
               setGameOver(true);
             }
           }, 30000); // 30 segundos para intentar reconectar
   
             setReconnectionTimeout(timeout);        
-            socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room, timeout });
         });
   
          // Escuchar si el otro jugador se desconectó
-        socket.on('playerDisconnected', (data) => {
-          setTextToast(`El jugador con ID ${data.playerId} se ha desconectado: ${data.reason}`);
+        socket.on('userDisconnected', (data) => {
+          console.log('userDisconnected', data)
+          if(data.id !== infUser?.idOpponent) return;
+          console.log(`El jugador con ID ${data.id} se ha desconectado: ${data.reason}`);
           setPlayerDisconnected(true);
         });
         socket.on("reconnect", (attemptNumber) => {
@@ -137,7 +142,6 @@ export const GameContextProvider = ({children, user}) => {
           setColor('#58d68d');
           setShowToast(true);
           // Realiza cualquier lógica adicional que necesites después de la reconexión
-          socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
           socket.emit('joinRoomGamePlay', room); 
         });
         socket.on("reconnect_error", (error) => {
@@ -147,7 +151,6 @@ export const GameContextProvider = ({children, user}) => {
   
         socket.on("reconnect_failed", () => {
           console.log("Fallo al reconectar. No se pudo restablecer la conexión.");
-          socket.emit('playerLeft', { playerId: auth?.user?._id, gameId: room });
         });
   
         socket.on("pawn_promotion", (data)=>{
@@ -209,7 +212,7 @@ export const GameContextProvider = ({children, user}) => {
           isCheckMate('empate');
         })
         socket.on('receiveCheckMate',(data) => {
-          // derrotaAudio.play();
+          derrotaAudio();
           socket.emit('gameEnd', room);
           isCheckMate('derrota');
           setUserWon(prev => ({
@@ -230,7 +233,7 @@ export const GameContextProvider = ({children, user}) => {
           localStorage.removeItem('whiteTime');
           localStorage.removeItem('blackTime');
           socket.emit('gameEnd', room);
-          // victoryAudio.play();
+          victoryAudio();
           isCheckMate('victoria');
           setUserWon(prev => ({
             ...prev, 
@@ -278,6 +281,18 @@ export const GameContextProvider = ({children, user}) => {
         if(gameRoom){
           setRoom(gameRoom)
         }
+        // Recuperar la disposición de las piezas
+    const piecesData = localStorage.getItem('pieces');
+    if (piecesData) {
+      try {
+        const parseData = JSON.parse(piecesData);
+        if (Array.isArray(parseData)) {
+          setPieces(parseData);
+        }
+      } catch (error) {
+        console.error("Error parsing pieces data from localStorage:", error);
+      }
+    }
     },[socket]);
 
     useEffect(()=>{
@@ -305,18 +320,37 @@ export const GameContextProvider = ({children, user}) => {
         if(!isNaN(dataTimeBlackEnd) && dataTimeBlackEnd) {
           setBlackTimeEnd(parseInt(dataTimeBlackEnd));
         }
+        // Recuperar la disposición de las piezas
+    const piecesData = localStorage.getItem('pieces');
+    if (piecesData) {
+      try {
+        const parseData = JSON.parse(piecesData);
+        if (Array.isArray(parseData)) {
+          setPieces(parseData);
+        }
+      } catch (error) {
+        console.error("Error parsing pieces data from localStorage:", error);
+      }
+    }
   },[])
 
     useEffect(() => {
       if(socket === null) return;
       socket.on("opponentMove", handleOpponentMove);
-      socket.on('receiveReconnectMove', () => {
+      socket.on('receiveReconnectMove', (res) => {
+        console.log('colorrival', res.playerColor)
+        const dataTurn = localStorage.getItem('chessboard');
+        if (dataTurn) {
+          const parseDataTurn = JSON.parse(dataTurn);
+          if(res.playerColor !== parseDataTurn.currentTurn) return;
         const data = localStorage.getItem('send_move');
         console.log('recibi el reconnect', JSON.parse(data))
         if (data) {
           const parseData = JSON.parse(data);
           socket.emit("get_last_move", parseData);
         }
+        }
+        
       });
       return () => {
         socket.off("opponentMove", handleOpponentMove)
@@ -328,7 +362,7 @@ export const GameContextProvider = ({children, user}) => {
         if (socket) {
             socket.on("connect", () => {
                 // Emitir evento una vez que el socket se reconecta después de recargar
-                socket.emit("reconnectMove", room);
+                socket.emit("reconnectMove", {room, playerColor: infUser?.color});
                 console.log('se envio el reconnet')
             });
         }
@@ -780,10 +814,10 @@ useEffect(()=>{
           if(isCheck){
            
             setKingCheckCell({x: king.x, y: king.y});
-            // !checkMate && jakeAudio.play(); 
-            // if(checkMate){
-            //    jakeMateAudio.play();
-            // }
+           !checkMate && jakeAudio(); 
+            if(checkMate){
+               jakeMateAudio();
+            }
            }  else{
              setKingCheckCell(null);
          }
@@ -835,9 +869,9 @@ useEffect(()=>{
               }
             }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
     
-          // if(!isCheck || !checkMate){
-          //   captureOccurred ? capturedAudio.play() : soltarAudio.play();
-          // }
+           if(!isCheck || !checkMate){
+              captureOccurred ? capturedAudio() : soltarAudio();
+            }
             moveNomenclatura(piece, captureOccurred, x, y);
                  
             if (captureOccurred) {
@@ -1008,11 +1042,9 @@ useEffect(()=>{
             setDestinationCell(null);
           } else {
             // toqueAudio.play(); 
-            try {
-              toqueAudio.play();
-            } catch (error) {
-              console.log("Error al reproducir el audio:", error);
-            }
+           
+              toqueAudio();
+           
             setSelectedPiece(piece);
             setPieceAux(piece);
             setStartCell({ x, y }); // Establece la casilla de inicio     
@@ -1062,10 +1094,10 @@ useEffect(()=>{
             
             setKingCheckCell({x: king.x, y: king.y});       
             const checkMate = selectedPiece && isCheckmateAfterMove(selectedPiece,x,y,pieces, enPassantTarget, currentTurn === 'white' ? 'black' : 'white');
-            // !checkMate && jakeAudio.play();
+             !checkMate && jakeAudio();
             if(checkMate){
-              // jakeMateAudio.play();
-              // victoryAudio.play();
+               jakeMateAudio();
+               victoryAudio.play();
               setUserWon(prev => ({
                 ...prev, 
                 username: auth?.user?.username,
@@ -1159,17 +1191,13 @@ useEffect(()=>{
             }).filter(Boolean); // Filtra las piezas para eliminar las null (piezas capturadas)
             
              if(captureOccurred) { 
-              try {
-                capturedAudio.play();
-              } catch (error) {
-                console.log("Error al reproducir el audio:", error);
-              }
+             
+                capturedAudio();
+             
               }else{ 
-                try {
-                  soltarAudio.play();
-                } catch (error) {
-                  console.log("Error al reproducir el audio:", error);
-                }
+                
+                  soltarAudio();
+                
               }
             // Solo actualizar el registro de movimientos una vez
             if (piece) {
@@ -1217,6 +1245,7 @@ useEffect(()=>{
 
       const yesHandle = () => {
         if(socket === null) return;
+        derrotaAudio();
         setModalAbandonar(false);
         setGameOver(true)
         isCheckMate('derrota');

@@ -6,21 +6,20 @@ import { GameContext } from '../../context/gameContext';
 import ChatChess from '../ChatChess';
 import { FaTimes } from 'react-icons/fa';
 import { useSocketContext } from '../../context/socketContext';
-import { useAuth } from '../../context/authContext';
+
 
 
 function MinNabvar() {
-    const {auth} = useAuth();
     const {boardColor} = useChessboardContext();
-    const {socket,room, countMessage, setCountMessage} = useSocketContext();
+    const {countMessage, setCountMessage} = useSocketContext();
 
     const [isShowModal, setIsShowModal] = useState(false);
     const {infUser, ofrecerTablas, abandonarHandle} = useContext(GameContext);
     const [isChat, setIsChat] = useState(false);
 
-    // useEffect(()=>{
-    //   if(isChat) setCountMessage(0);
-    // },[isChat])
+    useEffect(()=>{
+      if(isChat) setCountMessage(0);
+    },[isChat])
 
     const sendTied = () => {
         setIsShowModal(false);
@@ -77,11 +76,7 @@ function MinNabvar() {
                   className={style.faChat}
                   onClick={()=>setIsChat(false)}
                 />
-            <ChatChess 
-              room={room}
-              username={auth?.user?.username}
-              socket={socket}
-            />
+            <ChatChess/>
          </div>        
        }
     </>

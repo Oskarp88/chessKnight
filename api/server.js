@@ -303,7 +303,7 @@ socket.on('yesAvailable', (userId) => {
   });
   
   socket.on('reconnectMove', (data) =>{
-     socket.to(data).emit('receiveReconnectMove', data);
+     socket.to(data.room).emit('receiveReconnectMove', data);
   })
   socket.on("get_last_move", (data) => {
    // Cuando un jugador pide el último movimiento, lo envías

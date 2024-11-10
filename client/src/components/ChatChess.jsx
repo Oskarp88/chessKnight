@@ -5,14 +5,25 @@ import {Container, Stack} from 'react-bootstrap';
 import { useChessboardContext } from '../context/boardContext';
 import { useSocketContext } from '../context/socketContext';
 import { useAuth } from '../context/authContext';
+import useSound from 'use-sound';
 
-function ChatChess({ socket, username, room }) {
-  const {currentMessageChess, setCurrentMessageChess, messageListChess, setMessageListChess, setCountMessage} = useSocketContext();
+function ChatChess() {
+  const {
+     socket,
+     room,
+     currentMessageChess, 
+     setCurrentMessageChess, 
+     messageListChess, 
+     setMessageListChess, 
+     setCountMessage} = useSocketContext();
   const [showEmoji, setShowEmoji] = useState(false);
   const {chessColor, boardColor} = useChessboardContext();
   const {auth} = useAuth();
-  const chatAudio = new Audio('/to/sonicChat.mp3');
+  
   const scroll = useRef();
+
+  
+  
 
   useEffect(()=>{
     scroll?.current?.scrollIntoView({behavior: 'smooth'})
@@ -23,7 +34,7 @@ function ChatChess({ socket, username, room }) {
     if (currentMessageChess !== '' ) {
       const messageData = {
         room,
-        author: username,
+        author: auth?.user?.username,
         message: currentMessageChess,
         photo: auth?.user?.photo,
         times: new Date().getTime(),
@@ -35,40 +46,6 @@ function ChatChess({ socket, username, room }) {
     }
   };
 
-
-  useEffect(() => {
-    if (socket === null) return;
-  
-    socket.on("receive_messageChess", (response) => {
-      setMessageListChess((list) => {
-        // Verificar si el mensaje ya existe en la lista
-        const messageExists = list.some(
-          (msg) =>
-            msg.author === response.author &&
-            msg.message === response.message &&
-            msg.times === response.times
-        );
-  
-        // Solo añadir el mensaje si no existe
-        if (!messageExists) {
-          setCountMessage(prev => prev + 1);
-          try {
-            chatAudio.play();
-          } catch (error) {
-            console.log("Error al reproducir el audio:", error);
-          }
-          return [...list, response];
-        }
-        return list;
-      });
-    });  
-    // Limpiar el evento al desmontar el componente
-    return () => {
-      if (socket) {
-        socket.off("receive_messageChess");
-      }
-    };
-  }, [socket]);
   
 
   return (
@@ -87,13 +64,13 @@ function ChatChess({ socket, username, room }) {
             return (
               <div
                 className={style.message}
-                id={username === messageContent.author ? style.you: style.other}
+                id={auth?.user?.username === messageContent.author ? style.you: style.other}
                 key={index} // Agregar una clave única
                 ref={scroll}
               >
                 <div className={style.containerContentMeta}>
                   <div className={style.containerProfileMessage}>
-                  { username !== messageContent.author && 
+                  { auth?.user?.username !== messageContent.author && 
                       <div className={style.containerPhoto}>
                           <img className={style.profile} src={messageContent?.photo} alt='' />
                       </div>
@@ -105,7 +82,7 @@ function ChatChess({ socket, username, room }) {
                         <span className={style.author} >{messageContent.author}</span>
                       </div>
                     </div>  
-                     { username === messageContent.author && 
+                     { auth?.user?.username === messageContent.author && 
                       <div className={style.containerPhoto}>
                           <img className={style.profile} src={messageContent?.photo} alt='' />
                       </div>

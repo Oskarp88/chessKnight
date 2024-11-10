@@ -1,7 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import  io  from 'socket.io-client';
-import { baseUrl, postRequest } from '../utils/services';
-import axios from 'axios';
+import useSound from 'use-sound';
 
 const SocketContext = createContext();
 
@@ -62,6 +61,7 @@ export const SocketProvider = ({ children, user }) => {
   const [onlineUsersGame, setOnlineUsersGame] = useState([]);
   const [online, setOnline] = useState(null);
   const [partidas, setPartidas] = useState([]);
+  const [chatAudio] = useSound('/to/sonicChat.mp3');
   
   useEffect(() => {
     const newSocket = io.connect(
@@ -84,6 +84,32 @@ useEffect(() => {
   socket.on('getPartidas',(data) =>{
      setPartidas(data);
   });
+
+  socket.on("receive_messageChess", (response) => {
+    setMessageListChess((list) => {
+      // Verificar si el mensaje ya existe en la lista
+      const messageExists = list.some(
+        (msg) =>
+          msg.author === response.author &&
+          msg.message === response.message &&
+          msg.times === response.times
+      );
+
+      // Solo añadir el mensaje si no existe
+      if (!messageExists) {
+        setCountMessage(prev => prev + 1);
+      
+          chatAudio();
+        return [...list, response];
+      }
+      return list;
+    });
+  }); 
+  return () => {
+    if (socket) {
+      socket.off("receive_messageChess");
+    }
+  };
 },[socket]);
 
 useEffect(() => {

@@ -138,10 +138,17 @@ function Chessboard() {
       setUser(parseData.userChess);
       setCurrentTurn(parseData.currentTurn);
     }
+    // Recuperar la disposición de las piezas
     const piecesData = localStorage.getItem('pieces');
-    if(piecesData){
-      const parseData = JSON.parse(piecesData);
-      setPieces(parseData);
+    if (piecesData) {
+      try {
+        const parseData = JSON.parse(piecesData);
+        if (Array.isArray(parseData)) {
+          setPieces(parseData);
+        }
+      } catch (error) {
+        console.error("Error parsing pieces data from localStorage:", error);
+      }
     }
     const userData = localStorage.getItem('userChess');
     if(userData){
@@ -591,11 +598,7 @@ function Chessboard() {
         </div>
         <RecordPlays whiteMoveLog={whiteMoveLog} blackMoveLog={blackMoveLog}/>
         <div className='chat'>
-          <ChatChess 
-            room={room}
-            username={auth?.user?.username}
-            socket={socket}
-          />
+          <ChatChess />
         </div>
          <BoardInfo />
     </div>
