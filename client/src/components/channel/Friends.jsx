@@ -25,7 +25,7 @@ import { valors } from '../../Constants';
 const Friends = ({ friends, room }) => {
   
   const {setPieces, resetPieces} = useChessboardContext();
-  const{resetBoard, setInfUser, infUser, postGames,} = useContext(GameContext);
+  const{resetBoard, setInfUser, infUser, postGames,isGameStart, setIsGameStart} = useContext(GameContext);
   const { createChat, userChats, updateCurrentChat, onlineUsers} = useContext(ChatContext);
   const [showModalSettings, setShowSettings] = useState();
   const [showModalRoom, setShowRoom] = useState();
@@ -151,8 +151,8 @@ const Friends = ({ friends, room }) => {
     } 
     });
      // Manejar el evento "disconnect" para detectar desconexiones
-     socket.on("disconnect", (reason) => {
-      console.log("Desconectado. Razón:", reason);
+     socket.on("disconnect", () => {   
+        console.log("Disconnected without a specified reason.");      
       //medidas específicas en caso de desconexión aquí, volver a conectar automáticamente o mostrar un mensaje de error al usuario.
     });
     socket.on("reconnect", (attemptNumber) => {
@@ -164,6 +164,8 @@ const Friends = ({ friends, room }) => {
      
     socket.on('receivePlayGame',(data) => {
       //datos recibidos de quien acepto el desafio 
+      setIsGameStart(true);
+      localStorage.setItem('gameStart', isGameStart);
       setPieces(resetPieces);
       localStorage.setItem('bandera', data?.bandera);
       setRoom(data?.roomGame);
@@ -305,6 +307,8 @@ const Friends = ({ friends, room }) => {
      socket.emit('userBusy', auth?.user?._id);
      localStorage.setItem('infUser', JSON.stringify(infUser));
      setRoom(gameId);
+     setIsGameStart(true);
+     localStorage.setItem('gameStart', isGameStart);
      navigate('/chess');    
   };
 

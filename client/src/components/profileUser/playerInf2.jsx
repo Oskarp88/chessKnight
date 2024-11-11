@@ -7,12 +7,65 @@ import { baseUrl, getRequest } from '../../utils/services';
 import { useSocketContext } from '../../context/socketContext';
 import Fast from '../../img/fast';
 import { GameContext } from '../../context/gameContext';
+import { useAuth } from '../../context/authContext';
 
 const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTurn }) => {
+  const {auth} = useAuth();
   const {boardColor, themePiece} = useChessboardContext();
+  const {setRoom} = useSocketContext();
   const [elo, setElo] = useState(10);
   const [id, setId] = useState(null);
-  const {infUser, setInfUser, playerDisconnected} = useContext(GameContext);
+  const {
+     infUser, 
+     setInfUser, 
+     playerDisconnected, 
+     isCheckMate, 
+     setGameOver,
+     setUserWon,
+     setFrase,
+ } = useContext(GameContext);
+  const [counter, setCounter] = useState(30);
+  console.log('player', playerDisconnected)
+
+  useEffect(() => {
+    let timer;
+
+    // Inicia el contador cuando playerDisconnected es true
+    if (playerDisconnected) {
+      timer = setInterval(() => {
+        setCounter(prevCounter => {
+          if (prevCounter > 0) {
+            return prevCounter - 1;
+          } else {
+            clearInterval(timer); // Detiene el contador cuando llega a 0
+            setUserWon(prev => ({
+              ...prev, 
+              username: auth?.user?.username,
+              nameOpponent: infUser?.username, 
+              idUser: auth?.user?._id,
+              idOpponent: infUser?.idOpponent,
+              turn: infUser?.color === 'white' ? 'black' : 'white',
+              status: '1',
+              color: infUser?.color === 'white' ? 'black' : 'white',
+              photo: infUser?.photo
+            }));
+            setFrase(`${infUser.username} se ha desconectado`);
+            setGameOver(true);
+            isCheckMate('victoria'); 
+            localStorage.removeItem('send_move');
+            return 0;
+          }
+        });
+      }, 1000);
+    } else {
+      // Reinicia el contador a 30 si playerDisconnected cambia a false
+      setCounter(30);
+      clearInterval(timer);
+    }
+
+    // Limpia el intervalo al desmontar el componente o cambiar playerDisconnected
+    return () => clearInterval(timer);
+  }, [playerDisconnected]);
   
  useEffect(()=>{
   const data = localStorage.getItem('infUser');
@@ -77,7 +130,7 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
           <img className={style.bandera} src={infUser?.bandera} alt={`flag`} />
         </div>
         <div className={style.playerRating}>
-        {
+        {!playerDisconnected ? (<>{
           infUser?.time === 60 || infUser?.time === 120? <>
             <svg style={{ color: '#F9A825', marginRight: '7px', marginLeft: '2px', marginTop: '-5px'  }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-rocket-takeoff-fill" viewBox="0 0 16 16">
               <path d="M12.17 9.53c2.307-2.592 3.278-4.684 3.641-6.218.21-.887.214-1.58.16-2.065a3.6 3.6 0 0 0-.108-.563 2 2 0 0 0-.078-.23V.453c-.073-.164-.168-.234-.352-.295a2 2 0 0 0-.16-.045 4 4 0 0 0-.57-.093c-.49-.044-1.19-.03-2.08.188-1.536.374-3.618 1.343-6.161 3.604l-2.4.238h-.006a2.55 2.55 0 0 0-1.524.734L.15 7.17a.512.512 0 0 0 .433.868l1.896-.271c.28-.04.592.013.955.132.232.076.437.16.655.248l.203.083c.196.816.66 1.58 1.275 2.195.613.614 1.376 1.08 2.191 1.277l.082.202c.089.218.173.424.249.657.118.363.172.676.132.956l-.271 1.9a.512.512 0 0 0 .867.433l2.382-2.386c.41-.41.668-.949.732-1.526zm.11-3.699c-.797.8-1.93.961-2.528.362-.598-.6-.436-1.733.361-2.532.798-.799 1.93-.96 2.528-.361s.437 1.732-.36 2.531Z"/>
@@ -95,8 +148,11 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
             </div>
             <span>{elo}</span>         
           </>
-        }
-        {playerDisconnected && <span>desconectado</span>}
+          }</>)
+          :
+           <span className={style.timerDesconnect}>
+            reconectando... cancelacion automatica en {counter} segundos
+           </span>}
         </div>  
       </div>
       </div>     

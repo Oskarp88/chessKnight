@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useChessboardContext } from "./boardContext";
 import { isCheckmateAfterMove, isSimulatedMoveCausingCheck, isSimulatedMoveCheckOpponent } from "../components/pieces/King";
 import { useSocketContext } from "./socketContext";
@@ -17,11 +17,13 @@ import soundDerrota from '../path/to/derrota.mp3';
 import soundJake from '../path/to/jake.mp3';
 import soundJakeMate from '../path/to/jakemate.mp3';
 import useSound from 'use-sound';
+import { ChatContext } from "./ChatContext";
 
 export const GameContext = createContext();
 
 export const GameContextProvider = ({children, user}) => {
     const {auth} = useAuth();
+    const { onlineUsers} = useContext(ChatContext);
     const {pieces,setPieces, resetPieces} = useChessboardContext();
     const {setCheckMate} = useCheckMateContext();
     const {room, setRoom, userChess, setUser, socket} = useSocketContext();
@@ -59,7 +61,7 @@ export const GameContextProvider = ({children, user}) => {
     const [isPromotionComplete, setPromotionComplete] = useState(false);
     const [isModaltime, setModalTime] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
-    const [isTimeEnd, setIsTimeEnd] = useState(false);
+    const [isGameStart, setIsGameStart] = useState(false);
     const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
     const [blackTime, setBlackTime] = useState(parseInt(infUser.time));
     const [whiteTimeEnd, setWhiteTimeEnd] = useState(parseInt(infUser.time));
@@ -81,7 +83,7 @@ export const GameContextProvider = ({children, user}) => {
     const [showToast, setShowToast] = useState(false);
     const [color, setColor] = useState('');
     const [textToast, setTextToast] = useState('');
-    const [isConnected, setIsConnected] = useState(null);
+    const [isConnected, setIsConnected] = useState(false);
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
@@ -103,46 +105,47 @@ export const GameContextProvider = ({children, user}) => {
         }
     },[infUser && infUser]);
 
+    useEffect(()=>{
+      const userIndex = onlineUsers.findIndex(user => user.userId === infUser?.idOpponent);
+      if (userIndex !== -1) {
+         setPlayerDisconnected(false);
+      }
+    },[onlineUsers]);
+
     useEffect(() => {
         if(socket === null) return;
         const handleConnect = () => {
           console.log("Conexión al servidor establecida.");
+          setIsConnected(false);
           // setTextToast("Conexión al servidor establecida.");
           // setColor('#58d68d');
           // setShowToast(true);
-          socket.emit('joinRoomGamePlay', room);    
+          if(room) socket.emit('joinRoomGamePlay', room);    
         };
          // Manejar el evento "connect" para detectar la conexión exitosa
         socket.on("connect", handleConnect);
         // Manejar el evento "disconnect" para detectar desconexiones
-        socket.on("disconnect", (reason) => {
-          console.log("Desconectado. Razón:", reason);
-          // setTextToast("Desconectado. Razón:", reason);
-          setIsConnected(false);
-          // Iniciar un temporizador de reconexión
-          const timeout = setTimeout(() => {
-            if (!isConnected) {
-              console.log('Se ha perdido la conexión por más de 30 segundos');
-              setGameOver(true);
-            }
-          }, 30000); // 30 segundos para intentar reconectar
-  
-            setReconnectionTimeout(timeout);        
+        socket.on("disconnect", () => {    
+            console.log("Disconnected without a specified reason.");
+            setIsConnected(true);       
         });
   
          // Escuchar si el otro jugador se desconectó
-        socket.on('userDisconnected', (data) => {
-          console.log('userDisconnected', data)
-          if(data.id !== infUser?.idOpponent) return;
-          console.log(`El jugador con ID ${data.id} se ha desconectado: ${data.reason}`);
+        socket.on('opponentDisconnected', () => {
+          console.log('userDisconnected')
+          // if(data.userId !== infUser?.idOpponent && isGameStart) return;
+          // if(!isGameStart) return;
+          console.log(`El jugador ${infUser?.username} se ha desconectado`);
           setPlayerDisconnected(true);
+          console.log('playerDisconnect', playerDisconnected)
+          
         });
         socket.on("reconnect", (attemptNumber) => {
           setTextToast(`Reconectado en el intento ${attemptNumber}`);
           setColor('#58d68d');
           setShowToast(true);
           // Realiza cualquier lógica adicional que necesites después de la reconexión
-          socket.emit('joinRoomGamePlay', room); 
+         if(room) socket.emit('joinRoomGamePlay', room); 
         });
         socket.on("reconnect_error", (error) => {
           console.log("Error al intentar reconectar:", error);
@@ -178,8 +181,7 @@ export const GameContextProvider = ({children, user}) => {
           setAceptarRevancha(data?.revancha);    
         });
   
-        socket.on('receiveStalemate', (data) => {
-          socket.emit('gameEnd', room);
+        socket.on('receiveStalemate', (data) => {    
           setFrase('por Rey ahogado');
           setModalTablasAceptada(data.state);
           setTied(true);
@@ -191,7 +193,7 @@ export const GameContextProvider = ({children, user}) => {
           setSendRevancha(false);
         })
 
-        socket.emit('joinRoomGamePlay', room);
+       if(room) socket.emit('joinRoomGamePlay', room);
   
         socket.on('receiveTablas',(data) => {     
              setSendTablas(true);      
@@ -205,7 +207,6 @@ export const GameContextProvider = ({children, user}) => {
         socket.on('receiveAceptarTablas', () => {
           localStorage.removeItem('whiteTime');
           localStorage.removeItem('blackTime'); 
-          socket.emit('gameEnd', room);
           setModalTablas(false);
           setSendTablas(false);
           setModalTablasAceptada(true);
@@ -213,7 +214,6 @@ export const GameContextProvider = ({children, user}) => {
         })
         socket.on('receiveCheckMate',(data) => {
           derrotaAudio();
-          socket.emit('gameEnd', room);
           isCheckMate('derrota');
           setUserWon(prev => ({
             ...prev, 
@@ -232,7 +232,6 @@ export const GameContextProvider = ({children, user}) => {
         socket.on('receiveAbandonar',(data) => {
           localStorage.removeItem('whiteTime');
           localStorage.removeItem('blackTime');
-          socket.emit('gameEnd', room);
           victoryAudio();
           isCheckMate('victoria');
           setUserWon(prev => ({
@@ -293,6 +292,10 @@ export const GameContextProvider = ({children, user}) => {
         console.error("Error parsing pieces data from localStorage:", error);
       }
     }
+    const startGame = localStorage.getItem('gameStart');
+    if(startGame){
+      setIsGameStart(startGame);
+    }
     },[socket]);
 
     useEffect(()=>{
@@ -332,22 +335,28 @@ export const GameContextProvider = ({children, user}) => {
         console.error("Error parsing pieces data from localStorage:", error);
       }
     }
+    const startGame = localStorage.getItem('gameStart');
+    if(startGame){
+      setIsGameStart(startGame);
+    }
   },[])
 
     useEffect(() => {
       if(socket === null) return;
       socket.on("opponentMove", handleOpponentMove);
       socket.on('receiveReconnectMove', (res) => {
-        console.log('colorrival', res.playerColor)
         const dataTurn = localStorage.getItem('chessboard');
         if (dataTurn) {
           const parseDataTurn = JSON.parse(dataTurn);
           if(res.playerColor !== parseDataTurn.currentTurn) return;
-        const data = localStorage.getItem('send_move');
-        console.log('recibi el reconnect', JSON.parse(data))
+        const data = localStorage.getItem('send_move');       
         if (data) {
           const parseData = JSON.parse(data);
-          socket.emit("get_last_move", parseData);
+         if(isGameStart){
+           if(room) socket.emit("get_last_move", parseData);
+         }else{
+           if(room) socket.emit('gameDisconnect', room);
+         }
         }
         }
         
@@ -362,7 +371,7 @@ export const GameContextProvider = ({children, user}) => {
         if (socket) {
             socket.on("connect", () => {
                 // Emitir evento una vez que el socket se reconecta después de recargar
-                socket.emit("reconnectMove", {room, playerColor: infUser?.color});
+             if(room)  socket.emit("reconnectMove", {room, playerColor: infUser?.color});
                 console.log('se envio el reconnet')
             });
         }
@@ -378,8 +387,6 @@ export const GameContextProvider = ({children, user}) => {
   useEffect(()=>{
     
     if(countNoCapture === 100) {
-      socket.emit('gameEnd', room);
-      console.log('empate por inactividad de captura');
       setFrase('por inactividad de captura');
       setModalTablasAceptada(true);
       setTied(true);
@@ -389,9 +396,7 @@ export const GameContextProvider = ({children, user}) => {
 
   useEffect(()=>{
     const  isInsufficientMaterial = insufficientMaterial(pieces);
-
     if(isInsufficientMaterial){
-        socket.emit('gameEnd', room);
         setFrase('Empate por material insuficiente');
         setTied(true);
         setModalTablasAceptada(true);
@@ -400,10 +405,8 @@ export const GameContextProvider = ({children, user}) => {
   },[pieces]);
 
 useEffect(()=>{
-  const tiedRepetition = handleThreefoldRepetition(moveLog);
-  
+  const tiedRepetition = handleThreefoldRepetition(moveLog);  
   if(tiedRepetition){
-    socket.emit('gameEnd', room);
     setFrase('Tablas por repetición');
     setTied(true);
     setModalTablasAceptada(true);
@@ -439,9 +442,6 @@ useEffect(()=>{
   
   useEffect(() => {
     if (whiteTimeEnd === 0 || blackTimeEnd === 0) {
-      if(socket){
-        socket.emit('gameEnd', room);
-      }
       localStorage.removeItem('whiteTimeEnd');
       localStorage.removeItem('blackTimeEnd');
       setWhiteTimeEnd(infUser.time);
@@ -456,7 +456,7 @@ useEffect(()=>{
 
   useEffect(()=>{
     if(!socket) return;
-    socket.emit('changeTurn', {gameId: room, turn: currentTurn});
+    if(room)  socket.emit('changeTurn', {gameId: room, turn: currentTurn});
   },[currentTurn, room])
 
   useEffect(() => {
@@ -943,7 +943,9 @@ useEffect(()=>{
       };
 
       const isCheckMate = async(game) => {
-        // console.log('llegue a isCheckMate', game);
+        if(socket && room) socket.emit('gameEnd', room);
+        localStorage.removeItem('gameStart'); 
+        setIsGameStart(false);
         setCheckMate({
           userId: auth?.user?._id,
           opponentId: infUser?.idOpponent,
@@ -983,6 +985,8 @@ useEffect(()=>{
         localStorage.removeItem('send_move');
 
         setPieces(resetPieces);
+        setPlayerDisconnected(false)
+        setIsConnected(false);
         setFrase(null);
         setModalTiedRepetition(false);
         setTied(false);
@@ -1117,8 +1121,7 @@ useEffect(()=>{
                 return true;
               });
               if(socket === null) return; 
-              socket.emit('gameEnd', room);
-              socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
+             if(room) socket.emit('checkMate', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
             }
             
           }else{
@@ -1154,13 +1157,12 @@ useEffect(()=>{
             return;
           }
           localStorage.setItem('send_move', JSON.stringify(pieceData));
-          await socket.emit("send_move", pieceData);
+          if(room) await socket.emit("send_move", pieceData);
           gamesUpdate(room, pieces, selectedPiece, x, y, currentTurn === 'white' ? 'black' : 'white');
           
           const king1 = pieces.find((p) => p.type === PieceType.KING && p.color !== currentTurn);
         if (!isCheck && isStalemate(king1, pieces, selectedPiece, x, y)) {
-          socket.emit('stalemate', {room, state : true});
-          socket.emit('gameEnd', room);
+         if(room) socket.emit('stalemate', {room, state : true});
           setModalTablasAceptada(true);
           setTied(true);
           setFrase('por Rey ahogado');
@@ -1236,10 +1238,12 @@ useEffect(()=>{
 
       const revanchaHandle = () => {
         if(socket === null) return;
+       if(room){
         socket.emit("send_revancha", {
           revancha: true, 
           room, 
         });
+       }
         setSendRevancha(true);
       }
 
@@ -1261,15 +1265,17 @@ useEffect(()=>{
           photo: infUser?.photo
         }));
         setFrase(`por abandono de las ${infUser?.color === 'white' ? 'blancas' : 'negras'}`);
-        socket.emit('sendAbandonar', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
-        socket.emit('gameEnd', room);
+        if(room){
+          socket.emit('sendAbandonar', {room, username: auth?.user?.username, idUser: auth?.user?._id, color: infUser?.color === 'white' ? 'black' : 'white'});
+          socket.emit('gameEnd', room);
+        }
       }
 
       const ofrecerTablas = () => {
         setLoadingTablas(true);
         setModalTablas(true);
         if(socket === null) return;
-        socket.emit('sendTablas', {Tablas: true, room});
+       if(room) socket.emit('sendTablas', {Tablas: true, room});
      }
      
      const aceptarTablas = () => {
@@ -1278,11 +1284,10 @@ useEffect(()=>{
        localStorage.removeItem('whiteTimeEnd');
        localStorage.removeItem('blackTimeEnd');
        setFrase('por tablas aceptada');
-       if(socket === null) return;
-       socket.emit('aceptarTablas', 
-         room,
-       );
-       socket.emit('gameEnd', room);
+       if(socket && room){
+        socket.emit('aceptarTablas',room );
+        socket.emit('gameEnd', room);
+       }
        isCheckMate('empate');
        setModalTablas(false);
        setSendTablas(false);
@@ -1292,14 +1297,12 @@ useEffect(()=>{
      const cancelarTablas = () => {
        setLoadingTablas(false);
        setModalTablas(false);
-       if(socket === null) return;
-         socket.emit('cancelarTablas', room);   
+       if(socket && room) socket.emit('cancelarTablas', room);   
      }
 
      const rechazarTablas = () => {
         setSendTablas(false);
-        if(socket === null) return;
-        socket.emit('rechazarTablas', room);
+        if(socket && room)  socket.emit('rechazarTablas', room);
       }
     
       const abandonarHandle = () => {
@@ -1407,7 +1410,8 @@ useEffect(()=>{
             infUser,
             setInfUser,
             games,
-            resetBoard
+            resetBoard,
+            isGameStart, setIsGameStart
          }}
       >
          {children}

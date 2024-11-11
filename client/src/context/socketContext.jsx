@@ -14,7 +14,7 @@ export const useSocketContext = () => {
 
 export const SocketProvider = ({ children, user }) => {
   const [socket, setSocket] = useState(null);
-  const [room, setRoom] = useState('');
+  const [room, setRoom] = useState(null);
   const [currentMessage, setCurrentMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
   const [currentMessageChess, setCurrentMessageChess] = useState('');

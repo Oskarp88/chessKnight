@@ -39,6 +39,7 @@ let onlineUserGame = [];
 let partidas = [];
 let games = {};
 let userDisconnect={}
+const userRooms = {};
 
 function DisconnectUser(gameId){
    userDisconnect[gameId]={
@@ -75,7 +76,7 @@ function updateGameTimers(gameId) {
       delete games[gameId];
     } else {
       io.to(gameId).emit('timerUpdate', game);
-      console.log('game time', games);
+      // console.log('game time', games);
     }
   }
 }
@@ -201,7 +202,14 @@ socket.on('yesAvailable', (userId) => {
    socket.join(gameId);
   
    console.log(`User with ID: ${socket.id} joined room play game: ${gameId}`);
-   
+    // Verifica si ya hay dos jugadores en la sala
+    const playersInRoom = io.sockets.adapter.rooms.get(gameId);
+    console.log('playersInRoom', playersInRoom.size)
+      // Guardar la sala en el objeto `userRooms` para este socket
+      if (!userRooms[socket.id]) {
+        userRooms[socket.id] = new Set();
+      }
+      userRooms[socket.id].add(gameId);
  });
 
  socket.on('initPlay',(data)=>{
@@ -222,32 +230,33 @@ socket.on('yesAvailable', (userId) => {
  socket.on('gameEnd',(gameId)=>{
   delete games[gameId];
   delete userDisconnect[gameId];
+  delete userRooms[socket.id];
  })
 
- socket.on('oponnetConnect', (data)=>{
+//  socket.on('oponnetConnect', (data)=>{
 
-  if(!userDisconnect[data.gameId]){
-    DisconnectUser(data.gameId);
-  }
+//   if(!userDisconnect[data.gameId]){
+//     DisconnectUser(data.gameId);
+//   }
   
-  const userIndexUser = onlineUser.findIndex(user => user.userId === data.idUser);
-  if (userIndexUser === -1) {  
-     userDisconnect.user = true;
-     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: true });
-  }else if(userIndexUser !== -1 && userDisconnect.user){
-     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: false });
-     userDisconnect.user = false;
-  }
-  const userIndexOpponent = onlineUser.findIndex(user => user.userId === data.idOpponent);
-   if(userIndexOpponent === -1){
-    userDisconnect.userOpponent = true;
-     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idOpponent, disconnect: true});
-   }else if(userIndexOpponent !== -1 && userDisconnect.userOpponent){
-     io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: false });
-     userDisconnect.userOpponent === false;
-   }
+//   const userIndexUser = onlineUser.findIndex(user => user.userId === data.idUser);
+//   if (userIndexUser === -1) {  
+//      userDisconnect.user = true;
+//      io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: true });
+//   }else if(userIndexUser !== -1 && userDisconnect.user){
+//      io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: false });
+//      userDisconnect.user = false;
+//   }
+//   const userIndexOpponent = onlineUser.findIndex(user => user.userId === data.idOpponent);
+//    if(userIndexOpponent === -1){
+//     userDisconnect.userOpponent = true;
+//      io.to(data.gameId).emit('oponnentDisconnect', {id: data.idOpponent, disconnect: true});
+//    }else if(userIndexOpponent !== -1 && userDisconnect.userOpponent){
+//      io.to(data.gameId).emit('oponnentDisconnect', {id: data.idUser, disconnect: false });
+//      userDisconnect.userOpponent === false;
+//    }
   
- });
+//  });
 
   socket.on("send_message", (data) => {
    socket.to(data.room).emit("receive_message", data);
@@ -309,7 +318,9 @@ socket.on('yesAvailable', (userId) => {
    // Cuando un jugador pide el último movimiento, lo envías
    socket.to(data.room).emit("opponentMove", data);
  });
- 
+ socket.on("gameDisconnect",(gameId) => {
+    socket.to(gameId).emit('gameOverEnd');
+ })
 
   socket.on("playGame", (data) => {
    socket.to(data.roomGame).emit("receivePlayGame", data);
@@ -412,6 +423,32 @@ socket.on('sendTiempo', (data) => {
   })
   
   socket.on("disconnect", () => {
+    // const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
+
+    // // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
+    // if (disconnectedUser) {
+    //   const disconnectedUserId = disconnectedUser.userId; // Extrae el ID del usuario
+    //   console.log("User ID Disconnected:", disconnectedUserId);
+  
+    //   // Puedes emitir este ID a otros usuarios si necesitas notificar
+    //   io.emit('userDisconnected', disconnectedUser);
+    // }
+    const rooms = userRooms[socket.id] || [];
+    console.log('rooms', rooms);
+    rooms.forEach((room) => {
+      // Verifica que no sea la sala por defecto (la cual es el socket.id)
+        if (room !== socket.id) {
+          // Verifica si queda un solo jugador en la sala
+          const playersInRoom = io.sockets.adapter.rooms.get(room);
+          if (playersInRoom && playersInRoom.size === 1) {
+            console.log('opponentDisconnected', playersInRoom.size)
+            // Notifica al jugador restante que el oponente se ha desconectado
+            io.to(room).emit('opponentDisconnected');
+          }
+      }
+    });
+    
+
    onlineUser = onlineUser.filter((u) => u.socketId !== socket.id );
    io.emit('getOnlineUsers', onlineUser);
    onlineUserGame = onlineUserGame.filter((u) => u.socketId !== socket.id);
