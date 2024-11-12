@@ -18,6 +18,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
     isRedTime, 
     setIsReadTime, 
     isConnected,
+    isGameOver,
     setGameOver,
     isCheckMate,
     setIsGameStart,
@@ -54,6 +55,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
             }));
             setFrase(`te has desconectado`);
             setGameOver(true);
+            console.log(`te has desconectado`, isGameOver);
             isCheckMate('derrota'); 
             localStorage.removeItem('gameRoom');
             setRoom(null);
