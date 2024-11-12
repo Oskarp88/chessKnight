@@ -421,15 +421,37 @@ socket.on('sendTiempo', (data) => {
    partidas = partidas.filter((p) => p.room !== data?.roomPartida);   
    socket.to(data?.room).emit('getPartidas', partidas);
   })
+  const latencyThreshold = 1000; // Tiempo en milisegundos para considerar alta latencia
+  const checkInterval = 5000; // Cada cuántos ms se verificará la latencia
+  const latencyChecker = setInterval(() => {
+    const startTime = Date.now();
+    
+    // Emitimos un evento 'pingCheck' y medimos el tiempo de respuesta
+    socket.emit('pingCheck', () => {
+        const latency = Date.now() - startTime;
+        console.log(`Latency for socket ${socket.id}: ${latency}ms`);
+
+        if (latency > latencyThreshold) {
+            const rooms = userRooms[socket.id] || [];
+            
+            rooms.forEach((room) => {
+                if (room !== socket.id) {
+                    io.to(room).emit('opponentHighLatency', { message: "Tu oponente está experimentando problemas de conexión." });
+                }
+            });
+        }
+    });
+}, checkInterval);
   
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (reason) => {
+    clearInterval(latencyChecker);
     const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
 
     // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
     if (disconnectedUser) {
       const disconnectedUserId = disconnectedUser.userId; // Extrae el ID del usuario
       console.log("User ID Disconnected:", disconnectedUserId);
-  
+      
       // Puedes emitir este ID a otros usuarios si necesitas notificar
       io.emit('userDisconnected', disconnectedUser);
     }

@@ -130,6 +130,16 @@ export const GameContextProvider = ({children, user}) => {
             console.log("Disconnected without a specified reason.");
             setIsConnected(true);       
         });
+        // Responder al 'pingCheck' del servidor
+        socket.on('pingCheck', (callback) => {
+          if (callback) callback(); // Responde al callback si se proporciona
+        });
+
+        // Escucha el evento de alta latencia del oponente
+        socket.on('opponentHighLatency', (data) => {
+          console.log(data.message);
+          alert(data.message); // Muestra una alerta al usuario, o implementa otra UI
+        });
   
          // Escuchar si el otro jugador se desconectó
         socket.on(' userDisconnected',(data)=>{
