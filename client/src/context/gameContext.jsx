@@ -110,6 +110,7 @@ export const GameContextProvider = ({children, user}) => {
       if (userIndex !== -1) {
          setPlayerDisconnected(false);
       }
+      console.log('onlineUsersEffect', onlineUsers)
     },[onlineUsers]);
 
     useEffect(() => {
