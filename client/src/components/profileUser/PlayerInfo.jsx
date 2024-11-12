@@ -28,7 +28,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
   const {auth} = useAuth();
   const {infUser, setRoom} = useContext(GameContext);
   const [id, setId] = useState(null);
-  const [counter, setCounter] = useState(30);
+  const [counter, setCounter] = useState(60);
 
   useEffect(() => {
     let timer;

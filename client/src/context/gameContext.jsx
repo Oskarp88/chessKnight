@@ -107,8 +107,10 @@ export const GameContextProvider = ({children, user}) => {
 
     useEffect(()=>{
       const userIndex = onlineUsers.findIndex(user => user.userId === infUser?.idOpponent);
-      if (userIndex !== -1) {
+      if (userIndex !== -1 && isGameStart) {
          setPlayerDisconnected(false);
+      }else if(isGameStart){
+         setPlayerDisconnected(true);
       }
       console.log('onlineUsersEffect', onlineUsers)
     },[onlineUsers]);
@@ -142,10 +144,10 @@ export const GameContextProvider = ({children, user}) => {
         });
   
          // Escuchar si el otro jugador se desconectó
-        socket.on(' userDisconnected',(data)=>{
-          if(data.userId !== infUser?.idOpponent && isGameStart) return;
-          setPlayerDisconnected(true);
-        })
+        // socket.on(' userDisconnected',(data)=>{
+        //   if(data.userId !== infUser?.idOpponent && isGameStart) return;
+        //   setPlayerDisconnected(true);
+        // })
         socket.on('opponentDisconnected', () => {
           console.log('userDisconnected')
           // if(data.userId !== infUser?.idOpponent && isGameStart) return;
