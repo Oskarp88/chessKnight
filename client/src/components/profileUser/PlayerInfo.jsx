@@ -49,7 +49,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
               nameOpponent: infUser?.username, 
               idUser: auth?.user?._id,
               idOpponent: infUser?.idOpponent,
-              turn: infUser?.color === 'white' ? 'black' : 'white',
+              turn: infUser?.color === 'white' ? 'white' : 'black',
               status: '0',
               color: infUser?.color === 'white' ? 'black' : 'white',
               photo: infUser?.photo
