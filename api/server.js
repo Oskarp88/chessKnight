@@ -423,16 +423,16 @@ socket.on('sendTiempo', (data) => {
   })
   
   socket.on("disconnect", () => {
-    // const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
+    const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
 
-    // // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
-    // if (disconnectedUser) {
-    //   const disconnectedUserId = disconnectedUser.userId; // Extrae el ID del usuario
-    //   console.log("User ID Disconnected:", disconnectedUserId);
+    // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
+    if (disconnectedUser) {
+      const disconnectedUserId = disconnectedUser.userId; // Extrae el ID del usuario
+      console.log("User ID Disconnected:", disconnectedUserId);
   
-    //   // Puedes emitir este ID a otros usuarios si necesitas notificar
-    //   io.emit('userDisconnected', disconnectedUser);
-    // }
+      // Puedes emitir este ID a otros usuarios si necesitas notificar
+      io.emit('userDisconnected', disconnectedUser);
+    }
     const rooms = userRooms[socket.id] || [];
     console.log('rooms', rooms);
     rooms.forEach((room) => {

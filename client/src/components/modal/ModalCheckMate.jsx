@@ -36,9 +36,11 @@ export default function ModalCheckMate({ infUser, time, frase }) {
     if (redirecting && countdown === 0) {
       if (auth?.user) {
         setCheckMate(null);
-        socket.emit('join-room', time);
-        socket.emit('userAvailable', auth?.user?._id);
-        socket.emit('deletePartida', { room: infUser?.time, roomPartida: room });
+        if(socket){
+          socket.emit('join-room', time);
+          socket.emit('userAvailable', auth?.user?._id);
+          socket.emit('deletePartida', { room: infUser?.time, roomPartida: room });
+        }
         navigate('/auth/channel');
       } else {
         navigate('/login');

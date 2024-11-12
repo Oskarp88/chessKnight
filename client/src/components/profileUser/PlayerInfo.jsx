@@ -52,7 +52,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
               color: infUser?.color === 'white' ? 'black' : 'white',
               photo: infUser?.photo
             }));
-            setFrase(`${infUser.username} se ha desconectado`);
+            setFrase(`te has desconectado`);
             setGameOver(true);
             isCheckMate('derrota'); 
             localStorage.removeItem('gameRoom');

@@ -131,6 +131,10 @@ export const GameContextProvider = ({children, user}) => {
         });
   
          // Escuchar si el otro jugador se desconectó
+        socket.on(' userDisconnected',(data)=>{
+          if(data.userId !== infUser?.idOpponent && isGameStart) return;
+          setPlayerDisconnected(true);
+        })
         socket.on('opponentDisconnected', () => {
           console.log('userDisconnected')
           // if(data.userId !== infUser?.idOpponent && isGameStart) return;
@@ -344,6 +348,24 @@ export const GameContextProvider = ({children, user}) => {
     useEffect(() => {
       if(socket === null) return;
       socket.on("opponentMove", handleOpponentMove);
+      socket.on('gameOverEnd',()=>{
+        setUserWon(prev => ({
+          ...prev, 
+          username: auth?.user?.username,
+          nameOpponent: infUser?.username, 
+          idUser: auth?.user?._id,
+          idOpponent: infUser?.idOpponent,
+          turn: infUser?.color === 'white' ? 'black' : 'white',
+          status: '0',
+          color: infUser?.color === 'white' ? 'black' : 'white',
+          photo: infUser?.photo
+        }));
+        setFrase(`Has perdido la conexión`);
+        setGameOver(true);
+        isCheckMate('derrota'); 
+        localStorage.removeItem('gameRoom');
+        setRoom(null);
+      });
       socket.on('receiveReconnectMove', (res) => {
         const dataTurn = localStorage.getItem('chessboard');
         if (dataTurn) {
