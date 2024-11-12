@@ -24,10 +24,11 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
     setIsGameStart,
     setFrase,
     setUserWon,
+    infUser,
   } = useContext(GameContext);
   const [elo, setElo] = useState(10);
   const {auth} = useAuth();
-  const {infUser, setRoom} = useContext(GameContext);
+  const {setRoom} = useSocketContext();
   const [id, setId] = useState(null);
   const [counter, setCounter] = useState(60);
 
@@ -54,7 +55,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
               photo: infUser?.photo
             }));
             setFrase(`te has desconectado`);
-            setGameOver(true);
+             setGameOver(true);
             console.log(`te has desconectado`, isGameOver);
             isCheckMate('derrota'); 
             localStorage.removeItem('gameRoom');
