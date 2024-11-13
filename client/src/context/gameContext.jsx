@@ -87,6 +87,7 @@ export const GameContextProvider = ({children, user}) => {
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
+    const [counter, setCounter] = useState(30);
     
     
     const [toqueAudio] = useSound(soundToque);
@@ -96,6 +97,10 @@ export const GameContextProvider = ({children, user}) => {
     const [derrotaAudio] = useSound(soundDerrota);
     const [jakeAudio] = useSound(soundJake);
     const [jakeMateAudio] = useSound(soundJakeMate);
+
+    let lastPingTime = Date.now(); // Tiempo en el que se recibió el último ping
+    const pingInterval = 5000;     // El intervalo de ping configurado en el servidor (5 segundos)
+    const pingTimeout = 7000;      // El tiempo de espera de ping configurado en el servidor (7 segundos)
 
     useEffect(() => {
       const gamesData = localStorage.getItem('games');
@@ -130,7 +135,12 @@ export const GameContextProvider = ({children, user}) => {
         // Manejar el evento "disconnect" para detectar desconexiones
         socket.on("disconnect", () => {    
             console.log("Disconnected without a specified reason.");
-            setIsConnected(true);       
+            const remainingTime = getRemainingDisconnectTime();      
+            setCounter(remainingTime+counter);
+            setIsConnected(true); 
+        });
+        socket.on('ping', () => {
+          lastPingTime = Date.now();
         });
         // Responder al 'pingCheck' del servidor
         socket.on('pingCheck', (callback) => {
@@ -507,6 +517,15 @@ useEffect(()=>{
       moveLog,
    }));
   },[moveLog]);
+
+  // Función para calcular el tiempo total de espera restante antes de que el servidor considere desconectado el socket
+function getRemainingDisconnectTime() {
+  const timeSinceLastPing = Date.now() - lastPingTime;
+  const remainingPingInterval = pingInterval - timeSinceLastPing;
+  const totalWaitTime = remainingPingInterval + pingTimeout;
+  
+  return totalWaitTime > 0 ? totalWaitTime : 0;
+}
 
       // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
   const formatTime = (time) => {
@@ -1446,7 +1465,8 @@ useEffect(()=>{
             setInfUser,
             games,
             resetBoard,
-            isGameStart, setIsGameStart
+            isGameStart, setIsGameStart,
+            counter, setCounter
          }}
       >
          {children}
