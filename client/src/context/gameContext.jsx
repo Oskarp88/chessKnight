@@ -135,7 +135,8 @@ export const GameContextProvider = ({children, user}) => {
         // Manejar el evento "disconnect" para detectar desconexiones
         socket.on("disconnect", () => {    
             console.log("Disconnected without a specified reason.");
-            const remainingTime = getRemainingDisconnectTime();      
+            const remainingTime = getRemainingDisconnectTime(); 
+            console.log('remainingTime', remainingTime)     
             setCounter(remainingTime+counter);
             setIsConnected(true); 
         });
