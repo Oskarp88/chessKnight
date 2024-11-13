@@ -111,13 +111,13 @@ export const GameContextProvider = ({children, user}) => {
     },[infUser && infUser]);
 
     useEffect(()=>{
-      const userIndex = onlineUsers.findIndex(user => user.userId === infUser?.idOpponent);
-      if (userIndex !== -1 && isGameStart) {
-         setPlayerDisconnected(false);
-      }else if(isGameStart){
-         setPlayerDisconnected(true);
-      }
-      console.log('onlineUsersEffect', onlineUsers)
+      // const userIndex = onlineUsers.findIndex(user => user.userId === infUser?.idOpponent);
+      // if (userIndex !== -1 && isGameStart) {
+      //    setPlayerDisconnected(false);
+      // }else if(isGameStart){
+      //    setPlayerDisconnected(true);
+      // }
+      console.log('onlineUsersEffect', onlineUsers);
     },[onlineUsers]);
 
     useEffect(() => {
@@ -159,6 +159,9 @@ export const GameContextProvider = ({children, user}) => {
         //   if(data.userId !== infUser?.idOpponent && isGameStart) return;
         //   setPlayerDisconnected(true);
         // })
+        socket.on('opponentConnected',()=>{
+          setPlayerDisconnected(false);
+        });
         socket.on('opponentDisconnected', () => {
           console.log('userDisconnected')
           // if(data.userId !== infUser?.idOpponent && isGameStart) return;

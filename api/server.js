@@ -102,6 +102,21 @@ setInterval(()=>{
 io.on("connection", (socket) => {
   console.log("User Connected: ",socket.id);
 
+  const rooms = userRooms[socket.id] || [];
+  console.log('rooms', rooms);
+  rooms.forEach((room) => {
+    // Verifica que no sea la sala por defecto (la cual es el socket.id)
+      if (room !== socket.id) {
+        // Verifica si queda un solo jugador en la sala
+        const playersInRoom = io.sockets.adapter.rooms.get(room);
+        if (playersInRoom && playersInRoom.size === 2) {
+          console.log('opponentConnected', playersInRoom.size)
+          // Notifica al jugador restante que el oponente se ha desconectado
+          io.to(room).emit('opponentConnected');
+        }
+    }
+  });
+
   socket.on('addNewUser', (userId) => {
      !onlineUser.some(user => user.userId === userId) &&
      onlineUser.push({
@@ -439,8 +454,7 @@ socket.on('sendTiempo', (data) => {
     //   // Puedes emitir este ID a otros usuarios si necesitas notificar
     //   io.emit('userDisconnected', disconnectedUser);
     // }
-    const rooms = userRooms[socket.id] || [];
-    console.log('rooms', rooms);
+
     rooms.forEach((room) => {
       // Verifica que no sea la sala por defecto (la cual es el socket.id)
         if (room !== socket.id) {
