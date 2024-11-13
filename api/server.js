@@ -28,6 +28,8 @@ app.use('/api', router);
 
 
 const io = new Server(server, {
+  pingInterval: 5000, // Intervalo de ping cada 5 segundos
+  pingTimeout: 7000,  // Tiempo de espera de respuesta antes de desconectar
   cors: {
     origin:["https://chessfive.vercel.app","http://localhost:3000"],
     method: ["GET", "POST",'PUT', 'DELETE'],
@@ -421,30 +423,12 @@ socket.on('sendTiempo', (data) => {
    partidas = partidas.filter((p) => p.room !== data?.roomPartida);   
    socket.to(data?.room).emit('getPartidas', partidas);
   })
-  const latencyThreshold = 1000; // Tiempo en milisegundos para considerar alta latencia
-  const checkInterval = 5000; // Cada cuántos ms se verificará la latencia
-  const latencyChecker = setInterval(() => {
-    const startTime = Date.now();
-    
-    // Emitimos un evento 'pingCheck' y medimos el tiempo de respuesta
-    socket.emit('pingCheck', () => {
-        const latency = Date.now() - startTime;
-        console.log(`Latency for socket ${socket.id}: ${latency}ms`);
-
-        if (latency > latencyThreshold) {
-            const rooms = userRooms[socket.id] || [];
-            
-            rooms.forEach((room) => {
-                if (room !== socket.id) {
-                    io.to(room).emit('opponentHighLatency', { message: "Tu oponente está experimentando problemas de conexión." });
-                }
-            });
-        }
-    });
-}, checkInterval);
   
+  setInterval(() => {
+    io.emit('ping'); // Envía el evento personalizado a todos los clientes
+  }, 5000); 
+
   socket.on("disconnect", (reason) => {
-    clearInterval(latencyChecker);
     // const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
 
     // // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
