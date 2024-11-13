@@ -525,7 +525,7 @@ function getRemainingDisconnectTime() {
   const remainingPingInterval = pingInterval - timeSinceLastPing;
   const totalWaitTime = remainingPingInterval + pingTimeout;
   
-  return totalWaitTime > 0 ? totalWaitTime : 0;
+  return totalWaitTime > 0 ? totalWaitTime / 1000 : 0;
 }
 
       // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
