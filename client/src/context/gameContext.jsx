@@ -394,6 +394,7 @@ export const GameContextProvider = ({children, user}) => {
         setRoom(null);
       });
       socket.on('receiveReconnectMove', (res) => {
+        console.log('receiveReconnectMove')
         const dataTurn = localStorage.getItem('chessboard');
         if (dataTurn) {
           const parseDataTurn = JSON.parse(dataTurn);
