@@ -125,7 +125,7 @@ export const GameContextProvider = ({children, user}) => {
     useEffect(() => {
         if(socket === null) return;
         const handleConnect = () => {
-          console.log("Conexión al servidor establecida.");
+          console.log("Conexión al servidor establecida. room:", room);
           setIsConnected(false);
           // setTextToast("Conexión al servidor establecida.");
           // setColor('#58d68d');
