@@ -23,15 +23,17 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
      setGameOver,
      setUserWon,
      setFrase,
+     isGameStart
  } = useContext(GameContext);
   const [counter, setCounter] = useState(30);
-  console.log('playerDisconnect', playerDisconnected)
+  // console.log('playerDisconnect', playerDisconnected);
+  // console.log('gameStartPlayerInf2',isGameStart)
 
   useEffect(() => {
     let timer;
 
     // Inicia el contador cuando playerDisconnected es true
-    if (playerDisconnected) {
+    if (playerDisconnected && isGameStart) {
       timer = setInterval(() => {
         setCounter(prevCounter => {
           if (prevCounter > 0) {

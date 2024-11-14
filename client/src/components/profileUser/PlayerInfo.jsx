@@ -25,7 +25,8 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
     setFrase,
     setUserWon,
     infUser,
-    counter, setCounter
+    counter, setCounter,
+    isGameStart
   } = useContext(GameContext);
   const [elo, setElo] = useState(10);
   const {auth} = useAuth();
@@ -37,7 +38,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
     let timer;
 
     // Inicia el contador cuando playerDisconnected es true
-    if (isConnected) {
+    if (isConnected && isGameStart) {
       timer = setInterval(() => {
         setCounter(prevCounter => {
           if (prevCounter > 0) {

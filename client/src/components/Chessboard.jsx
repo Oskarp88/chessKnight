@@ -75,7 +75,8 @@ function Chessboard() {
     formatTime,
     setWhiteTimeEnd,
     setBlackTimeEnd, 
-    resetBoard
+    resetBoard,
+    setIsGameStart
   } = useContext(GameContext);
   const {auth} = useAuth();
   const {setCheckMate} = useCheckMateContext();
@@ -101,6 +102,9 @@ function Chessboard() {
     socket.on('revanchaAceptada',  (data) => {
           
       if (!data) return; // Check if data exists
+      setIsGameStart(true);
+      if(room) socket.emit('joinRoomGamePlay', room); 
+      localStorage.setItem('gameStart', JSON.stringify(true));
       const time = parseInt(localStorage.getItem('time')) || infUser?.time;
       socket.emit('initPlay', {gameId: room, time});
       setInfUser((prevInfUser) => ({
@@ -361,6 +365,8 @@ function Chessboard() {
 
   const AceptarRevancha = async() => {
     resetBoard();
+    setIsGameStart(true);
+    localStorage.setItem('gameStart', JSON.stringify(true));
     const color = infUser?.color === 'white' ? 'black' : 'white';
     if(socket === null) return;
     setInfUser((prevInfUser) => ({
@@ -371,6 +377,7 @@ function Chessboard() {
       ...prevInfUser,
       color: color,
     }));
+    if(room) socket.emit('joinRoomGamePlay', room); 
     socket.emit('aceptarRevancha', {revancha: true, room, color});
     const time = parseInt(localStorage.getItem('time')) || infUser?.time;
     socket.emit('initPlay', {gameId: room, time}); 

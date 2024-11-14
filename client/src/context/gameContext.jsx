@@ -61,7 +61,7 @@ export const GameContextProvider = ({children, user}) => {
     const [isPromotionComplete, setPromotionComplete] = useState(false);
     const [isModaltime, setModalTime] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
-    const [isGameStart, setIsGameStart] = useState(false);
+    const [isGameStart, setIsGameStart] = useState(JSON.parse(localStorage.getItem('gameStart')) || false);
     const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
     const [blackTime, setBlackTime] = useState(parseInt(infUser.time));
     const [whiteTimeEnd, setWhiteTimeEnd] = useState(parseInt(infUser.time));
@@ -97,6 +97,8 @@ export const GameContextProvider = ({children, user}) => {
     const [derrotaAudio] = useSound(soundDerrota);
     const [jakeAudio] = useSound(soundJake);
     const [jakeMateAudio] = useSound(soundJakeMate);
+
+    console.log('gameStarGameContext', isGameStart)
 
     let lastPingTime = Date.now(); // Tiempo en el que se recibió el último ping
     const pingInterval = 5000;     // El intervalo de ping configurado en el servidor (5 segundos)
@@ -322,10 +324,7 @@ export const GameContextProvider = ({children, user}) => {
         console.error("Error parsing pieces data from localStorage:", error);
       }
     }
-    const startGame = localStorage.getItem('gameStart');
-    if(startGame){
-      setIsGameStart(startGame);
-    }
+   
     },[socket]);
 
     useEffect(()=>{
@@ -365,10 +364,7 @@ export const GameContextProvider = ({children, user}) => {
         console.error("Error parsing pieces data from localStorage:", error);
       }
     }
-    const startGame = localStorage.getItem('gameStart');
-    if(startGame){
-      setIsGameStart(startGame);
-    }
+  
   },[])
 
     useEffect(() => {
@@ -394,8 +390,8 @@ export const GameContextProvider = ({children, user}) => {
       });
       socket.on('receiveReconnectMove', (res) => {
         console.log('receiveReconnectMove')
-        console.log('isgamestart', localStorage.getItem('gameStart'));
-        if(localStorage.getItem('gameStart')){
+        console.log('isgamestart', isGameStart);
+        if(isGameStart){
           setPlayerDisconnected(false);
           
         const dataTurn = localStorage.getItem('chessboard');
@@ -1166,7 +1162,7 @@ function getRemainingDisconnectTime() {
              !checkMate && jakeAudio();
             if(checkMate){
                jakeMateAudio();
-               victoryAudio.play();
+              victoryAudio();
               setUserWon(prev => ({
                 ...prev, 
                 username: auth?.user?.username,

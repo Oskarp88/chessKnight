@@ -165,7 +165,7 @@ const Friends = ({ friends, room }) => {
     socket.on('receivePlayGame',(data) => {
       //datos recibidos de quien acepto el desafio 
       setIsGameStart(true);
-      localStorage.setItem('gameStart', true);
+      localStorage.setItem('gameStart', JSON.stringify(true));
       setPieces(resetPieces);
       localStorage.setItem('bandera', data?.bandera);
       setRoom(data?.roomGame);
@@ -308,7 +308,7 @@ const Friends = ({ friends, room }) => {
      localStorage.setItem('infUser', JSON.stringify(infUser));
      setRoom(gameId);
      setIsGameStart(true);
-     localStorage.setItem('gameStart', true);
+     localStorage.setItem('gameStart', JSON.stringify(true));
      navigate('/chess');    
   };
 
