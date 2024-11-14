@@ -130,7 +130,11 @@ export const GameContextProvider = ({children, user}) => {
           // setTextToast("Conexión al servidor establecida.");
           // setColor('#58d68d');
           // setShowToast(true);
-          if(room) socket.emit('joinRoomGamePlay', room);    
+          if(room) {
+            socket.emit('joinRoomGamePlay', room); 
+            socket.emit("reconnectMove", {room, playerColor: infUser?.color});
+            console.log('se envio el reconnet')  
+          } 
         };
          // Manejar el evento "connect" para detectar la conexión exitosa
         socket.on("connect", handleConnect);
@@ -205,7 +209,46 @@ export const GameContextProvider = ({children, user}) => {
   
           setPieces(updatedPieces);
         });
-     
+        socket.on("opponentMove", handleOpponentMove);
+        socket.on('gameOverEnd',()=>{
+          setUserWon(prev => ({
+            ...prev, 
+            username: auth?.user?.username,
+            nameOpponent: infUser?.username, 
+            idUser: auth?.user?._id,
+            idOpponent: infUser?.idOpponent,
+            turn: infUser?.color === 'white' ? 'black' : 'white',
+            status: '0',
+            color: infUser?.color === 'white' ? 'black' : 'white',
+            photo: infUser?.photo
+          }));
+          setFrase(`Has perdido la conexión`);
+          setGameOver(true);
+          isCheckMate('derrota'); 
+          localStorage.removeItem('gameRoom');
+          setRoom(null);
+        });
+        socket.on('receiveReconnectMove', (res) => {
+          console.log('receiveReconnectMove')
+          console.log('isgamestart', isGameStart);
+          if(isGameStart){
+            setPlayerDisconnected(false);
+            
+          const dataTurn = localStorage.getItem('chessboard');
+            if (dataTurn) {
+              const parseDataTurn = JSON.parse(dataTurn);
+              if(res.playerColor !== parseDataTurn.currentTurn) return;
+                const data = localStorage.getItem('send_move');       
+                if (data) {
+                  const parseData = JSON.parse(data);                      
+                  
+                  if(room) socket.emit("get_last_move", parseData);
+                }
+            }
+           }else{
+             if(room) socket.emit('gameDisconnect', room);
+           }                
+        });
         socket.on('receiveRevancha', (data) => {
           setModalTablasAceptada(false);
           setModalRendicion(false);
@@ -288,11 +331,12 @@ export const GameContextProvider = ({children, user}) => {
             socket.off('connect');
             socket.off('disconnect');
             socket.off('playerDisconnected');
+            socket.off("opponentMove", handleOpponentMove);
             // socket.off('receiveTiempo', handleReceiveTiempo);
             // socket.off('receiveTiempoTurn', handleReceiveTiempoTurn);
             clearTimeout(reconnectionTimeout);    
         };
-    }, [socket, reconnectionTimeout] );
+    }, [socket] );
 
     useEffect(()=>{
         const data = localStorage.getItem('chessboard');
@@ -364,76 +408,7 @@ export const GameContextProvider = ({children, user}) => {
         console.error("Error parsing pieces data from localStorage:", error);
       }
     }
-  
-  },[])
-
-    useEffect(() => {
-      if(socket === null) return;
-      socket.on("opponentMove", handleOpponentMove);
-      socket.on('gameOverEnd',()=>{
-        setUserWon(prev => ({
-          ...prev, 
-          username: auth?.user?.username,
-          nameOpponent: infUser?.username, 
-          idUser: auth?.user?._id,
-          idOpponent: infUser?.idOpponent,
-          turn: infUser?.color === 'white' ? 'black' : 'white',
-          status: '0',
-          color: infUser?.color === 'white' ? 'black' : 'white',
-          photo: infUser?.photo
-        }));
-        setFrase(`Has perdido la conexión`);
-        setGameOver(true);
-        isCheckMate('derrota'); 
-        localStorage.removeItem('gameRoom');
-        setRoom(null);
-      });
-      socket.on('receiveReconnectMove', (res) => {
-        console.log('receiveReconnectMove')
-        console.log('isgamestart', isGameStart);
-        if(isGameStart){
-          setPlayerDisconnected(false);
-          
-        const dataTurn = localStorage.getItem('chessboard');
-          if (dataTurn) {
-            const parseDataTurn = JSON.parse(dataTurn);
-            if(res.playerColor !== parseDataTurn.currentTurn) return;
-              const data = localStorage.getItem('send_move');       
-              if (data) {
-                const parseData = JSON.parse(data);                      
-                
-                if(room) socket.emit("get_last_move", parseData);
-              }
-          }
-         }else{
-           if(room) socket.emit('gameDisconnect', room);
-         }
-        
-        
-        
-      });
-      return () => {
-        socket.off("opponentMove", handleOpponentMove)
-      }
-     
-    },[socket]);
-
-    useEffect(()=>{
-        if (socket) {
-            socket.on("connect", () => {
-                // Emitir evento una vez que el socket se reconecta después de recargar
-             if(room)  socket.emit("reconnectMove", {room, playerColor: infUser?.color});
-                console.log('se envio el reconnet')
-            });
-        }
-    
-        // Limpieza al desmontar el componente
-        return () => {
-            if (socket) {
-                socket.off("connect"); // Desactivar el listener de "connect" al desmontar el componente
-            }
-        };
-    },[socket]);
+  },[]);
   
   useEffect(()=>{
     
