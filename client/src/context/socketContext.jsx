@@ -112,12 +112,12 @@ useEffect(() => {
   };
 },[socket]);
 
-useEffect(() => {
-  const gameRoom = localStorage.getItem('gameRoom');
-  if(gameRoom){
-    setRoom(gameRoom)
-  }
-},[]);
+// useEffect(() => {
+//   const gameRoom = localStorage.getItem('gameRoom');
+//   if(gameRoom){
+//     setRoom(gameRoom)
+//   }
+// },[]);
 
 useEffect(() => {
   if (online) {  // Asegúrate de que online está definido
