@@ -395,7 +395,7 @@ export const GameContextProvider = ({children, user}) => {
       socket.on('receiveReconnectMove', (res) => {
         console.log('receiveReconnectMove')
         console.log('isgamestart', isGameStart);
-        if(isGameStart){
+        if(localStorage.getItem('gameStart')){
           setPlayerDisconnected(false);
           
         const dataTurn = localStorage.getItem('chessboard');
