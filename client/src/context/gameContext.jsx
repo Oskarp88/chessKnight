@@ -61,12 +61,8 @@ export const GameContextProvider = ({children, user}) => {
     const [isPromotionComplete, setPromotionComplete] = useState(false);
     const [isModaltime, setModalTime] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
-    const storedGameStart = localStorage.getItem('gameStart');
-
-    // Estado inicial usando el valor almacenado, si existe, o falso por defecto
-    const [isGameStart, setIsGameStart] = useState(
-        storedGameStart ? JSON.parse(storedGameStart) : false
-    );    const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
+    const [isGameStart, setIsGameStart] = useState(JSON.parse(localStorage.getItem('gameStart')) || false);
+    const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
     const [blackTime, setBlackTime] = useState(parseInt(infUser.time));
     const [whiteTimeEnd, setWhiteTimeEnd] = useState(parseInt(infUser.time));
     const [blackTimeEnd, setBlackTimeEnd] = useState(parseInt(infUser.time));
@@ -235,7 +231,7 @@ export const GameContextProvider = ({children, user}) => {
         socket.on('receiveReconnectMove', (res) => {
           console.log('receiveReconnectMove')
           console.log('isgamestart', isGameStart);
-          if(isGameStart){
+          if(JSON.parse(localStorage.getItem('gameStart'))){
             setPlayerDisconnected(false);
             
           const dataTurn = localStorage.getItem('chessboard');
