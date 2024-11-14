@@ -394,7 +394,7 @@ export const GameContextProvider = ({children, user}) => {
       });
       socket.on('receiveReconnectMove', (res) => {
         console.log('receiveReconnectMove')
-        console.log('isgamestart', isGameStart);
+        console.log('isgamestart', localStorage.getItem('gameStart'));
         if(localStorage.getItem('gameStart')){
           setPlayerDisconnected(false);
           
