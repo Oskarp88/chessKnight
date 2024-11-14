@@ -397,11 +397,13 @@ export const GameContextProvider = ({children, user}) => {
         const dataTurn = localStorage.getItem('chessboard');
         if (dataTurn) {
           const parseDataTurn = JSON.parse(dataTurn);
-          if(res.playerColor !== parseDataTurn.currentTurn) return;
+          
         const data = localStorage.getItem('send_move');       
         if (data) {
           const parseData = JSON.parse(data);
          if(isGameStart){
+           setPlayerDisconnected(false);
+           if(res.playerColor !== parseDataTurn.currentTurn) return;
            if(room) socket.emit("get_last_move", parseData);
          }else{
            if(room) socket.emit('gameDisconnect', room);
