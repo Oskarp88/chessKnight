@@ -25,7 +25,7 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
      setFrase,
  } = useContext(GameContext);
   const [counter, setCounter] = useState(30);
-  console.log('player', playerDisconnected)
+  console.log('playerDisconnect', playerDisconnected)
 
   useEffect(() => {
     let timer;

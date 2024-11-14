@@ -168,7 +168,6 @@ export const GameContextProvider = ({children, user}) => {
           // if(!isGameStart) return;
           console.log(`El jugador ${infUser?.username} se ha desconectado`);
           setPlayerDisconnected(true);
-          console.log('playerDisconnect', playerDisconnected)
           
         });
         socket.on("reconnect", (attemptNumber) => {
@@ -395,22 +394,26 @@ export const GameContextProvider = ({children, user}) => {
       });
       socket.on('receiveReconnectMove', (res) => {
         console.log('receiveReconnectMove')
-        const dataTurn = localStorage.getItem('chessboard');
-        if (dataTurn) {
-          const parseDataTurn = JSON.parse(dataTurn);
+        console.log('isgamestart', isGameStart);
+        if(isGameStart){
+          setPlayerDisconnected(false);
           
-        const data = localStorage.getItem('send_move');       
-        if (data) {
-          const parseData = JSON.parse(data);
-         if(isGameStart){
-           setPlayerDisconnected(false);
-           if(res.playerColor !== parseDataTurn.currentTurn) return;
-           if(room) socket.emit("get_last_move", parseData);
+        const dataTurn = localStorage.getItem('chessboard');
+          if (dataTurn) {
+            const parseDataTurn = JSON.parse(dataTurn);
+            if(res.playerColor !== parseDataTurn.currentTurn) return;
+              const data = localStorage.getItem('send_move');       
+              if (data) {
+                const parseData = JSON.parse(data);                      
+                
+                if(room) socket.emit("get_last_move", parseData);
+              }
+          }
          }else{
            if(room) socket.emit('gameDisconnect', room);
          }
-        }
-        }
+        
+        
         
       });
       return () => {
