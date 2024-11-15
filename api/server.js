@@ -425,6 +425,9 @@ socket.on('sendTiempo', (data) => {
   
   setInterval(() => {
     io.emit('ping'); // Envía el evento personalizado a todos los clientes
+    socket.on('sendPing', (room)=>{
+      io.to(room).emit('player_reconnecting');
+    })
   }, 3000); 
 
   let pingTimeoutStarted = false; // Bandera para saber si el ping timeout comenzó
@@ -441,11 +444,17 @@ socket.on('sendTiempo', (data) => {
   socket.conn.on('packet', (packet) => {
     if (packet.type === 'ping' && !pingTimeoutStarted) {
       pingTimeoutStarted = true;
-      const roomId = socket.handshake.query.roomId; // Ejemplo: sala en la que se encuentran
+      const roomId = userRooms[socket.id] || [];
       const clientId = socket.id;
       // Notificar al cliente B
-      io.to(roomId).emit('player_reconnecting',  clientId);
-
+      roomId.forEach((room) => {
+        // Verifica que no sea la sala por defecto (la cual es el socket.id)
+          if (room !== socket.id) {
+            // Verifica si queda un solo jugador en la sala
+             io.to(room).emit('player_reconnecting',  clientId);
+            }
+        
+      });
       // // Configurar temporizador para desconexión definitiva
       // disconnectTimer = setTimeout(() => {
       //   io.to(roomId).emit('player_disconnected_final', { clientId });

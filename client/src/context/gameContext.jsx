@@ -88,7 +88,7 @@ export const GameContextProvider = ({children, user}) => {
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
     const [counter, setCounter] = useState(0);
-    
+    const [isReceivePing, setIsReceivePing] = useState(null);
     
     const [toqueAudio] = useSound(soundToque);
     const [soltarAudio] = useSound(soundSoltar);
@@ -121,6 +121,19 @@ export const GameContextProvider = ({children, user}) => {
       // }
       console.log('onlineUsersEffect', onlineUsers);
     },[onlineUsers]);
+   let timerPing
+    useEffect(()=>{
+      
+     timerPing =  setInterval(()=>{
+         setIsReceivePing(prev => prev + 1)
+       },4000)
+       if(isGameStart && isReceivePing < 3){
+          setPlayerDisconnected(true);
+       }
+       if(!isGameStart){
+        clearInterval(timerPing);
+       }
+    },[isReceivePing]);
 
     useEffect(() => {
         if(socket === null) return;
@@ -148,6 +161,7 @@ export const GameContextProvider = ({children, user}) => {
         });
         socket.on('ping', () => {
           lastPingTime = Date.now();
+          socket.emit('sendPing',room);
         });
         // Responder al 'pingCheck' del servidor
         socket.on('pingCheck', (callback) => {
@@ -191,7 +205,7 @@ export const GameContextProvider = ({children, user}) => {
           
         });
         socket.on('player_reconnecting', () =>{
-          setPlayerDisconnected(true);
+          setIsReceivePing(0);
         })
         socket.on("reconnect", (attemptNumber) => {
           setTextToast(`Reconectado en el intento ${attemptNumber}`);
