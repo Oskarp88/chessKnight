@@ -101,8 +101,11 @@ export const GameContextProvider = ({children, user}) => {
     console.log('gameStarGameContext', isGameStart)
 
     let lastPingTime = Date.now(); // Tiempo en el que se recibió el último ping
-    const pingInterval = 5000;     // El intervalo de ping configurado en el servidor (5 segundos)
+        // El intervalo de ping configurado en el servidor (5 segundos)
     const pingTimeout = 30000;      // El tiempo de espera de ping configurado en el servidor (7 segundos)
+
+    let lastPingReceived = Date.now(); // Marca el último ping recibido
+    const pingInterval = 3500;
 
     useEffect(() => {
       const gamesData = localStorage.getItem('games');
@@ -121,19 +124,6 @@ export const GameContextProvider = ({children, user}) => {
       // }
       console.log('onlineUsersEffect', onlineUsers);
     },[onlineUsers]);
-   let timerPing
-    useEffect(()=>{
-      
-     timerPing =  setInterval(()=>{
-         setIsReceivePing(prev => prev + 1)
-       },4000)
-       if(isGameStart && isReceivePing < 3){
-          setPlayerDisconnected(true);
-       }
-       if(!isGameStart){
-        clearInterval(timerPing);
-       }
-    },[isReceivePing]);
 
     useEffect(() => {
         if(socket === null) return;
@@ -205,7 +195,8 @@ export const GameContextProvider = ({children, user}) => {
           
         });
         socket.on('player_reconnecting', () =>{
-          setIsReceivePing(0);
+          lastPingReceived = Date.now(); // Actualizar el último ping recibido
+          console.log('Ping recibido de cliente A. Conexión activa.');
         })
         socket.on("reconnect", (attemptNumber) => {
           setTextToast(`Reconectado en el intento ${attemptNumber}`);
@@ -540,6 +531,15 @@ function getRemainingDisconnectTime() {
   return totalWaitTime > 0 ? total : 0;
 }
 
+// Chequear si el ping se detiene
+setInterval(() => {
+  const currentTime = Date.now();
+  if (currentTime - lastPingReceived > pingTimeout) {
+    setPlayerDisconnected(true);
+    console.log('Cliente A perdió la conexión. No se recibieron pings en el tiempo esperado.');
+    // Aquí puedes realizar acciones, como informar al usuario o actualizar la interfaz.
+  }
+}, 1000);
       // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, "0");
