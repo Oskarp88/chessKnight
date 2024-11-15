@@ -40,21 +40,6 @@ const PlayerInf2 = ({ playerName, playerIcon, playerColor, playerTime, currentTu
             return prevCounter - 1;
           } else {
             clearInterval(timer); // Detiene el contador cuando llega a 0
-            setUserWon(prev => ({
-              ...prev, 
-              username: auth?.user?.username,
-              nameOpponent: infUser?.username, 
-              idUser: auth?.user?._id,
-              idOpponent: infUser?.idOpponent,
-              turn: infUser?.color === 'white' ? 'black' : 'white',
-              status: '1',
-              color: infUser?.color === 'white' ? 'black' : 'white',
-              photo: infUser?.photo
-            }));
-            setFrase(`${infUser.username} se ha desconectado`);
-            setGameOver(true);
-            isCheckMate('victoria'); 
-            localStorage.removeItem('send_move');
             return 0;
           }
         });

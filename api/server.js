@@ -425,7 +425,33 @@ socket.on('sendTiempo', (data) => {
   
   setInterval(() => {
     io.emit('ping'); // Envía el evento personalizado a todos los clientes
-  }, 5000); 
+  }, 3000); 
+
+  let pingTimeoutStarted = false; // Bandera para saber si el ping timeout comenzó
+  // let disconnectTimer;
+
+  socket.on('ping_check', () => {
+    pingTimeoutStarted = false; // Si responde al ping, no está desconectado
+    // if (disconnectTimer) {
+    //   clearTimeout(disconnectTimer); // Cancelar desconexión
+    // }
+  });
+
+  // Interceptar desconexión por ping timeout
+  socket.conn.on('packet', (packet) => {
+    if (packet.type === 'ping' && !pingTimeoutStarted) {
+      pingTimeoutStarted = true;
+      const roomId = socket.handshake.query.roomId; // Ejemplo: sala en la que se encuentran
+      const clientId = socket.id;
+      // Notificar al cliente B
+      io.to(roomId).emit('player_reconnecting',  clientId);
+
+      // // Configurar temporizador para desconexión definitiva
+      // disconnectTimer = setTimeout(() => {
+      //   io.to(roomId).emit('player_disconnected_final', { clientId });
+      // }, 30000); // 30 segundos
+    }
+  });
 
   socket.on("disconnect", (reason) => {
     // const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);

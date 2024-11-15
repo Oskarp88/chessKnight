@@ -173,9 +173,26 @@ export const GameContextProvider = ({children, user}) => {
           // if(data.userId !== infUser?.idOpponent && isGameStart) return;
           // if(!isGameStart) return;
           console.log(`El jugador ${infUser?.username} se ha desconectado`);
-          setPlayerDisconnected(true);
+          setUserWon(prev => ({
+            ...prev, 
+            username: auth?.user?.username,
+            nameOpponent: infUser?.username, 
+            idUser: auth?.user?._id,
+            idOpponent: infUser?.idOpponent,
+            turn: infUser?.color === 'white' ? 'black' : 'white',
+            status: '1',
+            color: infUser?.color === 'white' ? 'black' : 'white',
+            photo: infUser?.photo
+          }));
+          setFrase(`${infUser.username} se ha desconectado`);
+          setGameOver(true);
+          isCheckMate('victoria'); 
+          localStorage.removeItem('send_move');
           
         });
+        socket.on('player_reconnecting', () =>{
+          setPlayerDisconnected(true);
+        })
         socket.on("reconnect", (attemptNumber) => {
           setTextToast(`Reconectado en el intento ${attemptNumber}`);
           setColor('#58d68d');
