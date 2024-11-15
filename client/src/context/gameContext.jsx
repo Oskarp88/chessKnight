@@ -534,7 +534,7 @@ function getRemainingDisconnectTime() {
 // Chequear si el ping se detiene
 setInterval(() => {
   const currentTime = Date.now();
-  if (currentTime - lastPingReceived > pingTimeout) {
+  if (Math.ceil(currentTime - lastPingReceived / 1000) > pingInterval) {
     setPlayerDisconnected(true);
     console.log('Cliente A perdió la conexión. No se recibieron pings en el tiempo esperado.');
     // Aquí puedes realizar acciones, como informar al usuario o actualizar la interfaz.
