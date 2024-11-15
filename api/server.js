@@ -28,8 +28,8 @@ app.use('/api', router);
 
 
 const io = new Server(server, {
-  pingInterval: 5000, // Intervalo de ping cada 5 segundos
-  pingTimeout: 7000,  // Tiempo de espera de respuesta antes de desconectar
+  pingInterval: 3000, // Intervalo de ping cada 5 segundos
+  pingTimeout: 30000,  // Tiempo de espera de respuesta antes de desconectar
   cors: {
     origin:["https://chessfive.vercel.app","http://localhost:3000"],
     method: ["GET", "POST",'PUT', 'DELETE'],

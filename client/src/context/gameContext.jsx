@@ -87,7 +87,7 @@ export const GameContextProvider = ({children, user}) => {
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
-    const [counter, setCounter] = useState(30);
+    const [counter, setCounter] = useState(0);
     
     
     const [toqueAudio] = useSound(soundToque);
@@ -102,7 +102,7 @@ export const GameContextProvider = ({children, user}) => {
 
     let lastPingTime = Date.now(); // Tiempo en el que se recibió el último ping
     const pingInterval = 5000;     // El intervalo de ping configurado en el servidor (5 segundos)
-    const pingTimeout = 7000;      // El tiempo de espera de ping configurado en el servidor (7 segundos)
+    const pingTimeout = 30000;      // El tiempo de espera de ping configurado en el servidor (7 segundos)
 
     useEffect(() => {
       const gamesData = localStorage.getItem('games');
@@ -502,7 +502,7 @@ useEffect(()=>{
   // Función para calcular el tiempo total de espera restante antes de que el servidor considere desconectado el socket
 function getRemainingDisconnectTime() {
   const timeSinceLastPing = Date.now() - lastPingTime;
-  const remainingPingInterval = pingInterval - timeSinceLastPing;
+  // const remainingPingInterval = pingInterval - timeSinceLastPing;
   const totalWaitTime = timeSinceLastPing + pingTimeout;
   const total = Math.ceil(totalWaitTime / 1000); // Redondeo hacia arriba
 

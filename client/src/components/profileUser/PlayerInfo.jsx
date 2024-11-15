@@ -68,7 +68,7 @@ const PlayerInfo = ({ playerColor,time, userChess, playerTime, currentTurn }) =>
       }, 1000);
     } else {
       // Reinicia el contador a 30 si playerDisconnected cambia a false
-      setCounter(30);
+      setCounter(0);
       clearInterval(timer);
     }
 
