@@ -88,7 +88,6 @@ export const GameContextProvider = ({children, user}) => {
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
     const [counter, setCounter] = useState(30);
-    const [isReceivePing, setIsReceivePing] = useState(null);
     
     const [toqueAudio] = useSound(soundToque);
     const [soltarAudio] = useSound(soundSoltar);
@@ -234,8 +233,9 @@ export const GameContextProvider = ({children, user}) => {
         });
         socket.on('receiveReconnectMove', (res) => {
           console.log('receiveReconnectMove')
-          console.log('isgamestart', isGameStart);
-          if(JSON.parse(localStorage.getItem('gameStart'))){
+          const gameActive = JSON.parse(localStorage.getItem('gameStart'))
+          console.log('isgamestart', gameActive);
+          if(gameActive){
             setPlayerDisconnected(false);
             
           const dataTurn = localStorage.getItem('chessboard');
