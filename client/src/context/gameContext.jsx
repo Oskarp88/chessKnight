@@ -61,7 +61,7 @@ export const GameContextProvider = ({children, user}) => {
     const [isPromotionComplete, setPromotionComplete] = useState(false);
     const [isModaltime, setModalTime] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
-    const [isGameStart, setIsGameStart] = useState(JSON.parse(localStorage.getItem('gameStart')) || false);
+    const [isGameStart, setIsGameStart] = useState(false);
     const [whiteTime, setWhiteTime] = useState(parseInt(infUser.time));
     const [blackTime, setBlackTime] = useState(parseInt(infUser.time));
     const [whiteTimeEnd, setWhiteTimeEnd] = useState(parseInt(infUser.time));
@@ -415,6 +415,11 @@ export const GameContextProvider = ({children, user}) => {
       } catch (error) {
         console.error("Error parsing pieces data from localStorage:", error);
       }
+    }
+
+    const gameStart = JSON.parse(localStorage.getItem('gameStart'));
+    if(gameStart){
+       setIsGameStart(true);
     }
   },[]);
   
