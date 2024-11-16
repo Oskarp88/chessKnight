@@ -29,7 +29,7 @@ app.use('/api', router);
 
 const io = new Server(server, {
   pingInterval: 3000, // Intervalo de ping cada 5 segundos
-  pingTimeout: 30000,  // Tiempo de espera de respuesta antes de desconectar
+  pingTimeout: 5000,  // Tiempo de espera de respuesta antes de desconectar
   cors: {
     origin:["https://chessfive.vercel.app","http://localhost:3000"],
     method: ["GET", "POST",'PUT', 'DELETE'],
@@ -426,42 +426,6 @@ socket.on('sendTiempo', (data) => {
   setInterval(() => {
     io.emit('ping'); // Envía el evento personalizado a todos los clientes
   }, 3000); 
-
-  socket.on('sendPing', (room)=>{
-    io.to(room).emit('player_reconnecting');
-  })
-
-  // let pingTimeoutStarted = false; // Bandera para saber si el ping timeout comenzó
-  // // let disconnectTimer;
-
-  // socket.on('ping_check', () => {
-  //   pingTimeoutStarted = false; // Si responde al ping, no está desconectado
-  //   // if (disconnectTimer) {
-  //   //   clearTimeout(disconnectTimer); // Cancelar desconexión
-  //   // }
-  // });
-
-  // // Interceptar desconexión por ping timeout
-  // socket.conn.on('packet', (packet) => {
-  //   if (packet.type === 'ping' && !pingTimeoutStarted) {
-  //     pingTimeoutStarted = true;
-  //     const roomId = userRooms[socket.id] || [];
-  //     const clientId = socket.id;
-  //     // Notificar al cliente B
-  //     roomId.forEach((room) => {
-  //       // Verifica que no sea la sala por defecto (la cual es el socket.id)
-  //         if (room !== socket.id) {
-  //           // Verifica si queda un solo jugador en la sala
-  //            io.to(room).emit('player_reconnecting',  clientId);
-  //           }
-        
-  //     });
-  //     // // Configurar temporizador para desconexión definitiva
-  //     // disconnectTimer = setTimeout(() => {
-  //     //   io.to(roomId).emit('player_disconnected_final', { clientId });
-  //     // }, 30000); // 30 segundos
-  //   }
-  // });
 
   socket.on("disconnect", (reason) => {
     // const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);

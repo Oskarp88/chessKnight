@@ -87,7 +87,7 @@ export const GameContextProvider = ({children, user}) => {
     const [playerDisconnected, setPlayerDisconnected] = useState(false);
     const [reconnectionTimeout, setReconnectionTimeout] = useState(null);
     const [games, setGames] = useState(null);
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = useState(30);
     const [isReceivePing, setIsReceivePing] = useState(null);
     
     const [toqueAudio] = useSound(soundToque);
@@ -102,10 +102,7 @@ export const GameContextProvider = ({children, user}) => {
 
     let lastPingTime = Date.now(); // Tiempo en el que se recibió el último ping
         // El intervalo de ping configurado en el servidor (5 segundos)
-    const pingTimeout = 30000;      // El tiempo de espera de ping configurado en el servidor (7 segundos)
-
-    let lastPingReceived = Date.now(); // Marca el último ping recibido
-    const pingInterval = 3500;
+    const pingTimeout = 5000;      // El tiempo de espera de ping configurado en el servidor (7 segundos)
 
     useEffect(() => {
       const gamesData = localStorage.getItem('games');
@@ -176,30 +173,13 @@ export const GameContextProvider = ({children, user}) => {
         });
         socket.on('opponentDisconnected', () => {
           console.log('userDisconnected')
+          console.log(`El jugador ${infUser?.username} se ha desconectado`);
           // if(data.userId !== infUser?.idOpponent && isGameStart) return;
           // if(!isGameStart) return;
-          console.log(`El jugador ${infUser?.username} se ha desconectado`);
-          setUserWon(prev => ({
-            ...prev, 
-            username: auth?.user?.username,
-            nameOpponent: infUser?.username, 
-            idUser: auth?.user?._id,
-            idOpponent: infUser?.idOpponent,
-            turn: infUser?.color === 'white' ? 'black' : 'white',
-            status: '1',
-            color: infUser?.color === 'white' ? 'black' : 'white',
-            photo: infUser?.photo
-          }));
-          setFrase(`${infUser.username} se ha desconectado`);
-          setGameOver(true);
-          isCheckMate('victoria'); 
-          localStorage.removeItem('send_move');
+          setPlayerDisconnected(true);
           
         });
-        socket.on('player_reconnecting', () =>{
-          lastPingReceived = Date.now(); // Actualizar el último ping recibido
-          console.log('Ping recibido de cliente A. Conexión activa.');
-        })
+      
         socket.on("reconnect", (attemptNumber) => {
           setTextToast(`Reconectado en el intento ${attemptNumber}`);
           setColor('#58d68d');
@@ -532,16 +512,6 @@ function getRemainingDisconnectTime() {
 
   return totalWaitTime > 0 ? total : 0;
 }
-
-// Chequear si el ping se detiene
-setInterval(() => {
-  const currentTime = Date.now();
-  if (Math.ceil(currentTime - lastPingReceived / 1000) > pingInterval) {
-    setPlayerDisconnected(true);
-    console.log('Cliente A perdió la conexión. No se recibieron pings en el tiempo esperado.');
-    // Aquí puedes realizar acciones, como informar al usuario o actualizar la interfaz.
-  }
-}, 1000);
       // Convierte el tiempo en segundos en un formato legible (por ejemplo, "MM:SS")
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, "0");
