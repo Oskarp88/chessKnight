@@ -233,9 +233,7 @@ socket.on('yesAvailable', (userId) => {
   delete games[gameId];
   delete userDisconnect[gameId];
   delete userRooms[socket.id];
- })
-
-//  socket.on('oponnetConnect', (data)=>{
+ });
 
 //   if(!userDisconnect[data.gameId]){
 //     DisconnectUser(data.gameId);

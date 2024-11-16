@@ -241,6 +241,7 @@ export const ChatContextProvider = ({children, user}) => {
             messagesError,
             sendTextMessage,
             onlineUsers,
+            setOnlineUsers,
             notifications,
             allUsers,
             markAllNotificationsAsRead,
