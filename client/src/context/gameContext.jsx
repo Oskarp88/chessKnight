@@ -344,7 +344,7 @@ export const GameContextProvider = ({children, user}) => {
             // socket.off('receiveTiempoTurn', handleReceiveTiempoTurn);
             clearTimeout(reconnectionTimeout);    
         };
-    }, [socket] );
+    }, [socket, isGameStart] );
 
     useEffect(()=>{
         const data = localStorage.getItem('chessboard');
