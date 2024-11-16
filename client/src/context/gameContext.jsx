@@ -151,7 +151,9 @@ export const GameContextProvider = ({children, user}) => {
         });
         socket.on('ping', () => {
           lastPingTime = Date.now();
-          socket.emit('sendPing',room);
+          if(room && isGameStart){
+            socket.emit('sendPing',room);
+          }
         });
         // Responder al 'pingCheck' del servidor
         socket.on('pingCheck', (callback) => {
