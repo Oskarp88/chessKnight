@@ -23,7 +23,7 @@ export const GameContext = createContext();
 
 export const GameContextProvider = ({children, user}) => {
     const {auth} = useAuth();
-    const { onlineUsers} = useContext(ChatContext);
+    const { onlineUsers, setOnlineUsers} = useContext(ChatContext);
     const {pieces,setPieces, resetPieces} = useChessboardContext();
     const {setCheckMate} = useCheckMateContext();
     const {room, setRoom, userChess, setUser, socket} = useSocketContext();
@@ -129,6 +129,10 @@ export const GameContextProvider = ({children, user}) => {
           // setTextToast("Conexión al servidor establecida.");
           // setColor('#58d68d');
           // setShowToast(true);
+          socket.emit('addNewUser', auth?.user?._id);
+          socket.on('getOnlineUsers', (data) => {
+            setOnlineUsers(data);
+          });
           if(room) {
             socket.emit('joinRoomGamePlay', room); 
             socket.emit("reconnectMove", {room, playerColor: infUser?.color});
@@ -336,6 +340,7 @@ export const GameContextProvider = ({children, user}) => {
             socket.off('disconnect');
             socket.off('playerDisconnected');
             socket.off("opponentMove", handleOpponentMove);
+            socket.off('getOnlineUsers')
             // socket.off('receiveTiempo', handleReceiveTiempo);
             // socket.off('receiveTiempoTurn', handleReceiveTiempoTurn);
             clearTimeout(reconnectionTimeout);    
