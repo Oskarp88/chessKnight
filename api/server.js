@@ -204,14 +204,14 @@ socket.on('yesAvailable', (userId) => {
    socket.join(gameId);
   
    console.log(`User with ID: ${socket.id} joined room play game: ${gameId}`);
-    // Verifica si ya hay dos jugadores en la sala
-    const playersInRoom = io.sockets.adapter.rooms.get(gameId);
-    console.log('playersInRoom', playersInRoom.size)
-      // Guardar la sala en el objeto `userRooms` para este socket
-      if (!userRooms[socket.id]) {
-        userRooms[socket.id] = new Set();
-      }
-      userRooms[socket.id].add(gameId);
+    // // Verifica si ya hay dos jugadores en la sala
+    // const playersInRoom = io.sockets.adapter.rooms.get(gameId);
+    // console.log('playersInRoom', playersInRoom.size)
+    //   // Guardar la sala en el objeto `userRooms` para este socket
+    //   if (!userRooms[socket.id]) {
+    //     userRooms[socket.id] = new Set();
+    //   }
+    //   userRooms[socket.id].add(gameId);
  });
 
  socket.on('initPlay',(data)=>{
@@ -426,30 +426,30 @@ socket.on('sendTiempo', (data) => {
   }, 3000); 
 
   socket.on("disconnect", (reason) => {
-    // const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
+    const disconnectedUser = onlineUser.find((u) => u.socketId === socket.id);
 
-    // // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
-    // if (disconnectedUser) {
-    //   const disconnectedUserId = disconnectedUser.userId; // Extrae el ID del usuario
-    //   console.log("User ID Disconnected:", disconnectedUserId);
+    // Si se encontró el usuario, puedes extraer el `id` o cualquier otra propiedad
+    if (disconnectedUser) {
+      const disconnectedUserId = disconnectedUser.userId; // Extrae el ID del usuario
+      console.log("User ID Disconnected:", disconnectedUserId);
       
-    //   // Puedes emitir este ID a otros usuarios si necesitas notificar
-    //   io.emit('userDisconnected', disconnectedUser);
-    // }
-    const roomsDiscconected = userRooms[socket.id] || [];
-    console.log('rooms', roomsDiscconected);
-    roomsDiscconected.forEach((room) => {
-      // Verifica que no sea la sala por defecto (la cual es el socket.id)
-        if (room !== socket.id) {
-          // Verifica si queda un solo jugador en la sala
-          const playersInRoom = io.sockets.adapter.rooms.get(room);
-          if (playersInRoom && playersInRoom.size === 1) {
-            console.log('opponentDisconnected', playersInRoom.size)
-            // Notifica al jugador restante que el oponente se ha desconectado
-            io.to(room).emit('opponentDisconnected');
-          }
-      }
-    });
+      // Puedes emitir este ID a otros usuarios si necesitas notificar
+      io.emit('userDisconnected', disconnectedUser);
+    }
+    // const roomsDiscconected = userRooms[socket.id] || [];
+    // console.log('rooms', roomsDiscconected);
+    // roomsDiscconected.forEach((room) => {
+    //   // Verifica que no sea la sala por defecto (la cual es el socket.id)
+    //     if (room !== socket.id) {
+    //       // Verifica si queda un solo jugador en la sala
+    //       const playersInRoom = io.sockets.adapter.rooms.get(room);
+    //       if (playersInRoom && playersInRoom.size === 1) {
+    //         console.log('opponentDisconnected', playersInRoom.size)
+    //         // Notifica al jugador restante que el oponente se ha desconectado
+    //         io.to(room).emit('opponentDisconnected');
+    //       }
+    //   }
+    // });
     
 
    onlineUser = onlineUser.filter((u) => u.socketId !== socket.id );

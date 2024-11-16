@@ -174,13 +174,12 @@ export const GameContextProvider = ({children, user}) => {
         socket.on('opponentConnected',()=>{
           setPlayerDisconnected(false);
         });
-        socket.on('opponentDisconnected', () => {
-          console.log('userDisconnected')
-          console.log(`El jugador ${infUser?.username} se ha desconectado`);
-          // if(data.userId !== infUser?.idOpponent && isGameStart) return;
-          // if(!isGameStart) return;
-          setPlayerDisconnected(true);
-          
+        socket.on('userDisconnected', (data) => {
+          console.log('userDisconnected', isGameStart);
+          console.log(`El jugador ${infUser?.username} con Id: '${data.userId}' se ha desconectado`);
+          if(data.userId === infUser?.idOpponent && isGameStart){ 
+             setPlayerDisconnected(true);       
+          }
         });
       
         socket.on("reconnect", (attemptNumber) => {
@@ -237,7 +236,7 @@ export const GameContextProvider = ({children, user}) => {
         });
         socket.on('receiveReconnectMove', (res) => {
           console.log('receiveReconnectMove')
-          const gameActive = JSON.parse(localStorage.getItem('gameStart'))
+          const gameActive = JSON.parse(localStorage.getItem('gameStart'));
           console.log('isgamestart', gameActive);
           if(gameActive){
             setPlayerDisconnected(false);
