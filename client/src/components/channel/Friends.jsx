@@ -479,7 +479,7 @@ useEffect(()=>{
                     </div>
                   </div>              
                 </li> :
-                <p>Recarga la pagina para reconetarte a la sala</p>
+                <p className={style.reconnect}>Recarga la pagina para reconectarte a la sala</p>
               }
                 {showModal && (
               <div className={`${style.modal} ${showModal ? style.show : ''}`}>

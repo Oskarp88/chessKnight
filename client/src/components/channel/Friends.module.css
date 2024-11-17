@@ -25,7 +25,12 @@
   .tabs{
     display: none;
   }
-  
+  .reconnect{
+     width: 100%;
+     height: 3rem;
+     background-color: #fff176;
+     font-weight: bold;
+  }
   .frienditem {
     display: flex;
     width: 95%;
