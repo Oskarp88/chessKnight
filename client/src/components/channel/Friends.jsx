@@ -46,6 +46,7 @@ const Friends = ({ friends, room }) => {
   const [photo, setPhoto] = useState('');
   const [busy, setBusy] = useState([]);
   const [isBusy, setIsBusy] = useState(false);
+  const [isExisteUser, setIsExisteUser] = useState(false);
   const [userInf, setUserInf] = useState({});
   const {auth, user} = useAuth();
   const navigate = useNavigate();
@@ -70,6 +71,15 @@ const Friends = ({ friends, room }) => {
                          infUser?.time === 180 || infUser?.time === 300 ?
                          allOponnentOnline.slice().sort((a, b) => b.eloBlizt - a.eloBlitz) : 
                          allOponnentOnline.slice().sort((a, b) => b.eloFast - a.eloFast)
+useEffect(()=>{
+  const existeUser = onlineUsers.some(user => user.userId === auth.user._id);
+
+  if (existeUser) {
+    setIsExisteUser(true);
+  } else {
+    setIsExisteUser(false);
+  } 
+},[onlineUsers])
 
   const handleModalOpen = (friend) => {
     setUserModal(friend);
@@ -425,48 +435,52 @@ const Friends = ({ friends, room }) => {
            <SpinnerDowloand text={`${language.Loading_Players} . . .`} color={'#fff'}/>         
         : sortedUsers.map((o, index) => (
           <React.Fragment key={index}>
-              <li               
-                className={`${style.frienditem} ${hoveredFriend === o._id ? `${style.frienditem} ${style.frienditemHovered}` : ''}`}              
-                onMouseEnter={() => setHoveredFriend(o._id)}
-                onMouseLeave={() => setHoveredFriend(null)}
-                onClick={() => handleModalOpen(o)}
-              >                
-                <div className={style.containerProfile}>
-                  <span style={{marginRight: '7px', color: '#fff'}}>{count++}.</span>
-                  <div className={style.imageContainer} >
-                    <img className={style.photoImage} src={o?.photo} alt="User Photo" />                  
-                    <img className={style.marco} src={o?.marco} alt="Marco"/>
-                  </div> 
-                  <div className={style.friendName}>
-                    <span  >
-                      {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
-                    </span>
-                    <img src={o?.imagenBandera} title={o?.country} className={style.bandera} alt="" />
-                  </div>
-                </div>
-                <div className={style.containerFlex}>
-                    <div className={style.imageInsignia}>
-                      <Insignias o={o} time={infUser?.time}/>
-                    </div>
-                    
-                    <div className={style.containerRanking}>
-                    <div style={{marginTop: '-2px'}} >
-                      {infUser?.time === 60 || infUser?.time === 120 
-                        ?  <BulletSvg/> : infUser?.time === 180 || infUser?.time === 300 
-                        ?  <BlitzSvg /> : 
-                            <div style={{width: '25px', height: '25px'}}>
-                              <Fast/>
-                            </div>
-                      }
-                    </div>
-                    <div className={style.friendRank}>
-                        <span >{infUser?.time === 60 || infUser?.time === 120 ? o?.eloBullet : 
-                            infUser?.time === 180 || infUser?.time === 300 ? o?.eloBlitz : o?.eloFast}
-                        </span>
+              { isExisteUser ?
+                <li               
+                  className={`${style.frienditem} ${hoveredFriend === o._id ? `${style.frienditem} ${style.frienditemHovered}` : ''}`}              
+                  style={o._id === auth?.user?._id ? {background: 'linear-gradient(to top, #4e8381  0%, #73c2c0 100%)'} : {}}
+                  onMouseEnter={() => setHoveredFriend(o._id)}
+                  onMouseLeave={() => setHoveredFriend(null)}
+                  onClick={() => handleModalOpen(o)}
+                >                
+                  <div className={style.containerProfile}>
+                    <span style={{marginRight: '7px', color: '#fff'}}>{count++}.</span>
+                    <div className={style.imageContainer} >
+                      <img className={style.photoImage} src={o?.photo} alt="User Photo" />                  
+                      <img className={style.marco} src={o?.marco} alt="Marco"/>
+                    </div> 
+                    <div className={style.friendName}>
+                      <span  >
+                        {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
+                      </span>
+                      <img src={o?.imagenBandera} title={o?.country} className={style.bandera} alt="" />
                     </div>
                   </div>
-                </div>              
-              </li>
+                  <div className={style.containerFlex}>
+                      <div className={style.imageInsignia}>
+                        <Insignias o={o} time={infUser?.time}/>
+                      </div>
+                      
+                      <div className={style.containerRanking}>
+                      <div style={{marginTop: '-2px'}} >
+                        {infUser?.time === 60 || infUser?.time === 120 
+                          ?  <BulletSvg/> : infUser?.time === 180 || infUser?.time === 300 
+                          ?  <BlitzSvg /> : 
+                              <div style={{width: '25px', height: '25px'}}>
+                                <Fast/>
+                              </div>
+                        }
+                      </div>
+                      <div className={style.friendRank}>
+                          <span >{infUser?.time === 60 || infUser?.time === 120 ? o?.eloBullet : 
+                              infUser?.time === 180 || infUser?.time === 300 ? o?.eloBlitz : o?.eloFast}
+                          </span>
+                      </div>
+                    </div>
+                  </div>              
+                </li> :
+                <p>Recarga la pagina para reconetarte a la sala</p>
+              }
                 {showModal && (
               <div className={`${style.modal} ${showModal ? style.show : ''}`}>
                 <div className={style.header}>
