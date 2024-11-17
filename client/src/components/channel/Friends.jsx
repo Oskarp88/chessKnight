@@ -72,7 +72,7 @@ const Friends = ({ friends, room }) => {
                          allOponnentOnline.slice().sort((a, b) => b.eloBlizt - a.eloBlitz) : 
                          allOponnentOnline.slice().sort((a, b) => b.eloFast - a.eloFast)
 useEffect(()=>{
-  const existeUser = onlineUsers.some(user => user.userId === auth.user._id);
+  const existeUser = sortedUsers.some(user => user._id === auth.user._id);
 
   if (existeUser) {
     setIsExisteUser(true);
