@@ -5,7 +5,6 @@ import NavBar from "./components/navbar/NavBar";
 import { ChessboardProvider } from "./context/boardContext";
 import { CheckMateProvider } from "./context/checkMateContext";
 import { BrowserRouter as Router, Route, Routes, useNavigate} from "react-router-dom";
-import { Home } from "./pages/Home";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import ForgotPassword from "./pages/ForgotPassewor";
@@ -27,6 +26,7 @@ import Sidebar from "./components/navbar/sidebar";
 import NotFound from "./pages/PageNotFound";
 import { GameContextProvider } from "./context/gameContext";
 import 'animate.css';
+import { Home } from "./pages/home/Home";
 
 function App() {
   const {auth} = useAuth();

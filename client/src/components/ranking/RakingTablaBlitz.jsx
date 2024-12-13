@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import style from './RankingTablaFast.module.css';
+import style from './RankingTablaBlitz.module.css';
 import { baseUrl, getRequest } from '../../utils/services';
-import ModalProfile from './ModalProfile';
+import ModalProfile from '../channel/ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useLanguagesContext } from '../../context/languagesContext';
 import Insignias from '../insignias/Insignias';
-import Fast from '../../img/fast';
 import { useAuth } from '../../context/authContext';
 import { Spinner } from 'react-bootstrap';
 
-export const RankingTable = () => {
-  const  {auth} = useAuth();
+export const RankingTableBlitz = () => {
+  const {auth} = useAuth();
   const [elo, setElo] = useState(null);
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
@@ -40,15 +39,17 @@ export const RankingTable = () => {
       }
   };
   }, [users]);
-  
+
   useEffect(() => {
     const allUsers = async() => {
-      const response = await getRequest(`${baseUrl}/users/rating-fast`);
-        if(response.error){
-            return console.log('Error fetching users', response);
-        }
-        setUsers(response);
+        const response = await getRequest(`${baseUrl}/users/rating-blitz`);
+          if(response.error){
+             return console.log('Error fetching users', response);
+          }
+
+          setUsers(response);
     }
+
     allUsers();
   },[]);
 
@@ -61,7 +62,7 @@ export const RankingTable = () => {
            if(response.error){
               return console.log('Error fetching users', response);
            }
-            setElo( response.eloFast)
+            setElo( response.eloBlitz)
         }
      }
   
@@ -73,6 +74,7 @@ export const RankingTable = () => {
     if(response.error){
        return console.log('Error fetching users', response);
     }
+
     setUser(response);
     setPhoto(userId);
     setShowModal(true);
@@ -82,89 +84,93 @@ export const RankingTable = () => {
     setShowModal(false)
   }
 
-  let count = 1;
-  let userPosition = null;
+
+   let count = 1; 
+   let userPosition = null;
   return (
-    <div className={style.tercerdiv}>
+    <div className={style.tercerdiv} >
        <div className={style.title}>            
             <div className={style.icon}>
-              <Fast />
+              <svg style={{ color: '#FFEB3B'}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                  <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+              </svg>
             </div>
-            <h4>{`${language.rating} ${language.fast}`}</h4>
-       </div> 
+            <h4>{`${language.rating} Blitz`}</h4>
+       </div>     
         <li className={style.item}>
           <span>{language.Range?.toUpperCase()}</span>
           <div className={style.friendName}>
             <span >{language.name?.toUpperCase()}</span>
           </div>
           <span >{language.Score?.toUpperCase()}</span>
-        </li>   
-        <div className={style.itemContainer}>      
-        {
-        users.length !== 0 ?  
-        users.map((o, index) => {
-          if (auth?.user && o._id === auth.user._id) {
-            userPosition = count;
-          }
-          return(
-          <>
-               <li 
-                ref={auth?.user && o._id === auth.user._id ? userPositionRef : null}
-                key={index} 
-                className={auth?.user && o._id === auth.user._id ? ` ${style.frienditem} ${style.viewport}` : `${style.frienditem}`}                           
-                onClick={() => handleModalOpen(o?._id)}
-                title={o?.username}
-              > 
-                <Row>
-                  <Col>
-                    <span className={style.rango}>
-                      {count++}.                 
-                      {
-                        count === 2 ?  <img className={style.medallaIcon} src='fondos/firts.png' alt='assets/avatar/user.png' /> :
-                        count === 3 ? <img className={style.medallaIcon} src='fondos/second.png' alt='assets/avatar/user.png' /> : 
-                        count === 4 ? <img className={style.medallaIcon} src='fondos/three.png' alt='assets/avatar/user.png' /> : ''
-                      }              
-                    </span>
-                  </Col>
-                   <Col>
-                    <div className={style.name}>
-                       <div className={style.imageContainer}>
-                          <img className={style.photo} src={o?.photo} alt="User Photo" />
-                          <img className={style.marco} src={o?.marco} alt="Marco" />
-                        </div>                                    
-                      <div className={style.column}>
-                        <span>
-                           {o?.username.length > 8 
-                              ? o?.username.substring(0, 8) + '...' 
-                              : o?.username}
-                        </span>
-                        <div className={style.containerInsignias}>
-                          <img src={o?.imagenBandera} className={style.bandera} alt="" />
-                          <div className={style.insignia}>
-                            <Insignias o={o} time={'fast'}/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                   </Col>
-                </Row>
-                <div className={style.friendRank}>
-                  <div className={style.icon}>
-                    <Fast />
-                  </div>
-                  <span className={style.puntuacion}>
-                    {o?.eloFast}
-                  </span>
-                </div>
-              </li>
-          </>
-        )}) : 
+        </li>
+      <div className={style.itemContainer}>
+        {users.length === 0 ? 
           <div style={{marginTop: '30%'}}>
             <SpinnerDowloand text={'Cargando rating....'}/>
           </div>
+        :
+       users?.map((o, index) => {
+        if (auth?.user && o._id === auth.user._id) {
+          userPosition = count;
+        }
+        return(
+          <>
+               <li 
+                ref={auth?.user && o._id === auth.user._id  ? userPositionRef : null}
+                key={index} 
+                className={auth?.user && o._id === auth.user._id ? ` ${style.frienditem} ${style.viewport}` : `${style.frienditem}`}              
+             
+                // onMouseEnter={() => setHoveredFriend(o._id)}
+                // onMouseLeave={() => setHoveredFriend(null)}
+                title={o?.username}
+                onClick={() => handleModalOpen(o?._id)}
+              > 
+                <Row>
+                    <Col>
+                      <span className={style.rango}>
+                        {count++}.
+                        {
+                          count === 2 ?  <img className={style.medallaIcon} src='fondos/firts.png' alt='assets/avatar/user.png' /> :
+                          count === 3 ? <img className={style.medallaIcon} src='fondos/second.png' alt='assets/avatar/user.png' /> : 
+                          count === 4 ? <img className={style.medallaIcon} src='fondos/three.png' alt='assets/avatar/user.png' /> : ''
+                        }   
+                      </span>
+                    </Col>
+                    <Col>
+                      <div className={style.name}>
+                        <div className={style.imageContainer}>
+                          <img className={style.photo} src={o?.photo} alt="User Photo" />
+                          <img className={style.marco} src={o?.marco} alt="Marco" />
+                        </div>                  
+                        <div className={style.column}>
+                          <span>{o?.username.length > 8 ? o?.username.substring(0, 8) + '...' : o?.username}</span>
+                          <div className={style.containerInsignias}>
+                            <img src={o?.imagenBandera} className={style.bandera} alt="" />
+                            <div className={style.insignia}>
+                              <Insignias o={o} time={'blitz'}/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                </Row>
+                <div className={style.friendRank}>
+                    <div className={style.icon}>
+                      <svg style={{ color: '#FFEB3B' }} xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                        <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+                      </svg>
+                    </div>
+                    <span className={style.puntuacion}>
+                       {o?.eloBlitz}
+                    </span>
+                </div>
+              </li>
+          </>
+        )})
         }
       </div>
-      {!isVisible && auth?.user && <li  
+     {!isVisible && auth?.user &&<li  
                 className={`${style.itemUser}`}              
                 title={auth?.user?.username}
                 onClick={() => handleModalOpen(auth?.user?._id)}
@@ -199,9 +205,11 @@ export const RankingTable = () => {
                     </Col>
                 </Row>
                 <div className={style.friendRank}>
-                  <div className={style.icon}>
-                    <Fast/>
-                  </div>
+                    <div className={style.icon}>
+                      <svg style={{ color: '#FFEB3B' }} xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                        <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+                      </svg>
+                    </div>
                     <span className={style.puntuacion}>
                       {elo ? elo : <Spinner animation="grow" /> }
                     </span>
@@ -211,17 +219,17 @@ export const RankingTable = () => {
         showModal && 
           <ModalProfile 
             user={user}
-            nivel={'fast'}
+            nivel={'blitz'}
             handleModalClose={handleModalClose}
-            racha={user.rachaFast}
+            racha={user.rachaBlitz}
             photo={photo}
-            elo={user.eloFast}
-            games={user.gamesFast}
-            gamesWon={user.gamesWonFast}
-            gamesTied={user.gamesTiedFast}
-            gamesLost={user.gamesLostFast}
+            elo={user.eloBlitz}
+            games={user.gamesBlitz}
+            gamesWon={user.gamesWonBlitz}
+            gamesTied={user.gamesTiedBlitz}
+            gamesLost={user.gamesLostBlitz}
           /> 
-      }                   
+      }
     </div>
   );
 };

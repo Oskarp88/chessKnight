@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useAuth } from '../../context/authContext';
-import style from '../../pages/Home.module.css';
+import style from '../../pages/home/Home.module.css';
 import { useSocketContext } from '../../context/socketContext';
 import Fast from '../../img/fast';
 import { useNavigate } from 'react-router-dom';

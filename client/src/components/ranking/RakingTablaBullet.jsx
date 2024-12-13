@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './RankingTablaBullet.module.css';
 import { baseUrl, getRequest } from '../../utils/services';
-import ModalProfile from './ModalProfile';
+import ModalProfile from '../channel/ModalProfile';
 import SpinnerDowloand from '../spinner/SpinnerDowloand';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';

@@ -82,12 +82,12 @@ exports.updatePartidas = async(req, res) => {
         if (!user) {
           return res.status(404).json({ error: 'Usuario no encontrado' });
         }
-        const eloWinner = elo === 0 ? 13 : 
-                          elo >= 1 && elo <= 5 ? 12 : 
-                          elo >= 6 && elo <= 10 ? 11 : 
-                          elo >= 11 && elo <= 15 ? 10 : 
-                          elo >= 16 && elo <= 25 ? 9 :
-                          elo >= 26 && elo <= 40 ? 8 :
+        const eloWinner = elo === 0 ? 15 : 
+                          elo >= 1 && elo <= 5 ? 14 : 
+                          elo >= 6 && elo <= 10 ? 13 : 
+                          elo >= 11 && elo <= 15 ? 11 : 
+                          elo >= 16 && elo <= 25 ? 10 :
+                          elo >= 26 && elo <= 40 ? 9 :
                           elo >= 41 && elo <= 90 ? 7 :
                           elo >= 91 && elo <= 150 ? 6 :
                           elo >= 151 && elo <= 250 ? 5: 
@@ -135,9 +135,8 @@ exports.updatePartidas = async(req, res) => {
                           elo < -800 ? -9 : null;
 
         const eloTie = elo === 0 ? 0 : 
-                          elo >= 1 && elo <= 5 ? 0 : 
-                          elo >= 6 && elo <= 10 ? 0 : 
-                          elo >= 11 && 25 ? -1 :
+                          elo >= 1 && elo <= 18 ? 0 : 
+                          elo >= 19 && 25 ? -1 :
                           elo >= 26 && elo <= 90 ? -2 :
                           elo >= 91 && elo <= 250 ? -3 : 
                           elo >= 251 && elo <= 500 ? -4 : 
