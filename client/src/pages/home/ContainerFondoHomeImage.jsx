@@ -18,23 +18,14 @@ import HistoryGames from '../../components/history_games/HistoryGames'
 
 function ContainerFondoHomeImage({joinRoom}) {
     const {auth, user} = useAuth();
-    const {chessColor} = useChessboardContext();
+   
     const [stast, setStats] = useState('fast');
-    const [partida, setPartidas] = useState([]);
+    
     const {language} = useLanguagesContext();
 
     const miContaineHistorial = useRef(null);
 
-    useEffect(() => {
-        const allPartidas = async() => {
-          const response = await getRequest(`${baseUrl}/partida/user/historial/${auth?.user?._id}`);
-          if(response.error){
-            return console.log('Error fetching historial partidas', response);
-          }
-          setPartidas(response.partida);
-        }
-        allPartidas()
-     },[auth?.user?._id]);
+    
 
    
     const handleClick = (data) => {

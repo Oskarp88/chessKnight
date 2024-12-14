@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import ModalProfile from '../modal/ModalProfile';
 import Spinner from 'react-bootstrap/Spinner';
-import { FaCog, FaSignOutAlt } from 'react-icons/fa';
-import { Nav } from 'react-bootstrap';
 import { useChessboardContext } from '../../../context/boardContext';
 import { GameContext } from '../../../context/gameContext';
 import { ChatContext } from '../../../context/ChatContext';
@@ -20,6 +18,8 @@ import SpinnerDowloand from '../../spinner/SpinnerDowloand';
 import { baseUrl, getRequest } from '../../../utils/services';
 import { useLanguagesContext } from '../../../context/languagesContext';
 import { useAuth } from '../../../context/authContext';
+import HeaderRooms from './components/headerRooms';
+import ListPlayers from './components/ListPlayers';
 
 
 const Friends = ({ friends, room }) => {
@@ -33,7 +33,7 @@ const Friends = ({ friends, room }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalInf, setShowModalInf] = useState(false);
   const [showModalMin, setShowModalMin] = useState(false);
-  const [showModalSign, setShowModalSign] = useState(false);
+  
   const [showModalOpponent, setShowModalOpponent] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [aceptarDesafio, setAceptarDesafio] = useState(false)
@@ -357,7 +357,7 @@ useEffect(()=>{
      navigate('/auth/chat');
   }
 
-  const handleSignOut = (e)=>{
+  const handleSignOut = ()=>{
     setOnline(onlineUsers);
     setShowRoom(true);
   }
@@ -384,51 +384,10 @@ useEffect(()=>{
    <>
       <div className={style.tercerdiv}> 
          <div className={style.container}>
-            <div className={style.desafio}>
-              <div className={style.SignOut} onMouseLeave={()=>setShowModalSign(false)}>
-                <FaSignOutAlt 
-                  className={style.FaSignOutAlt}
-                  onMouseEnter={()=>setShowModalSign(true)}               
-                />
-                {showModalSign && 
-                  <div className={style.dropdown}>
-                    <p onClick={()=>handleSignOut()}>Cambiar de sala</p>
-                    <p><Nav.Link href="/">Salir</Nav.Link></p>
-                  </div>
-                }
-              </div>
-              <div className={style.titleWithIcon}>          
-                <img 
-                  src={'/icon/userswhite.png'} 
-                  alt="" 
-                />
-                <h5>
-                  {language.Challenge_a_match} {infUser?.time === 60 
-                    ? '1' : infUser?.time === 120 
-                    ? '2' : infUser?.time === 180 
-                    ? '3' : infUser.time === 300 
-                    ? '5' : infUser?.time === 600 
-                    ? '10' : '20'
-                  } mn
-                </h5>
-                {infUser?.time === 60  || infUser?.time === 120 
-                  ? <BulletSvg/> 
-                  : infUser?.time === 180 || infUser.time === 300 
-                  ? <BlitzSvg/> 
-                  : <div className={style.fastContainer}>
-                      <div className={style.fast} >
-                        <Fast/>
-                      </div>
-                    </div>
-                  }
-              </div>
-              <div 
-                className={style.setting} 
-                title={language.settings}
-                onClick={()=>setShowSettings(true)}>
-                  <FaCog className={style.FaCog} />
-              </div>
-            </div>       
+            <HeaderRooms 
+              handleSignOut={handleSignOut}
+              setShowSettings={setShowSettings}
+            />      
             <div>  
             </div>      
         {sortedUsers.length === 0 ?          
@@ -436,49 +395,12 @@ useEffect(()=>{
         : sortedUsers.map((o, index) => (
           <React.Fragment key={index}>
               { isExisteUser ?
-                <li               
-                  className={`${style.frienditem} ${hoveredFriend === o._id ? `${style.frienditem} ${style.frienditemHovered}` : ''}`}              
-                  style={o._id === auth?.user?._id ? {background: 'linear-gradient(to top, #4e8381  0%, #73c2c0 100%)'} : {}}
-                  onMouseEnter={() => setHoveredFriend(o._id)}
-                  onMouseLeave={() => setHoveredFriend(null)}
-                  onClick={() => handleModalOpen(o)}
-                >                
-                  <div className={style.containerProfile}>
-                    <span style={{marginRight: '7px', color: '#fff'}}>{count++}.</span>
-                    <div className={style.imageContainer} >
-                      <img className={style.photoImage} src={o?.photo} alt="User Photo" />                  
-                      <img className={style.marco} src={o?.marco} alt="Marco"/>
-                    </div> 
-                    <div className={style.friendName}>
-                      <span  >
-                        {o?.username.substring(0, 8) > 8 ? o?.username.substring(0, 8)+'...' :  o?.username }
-                      </span>
-                      <img src={o?.imagenBandera} title={o?.country} className={style.bandera} alt="" />
-                    </div>
-                  </div>
-                  <div className={style.containerFlex}>
-                      <div className={style.imageInsignia}>
-                        <Insignias o={o} time={infUser?.time}/>
-                      </div>
-                      
-                      <div className={style.containerRanking}>
-                      <div style={{marginTop: '-2px'}} >
-                        {infUser?.time === 60 || infUser?.time === 120 
-                          ?  <BulletSvg/> : infUser?.time === 180 || infUser?.time === 300 
-                          ?  <BlitzSvg /> : 
-                              <div style={{width: '25px', height: '25px'}}>
-                                <Fast/>
-                              </div>
-                        }
-                      </div>
-                      <div className={style.friendRank}>
-                          <span >{infUser?.time === 60 || infUser?.time === 120 ? o?.eloBullet : 
-                              infUser?.time === 180 || infUser?.time === 300 ? o?.eloBlitz : o?.eloFast}
-                          </span>
-                      </div>
-                    </div>
-                  </div>              
-                </li> :
+                <ListPlayers 
+                  handleModalOpen={handleModalOpen}
+                  hoveredFriend={hoveredFriend}
+                  setHoveredFriend={setHoveredFriend}
+                  user={o}
+                /> :
                 <p className={style.reconnect}>Recarga la pagina para reconectarte a la sala</p>
               }
                 {showModal && (
