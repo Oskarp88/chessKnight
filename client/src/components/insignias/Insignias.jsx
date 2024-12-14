@@ -8,7 +8,7 @@ import {
   Maestro, 
   Novato, 
   Prodigio, 
-  Veterano } from '../../img'
+  Veterano } from '../../img';
 
 function Insignias({o, time}) {
   return (

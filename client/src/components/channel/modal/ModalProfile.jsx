@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import style from './ModalProfile.module.css';
-import { baseUrl, getRequest } from '../../utils/services';
-import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../../svg';
-import TiedSvg from '../../svg/tiedSvg';
-import Insignias from '../insignias/Insignias';
-import Fast from '../../img/fast';
 import { Spinner } from 'react-bootstrap';
+import { baseUrl, getRequest } from '../../../utils/services';
+import Insignias from '../../insignias/Insignias';
+import Fast from '../../../img/fast';
+import { BlitzSvg, BulletSvg, FastSvg, LostSvg, WonSvg } from '../../../svg';
+import TiedSvg from '../../../svg/tiedSvg';
 
 function ModalProfile({
     handleModalClose, 

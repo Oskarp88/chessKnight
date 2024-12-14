@@ -1,5 +1,4 @@
-import style from'../components/channel/Friends.module.css';
-
+import style from'../components/channel/rooms/Friends.module.css';
 function Leyenda() {
   return (
     <img className={style.insignia} 

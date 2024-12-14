@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import style from './Channel.module.css';
 import Chat from './Chat';
 import { useSocketContext } from '../../context/socketContext';
-import Friends from './Friends';
 import { ChatContext } from '../../context/ChatContext';
 import { useAuth } from '../../context/authContext';
 import { baseUrl, getRequest } from '../../utils/services';
@@ -10,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import { useChessboardContext } from '../../context/boardContext';
 import { Alert } from 'react-bootstrap';
 import { GameContext } from '../../context/gameContext';
+import Friends from './rooms/Friends';
 
 const Channel = () => {
 

@@ -1,26 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import style from'./Friends.module.css';
-import { useAuth } from '../../context/authContext';
-import { useSocketContext } from '../../context/socketContext';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl, getRequest } from '../../utils/services';
-import ModalProfile from './ModalProfile';
-import { BlitzSvg, BulletSvg, CircleClose, CircleInf, FastSvg, SettingSvg } from '../../svg';
-import SpinnerDowloand from '../spinner/SpinnerDowloand';
-import { ChatContext } from '../../context/ChatContext';
-import { useLanguagesContext } from '../../context/languagesContext';
+import ModalProfile from '../modal/ModalProfile';
 import Spinner from 'react-bootstrap/Spinner';
-import Insignias from '../insignias/Insignias';
-import Fast from '../../img/fast';
-import SettingsModal from '../modal/SettingsModal';
-import { useChessboardContext } from '../../context/boardContext';
-import { GameContext } from '../../context/gameContext';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
-import JoinRoom from '../modal/JoinRoom';
 import { Nav } from 'react-bootstrap';
-import { TiArrowLeft } from 'react-icons/ti';
-import { valors } from '../../Constants';
+import { useChessboardContext } from '../../../context/boardContext';
+import { GameContext } from '../../../context/gameContext';
+import { ChatContext } from '../../../context/ChatContext';
+import { useSocketContext } from '../../../context/socketContext';
+import { BlitzSvg, BulletSvg, CircleClose, CircleInf } from '../../../svg';
+import Fast from '../../../img/fast';
+import JoinRoom from '../../modal/JoinRoom';
+import SettingsModal from '../../modal/SettingsModal';
+import { valors } from '../../../Constants';
+import Insignias from '../../insignias/Insignias';
+import SpinnerDowloand from '../../spinner/SpinnerDowloand';
+import { baseUrl, getRequest } from '../../../utils/services';
+import { useLanguagesContext } from '../../../context/languagesContext';
+import { useAuth } from '../../../context/authContext';
+
 
 const Friends = ({ friends, room }) => {
   

@@ -1,6 +1,5 @@
 import React from 'react';
-import style from'../components/channel/Friends.module.css';
-
+import style from'../components/channel/rooms/Friends.module.css';
 function Avanzado() {
   return (
     <img className={style.insignia} 
