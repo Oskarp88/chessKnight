@@ -35,81 +35,12 @@
      background-color: #fff176;
      font-weight: bold;
   }
-  .frienditem {
-    display: flex;
-    width: 95%;
-    height: 4rem;
-    align-items: center; /* Alinea los elementos verticalmente */
-    justify-content: space-between;
-    margin: 4px 10px 4px 10px;
-    padding: 5px;
-    border-radius: .1rem;
-    font-weight: bold;
-    cursor: pointer;
-    padding-left: 10px;
-    padding-right: 10px;
-    -webkit-border-radius: .4rem;
-    -moz-border-radius: .4rem;
-    -ie-border-radius: .4rem;
-    border-radius: .4rem;
-    background:  linear-gradient(to top, #1b4f72  0%, #5dade2 100%);
-    float: right;
-    -webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 3px rgba(255,255,255,.2);
-    -moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 3px rgba(255,255,255,.2);
-    -ie-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 3px rgba(255,255,255,.2);
-    box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 3px rgba(255,255,255,.2);
-  }
   
-  .frienditem:hover {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  }
-
-  .frienditemHovered {
-    background-color: #3498db; /* Cambia el color de fondo al pasar el ratón */
-    color: #fff; /* Cambia el color del texto al pasar el ratón */
-  }
-
- .containerProfile{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .imageContainer {
-    position: relative;
-    width: 50px; /* Asegúrate de que ambos elementos ocupen todo el contenedor */
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  
-  .photoImage {
-    top: 0;
-    left: 0;
-    border-radius: 50%;
-    width: 96%;
-    height: 96%;
-    object-fit: cover; /* Ajusta la imagen para que se vea bien en el contenedor */
-    z-index: 1; /* Foto en la capa inferior */
-  }
-  
-  .marco {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ajusta el marco para que coincida con la foto */
-    z-index: 2; /* Marco en la capa superior */
-  }
 
  
-  
-  
-  
+
+
+ 
   .userIcon {
     width: 32px;
     height: 32px;
@@ -122,17 +53,8 @@
     margin-right: 10px;
   }
   
-  .friendName {
-    margin-left: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  .bandera{
-    width: 2rem;  
-  }
+  
+  
   .profile{
     margin-top: 5px;
     width: 10rem;
@@ -166,139 +88,36 @@
     flex-direction: column;
     align-items: center;
   }
-
-  .containerFlex{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   }
- 
-   .imageInsignia{
-     width: 3rem;
-     height: 3rem;
-     margin-right: 1rem;
-  }
- 
-  .containerRanking {
-    display: flex;
-    justify-content: space-between;
-    height: 2.2rem;
-    align-items: center;
-    width: 5rem;
-    padding-left: 5px;
-    -webkit-border-radius: 13px;
-    -moz-border-radius: 13px;
-    -ie-border-radius: 13px;
-    border-radius: 13px;
-    background: rgba(0,0,0,.3);
-    float: right;
-    -webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
-    -moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
-    -ie-box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
-    box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
+  .profile{
+    margin-top: 5px;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    border-width: 10px;
+    border-style: solid;
+    border-image: linear-gradient(109.5deg, rgb(13, 11, 136) 9.4%, rgb(86, 255, 248) 78.4%)1;  
+    border-radius: inherit;
   }
 
-  .friendRank{
-    display: flex;
-     justify-content: flex-end;
-     width: 80%;
-     padding-right: 5px;
-  }
+  
+ 
+ 
+
 
   /* Estilos para el modal */
-.modal {
-  width: 20rem;
-  height: auto;
-  display: none;
-  position: fixed;
-  padding-bottom: 1rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #CFD8DC;  
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  
-}
-.modal h3{
-  color: rgb(23, 29, 29);
-}
-.header{
-  background: radial-gradient(circle at 1.8% 4.8%, rgb(17, 23, 58) 0%, rgb(58, 85, 148) 90%);
-  border-radius: 1rem 1rem 0 0;
-  height: 6rem;
-  padding: .5rem 1rem 1rem 1rem; 
-}
-
-.username{
-  margin-top: -1rem;
-}
-
-.header span {
-  color: #fff;
-  margin-top: -1rem;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  text-shadow: rgba(0,0,0,.5) 0px -1px 0px;
-  font-size: 25px;
-  font-weight: 800;
-}
-
-.circle{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
- }
-
-.inf{
-  cursor: pointer;
-  color: #fff;
-}
-
-.close{
-  cursor: pointer;
-  margin-left: 90%;
-  color: #fff;
-}
-
-.close:hover{
-  color:#3498db;
-}
 
 
-.modal.show {
-  display: block;
-}
-
-.modalContent {
-  text-align: center;
-  justify-content: center;
-}
-
-.profile{
-  margin-top: 5px;
-  width: 10rem;
-  height: 10rem;
-  border-radius: 50%;
-  border-width: 10px;
-  border-style: solid;
-  border-image: linear-gradient(109.5deg, rgb(13, 11, 136) 9.4%, rgb(86, 255, 248) 78.4%)1;  
-  border-radius: inherit;
-}
 
 
-.imageContainerModal {
-  position: relative;
-  width: 10rem; /* Asegúrate de que ambos elementos ocupen todo el contenedor */
-  height: 10rem;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
+
+
+
+
+
+
+
+
+
 .photoImage {
   top: 0;
   left: 0;
@@ -327,12 +146,7 @@
   color: #154360;
   font-weight: bold;
 }
-.modalButtons {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 /* Estilos para los botones */
 .button {
@@ -444,26 +258,7 @@
   }
 }
 
-.valor{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
 
-/*boton triangular*/
-.polygon{
-  background: none;
-  border: none;
-  padding: 0;
-}
-.polygon svg {
-  width: 40px;
-  cursor: pointer;
-}
-.polygon svg:hover{
-    transition: 0.5s;
-    transform: scale(1.1);
-}
 .containerMoneda{
   background: rgba(0,0,0,.3);
   box-shadow: 0px -3px 0px 0px rgba(0,0,0,.2) inset, 0px 0px 0px 1px rgba(255,255,255,.2);
